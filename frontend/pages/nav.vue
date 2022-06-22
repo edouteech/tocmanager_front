@@ -1,5 +1,4 @@
-<template>
-  
+<template> 
   <div class="nav" v-if="$auth.loggedIn == true">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <div class="header">
@@ -81,7 +80,7 @@
                 </NuxtLink>
             </li>
             <li>
-                <NuxtLink to="/">
+                <NuxtLink to="/profils/profil">
                     <div class="rubrique">
                         <i class='bx bx-user' ></i>
                         <span class="links_name">Utilisateurs</span>
@@ -124,7 +123,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 *{
   margin: 0;

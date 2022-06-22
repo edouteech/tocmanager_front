@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import SideBar from '../nav.vue'
 export default {
     components: {

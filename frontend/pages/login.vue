@@ -42,11 +42,18 @@
                     autocomplete="current-password"/>
                 </div>
                 <div class="flex items-center justify-between">
-                  <button class="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700" type="submit" @click.prevent="login()">Sign In</button>
+                  <button class="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700" type="submit" @click.prevent="login()">Connexion</button>                  
                   <a class="inline-block align-baseline font-normal text-sm text-blue-500 hover:text-blue-800" href="#">               
-                  Forgot Password?
+                  Mot de passe oublié ?
                   </a>
+                   <NuxtLink to="/register" class="inline-block align-baseline font-normal text-sm text-blue-500 hover:text-blue-800 mt-8">               
+                  Vous n'avez pas de compte ?
+                  </NuxtLink>
                 </div>
+                <div class="error-message">
+                    {{error}}
+                </div>
+                
             </form>
               <p class="text-center text-gray-500 text-xs"></p> 
         </div>
@@ -61,16 +68,28 @@ export default {
   middleware:'auth',
   data() {
     return {
+      error: '',
       form: {
         email: '' ,
         password: ''
       }
     }
   },
-    mounted(){
-        console.log(this.$auth);
-    },
+
+
   methods: {
+    refresh(){
+      var that = this;    
+       this.$axios
+          .post('/authentifier',{ data: this.form })
+          .then(response => 
+        {console.log(response.data.message)
+           if (response.data.status == "error") {
+                    that.error = response.data.message
+                } 
+        });
+        
+    },
     async login() {
       try {
         console.log(this.$auth);
@@ -87,67 +106,31 @@ export default {
         // console.log(response.data.data.original.access_token);
         console.log(this.$auth);
       } catch (err) {
-        console.log(err)
+        console.log(err);this.refresh();
       }
     }
   }
 }
 </script>
 
-<!-- 
-<script>
-import axios from "axios";
-    export default{
-      auth:'guest',
-      data(){
-        return{
-          form:{
-            email: '',
-            password: '',
-          }
-        }
-      },
-
-        methods:{
-          login(){
-
-            var that = this;       
-               axios.post('http://localhost:8000/api/authentifier', this.form)
-                .then(function(response){ 
-                console.log(this.$auth)
-                
-                if (response.data.status == "error") {
-                    that.error_message = response.data.message
-                    that.error_champ  = response.data.data
-                           } 
-                    
-            })
-        
-        }
-
-        
-            }
-        }
-    
-</script>  -->
-
-<style>
+<style scoped>
 body{
-  background-color: rgb(150, 151, 156);
+  background-color: rgb(191, 192, 197);
 }
 .container{
   border: 1px solid transparent;
   background-color: #fff;
   width: 70%;
   margin-left: 15%;
-  margin-top: 5%;
+  margin-top: 4%;
   border-radius: 10px;
 }
+
 form img{
   padding-left: 25%;
   width: 250px;
-
 }
+
 .flex{
     display: flex;
     align-items: center;
@@ -159,6 +142,16 @@ form img{
 .w-full{
     flex-basis: 50%; 
     min-width: 350px;
+
+}
+
+.error-message{
+  border: 1px solid transparent;
+  color: red;
+  font-size: 15px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 5%;
 
 }
 </style>

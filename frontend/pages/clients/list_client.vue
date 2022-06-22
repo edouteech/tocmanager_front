@@ -7,13 +7,10 @@
           <button type="button" class="bg-red-700 text-white rounded p-3 ml-8" @click="logout">Déconnexion</button>    
         </div>
     </div>
-
     <div class="espace">
-
       <h3>Liste des clients</h3>
-      <button type="button" class="bg-green-700 text-white rounded p-3"><NuxtLink to="/clients/add_client">Ajouter client</NuxtLink></button> 
-      
-      <table class="tableau">
+      <button type="button" class="bg-green-700 text-white rounded p-3"><NuxtLink to="/clients/add_client">Ajouter client</NuxtLink></button>    
+        <table class="tableau">
           <thead>
               <tr>
                   <th>Noms</th>
@@ -36,11 +33,11 @@
               </td>
             </tr>
           </tbody>
+        </table>  
+    </div>
+      <SideBar/> 
 
-      </table>
-    
-  </div>
-  <SideBar/> 
+
 </div>
 
 </template>
@@ -89,7 +86,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 .user{
     display: flex;    
 }

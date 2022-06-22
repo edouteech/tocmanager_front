@@ -20,7 +20,7 @@
                 <span class="error">{{error_champ.name}}</span>
             </div>     
             <div class="input-form">        
-                <input type="text" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" required>
+                <input type="tel" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" required>
                 <span class="error">{{error_champ.phone}}</span>
             </div>
           
@@ -29,7 +29,7 @@
                 <span class="error">{{error_champ.email}}</span>
             </div>
             <div class="input-form"> 
-                <input type="text" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required>
+                <input type="number" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required>
                 <span class="error">{{error_champ.nature}}</span>
             </div>
             <div class="submit-form">
@@ -44,8 +44,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 import SideBar from '../nav.vue'
 export default {
   components: {

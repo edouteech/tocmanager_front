@@ -74,6 +74,7 @@ export default {
         async logout(){
             this.$auth.logout();
             this.$router.push('/login');
+            
         },
 
         deleteAchat(id){
@@ -91,7 +92,7 @@ export default {
 }
 </script>
 
-<style scooped>
+<style>
 
 .tableau{
 	border-collapse: collapse;

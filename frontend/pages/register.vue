@@ -1,5 +1,9 @@
 <template>
+<div class="container">
     <div class="flex items-center justify-center">
+        <div class="full">
+          <img src="./images/sign.jpg" alt="landing image">
+        </div>
         <div class="w-full max-w-md mt-10">
           <form class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
             <!-- @csrf -->
@@ -38,7 +42,7 @@
                 v-model="form.email"
                 required
                 autofocus
-                placeholder="Email"
+                placeholder="Entrer votre email"
               />
             </div>
             <div class="mb-6">
@@ -46,12 +50,12 @@
                 class="block text-gray-700 text-sm font-normal mb-2"
                 for="password"
               >
-                Password
+                Mot de passe
               </label>
               <input
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
                 type="password"
-                placeholder="Password"
+                placeholder="Entrer un mot de passe"
                 v-model="form.password"
                 name="password"
                 required
@@ -63,7 +67,7 @@
                 class="block text-gray-700 text-sm font-normal mb-2"
                 for="phone"
               >
-                Phone
+                Numéro de téléphone
               </label>
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -72,7 +76,7 @@
                 v-model="form.phone"
                 required
                 autofocus
-                placeholder="Phone"
+                placeholder="Entrer votre numéro de téléphone"
               />
             </div>
             <div class="mb-4">
@@ -80,7 +84,7 @@
                 class="block text-gray-700 text-sm font-normal mb-2"
                 for="country"
               >
-                Country
+                Pays
               </label>
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -89,24 +93,20 @@
                 v-model="form.country"
                 required
                 autofocus
-                placeholder="Country"
+                placeholder="Entrer votre pays d'origine"
               />
             </div>
             <div class="flex items-center justify-between">
-              <button class="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700" type="submit" @click.prevent="register()">Sign In</button>
-              <a
-                class="inline-block align-baseline font-normal text-sm text-blue-500 hover:text-blue-800"
-                href="#"
-              >
-                Forgot Password?
-              </a>
+              <button class="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 mt-5" type="submit" @click.prevent="register()">Inscription</button>             
             </div>
+            <p><NuxtLink to="/login" class="inline-block align-baseline font-normal text-sm text-blue-500 hover:text-blue-800 mt-8">               
+                  Vous avez déjà un compte ?
+              </NuxtLink></p>
           </form>
-          <p class="text-center text-gray-500 text-xs">
-           
-          </p>
+          {{error.name}}
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -116,6 +116,8 @@
       components: {index},
       data: function(){
         return{
+          errors: [],
+          error: '',
           form:{
             name: '',
             email: '',
@@ -126,10 +128,25 @@
           }
         }
       },
-        // mounted(){
-        //     this.$axios.$get('/sanctum/csrf-cookie');
-        // },
+
+      mounted () {
+      this.refresh()
+      },
+            
         methods:{
+            refresh(){
+              var that = this;    
+              this.$axios
+                  .post('/create/profil',{ 
+                    data: this.form })
+                  .then(response => 
+                {console.log(response)
+                  if (response.data.status == "error") {
+                            that.errors = response.data.data
+                        } 
+                });
+                
+            },
            async register(){
             await  this.$axios.post('/create/profil',{
               name: this.form.name,
@@ -143,10 +160,19 @@
                     })
   
                   })
-                   .catch( error => console.log( error ) )
+                   .catch( err => console.log( err ) )
                     // console.log('user login')
-                 console.log(this.form.name)
+                 console.log(this.form.name);this.refresh();
             }
         }
     }
 </script>
+
+<style>
+.full{
+    flex-basis: 50%; 
+    min-width: 400px;
+    margin-left: 5%;
+
+}
+</style>

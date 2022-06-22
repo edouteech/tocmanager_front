@@ -36,6 +36,7 @@ import axios from "axios";
 
 import SideBar from '../nav.vue'
 export default {
+  auth: false,
   components: {
     SideBar,
     
