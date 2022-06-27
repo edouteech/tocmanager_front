@@ -1,50 +1,51 @@
 <template>
-<div class="contenu ">
-{{error_message}}
-    
-  <form action="" method="POST">
-        <h1>Enregistrer un achat</h1>
-        <div class="input-form">					
-            <input type="date" placeholder="Entrer la date d'achat " v-model="form.date_buy" autocomplete="off" required>
-            <span class="error">{{error_champ.date_buy}}</span>
-        </div>
-        <div class="input-form">    
-            <input type="tel" pattern="[0-9+ ]+" placeholder="Entrer la taxe appliquée" v-model="form.tax" autocomplete="off" required>
-            <span class="error">{{error_champ.tax}}</span>
-        </div>
-        <div class="input-form">    
-            <input type="tel" pattern="[0-9+ ]+" placeholder="Entrer la remise faite sur le prix" v-model="form.discount" autocomplete="off" required>
-            <span class="error">{{error_champ.discount}}</span>
-        </div>
-        <div class="input-form">    
-            <input type="tel" pattern="[0-9+ ]+" placeholder="Entrer le montant" v-model="form.amount" autocomplete="off" required>
-            <span class="error">{{error_champ.amount}}</span>
-        </div>
-        <div class="input-form">    
-            <input type="tel" pattern="[0-9+ ]+" placeholder="Entrer le reste" v-model="form.rest" autocomplete="off" required>
-            <span class="error">{{error_champ.rest}}</span>
-        </div>
-        <div class="input-form"> 
-            <input type="text" placeholder="Entrer l'identifiant de l'utilisateur'" v-model="form.user_id" autocomplete="off" required>
-            <span class="error">{{error_champ.user_id}}</span>
-        </div>
-        <div class="input-form"> 
-            <input type="text" placeholder="Entrer l'identifiant du vendeur" v-model="form.supplier_id" autocomplete="off" required>
-            <span class="error">{{error_champ.supplier_id}}</span>
-        </div>
-        <div class="input-form">    
-            <input type="tel" pattern="[0-9+ ]+" placeholder="Entrer la ligne d'achat" v-model="form.buy_lines" autocomplete="off" required>
-            <span class="error">{{error_champ.buy_lines}}</span>
-        </div>
-        <div class="submit-form">
-            <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer l'achat" name="submit">				          
-        </div>
+<div class="contain">
+     <SideBar/>
 
-    </form>
+ 
+  <div class="zone">
+        <form action="" method="POST">
+            <h1>Enregistrer un achat</h1>
+            <div class="input-form">					
+                <input type="date" placeholder="Entrer la date d'achat " v-model="form.date_buy" autocomplete="off" required>
+                <span class="error">{{error_champ.date_buy}}</span>
+            </div>
+            <div class="input-form">    
+                <input type="tel" pattern="[0-9+ ]+" placeholder="Entrer la taxe appliquée" v-model="form.tax" autocomplete="off" required>
+                <span class="error">{{error_champ.tax}}</span>
+            </div>
+            <div class="input-form">    
+                <input type="tel" pattern="[0-9+ ]+" placeholder="Entrer la remise faite sur le prix" v-model="form.discount" autocomplete="off" required>
+                <span class="error">{{error_champ.discount}}</span>
+            </div>
+            <div class="input-form">    
+                <input type="tel" pattern="[0-9+ ]+" placeholder="Entrer le montant" v-model="form.amount" autocomplete="off" required>
+                <span class="error">{{error_champ.amount}}</span>
+            </div>
+            <div class="input-form">    
+                <input type="tel" pattern="[0-9+ ]+" placeholder="Entrer le reste" v-model="form.rest" autocomplete="off" required>
+                <span class="error">{{error_champ.rest}}</span>
+            </div>
+            <div class="input-form"> 
+                <input type="text" placeholder="Entrer l'identifiant de l'utilisateur'" v-model="form.user_id" autocomplete="off" required>
+                <span class="error">{{error_champ.user_id}}</span>
+            </div>
+            <div class="input-form"> 
+                <input type="text" placeholder="Entrer l'identifiant du vendeur" v-model="form.supplier_id" autocomplete="off" required>
+                <span class="error">{{error_champ.supplier_id}}</span>
+            </div>
+            <div class="input-form">    
+                <input type="tel" pattern="[0-9+ ]+" placeholder="Entrer la ligne d'achat" v-model="form.buy_lines" autocomplete="off" required>
+                <span class="error">{{error_champ.buy_lines}}</span>
+            </div>
+            <div class="submit-form">
+                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer l'achat" name="submit">				          
+            </div>
 
-    
-    <SideBar/>
+        </form>
+    </div>
 </div>
+
 
 </template>
 
@@ -83,7 +84,6 @@ export default {
                 if (response.data.status == "error") {
                     that.error_message = response.data.message
                     that.error_champ  = response.data.data
-
                 } 
             })
         
@@ -93,7 +93,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 body{
     background-color: rgb(233, 250, 252) ;
 }

@@ -1,17 +1,14 @@
 <template>
-<div class="general">
-    <div class="haut">
-        <div class="user">
-          <img src="../images/user.png" alt="logo" srcset="">
-          <span class="user_name">{{$auth.user.name}}</span> 
-          <button type="button" class="bg-red-700 text-white rounded p-3 ml-8" @click="logout">Déconnexion</button>    
+<div class="contain">
+     <SideBar/>
+
+ 
+  <div class="zone">
+        <div class="titre">
+            Utilisateurs connectés
         </div>
-    </div>
-
-    <div class="espace">
-
-      <h3>Liste des utilisateurs</h3>
-      <button type="button" class="bg-green-700 text-white rounded p-3"><NuxtLink to="/profils/add_profil">Inscrire un utilisateur</NuxtLink></button> 
+      <p>Liste des utilisateurs</p>
+      <NuxtLink class="custom-btn btn-10" to="/profils/add_profil">Inscrire un utilisateur</NuxtLink>
       
       <table class="tableau">
           <thead>
@@ -32,7 +29,7 @@
               <td>{{profil.country}}</td>
               <td>
                 <NuxtLink :to="'/edit_profil/'+profil.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
-                <button @click="deleteProfil(profil.id)"><i class='bx bx-stop-circle'></i></button>
+                <button @click="deleteProfil(profil.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
               </td>
             </tr>
           </tbody>
@@ -40,7 +37,7 @@
       </table>
     
   </div>
-  <SideBar/> 
+
 </div>
 
 </template>
@@ -48,72 +45,89 @@
 <script>
 import SideBar from '../nav.vue'
 export default {
-  components: {
-    SideBar,  
-  },
-   data () {
-      return {
-        profils: [],
-        profil: "",
-      }
+    components: {
+      SideBar,  
+    },
+
+    data () {
+        return {
+          profils: [],
+          profil: "",
+        }
+      },
+
+    mounted () {
+      this.refresh()
     },
     methods: {
-        async logout(){
-            this.$auth.logout();
-            this.$router.push('/login');
-        },
 
         deleteProfil(id){
           console.log(id);
-          this.$axios
-          .delete('/delete/profil/' +id)
-          .then(response => 
-            {console.log(response.data.data);
-            this.refresh()})                 
+          this.$axios.delete('/delete/profil/' +id)         
+          .then(response => {console.log(response.data.data);
+            this.refresh()})                            
         },
         
         refresh(){
-          this.$axios
-        .get('/index/profil')
-        .then(response => 
+          this.$axios.get('/index/profil')
+          .then(response => 
             {console.log(response);
-            this.profils = response.data.data.data
-            }
-            )
+              this.profils = response.data.data.data
+            })         
         }
     },
-    mounted () {
-      this.refresh()
-    }
 }
 </script>
 
-<style>
-.user{
-    display: flex;    
+<style scoped>
+.zone p{
+    font-size: 18px;
 }
-.user img{
-    width: 30px;
-    border: 1px solid transparent;
-    border-radius: 100%;
+.bx{
+  margin: 0 10px;
+  font-size: 25px;
 }
-.user .user_name{
-    font-size: 15px;
-    padding: 7px;
+
+/* .ajout{
+  border: 1px solid;
+  border-radius: 15px;
+  background-color: rgb(233, 250, 215);
+  padding: 10px;
+  margin-left: 80%;
 }
-.haut{
-    border: 1px solid transparent;
-    border-radius: 15px;
-    position: fixed;
-    width: 100%;
-    padding: 5px 50px;
-    padding-left: 85%;
-    font-size: 10px;
-    color: #fff;
-    background-color: #202020;
+
+.ajout:hover{
+  background-color: green;
+  color: #fff;
+  
+} */
+
+.tableau{
+	border-collapse: collapse;
+	min-width: 800px;
+	width: auto;
+	box-shadow: 0 5px 50px transparent;
+	border: 2px solid transparent;
+	text-align: center;
+	margin-top: 1%;
+	font-size: 18px;
+}      
+thead tr{
+    background-color: transparent;
 }
-.espace{
-    padding-top: 5%;
-    margin-left: 18%;
+th, td{
+    padding: 15px 40px;
+    border: 1px solid #ddd
+}
+tbody, tr, td, th{
+    border: 1px solid #ddd
+}
+
+tbody tr:nth-child(even){
+    background-color: rgb(233, 233, 255);
+}
+
+tbody tr:last-of-type{
+    border-bottom: 2px solid rgb(140, 140, 250);
 }
 </style>

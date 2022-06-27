@@ -18,7 +18,12 @@
                     <span class="error">{{error_champ.email}}</span>
                 </div>
                 <div class="input-form"> 
-                    <input type="number" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required>
+                   <select v-model="form.nature" required>
+                        <option disabled value="">Choisissez la nature du client</option>
+                        <option value="0">Particulier</option>
+                        <option value="1">Entreprise</option>
+                    </select>
+                    <!-- <input type="number" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required> -->
                     <span class="error">{{error_champ.nature}}</span>
                 </div>
                 <div class="submit-form">
@@ -27,7 +32,7 @@
             </form>
     </div>
     <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="./images/fermer.png" alt="" />
+      <img class="close-img" src="../images/fermer.png" alt="" />
     </div>
   </div>
 </template>
@@ -71,7 +76,55 @@
 </script>
 
 <style scoped>
+form {
+    padding: 50px;
+} 
 
+.input-form {
+    display: flex;
+    flex-direction: column-reverse;
+    margin: 1.2em 0;
+    height: 50px;
+}
+.error{               
+    color: red;
+    margin-bottom: -10%;
+    font-size: 12px;
+}
+    
+input {
+    padding: 8px;
+    border: none; outline: none;
+    border-bottom: 2px solid #605050;
+}
+
+input::placeholder {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.submit-form {
+    margin-top: 10%;
+    text-align: center;       
+}
+
+input[type=submit] {
+    background-color: white;
+    color: black;
+    padding: 10px 15px;
+    margin: 8px 0;
+    border: 1px solid #0971fa;
+    cursor: pointer;
+    width: 60%;
+    font-size: 15px;
+}
+
+input[type=submit]:hover{
+    background-color: #0971fa;
+    color: white;
+    border: 1px solid #0971fa;
+    font-size: 16px;
+}
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -80,20 +133,20 @@
   right: 0;
   display: flex;
   justify-content: center;
-  background-color: #000000da;
+  background-color: #949292da;
 }
 
 .modal {
   text-align: center;
   background-color: white;
-  height: 500px;
-  width: 500px;
-  margin-top: 10%;
-  padding: 60px 0;
+  height: 600px;
+  width: 600px;
+  margin-top: 5%;
+  padding: 30px 0;
   border-radius: 20px;
 }
 .close {
-  margin: 10% 0 0 16px;
+  margin: 5% 0 0 16px;
   cursor: pointer;
 }
 

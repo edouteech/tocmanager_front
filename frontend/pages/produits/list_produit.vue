@@ -1,17 +1,14 @@
 <template>
-<div class="general">
-    <div class="haut">
-        <div class="user">
-          <img src="../images/user.png" alt="logo" srcset="">
-          <!-- Dashboard: {{$auth.$storage._state["_token.local"]}} -->
-          <span class="user_name">{{$auth.user.name}}</span> 
-          <button type="button" class="bg-red-700 text-white rounded p-3 ml-8" @click="logout">Déconnexion</button>    
+<div class="contain">
+     <SideBar/>
+
+ 
+  <div class="zone">
+        <div class="titre">
+            Produits
         </div>
-    </div>
-  
-    <div class="espace">
         <h3>Liste des produits dans le magazin</h3>
-        <button type="button" class="bg-green-700 text-white rounded p-3"><NuxtLink to="/produits/add_produit">Ajouter nouveau produit</NuxtLink></button> 
+       <NuxtLink class="custom-btn btn-10" to="/produits/add_produit">Ajouter nouveau produit</NuxtLink>
         
         <table class="tableau">
             <thead>
@@ -38,7 +35,7 @@
                 <td>{{produit.stock_max}}</td>
                 <td>
                   <NuxtLink :to="'/edit_produit/'+produit.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
-                  <button @click="deleteProduit(produit.id)"><i class='bx bx-stop-circle'></i></button>
+                  <button @click="deleteProduit(produit.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
                 </td>
               </tr>
             </tbody>
@@ -46,13 +43,12 @@
         </table>
     
     </div>
-    <SideBar/> 
+
 </div>
 
 </template>
 
 <script>
-import axios from "axios";
 import SideBar from '../nav.vue'
 export default {
   // auth: true,
@@ -67,30 +63,23 @@ export default {
     }
   },
 
-  methods: {
-        async logout(){
-                this.$auth.logout();
-                this.$router.push('/login');
-        },
+  mounted () {
+      this.refresh()
+  },
 
+  methods: {
         deleteProduit(id){
           console.log(id);
-          this.$axios
-          .delete('/delete/product/' +id)
+          this.$axios.delete('/delete/product/' +id)
           .then(response => 
             {console.log(response.data.data);
             this.refresh()
-                // this.client = response.data.data
-                  // this.$router.push({
-                  //   path:'/list_client',
-                  // })
-            })         
+                })         
         },
 
         refresh(){
-          this.$axios
-        .get('/index/product')
-        .then(response => 
+          this.$axios.get('/index/product')     
+          .then(response => 
             {console.log(response);
             this.produits = response.data.data.data
             }
@@ -98,12 +87,60 @@ export default {
         }
 
     },
-    mounted () {
-      this.refresh()
-    }
+   
 }
 </script>
 
-<style>
+<style scoped>
+.zone p{
+    font-size: 18px;
+}
+
+.bx{
+  margin: 0 10px;
+  font-size: 25px;
+}
+
+/* .ajout{
+  border: 1px solid;
+  border-radius: 15px;
+  background-color: rgb(233, 250, 215);
+  padding: 10px;
+  margin-left: 80%;
+}
+
+.ajout:hover{
+  background-color: green;
+  color: #fff;
+  
+} */
+.tableau{
+	border-collapse: collapse;
+	min-width: 800px;
+	width: auto;
+	box-shadow: 0 5px 50px transparent;
+	border: 2px solid transparent;
+	text-align: center;
+	margin-top: 1%;
+	font-size: 18px;
+}      
+thead tr{
+    background-color: transparent;
+}
+th, td{
+    padding: 15px 20px;
+    border: 1px solid #ddd
+}
+tbody, tr, td, th{
+    border: 1px solid #ddd
+}
+
+tbody tr:nth-child(even){
+    background-color: rgb(233, 233, 255);
+}
+
+tbody tr:last-of-type{
+    border-bottom: 2px solid rgb(140, 140, 250);
+}
 
 </style>

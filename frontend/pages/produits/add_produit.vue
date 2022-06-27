@@ -1,24 +1,24 @@
 <template>
-<div class="general">
-        <div class="haut">
-            <div class="user">
-             <img src="../images/user.png" alt="logo" srcset="">
-             <span class="user_name">{{$auth.user.name}}</span> 
-             <button type="button" class="bg-red-700 text-white rounded p-3 ml-8" @click="logout">Déconnexion</button>    
-            </div>
+<div class="contain">
+     <SideBar/>
+
+ 
+  <div class="zone">
+        <div class="titre">
+            Produits
         </div>
-
-    <div class="espace">
-
-    <h3>Enregistrer un produit</h3>
+        <p>Enregistrer un nouveau produit</p>
        
-      <form action="" method="POST">
+        <form action="" method="POST">
             <h1>Ajout de produit</h1>
-
-            <div class="input-form">					
-                <input type="text" placeholder="Entrer la categorie " v-model="form.category_id" autocomplete="off" required>
-                <span class="error">{{error_champ.name}}</span>
-            </div>   
+            <div class="input-form"> 
+                <select v-model="form.category_id">
+                    <option disabled value="">Choisissez la categorie du produit à ajouter</option>
+                    <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
+                </select>
+                <!-- <input type="text" placeholder="Entrer la categorie " v-model="form.category_id" autocomplete="off" required> -->
+                <span class="error">{{error_champ.nature}}</span>
+            </div>  
             <div class="input-form">					
                 <input type="text" placeholder="Entrer le nom du produit " v-model="form.name" autocomplete="off" required>
                 <span class="error">{{error_champ.name}}</span>
@@ -51,34 +51,40 @@
         </form>
         
 </div>
-  <SideBar/> 
+
 </div>
 </template>
 
 <script>
-import axios from "axios";
-
 import SideBar from '../nav.vue'
 export default {
-  components: {
-    SideBar,
-    
-  },
-  data () {
-      return{
-          form: {
-              category_id: '',
-              name: '',
-              quantity: '',
-              price_sell:'',
-              price_buy:'',
-              stock_min:'',
-              stock_max:''
-          },
-          error_message: "",
-          error_champ: [],
-      }
-  },
+    components: {
+        SideBar,
+        
+    },
+
+    data () {
+        return{
+            categories: [],
+            categorie: '',
+            form: {
+                category_id: '',
+                name: '',
+                quantity: '',
+                price_sell:'',
+                price_buy:'',
+                stock_min:'',
+                stock_max:''
+            },
+            error_message: "",
+            error_champ: [],
+        }
+    },
+
+    mounted () {
+      this.refresh()
+    },
+
     methods: {
         async submit(){
             await  this.$axios.post('/create/product',{
@@ -89,19 +95,14 @@ export default {
               price_buy: this.form.price_buy,
               stock_min: this.form.stock_min,
               stock_max: this.form.stock_max
-            }).then(response =>{
-                    this.$router.push({
-                      path:'/produits/list_produit',
-                    })
-  
-                }).catch( error => console.log( error ) )
-                    // console.log('user login')
-                 console.log(this.form.name)                
+            }).then(response =>{this.$router.push({path:'/produits/list_produit', })
+                 }).catch( error => console.log( error ) )
+              
         },
 
-        async logout(){
-                this.$auth.logout();
-                this.$router.push('/login');
+        refresh(){
+          this.$axios.get('/index/categorie').then(response =>
+            {console.log(response); this.categories = response.data.data.data })
         },
 
     },
@@ -109,7 +110,11 @@ export default {
 }
 </script>
 
-<style scooped>
+<style scoped>
+.zone p{
+    font-size: 18px;
+}
+
 form {
     width: 80%;
     padding-left: 100px;

@@ -1,0 +1,28 @@
+.tableau{
+	border-collapse: collapse;
+	min-width: 800px;
+	width: auto;
+	box-shadow: 0 5px 50px transparent;
+	border: 2px solid transparent;
+	text-align: center;
+	margin-top: 1%;
+	font-size: 18px;
+}      
+thead tr{
+    background-color: transparent;
+}
+th, td{
+    padding: 15px 20px;
+    border: 1px solid #ddd
+}
+tbody, tr, td, th{
+    border: 1px solid #ddd
+}
+
+tbody tr:nth-child(even){
+    background-color: rgb(233, 233, 255);
+}
+
+tbody tr:last-of-type{
+    border-bottom: 2px solid rgb(140, 140, 250);
+}

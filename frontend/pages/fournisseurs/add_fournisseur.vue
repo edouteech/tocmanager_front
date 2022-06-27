@@ -1,15 +1,12 @@
 <template>
-<div class="general">
-    <div class="haut">
-        <div class="user">
-            <img src="../images/user.png" alt="logo" srcset="">
-            <span class="user_name">{{$auth.user.name}}</span> 
-            <button type="button" class="bg-red-700 text-white rounded p-3 ml-8" @click="logout">Déconnexion</button>    
-        </div>
-    </div>
+<div class="contain">
+     <SideBar/>
 
-    <div class="espace">
-        <h3>Enregistrer un fournisseur</h3>   
+  <div class="zone">
+        <div class="titre">
+            Fournisseurs
+        </div>
+        <p>Enregistrer un nouveau fournisseur</p>   
         <form action="" method="POST">
             <h1>Ajout de fournisseur</h1>
             <div class="input-form">					
@@ -26,7 +23,12 @@
                 <span class="error">{{error_champ.email}}</span>
             </div>
             <div class="input-form"> 
-                <input type="text" placeholder="Entrer la nature du fournisseur " v-model="form.nature" autocomplete="off" required>
+                <select v-model="form.nature" required>
+                    <option disabled value="">Choisissez la nature du fournisseur</option>
+                    <option value="0">Particulier</option>
+                    <option value="1">Entreprise</option>
+                </select>
+                <!-- <input type="text" placeholder="Entrer la nature du fournisseur " v-model="form.nature" autocomplete="off" required> -->
                 <span class="error">{{error_champ.nature}}</span>
             </div>
             <div class="submit-form">
@@ -36,13 +38,11 @@
         </form>
         
     </div>
-    <SideBar/> 
+
 </div>
 </template>
 
 <script>
-import axios from "axios";
-
 import SideBar from '../nav.vue'
 export default {
     components: {
@@ -69,58 +69,21 @@ export default {
             email: this.form.email,
             phone: this.form.phone,
             nature: this.form.nature
-            }).then(response =>{
-                    this.$router.push({
-                    path:'/fournisseurs/list_fournisseur',
-                    })
-
+            }).then(response =>{this.$router.push({path:'/fournisseurs/list_fournisseur',})
                 }).catch( error => console.log( error ) )
-                    // console.log('user login')
                 console.log(this.form.name)
         },
-                
-        async logout(){
-                this.$auth.logout();
-                this.$router.push('/login');
-        },
 
-  // async submit() {
-  //     try {
-  //        axios.post('http://localhost:8000/api/create/client', this.form)
-  //       let response = await this.$auth.loginWith('local', { data: this.form })
-  //       this.$auth.setUserToken(response.data.data.original.access_token)
-  //       .then(response =>{
-  //                   this.$router.push(
-  //                    '/list_client',
-  //                   )
-  
-  //                 })
-                    
-  //       // console.log(response.data.data.original.access_token);
-  //       console.log(this.$auth);
-  //     } catch (err) {
-  //       console.log(err)
-  //     }
-  //   },
-      //   submit(){    
-      // var that = this;       
-      //       axios.post('http://localhost:8000/api/create/client', this.form)
-      //       .then(function(response){ 
-      //           console.log(response.data)
-      //           if (response.data.status == "error") {
-      //               that.error_message = response.data.message
-      //               that.error_champ  = response.data.data
-
-      //           } 
-      //       })
-        
-      //   }
     },
   
 }
 </script>
 
-<style scooped>
+<style scoped>
+.zone p{
+    font-size: 18px;
+}
+
 form {
     width: 80%;
     padding-left: 100px;

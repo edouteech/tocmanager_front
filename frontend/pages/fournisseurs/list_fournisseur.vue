@@ -1,16 +1,13 @@
 <template>
-<div class="general">
-    <div class="haut">
-        <div class="user">
-          <img src="../images/user.png" alt="logo" srcset="">
-          <span class="user_name">{{$auth.user.name}}</span> 
-          <button type="button" class="bg-red-700 text-white rounded p-3 ml-8" @click="logout">Déconnexion</button>    
-        </div>
-    </div>
+<div class="contain">
+     <SideBar/>
 
-    <div class="espace">
-        <h3>Liste des fournisseurs</h3>
-        <button type="button" class="bg-green-700 text-white rounded p-3"><NuxtLink to="/fournisseurs/add_fournisseur">Ajouter fournisseur</NuxtLink></button> 
+  <div class="zone">
+        <div class="titre">
+            Fournisseurs
+        </div>
+        <p>Liste des fournisseurs</p>
+        <NuxtLink class="custom-btn btn-10" to="/fournisseurs/add_fournisseur">Ajouter fournisseur</NuxtLink>
         
         <table class="tableau">
             <thead>
@@ -31,7 +28,7 @@
                 <td>{{fournisseur.nature}}</td>
                 <td>
                   <NuxtLink :to="'/edit_fournisseur/'+fournisseur.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
-                  <button @click="deleteFournisseur(fournisseur.id)"><i class='bx bx-stop-circle'></i></button>
+                  <button @click="deleteFournisseur(fournisseur.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
                 </td>
               </tr>
             </tbody>
@@ -39,13 +36,12 @@
         </table>
     
     </div>
-    <SideBar/> 
+
 </div>
 
 </template>
 
 <script>
-import axios from "axios";
 import SideBar from '../nav.vue'
 export default {
   components: {
@@ -58,40 +54,53 @@ export default {
       fournisseur: "",
     }
   },
+  mounted () {
+      this.refresh()
+  },
 
   methods: {
-      async logout(){
-              this.$auth.logout();
-              this.$router.push('/login');
-      },
-
+    
        deleteFournisseur(id){
           console.log(id);
-          this.$axios
-          .delete('/delete/fournisseur/' +id)
-          .then(response => 
-            {console.log(response.data.data);
+          this.$axios.delete('/delete/fournisseur/' +id)
+          .then(response => {console.log(response.data.data);
             this.refresh()})                 
         },
-        
+         
         refresh(){
-          this.$axios
-        .get('/index/fournisseur')
-        .then(response => 
+          this.$axios.get('/index/fournisseur')
+          .then(response => 
+        
             {console.log(response);
-            this.fournisseurs = response.data.data.data
-            }
-            )
+            this.fournisseurs = response.data.data.data})
         }
     },
-    mounted () {
-      this.refresh()
-    }
-  
+
 }
 </script>
 
-<style>
+<style scoped>
+.zone p{
+    font-size: 18px;
+}
+.bx{
+  margin: 0 10px;
+  font-size: 25px;
+}
+
+/* .ajout{
+  border: 1px solid;
+  border-radius: 15px;
+  background-color: rgb(233, 250, 215);
+  padding: 10px;
+  margin-left: 80%;
+}
+
+.ajout:hover{
+  background-color: green;
+  color: #fff;
+  
+} */
 .user{
     display: flex;    
 }
@@ -118,5 +127,34 @@ export default {
 .espace{
     padding-top: 5%;
     margin-left: 18%;
+}
+
+.tableau{
+	border-collapse: collapse;
+	min-width: 800px;
+	width: auto;
+	box-shadow: 0 5px 50px transparent;
+	border: 2px solid transparent;
+	text-align: center;
+	margin-top: 1%;
+	font-size: 18px;
+}      
+thead tr{
+    background-color: transparent;
+}
+th, td{
+    padding: 15px 40px;
+    border: 1px solid #ddd
+}
+tbody, tr, td, th{
+    border: 1px solid #ddd
+}
+
+tbody tr:nth-child(even){
+    background-color: rgb(233, 233, 255);
+}
+
+tbody tr:last-of-type{
+    border-bottom: 2px solid rgb(140, 140, 250);
 }
 </style>

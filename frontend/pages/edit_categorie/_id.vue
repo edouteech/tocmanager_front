@@ -1,19 +1,14 @@
 <template>
-<div class="general">
-        <div class="haut">
-            <div class="user">
-             <img src="../images/user.png" alt="logo" srcset="">
-             <span class="user_name">{{$auth.user.name}}</span> 
-             <button type="button" class="bg-red-700 text-white rounded p-3 ml-8" @click="logout">Déconnexion</button>    
-            </div>
-        </div>
+<div class="contain">
+     <SideBar/>
+  <div class="zone">
+    <div class="titre">
+      Catégories de produits
+    </div>
+    <form action="" method="POST">
 
-    <div class="espace">
-             
-  <form action="" method="POST">
-
-        <h1>Modifier les infos de la catégorie</h1>	
-         <div class="input-form">			
+        <p>Modifier les infos de la catégorie</p>	
+        <div class="input-form">			
             <input type="text" placeholder='Entrer le nom de la categorie' v-model="form.name" autocomplete="off" required>
             <span class="error">{{error_champ.name}}</span>
         </div>     
@@ -23,8 +18,7 @@
 
     </form>
   
-    </div>
-  <SideBar/> 
+  </div>
 </div>
 
 </template>
@@ -50,36 +44,22 @@ export default {
     },
 
     mounted() {
-        this.$axios
-          .get('/index/categorie/'+ this.$route.params.id)
-          .then(response => 
-        {console.log(response.data.data[0] )
-        let categorie = response.data.data[0];
-        // this.categories = response.data.data
-         this.form.name = categorie.name    
-        }
-        )
-            
+        this.$axios.get('/index/categorie/'+ this.$route.params.id)
+          .then(response => {console.log(response.data.data[0] )
+            let categorie = response.data.data[0];
+            // this.categories = response.data.data
+            this.form.name = categorie.name    
+          }        
+        )          
     },
 
     methods: {
-      async logout(){
-          this.$auth.logout();
-          this.$router.push('/login');
-      },
-
-
       submit(){          
-              this.$axios.put('/update/categorie', {
-              id: this.$route.params.id,
-              name: this.form.name,
-             
-              })
-              .then(response =>{
-                  this.$router.push({
-                    path:'/categorie/list_categorie',})
-              })
-          
+          this.$axios.put('/update/categorie', {
+            id: this.$route.params.id,            
+            name: this.form.name,       
+          }).then(response =>{this.$router.push({ path:'/categorie/list_categorie',})})
+
       }
     }
 
@@ -87,6 +67,62 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.zone p{
+    font-size: 18px;
+}
 
+form {
+    width: 80%;
+    padding-left: 100px;
+    padding-right: 300px;
+    padding-top: 50px;
+}
+.input-form {
+    display: flex;
+    flex-direction: column-reverse;
+    margin: 1.2em 0;
+    height: 50px;
+}
+
+.error{               
+    color: red;
+    margin-bottom: -10%;
+    font-size: 12px;
+}
+        
+
+input {
+    padding: 8px;
+    border: none; outline: none;
+    border-bottom: 2px solid #605050;
+}
+       
+input::placeholder {
+    font-size: 15px;
+    opacity: 0.5;
+}
+
+.submit-form {
+    margin-top: 10%;
+    text-align: right;       
+}
+
+input[type=submit] {
+    background-color: white;
+    color: black;
+    padding: 10px 15px;
+    margin: 8px 0;
+    border: 1px solid #53af57;
+    cursor: pointer;
+    width: 100%;
+    font-size: 15px;
+}
+
+input[type=submit]:hover{
+    background-color: #53af57;
+    color: white;
+    border: 1px solid #53af57;
+    font-size: 16px;
+}
 </style>

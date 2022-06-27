@@ -1,16 +1,11 @@
 <template>
-<div class="general">
-        <div class="haut">
-            <div class="user">
-             <img src="../images/user.png" alt="logo" srcset="">
-             <span class="user_name">{{$auth.user.name}}</span> 
-             <button type="button" class="bg-red-700 text-white rounded p-3 ml-8" @click="logout">Déconnexion</button>    
-            </div>
-        </div>
-
-    <div class="espace">
-
-    <h3>Enregistrer une nouvelle catégorie de produit</h3>
+<div class="contain">
+     <SideBar/>
+  <div class="zone">
+    <div class="titre">
+      Catégories de produits
+    </div>
+         <p>Enregistrer une nouvelle catégorie de produit</p>
        
       <form action="" method="POST">
             <h1>Ajout de catégorie</h1>
@@ -25,88 +20,51 @@
  
             
         </form>
-        
+  </div>
+ 
+
 </div>
-  <SideBar/> 
-</div>
+
+
+
 </template>
 
 <script>
-import axios from "axios";
-
 import SideBar from '../nav.vue'
 export default {
-  auth: false,
-  components: {
-    SideBar,
-    
-  },
-  data () {
-      return{
-          form: {
-              name: '',
-             
-          },
-          error_message: "",
-          error_champ: [],
-      }
-  },
+    auth: false,
+    components: {
+        SideBar,
+        
+    },
+    data () {
+        return{
+            form: {
+                name: '',
+                
+            },
+            error_message: "",
+            error_champ: [],
+        }
+    },
     methods: {
         async submit(){
-            await  this.$axios.post('/create/categorie',{
-              name: this.form.name
-            }).then(response =>{
-                    this.$router.push({
-                      path:'/categorie/list_categorie',
-                    })
-  
-                }).catch( error => console.log( error ) )
-                    // console.log('user login')
+            await  this.$axios.post('/create/categorie',{name: this.form.name})   
+            .then(response =>{ this.$router.push({ path:'/categorie/list_categorie', })})
+            .catch( error => console.log( error ) )      
                  console.log(this.form.name)                
         },
 
-        async logout(){
-                this.$auth.logout();
-                this.$router.push('/login');
-        },
-
-  // async submit() {
-  //     try {
-  //        axios.post('http://localhost:8000/api/create/client', this.form)
-  //       let response = await this.$auth.loginWith('local', { data: this.form })
-  //       this.$auth.setUserToken(response.data.data.original.access_token)
-  //       .then(response =>{
-  //                   this.$router.push(
-  //                    '/list_client',
-  //                   )
-  
-  //                 })
-                    
-  //       // console.log(response.data.data.original.access_token);
-  //       console.log(this.$auth);
-  //     } catch (err) {
-  //       console.log(err)
-  //     }
-  //   },
-      //   submit(){    
-      // var that = this;       
-      //       axios.post('http://localhost:8000/api/create/client', this.form)
-      //       .then(function(response){ 
-      //           console.log(response.data)
-      //           if (response.data.status == "error") {
-      //               that.error_message = response.data.message
-      //               that.error_champ  = response.data.data
-
-      //           } 
-      //       })
-        
-      //   }
     },
   
-}
+}                       
+
 </script>
 
-<style scooped>
+<style scoped>
+.zone p{
+    font-size: 18px;
+}
 form {
     width: 80%;
     padding-left: 100px;

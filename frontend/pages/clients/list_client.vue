@@ -1,15 +1,13 @@
 <template>
-<div class="general">
-    <div class="haut">
-        <div class="user">
-          <img src="../images/user.png" alt="logo" srcset="">
-          <span class="user_name">{{$auth.user.name}}</span> 
-          <button type="button" class="bg-red-700 text-white rounded p-3 ml-8" @click="logout">Déconnexion</button>    
+<div class="contain">
+     <SideBar/>
+
+    <div class="zone">
+      <div class="titre">
+            Clients
         </div>
-    </div>
-    <div class="espace">
-      <h3>Liste des clients</h3>
-      <button type="button" class="bg-green-700 text-white rounded p-3"><NuxtLink to="/clients/add_client">Ajouter client</NuxtLink></button>    
+      <p>Liste des clients</p>
+      <NuxtLink class="custom-btn btn-10" to="/clients/add_client">Ajouter client</NuxtLink>
         <table class="tableau">
           <thead>
               <tr>
@@ -29,21 +27,18 @@
               <td>{{client.nature}}</td>
               <td>
                 <NuxtLink :to="'/edit_client/'+client.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
-                <button @click="deleteClient(client.id)"><i class='bx bx-stop-circle'></i></button>
+                <button @click="deleteClient(client.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
               </td>
             </tr>
           </tbody>
         </table>  
     </div>
-      <SideBar/> 
-
-
+      
 </div>
 
 </template>
 
 <script>
-import axios from "axios";
 import SideBar from '../nav.vue'
 export default {
   components: {
@@ -55,64 +50,76 @@ export default {
         client: "",
       }
     },
-    methods: {
-        async logout(){
-                this.$auth.logout();
-                this.$router.push('/login');
-        },
 
-        deleteClient(id){
-          console.log(id);
-          this.$axios
-          .delete('/delete/client/' +id)
-          .then(response => 
-            {console.log(response.data.data);
-            this.refresh()})                 
-        },
-        
-        refresh(){
-          this.$axios
-        .get('/index/client')
-        .then(response => 
-            {console.log(response);
-            this.clients = response.data.data.data
-            }
-            )
-        }
-    },
     mounted () {
       this.refresh()
-    }
+    },
+
+    methods: {
+
+        deleteClient(id){ console.log(id);
+          this.$axios.delete('/delete/client/' +id)
+          .then(response =>  {console.log(response.data.data);
+          this.refresh()})
+         },
+        
+        refresh(){
+          this.$axios.get('/index/client').then(response => {console.log(response);
+          this.clients = response.data.data.data })
+        }
+    },       
+     
 }
 </script>
 
 <style scoped>
+.zone p{
+    font-size: 18px;
+}
 
-.user{
-    display: flex;    
+.bx{
+  margin: 0 10px;
+  font-size: 25px;
 }
-.user img{
-    width: 30px;
-    border: 1px solid transparent;
-    border-radius: 100%;
+.ajout{
+  border: 1px solid;
+  border-radius: 15px;
+  background-color: rgb(233, 250, 215);
+  padding: 10px;
+  margin-left: 80%;
 }
-.user .user_name{
-    font-size: 15px;
-    padding: 7px;
+
+.ajout:hover{
+  background-color: green;
+  color: #fff;
+  
 }
-.haut{
-    border: 1px solid transparent;
-    border-radius: 15px;
-    position: fixed;
-    width: 100%;
-    padding: 5px 50px;
-    padding-left: 85%;
-    font-size: 10px;
-    color: #fff;
-    background-color: #202020;
+.tableau{
+	border-collapse: collapse;
+
+
+	box-shadow: 0 5px 50px transparent;
+	border: 2px solid transparent;
+	text-align: center;
+	margin-top: 1%;
+	font-size: 18px;
+}      
+thead tr{
+    background-color: transparent;
 }
-.espace{
-    padding-top: 5%;
-    margin-left: 18%;
+th, td{
+    padding: 15px 40px;
+    border: 1px solid #ddd
+}
+tbody, tr, td, th{
+    border: 1px solid #ddd
+}
+
+tbody tr:nth-child(even){
+    background-color: rgb(233, 233, 255);
+}
+
+tbody tr:last-of-type{
+    border-bottom: 2px solid rgb(140, 140, 250);
 }
 </style>
