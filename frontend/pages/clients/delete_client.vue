@@ -60,7 +60,7 @@
                                 <td>{{client.phone}}</td>
                                 <td>{{client.email}}</td>
                                 <td><div class="action">
-                                    <div class="sup" @click="showModal = true">Supprimer définitivement</div>
+                                    <div class="sup" @click="supClient(client.id)">Supprimer définitivement</div>
                                     <div class="restore" @click="restaurerClient(client.id)">Restaurer ce client</div></div>
                                 </td>
                             </tr>
@@ -111,12 +111,14 @@ export default {
         },
 
          supClient(id){
-            console.log(id);
-            this.$axios.delete('/destroy/client/' +id)      
-            .then(response => {console.log(response);
-                    this.client = response.data.data
+            console.log(id); 
+            this.showModal = true;
+            this.identifiant= id;
+            // this.$axios.delete('/destroy/client/' +id)      
+            // .then(response => {console.log(response);
+            //         this.client = response.data.data
                     
-                })                
+            //     })                
         },
     },
   
