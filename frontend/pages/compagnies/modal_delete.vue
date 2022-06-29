@@ -1,9 +1,9 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modal" @click.stop>                     
-          <p>Etes vous sur de vouloir supprimer définitivement ce fournisseur ??? </p>
+          <p>Etes vous sur de vouloir supprimer définitivement cette compagnie ??? </p>
           <div class="reponse">
-                <div class="yes"  @click="supFournisseur(infos)">
+                <div class="yes"  @click="supCompagnie(infos)">
                     Oui
                 </div>
                 <div class="no" @click="$emit('close-modal')">
@@ -23,29 +23,29 @@
     props: ['infos'],
     data () {
         return {
-            client: "",
+            compagnie: "",
         }
     }, 
     methods: {
-        supFournisseur(infos){
+        supCompagnie(infos){
             console.log(infos);
-            this.$axios.delete('/destroy/fournisseur/' +infos)      
+            this.$axios.delete('/destroy/compagnie/' +infos)      
             .then(response => {console.log(response.data.data);
-                  this.client = response.data.data;
+                  this.compagnie = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               
         },
 
-         refresh(){
-          this.$axios
-        .get('/get/client')
-        .then(response => 
-            {console.log(response);
-            }
-            )
+        refresh(){
+          this.$axios.get('/get/compagnie')
+          .then(response => {console.log(response);})
         }
     },
 
-}
+}    
+        
+            
+            
+        
 </script>
 
 <style scoped>

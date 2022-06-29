@@ -112,23 +112,22 @@ export default {
 
        deleteCategorie(id){
           console.log(id);
-          this.$axios
-          .delete('/delete/categorie/' +id)
-          .then(response => 
-            {console.log(response.data.data);
+          this.$axios.delete('/delete/categorie/' +id)
+          .then(response => {console.log(response.data.data);
             this.refresh()})                 
         },
+          
+            
         
         refresh(){
-          this.$axios
-        .get('/index/categorie')
-        .then(response => 
-            {console.log(response);
+          this.$axios.get('/index/categorie')
+        .then(response =>{console.log(response);
             this.categories = response.data.data.data
-            }
-            )
+            })     
         }
+        
     },
+
     mounted () {
       this.refresh()
     }

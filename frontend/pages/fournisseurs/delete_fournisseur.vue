@@ -60,7 +60,7 @@
                                 <td>{{fournisseur.phone}}</td>
                                 <td>{{fournisseur.email}}</td>
                                 <td><div class="action">
-                                    <div class="sup" @click="showModal = true">Supprimer définitivement</div>
+                                    <div class="sup" @click="supFournisseur(fournisseur.id)">Supprimer définitivement</div>
                                     <div class="restore" @click="restaurerFournisseur(fournisseur.id)">Restaurer ce fournisseur</div></div>
                                 </td>
                             </tr>
@@ -110,14 +110,12 @@ export default {
                 })         
         },
 
-         supFournisseur(id){
-            console.log(id);
-            this.$axios.delete('/destroy/fournisseur/' +id)      
-            .then(response => {console.log(response);
-                    this.fournisseur = response.data.data
-                    
-                })                
-        },
+        supFournisseur(id){
+            console.log(id); 
+            this.showModal = true;
+            this.identifiant= id;              
+        }
+     
     },
   
 }

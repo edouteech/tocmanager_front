@@ -40,6 +40,7 @@
                 name="email"
                 type="email"
                 v-model="form.email"
+                autocomplete="off"
                 required
                 autofocus
                 placeholder="Entrer votre email"
@@ -59,7 +60,7 @@
                 v-model="form.password"
                 name="password"
                 required
-                autocomplete="current-password"
+                autocomplete="off"
               />
             </div>
             <div class="mb-6">
@@ -123,30 +124,30 @@
             email: '',
             password: '',
             phone: '',
-            country: ''
+            country: '',
 
           }
         }
       },
 
-      mounted () {
-      this.refresh()
-      },
+      // mounted () {
+      // this.refresh()
+      // },
             
         methods:{
-            refresh(){
-              var that = this;    
-              this.$axios
-                  .post('/create/profil',{ 
-                    data: this.form })
-                  .then(response => 
-                {console.log(response)
-                  if (response.data.status == "error") {
-                            that.errors = response.data.data
-                        } 
-                });
+            // refresh(){
+            //   var that = this;    
+            //   this.$axios
+            //       .post('/create/profil',{ 
+            //         data: this.form })
+            //       .then(response => 
+            //     {console.log(response)
+            //       if (response.data.status == "error") {
+            //                 that.errors = response.data.data
+            //             } 
+            //     });
                 
-            },
+            // },
            async register(){
             await  this.$axios.post('/create/profil',{
               name: this.form.name,
@@ -154,15 +155,15 @@
               password: this.form.password,
               phone: this.form.phone,
               country: this.form.country
-            }).then(response =>{
-                    this.$router.push({
-                      path:'/login',
-                    })
+            }).then(response =>{console.log(response);
+                    // this.$router.push({
+                    //   name: 'compagnie', params: { name: this.form.id  },
+                    // })
   
                   })
                    .catch( err => console.log( err ) )
                     // console.log('user login')
-                 console.log(this.form.name);this.refresh();
+                 console.log(this.form.id);
             }
         }
     }

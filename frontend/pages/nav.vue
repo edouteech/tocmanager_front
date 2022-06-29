@@ -9,7 +9,7 @@
         <ul class="nav_list">
             <div class="recherche">
               <li>             
-                  <NuxtLink to="">
+                  <NuxtLink to="/date">
                       <i class='bx bx-search'></i>
                       <input type="text" placeholder="Rechercher...">
                   </NuxtLink>
@@ -24,18 +24,10 @@
                 </NuxtLink>
             </li>
             <li>
-                <NuxtLink to="/achats/achat">
+                <NuxtLink to="/achatVente">
                     <div class="rubrique">
                         <i class='bx bx-cart-add'></i>
-                        <span class="links_name">Achats</span>
-                    </div>
-                </NuxtLink>
-            </li>
-            <li>
-                <NuxtLink to="/ventes/vente">
-                    <div class="rubrique">
-                        <i class='bx bxs-log-in-circle' ></i>
-                        <span class="links_name">Ventes</span>
+                        <span class="links_name">Achats & Ventes</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -88,9 +80,17 @@
                 </NuxtLink>
             </li>
             <li>
+                <NuxtLink to="/compagnies/list_compagnie">
+                    <div class="rubrique">
+                        <i class='bx bxs-shopping-bags'></i>
+                        <span class="links_name">Compagnies</span>
+                    </div>
+                </NuxtLink>
+            </li>
+            <li>
                 <NuxtLink to="/profils/profil">
                     <div class="rubrique">
-                        <i class='bx bx-user' ></i>
+                        <i class='bx bxs-group'></i>
                         <span class="links_name">Utilisateurs</span>
                     </div>
                 </NuxtLink>

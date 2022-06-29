@@ -64,7 +64,7 @@
                                 <td>{{user.email}}</td>
                                  <td>{{user.country}}</td>
                                 <td><div class="action">
-                                    <div class="sup" @click="showModal = true">Supprimer définitivement</div>
+                                    <div class="sup" @click="supProfil(user.id)">Supprimer définitivement</div>
                                     <div class="restore" @click="restaurerUser(user.id)">Restaurer cet utilisateur</div></div>
                                 </td>
                             </tr>
@@ -114,13 +114,10 @@ export default {
                 })         
         },
 
-         supUser(id){
-            console.log(id);
-            this.$axios.delete('/destroy/profil/' +id)      
-            .then(response => {console.log(response);
-                    this.user = response.data.data
-                    
-                })                
+        supClient(id){
+            console.log(id); 
+            this.showModal = true;
+            this.identifiant= id;                
         },
     },
   

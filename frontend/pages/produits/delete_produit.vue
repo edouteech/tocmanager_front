@@ -76,7 +76,7 @@
                                 <td>{{produit.stock_min}}</td>
                                 <td>{{produit.stock_max}}</td>                           
                                 <td><div class="action">
-                                    <div class="sup" @click="showModal = true">Supprimer définitivement</div>
+                                    <div class="sup" @click="supProduit(produit.id)">Supprimer définitivement</div>
                                     <div class="restore" @click="restaurerProduit(produit.id)">Restaurer ce produit</div></div>
                                 </td>
                             </tr>
@@ -126,13 +126,10 @@ export default {
                 })         
         },
 
-         supProduit(id){
-            console.log(id);
-            this.$axios.delete('/destroy/product/' +id)      
-            .then(response => {console.log(response);
-                    this.produit = response.data.data
-                    
-                })                
+        supProduit(id){
+             console.log(id); 
+            this.showModal = true;
+            this.identifiant= id;               
         },
     },
   

@@ -52,7 +52,7 @@
 
                                 <td>{{categorie.name}}</td>
                                 <td><div class="action">
-                                    <div class="sup" @click="showModal = true">Supprimer définitivement</div>
+                                    <div class="sup" @click="supCategorie(client.id)">Supprimer définitivement</div>
                                     <div class="restore" @click="restaurerCategorie(categorie.id)">Restaurer cette categorie</div></div>
                                 </td>
                             </tr>
@@ -102,13 +102,10 @@ export default {
                 })         
         },
 
-         supCategorie(id){
-            console.log(id);
-            this.$axios.delete('/destroy/categorie/' +id)      
-            .then(response => {console.log(response);
-                    this.categorie = response.data.data
-                    
-                })                
+        supCategorie(id){
+            console.log(id); 
+            this.showModal = true;
+            this.identifiant= id;         
         },
     },
   

@@ -5,7 +5,7 @@
  
     <div class="zone">
         <div class="titre">
-            Clients supprimés
+            Compagnies supprimées
         </div>
          <!-- début du new table -->
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -47,7 +47,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr  v-for="(client, i) in clients" :key="i"
+                            <tr  v-for="(compagnie, i) in compagnies" :key="i"
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="w-4 p-4">
                                     <div class="flex items-center">
@@ -56,12 +56,12 @@
                                     </div>
                                 </td>
 
-                                <td>{{client.name}}</td>
-                                <td>{{client.phone}}</td>
-                                <td>{{client.email}}</td>
+                                <td>{{compagnie.name}}</td>
+                                <td>{{compagnie.phone}}</td>
+                                <td>{{compagnie.email}}</td>
                                 <td><div class="action">
-                                    <div class="sup" @click="supClient(client.id)">Supprimer définitivement</div>
-                                    <div class="restore" @click="restaurerClient(client.id)">Restaurer ce client</div></div>
+                                    <div class="sup" @click="supCompagnie(compagnie.id)">Supprimer définitivement</div>
+                                    <div class="restore" @click="restaurerCompagnie(compagnie.id)">Restaurer cette compagnie</div></div>
                                 </td>
                             </tr>
                             
@@ -88,37 +88,33 @@ export default {
     data () {
         return {
             showModal: false,
-            client: "",
+            compagnie: "",
             identifiant : "0",
-            clients: [],
+            compagnies: [],
         }
     },   
 
     mounted () {
-         this.$axios.get('/get/client')        
+         this.$axios.get('/get/compagnie')        
         .then(response => {console.log(response);
-            this.clients = response.data.data })        
+            this.compagnies = response.data.data })        
     },
 
     methods: {
-        restaurerClient(id){
+        restaurerCompagnie(id){
             console.log(id);
-            this.$axios.get('/restore/client/' +id)         
+            this.$axios.get('/restore/compagnie/' +id)         
             .then(response => {console.log(response);
-                this.client = response.data.data
-                this.$router.push({path:'/clients/list_client',})
+                this.compagnie = response.data.data
+                this.$router.push({path:'/compagnies/list_compagnie',})
                 })         
         },
 
-        supClient(id){
+        supCompagnie(id){
             console.log(id); 
             this.showModal = true;
             this.identifiant= id;
-            // this.$axios.delete('/destroy/client/' +id)      
-            // .then(response => {console.log(response);
-            //         this.client = response.data.data
-                    
-            //     })                
+             
         },
     },
   
