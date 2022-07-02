@@ -1,261 +1,318 @@
 <template>
 <div class="contain">
-     <SideBar/>
+    <SideBar/>
 
- 
-  <div class="zone">
-    <div class="titre">
-      Tableau de Bord
-    </div>
+      <div class="zone">
+          <div class="titre">
+            Tableau de Bord 
+          </div>
+          <form action="action=" method="POST">
+          <div class="range">
+              <span class="du"> Du : </span><input class="debut" type="date"  v-model="form.date_debut"  required />      
+              <span class="du">Au :</span> <input  class="fin" type="date"  v-model="form.date_fin"  required />   
+              <div class="visualiser" @click="Visualiser()">Visualiser</div>               
+          
+          </div>
+          </form>
+<p id="p1"></p><p id="p2"></p>
+          <div class="carreaux">
+                  <div class="carre">
+                      <div class="icon">
+                        <i class='bx bx-money-withdraw' ></i>
+                        <span class="percent">15%</span>
+                      </div>
+                      <div class="design">
+                        <p>1 850 000 F CFA</p>
+                        Chiffre d'affaire
+                      </div>
+                  </div>
 
-    <div class="carreaux">
-            <div class="carre">
-                <div class="icon">
-                  <i class='bx bx-money-withdraw' ></i>
-                  <span class="percent">15%</span>
-                </div>
-                <div class="design">
-                  <p>1 850 000 F CFA</p>
-                  Chiffre d'affaire
-                </div>
-            </div>
+                  <div class="carre">
+                      <div class="icon">
+                        <i class='bx bx-money-withdraw' ></i>
+                        <span class="percent">15%</span>
+                      </div>
+                      <div class="design">
+                        <p>3 500 000 F CFA</p>
+                        Bénéfices
+                      </div>
+                  </div>
 
-            <div class="carre">
-                <div class="icon">
-                  <i class='bx bx-money-withdraw' ></i>
-                  <span class="percent">15%</span>
-                </div>
-                <div class="design">
-                  <p>3 500 000 F CFA</p>
-                  Bénéfices
-                </div>
-            </div>
+                  <div class="carre">
+                      <div class="icon">
+                        <i class='bx bx-money-withdraw' ></i>
+                        <span class="percent">15%</span>
+                      </div>
+                      <div class="design">
+                        <p>1 400 000 F CFA</p>
+                        Encaissements
+                      </div>
+                  </div>
 
-            <div class="carre">
-                <div class="icon">
-                  <i class='bx bx-money-withdraw' ></i>
-                  <span class="percent">15%</span>
-                </div>
-                <div class="design">
-                  <p>1 400 000 F CFA</p>
-                  Encaissements
-                </div>
-            </div>
+                  <div class="carre">
+                      <div class="icon">
+                        <i class='bx bx-money-withdraw' ></i>
+                        <span class="percent">15%</span>
+                      </div>
+                      <div class="design">
+                        <p>20 000 F CFA</p>
+                        Décaissements
+                      </div>
+                  </div>
+          </div><hr>
 
-            <div class="carre">
-                <div class="icon">
-                  <i class='bx bx-money-withdraw' ></i>
-                  <span class="percent">15%</span>
-                </div>
-                <div class="design">
-                  <p>20 000 F CFA</p>
-                  Décaissements
-                </div>
-            </div>
-    </div><hr>
+          <div class="produits">
+              <div class="vendu">
+                  Produits les plus vendus
+                  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      
+                      <tr>
+                        <th scope="col" class="px-6 py-3">
+                          Noms
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                          Pourcentages
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td>Coca cola</td>
+                        <td>80 %</td>
 
-    <div class="produits">
-      <div class="vendu">
-          Produits les plus vendus
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              
-              <tr>
-                <th scope="col" class="px-6 py-3">
-                  Noms
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Pourcentages
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td>Coca cola</td>
-                <td>80 %</td>
+                      </tr>
+                      <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td>Coca cola</td>
+                        <td>80 %</td>
 
-              </tr>
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td>Coca cola</td>
-                <td>80 %</td>
+                      </tr>
+                      
+                      <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td>Coca cola</td>
+                        <td>80 %</td>
 
-              </tr>
-              
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td>Coca cola</td>
-                <td>80 %</td>
+                      </tr>
+                      
+                      <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+                        <td>Coca cola</td>
+                        <td>80 %</td>
 
-              </tr>
-              
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                <td>Coca cola</td>
-                <td>80 %</td>
+                      </tr>
+                      
+                      <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+                        <td>Coca cola</td>
+                        <td>80 %</td>
 
-              </tr>
-              
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                <td>Coca cola</td>
-                <td>80 %</td>
+                      </tr>
 
-              </tr>
+                      
+                      
+                      
+                    </tbody>
+                  </table>
+              </div>
 
-              
-              
-              
-            </tbody>
-          </table>
-      </div>
-      <div class="dernier">
-         Derniers produits vendus
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              
-              <tr>
-                <th scope="col" class="px-6 py-3">
-                 
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Noms
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Prix
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Dates
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                <td></td>
-                <td>Paracétamol</td>
-                <td>6820</td>
-                <td>25 / 05 / 2022 </td>
-              </tr>
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td></td>
-                <td>Paracétamol</td>
-                <td>6820</td>
-                <td>25 / 05 / 2022 </td>
-              </tr>
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td></td>
-                <td>Paracétamol</td>
-                <td>6820</td>
-                <td>25 / 05 / 2022 </td>
-              </tr>
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                <td></td>
-                <td>Paracétamol</td>
-                <td>6820</td>
-                <td>25 / 05 / 2022 </td>
-              </tr>
-              <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                <td></td>
-                <td>Paracétamol</td>
-                <td>6820</td>
-                <td>25 / 05 / 2022 </td>
-              </tr>
-              
-            </tbody>
-          </table>
-      </div>
-    </div>
-      <div class="produits">
-        <div class="bar">
-            Volume des ventes 
-          <Bar
-            :chart-options="chartOptions"
-            :chart-data="chartData"
-            :chart-id="chartId"
-            :dataset-id-key="datasetIdKey"
-            :plugins="plugins"
-            :css-classes="cssClasses"
-            :styles="styles"
-            :width="width"
-            :height="height"
-          />
-        </div>
-        <div class="dette">
-            Dettes sur une période
+              <div class="dernier">
+                Derniers produits vendus
+                  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      
+                      <tr>
+                        <th scope="col" class="px-6 py-3">
+                        
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                          Noms
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                          Prix
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                          Dates
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+                        <td></td>
+                        <td>Paracétamol</td>
+                        <td>6820</td>
+                        <td>25 / 05 / 2022 </td>
+                      </tr>
+                      <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td></td>
+                        <td>Paracétamol</td>
+                        <td>6820</td>
+                        <td>25 / 05 / 2022 </td>
+                      </tr>
+                      <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td></td>
+                        <td>Paracétamol</td>
+                        <td>6820</td>
+                        <td>25 / 05 / 2022 </td>
+                      </tr>
+                      <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+                        <td></td>
+                        <td>Paracétamol</td>
+                        <td>6820</td>
+                        <td>25 / 05 / 2022 </td>
+                      </tr>
+                      <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+                        <td></td>
+                        <td>Paracétamol</td>
+                        <td>6820</td>
+                        <td>25 / 05 / 2022 </td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+              </div>
 
+              <div class="bar">
+                  Volume des ventes 
+                  <canvas id="myChart" width="400" height="300"></canvas>
+              </div>
 
-        </div>
-      </div>  
-    </div>
-
+          </div><hr>
+            
+          <div class="courbes">
+              <div class="courbe_vente">
+                Courbe des Ventes
+                <canvas id="myChartVente" width="500" height="350"></canvas>
+              </div>
+              <div class="courbe_achat">
+                Courbe des Achats
+                <canvas id="myChartAchat" width="500" height="350"></canvas>
+              </div>
+          </div>  
+      
+      </div> 
 </div>
 </template>
 
 <script>
-import { Bar } from 'vue-chartjs/legacy'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 import SideBar from './nav.vue'
-export default {
+import Chart from 'chart.js/auto';
+export default {   
+  
   components: {
     SideBar,
-    Bar,   
+    
   },
-  props: {
-    chartId: {
-      type: String,
-      default: 'bar-chart'
-    },
-    datasetIdKey: {
-      type: String,
-      default: 'label'
-    },
-    width: {
-      type: Number,
-      default: 400
-    },
-    height: {
-      type: Number,
-      default: 400
-    },
-    cssClasses: {
-      default: '',
-      type: String
-    },
-    styles: {
-      type: Object,
-      default: () => {}
-    },
-    plugins: {
-      type: Object,
-      default: () => {}
-    }
-  },
-  data() {
-    return {
-      chartData: {
-        labels: [ 'January', 'February', 'March' ],
-        datasets: [ { data: [40, 20, 12] } ]
-      },
-      chartOptions: {
-        responsive: true
+  data (){
+    return{
+      infos:'',
+      form:{
+        date_debut: '',
+        date_fin: ''
       }
     }
+      
   },
+
     middleware:'auth',
     // auth: false,
+ 
+    mounted(){      
+      let date1 = Date();
+      let date2 = Date.now();
+      date1 = document.getElementById('p1').innerHTML
+      date2 = document.getElementById('p2').innerHTML
+        const ctx = document.getElementById('myChart');
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+              datasets: [{
+                  label: '# ventes',
+                  data: [12, 19, 3, 5, 2, 3],
+                  backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                  borderColor:'rgba(153, 102, 255, 1)',
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+        });
+        myChart;
+        const ctz = document.getElementById('myChartVente');
+        const myChartVente = new Chart(ctz, {
+          type: 'line',
+          data: {
+              labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+              datasets: [{
+                  label: '# ventes',
+                  data: [12, 19, 3, 5, 2, 3],
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  borderColor:'rgba(255, 99, 132, 1)',
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+        });
+        myChartAchat;
+        const cty = document.getElementById('myChartAchat');
+        const myChartAchat = new Chart(cty, {
+          type: 'line',
+          data: {
+              labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+              datasets: [{
+                  label: '# achats',
+                  data: [12, 19, 3, 5, 2, 3],
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  borderColor:'rgba(54, 162, 235, 1)',
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+        });
+        myChartAchat;
+
+
+      // console.log(this.$auth);
+      // console.log(this.$auth.$storage.getUniversal('company_id'));
+    },
 
     methods:{
         async logout(){
             this.$auth.logout();
             this.$router.push('/login');
+        },
+        
+        Visualiser(){
+          this.$axios.post('/tableau/de/bord',{
+              date_debut: this.form.date_debut,
+              date_fin: this.form.date_fin
+          }).then(response => {console.log(response);
+          this.infos  = response.data.data.data})
         }
         
     },
@@ -263,7 +320,45 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.range{
+  display: flex;
+  border: 3px solid rgb(62, 118, 237);
+  border-radius: 10px;
+  padding: 1% 10%;
+  letter-spacing: 2px;
+  margin-bottom: 5%;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.range .debut{
+  margin-right: 10%;
+  margin-left: 3%;
+}
+
+.range .fin{
+  margin-left: 3%;
+  margin-right: 10%;
+}
+
+.range .du{
+  padding-top: 7px;
+}
+
+.range .visualiser{
+  border: 2px dotted blue;
+  padding: 5px 8px;
+  cursor: pointer;
+  font-weight: normal;
+  border-radius: 20px;
+  font-size: 15px;
+}
+
+.range .visualiser:hover{
+  background-color: rgb(129, 192, 246);
+}
+
 .carreaux{
     display: flex;
 }
@@ -283,7 +378,7 @@ export default {
 .carre .icon{
     display: flex;    
 }
-.bx{
+.carreaux .carre .icon .bx {
   font-size: 25px;
   margin-top: 5%;
   margin-left: 6%;
@@ -301,7 +396,7 @@ export default {
 
 .carre .design{
   margin-left: 5%;
-  padding-top: 23%;
+  padding-top: 20%;
   font-size: 15px;
 }
 
@@ -316,15 +411,27 @@ export default {
   text-align: center;
 }
 
-.vendu{
+.courbes{
+  display: flex;
+  padding: 5% 2%;
+  text-align: center;
+}
+
+.courbe_vente{
   margin-right: 10%;
 }
+
+.dernier{
+  margin-left: 3%;
+  margin-right: 4%;
+}
+
 
 table{
 margin-top: 3%;
 }
 th, td{
-    padding: 15px 40px;
+    padding: 15px 20px;
     text-align: center;
 
 }
@@ -347,7 +454,7 @@ thead tr{
 
 .titre{
   border: 1px solid #202020;
-  padding: 3%;
+  padding: 3% 10%;
   margin-bottom: 3%;
   margin-left: -5%;
   background-color: #202020;

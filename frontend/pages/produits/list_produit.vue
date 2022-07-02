@@ -51,7 +51,7 @@
 <script>
 import SideBar from '../nav.vue'
 export default {
-  // auth: true,
+  auth: true,
   components: {
     SideBar,  
   },
@@ -60,6 +60,7 @@ export default {
     return {
       produits: [],
       produit: "",
+      compagnie_id: ""
     }
   },
 
@@ -72,18 +73,23 @@ export default {
           console.log(id);
           this.$axios.delete('/delete/product/' +id)
           .then(response => 
-            {console.log(response.data.data);
-            this.refresh()
-                })         
+            {
+              console.log(response.data.data);
+              this.refresh()
+            }
+          )         
         },
 
         refresh(){
-          this.$axios.get('/index/product')     
+          this.$axios.post('/index/product',{
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          })     
           .then(response => 
-            {console.log(response);
-            this.produits = response.data.data.data
+            {
+              console.log(response);
+              this.produits = response.data.data.data
             }
-            )
+          )
         }
 
     },

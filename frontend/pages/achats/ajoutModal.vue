@@ -2,32 +2,32 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modal" @click.stop>                     
             <form action="" method="POST"> 
-                        <h4>Ajout de client</h4>
+                        <h4>Ajout de fournisseur</h4>
 
                 <div class="input-form">					
-                    <input type="text" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" required>
+                    <input type="text" placeholder="Entrer le nom du fournisseur " v-model="form.name" autocomplete="off" required>
                     <span class="error">{{error_champ.name}}</span>
                 </div>     
                 <div class="input-form">        
-                    <input type="tel" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" required>
+                    <input type="tel" placeholder="Entrer le numero de téléphone du fournisseur " v-model="form.phone" required>
                     <span class="error">{{error_champ.phone}}</span>
                 </div>
             
                 <div class="input-form">    
-                    <input type="email" placeholder="Entrer l'email du client " v-model="form.email" autocomplete="off" required>
+                    <input type="email" placeholder="Entrer l'email du fournisseur " v-model="form.email" autocomplete="off" required>
                     <span class="error">{{error_champ.email}}</span>
                 </div>
                 <div class="input-form"> 
                    <select v-model="form.nature" required>
-                        <option disabled value="">Choisissez la nature du client</option>
+                        <option disabled value="">Choisissez la nature du fournisseur</option>
                         <option value="0">Particulier</option>
                         <option value="1">Entreprise</option>
                     </select>
-                    <!-- <input type="number" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required> -->
+                    <!-- <input type="number" placeholder="Entrer la nature du fournisseur " v-model="form.nature" autocomplete="off" required> -->
                     <span class="error">{{error_champ.nature}}</span>
                 </div>
                 <div class="submit-form">
-                    <input type="submit" id='submit' @click.stop="submit()" value="Enregistrer le client" name="submit">				          
+                    <input type="submit" id='submit' @click.stop="submit()" value="Enregistrer le fournisseur" name="submit">				          
                 </div>
             </form>
     </div>
@@ -46,7 +46,8 @@
             name: '',
             email: '',
             phone: '',
-            nature:''
+            nature:'', 
+            compagnie_id: ''
         },
         error_message: "",
         error_champ: [],
@@ -55,15 +56,16 @@
     
     methods: {
         async submit(){
-            await  this.$axios.post('/create/client',{
+            await  this.$axios.post('/create/fournisseur',{
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
-              nature: this.form.nature
+              nature: this.form.nature,
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
             // .then(response =>{console.log(response) 
             //         this.$router.push({ 
-            //           path:'/clients/list_client',
+            //           path:'/fournisseurs/list_fournisseur',
             //         })})
   
             .catch( error => console.log( error ) )

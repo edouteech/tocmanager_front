@@ -5,18 +5,21 @@
         <div class="titre">
             Achats & Ventes
         </div>
-        <div class="case1">
+        
             <NuxtLink to="/achats/achat">  
-                <i class='bx bx-cart-add'></i><br><br>        
-                Effectuer un achat                 
+                <div class="case1">
+                    <i class='bx bx-cart-add'></i><br><br>        
+                    Effectuer un achat   
+                </div>              
             </NuxtLink>
-        </div><hr>
-        <div class="case2">
+                <hr>      
             <NuxtLink to="/ventes/vente"> 
-                <i class='bx bx-export'></i><br><br>   
-                Effectuer une vente
+                <div class="case2">
+                    <i class='bx bx-export'></i><br><br>   
+                    Effectuer une vente
+                </div>
             </NuxtLink>
-    </div>
+
     
   </div>
  

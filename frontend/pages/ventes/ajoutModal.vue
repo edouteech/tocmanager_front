@@ -2,7 +2,7 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modal" @click.stop>                     
             <form action="" method="POST"> 
-                        <h4>Ajout de client</h4>
+                        <h4>Ajout de client </h4>
 
                 <div class="input-form">					
                     <input type="text" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" required>
@@ -39,6 +39,7 @@
 
 <script>
   export default {
+    auth:true,
     name: 'ajoutModal',
     data () {
     return{
@@ -46,7 +47,8 @@
             name: '',
             email: '',
             phone: '',
-            nature:''
+            nature:'', 
+            compagnie_id: ''
         },
         error_message: "",
         error_champ: [],
@@ -59,7 +61,8 @@
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
-              nature: this.form.nature
+              nature: this.form.nature,
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
             // .then(response =>{console.log(response) 
             //         this.$router.push({ 

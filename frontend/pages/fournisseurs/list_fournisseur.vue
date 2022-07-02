@@ -44,6 +44,7 @@
 <script>
 import SideBar from '../nav.vue'
 export default {
+  auth: true,
   components: {
     SideBar,  
   },
@@ -52,6 +53,7 @@ export default {
     return {
       fournisseurs: [],
       fournisseur: "",
+      compagnie_id: ''
     }
   },
   mounted () {
@@ -68,7 +70,9 @@ export default {
         },
          
         refresh(){
-          this.$axios.get('/index/fournisseur')
+          this.$axios.post('/index/fournisseur',{
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          })
           .then(response => 
         
             {console.log(response);

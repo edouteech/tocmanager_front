@@ -9,7 +9,7 @@
         <ul class="nav_list">
             <div class="recherche">
               <li>             
-                  <NuxtLink to="/date">
+                  <NuxtLink to="">
                       <i class='bx bx-search'></i>
                       <input type="text" placeholder="Rechercher...">
                   </NuxtLink>
@@ -160,7 +160,7 @@ export default {
    margin-bottom: 3%;
     }
 .header{
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       height: 100%;
@@ -333,5 +333,23 @@ export default {
     width:100%;
     transition:800ms ease all;
   }
+
+@media screen and (max-width: 1270px) {
+
+            .header{
+                width: 90px;
+
+            }
+
+
+            .recherche input,
+            .bas-page .custom-btn,
+            .bas-page img,
+            .rubrique .links_name{
+                display: none;
+            }
+
+         
+}
 
 </style>

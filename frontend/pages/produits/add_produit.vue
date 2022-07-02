@@ -58,6 +58,7 @@
 <script>
 import SideBar from '../nav.vue'
 export default {
+    auth: true,
     components: {
         SideBar,
         
@@ -74,7 +75,8 @@ export default {
                 price_sell:'',
                 price_buy:'',
                 stock_min:'',
-                stock_max:''
+                stock_max:'',
+                compagnie_id:''
             },
             error_message: "",
             error_champ: [],
@@ -94,14 +96,17 @@ export default {
               price_sell: this.form.price_sell,
               price_buy: this.form.price_buy,
               stock_min: this.form.stock_min,
-              stock_max: this.form.stock_max
+              stock_max: this.form.stock_max,
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{this.$router.push({path:'/produits/list_produit', })
                  }).catch( error => console.log( error ) )
               
         },
 
         refresh(){
-          this.$axios.get('/index/categorie').then(response =>
+          this.$axios.post('/index/categorie', {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }).then(response =>
             {console.log(response); this.categories = response.data.data.data })
         },
 

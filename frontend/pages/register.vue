@@ -117,6 +117,7 @@
       components: {index},
       data: function(){
         return{
+          user:'',
           errors: [],
           error: '',
           form:{
@@ -155,15 +156,16 @@
               password: this.form.password,
               phone: this.form.phone,
               country: this.form.country
-            }).then(response =>{console.log(response);
-                    // this.$router.push({
-                    //   name: 'compagnie', params: { name: this.form.id  },
-                    // })
+            }).then(response =>{console.log(response.data.data.original);
+                this.user = response.data.data.original.user_id;
+                // console.log(this.user) 
+                    this.$router.push({
+                      name: 'compagnie', params: { id: this.user  },
+                    })
   
                   })
                    .catch( err => console.log( err ) )
                     // console.log('user login')
-                 console.log(this.form.id);
             }
         }
     }

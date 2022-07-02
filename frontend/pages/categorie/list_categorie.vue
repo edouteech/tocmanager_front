@@ -94,12 +94,14 @@
 <script>
 import SideBar from '../nav.vue'
 export default {
+    auth: true,
     components: {
       SideBar,  
     },
 
     data () {
       return {
+        compagnie_id: ''  ,
         categories: [],
         categorie: "",
       }
@@ -115,13 +117,12 @@ export default {
           this.$axios.delete('/delete/categorie/' +id)
           .then(response => {console.log(response.data.data);
             this.refresh()})                 
-        },
-          
-            
+        },      
         
         refresh(){
-          this.$axios.get('/index/categorie')
-        .then(response =>{console.log(response);
+          this.$axios.post('/index/categorie',{
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')})        
+        .then(response =>{console.log(response.data.data.data);
             this.categories = response.data.data.data
             })     
         }

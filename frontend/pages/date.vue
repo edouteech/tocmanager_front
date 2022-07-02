@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 <div date-rangepicker class="flex items-center">
   <div class="relative">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -18,4 +18,32 @@
 
 <script>
 
+</script> -->
+
+<!-- 
+<template>
+
+<div>
+  <date-picker v-model="range" lang="fr" type="date" format="YYYY-MM-DD" width="500"></date-picker>
+</div>
+</template>
+
+<script>
+    import DatePicker from 'vue2-datepicker'
+export default {
+    name: 'Picker',
+    components: {
+        DatePicker
+    }, 
+    data() {
+        return{
+            range: ''
+        }
+    }
+
+};
 </script>
+
+<style>
+
+</style> -->

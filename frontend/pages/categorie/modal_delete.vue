@@ -19,6 +19,7 @@
 
 <script>
   export default {
+    auth: true,
     name: 'deleteModal',
     props: ['infos'],
     data () {

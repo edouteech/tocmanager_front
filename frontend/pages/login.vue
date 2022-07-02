@@ -78,37 +78,30 @@ export default {
 
 
   methods: {
-    refresh(){
-      var that = this;    
-       this.$axios
-          .post('/authentifier',{ data: this.form })
-          .then(response => 
-        {console.log(response.data.message)
-           if (response.data.status == "error") {
-                    that.error = response.data.message
-                } 
-        });
+        refresh(){
+          var that = this;    
+          this.$axios.post('/authentifier',{ data: this.form })         
+              .then(response => {
+                console.log(response.data.message)
+                  if (response.data.status == "error") {
+                        that.error = response.data.message
+                  } 
+              });        
+        },
+
+        async login() {
+            try {
+              let response = await this.$auth.loginWith('local', { data: this.form })
+              this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
+              this.$auth.setUserToken(response.data.data.original.access_token)
+              .then(response =>{this.$router.push( '/dashboard',)})
+              console.log(this.$auth);
+            } catch (err) {
+              console.log(err);
+              this.refresh();
+            }
+        }                        
         
-    },
-    async login() {
-      try {
-        console.log(this.$auth);
-        console.log('--------------------------uhukh-------------------------------');
-        let response = await this.$auth.loginWith('local', { data: this.form })
-        this.$auth.setUserToken(response.data.data.original.access_token)
-        .then(response =>{
-                    this.$router.push(
-                     '/dashboard',
-                    )
-  
-                  })
-                    
-        // console.log(response.data.data.original.access_token);
-        console.log(this.$auth);
-      } catch (err) {
-        console.log(err);this.refresh();
-      }
-    }
   }
 }
 </script>

@@ -37,6 +37,7 @@
 <script>
 import SideBar from '../nav.vue'
 export default {
+    auth:true,
     components: {
         SideBar,  
     },
@@ -49,7 +50,8 @@ export default {
                 name: '',
                 email: '',
                 phone: '',
-                nature:''
+                nature:'',
+                compagnie_id: '',
             },
             error_message: "",
             error_champ: [],
@@ -64,6 +66,7 @@ export default {
             this.form.phone = client.phone,
             this.form.email = client.email,
             this.form.nature = client.nature
+            
           }      
         )
             
@@ -77,7 +80,9 @@ export default {
             name: this.form.name,
             email: this.form.email,
             phone: this.form.phone,
-            nature: this.form.nature
+            nature: this.form.nature,
+           compagnie_id: this.$auth.$storage.getUniversal('company_id')
+
             })
             .then(response =>{
                 this.$router.push({

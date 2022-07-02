@@ -79,6 +79,7 @@ import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
 import SideBar from '../nav.vue'
 export default {
+    auth:true,
     components: {
         SideBar, 
         ajoutModal, 
@@ -133,12 +134,16 @@ export default {
         },
 
         refresh(){
-            this.$axios.get('/index/client').then(response => {console.log(response);
+            this.$axios.post('/index/client',{
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }).then(response => {console.log(response);
             this.clients = response.data.data.data})
         },
 
         recupProduct(){
-            this.$axios.get('/index/product').then(response => {console.log(response.data.data.data);
+            this.$axios.post('/index/product',{
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }).then(response => {console.log(response.data.data.data);
             this.produits = response.data.data.data}) 
         },
 

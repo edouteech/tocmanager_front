@@ -26,17 +26,19 @@
 <script>
 import SideBar from '../nav.vue'
 export default {
+    auth: true,
     components: {
       SideBar,  
     },
 
     data () {
-        return{
+        return{         
             categorie: "",
             categories: [],
             form: {
                 id: '',
-                name: '',             
+                name: '',   
+                compagnie_id:'',          
             },
             error_message: "",
             error_champ: [],
@@ -57,7 +59,8 @@ export default {
       submit(){          
           this.$axios.put('/update/categorie', {
             id: this.$route.params.id,            
-            name: this.form.name,       
+            name: this.form.name, 
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')      
           }).then(response =>{this.$router.push({ path:'/categorie/list_categorie',})})
 
       }

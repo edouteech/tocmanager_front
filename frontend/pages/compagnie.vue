@@ -96,7 +96,7 @@
             }
         },    
         mounted(){
-            console.log(this.$route.params.name)
+            console.log(this.$route.params.id)
             // this.$axios.get('/index/profil').then(response => {console.log(response);})
         }  ,
 
@@ -106,9 +106,10 @@
                     name: this.form.name,
                     email: this.form.email,
                     phone: this.form.phone,
-                    // user_id: 
+                    user_id: this.$route.params.id
                 }).then(response => {console.log(response);
-                   this.$router.push({path:'/login',})
+                   this.$router.push({path:'/login',});
+
                     }).catch( error => console.log( error ) )
                         console.log(this.form.name)                
             },

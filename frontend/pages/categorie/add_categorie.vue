@@ -32,7 +32,7 @@
 <script>
 import SideBar from '../nav.vue'
 export default {
-    auth: false,
+    auth: true,
     components: {
         SideBar,
         
@@ -41,7 +41,7 @@ export default {
         return{
             form: {
                 name: '',
-                
+                compagnie_id: ''               
             },
             error_message: "",
             error_champ: [],
@@ -49,7 +49,10 @@ export default {
     },
     methods: {
         async submit(){
-            await  this.$axios.post('/create/categorie',{name: this.form.name})   
+            await  this.$axios.post('/create/categorie',{
+                name: this.form.name,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            })   
             .then(response =>{ this.$router.push({ path:'/categorie/list_categorie', })})
             .catch( error => console.log( error ) )      
                  console.log(this.form.name)                

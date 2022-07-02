@@ -47,6 +47,7 @@
 <script>
 import SideBar from '../nav.vue'
 export default {
+    auth:true,
     components: {
         SideBar,
         
@@ -57,22 +58,27 @@ export default {
                 name: '',
                 email: '',
                 phone: '',
-                nature:''
+                nature:'',
+                compagnie_id: ''
             },
             error_message: "",
             error_champ: [],
         }
     },
+
     methods: {
         async submit(){
             await  this.$axios.post('/create/client',{
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
-              nature: this.form.nature
-            }).then(response =>{ this.$router.push({path:'/clients/list_client',})
-                }).catch( error => console.log( error ) )
-                 console.log(this.form.name)                
+              nature: this.form.nature,
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }).then(response =>{ 
+                console.log( response ) 
+                this.$router.push({path:'/clients/list_client',})})
+            .catch( error => console.log( error ) )
+                //  console.log(this.form.name)                
         },
 
     },

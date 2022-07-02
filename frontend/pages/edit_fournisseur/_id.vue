@@ -39,55 +39,59 @@
 <script>
 import SideBar from '../nav.vue'
 export default {
-  components: {
-    SideBar,  
-  },
-  data () {
-        return{
-            fournisseur: "",
-            fournisseurs: [],
-            form: {
-                id: '',
-                name: '',
-                email: '',
-                phone: '',
-                nature:''
-            },
-            error_message: "",
-            error_champ: [],
+    auth: true,
+    components: {
+        SideBar,  
+    },
+    data () {
+            return{
+                fournisseur: "",
+                fournisseurs: [],
+                form: {
+                    id: '',
+                    name: '',
+                    email: '',
+                    phone: '',
+                    nature:'', 
+                    compagnie_id: ''
+                },
+                error_message: "",
+                error_champ: [],
+            }
+    },
+    mounted() {
+        this.$axios
+            .get('/index/fournisseur/'+ this.$route.params.id)
+            .then(response => 
+        {console.log(response.data.data )
+        // this.fournisseurs = response.data.data
+        let fournisseur = response.data.data[0];
+            this.form.name = fournisseur.name,
+            this.form.phone = fournisseur.phone,
+            this.form.email = fournisseur.email,
+            this.form.nature = fournisseur.nature
         }
-  },
-  mounted() {
-      this.$axios
-        .get('/index/fournisseur/'+ this.$route.params.id)
-        .then(response => 
-      {console.log(response.data.data )
-      // this.fournisseurs = response.data.data
-      let fournisseur = response.data.data[0];
-         this.form.name = fournisseur.name,
-         this.form.phone = fournisseur.phone,
-         this.form.email = fournisseur.email,
-         this.form.nature = fournisseur.nature
-      }
-      )
-          
-  },
+        )
+            
+    },
 
-  methods: {
-    submit(){          
-            this.$axios.put('/update/fournisseur', {
-            id: this.$route.params.id,
-            name: this.form.name,
-            email: this.form.email,
-            phone: this.form.phone,
-            nature: this.form.nature
-            }).then(response =>{
-                this.$router.push({
-                  path:'/fournisseurs/list_fournisseur',})
-            })  
+    methods: {
+        submit(){          
+                this.$axios.put('/update/fournisseur', {
+                id: this.$route.params.id,
+                name: this.form.name,
+                email: this.form.email,
+                phone: this.form.phone,
+                nature: this.form.nature,
+                nature: this.form.nature,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                }).then(response =>{
+                    this.$router.push({
+                    path:'/fournisseurs/list_fournisseur',})
+                })  
+        }
     }
-  }
-   
+    
 }
 </script>
 
