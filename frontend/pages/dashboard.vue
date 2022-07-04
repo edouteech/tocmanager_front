@@ -14,7 +14,7 @@
           
           </div>
           </form>
-<p id="p1"></p><p id="p2"></p>
+
           <div class="carreaux">
                   <div class="carre">
                       <div class="icon">
@@ -22,7 +22,7 @@
                         <span class="percent">15%</span>
                       </div>
                       <div class="design">
-                        <p>1 850 000 F CFA</p>
+                        <p>{{chiffre_affaire}} F CFA</p>
                         Chiffre d'affaire
                       </div>
                   </div>
@@ -119,7 +119,7 @@
               </div>
 
               <div class="dernier">
-                Derniers produits vendus
+                Dernières ventes éffectuées
                   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                       
@@ -138,43 +138,15 @@
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                        <td></td>
-                        <td>Paracétamol</td>
-                        <td>6820</td>
-                        <td>25 / 05 / 2022 </td>
-                      </tr>
+                    <tbody v-for="(dernieres_ventes1, i) in dernieres_ventes" :key="i">
                       <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td></td>
-                        <td>Paracétamol</td>
-                        <td>6820</td>
-                        <td>25 / 05 / 2022 </td>
+                        <td>{{dernieres_ventes1.client_id}}</td>
+                        <td>{{dernieres_ventes1.amount}}</td>
+                        <td>{{moment(dernieres_ventes1.date_sell).utc().format('DD MM YYYY')}}</td>
                       </tr>
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td></td>
-                        <td>Paracétamol</td>
-                        <td>6820</td>
-                        <td>25 / 05 / 2022 </td>
-                      </tr>
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                        <td></td>
-                        <td>Paracétamol</td>
-                        <td>6820</td>
-                        <td>25 / 05 / 2022 </td>
-                      </tr>
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                        <td></td>
-                        <td>Paracétamol</td>
-                        <td>6820</td>
-                        <td>25 / 05 / 2022 </td>
-                      </tr>
-                      
+
                     </tbody>
                   </table>
               </div>
@@ -204,6 +176,7 @@
 <script>
 import SideBar from './nav.vue'
 import Chart from 'chart.js/auto';
+import moment from "moment";
 export default {   
   
   components: {
@@ -213,6 +186,9 @@ export default {
   data (){
     return{
       infos:'',
+      chiffre_affaire: '',
+      dernieres_ventes: '',
+      dernieres_ventes1: '',
       form:{
         date_debut: '',
         date_fin: ''
@@ -225,18 +201,38 @@ export default {
     // auth: false,
  
     mounted(){      
-      let date1 = Date();
-      let date2 = Date.now();
-      date1 = document.getElementById('p1').innerHTML
-      date2 = document.getElementById('p2').innerHTML
+        var d = new Date();
+        var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();  
+        this.$axios.post('/tableau/de/bord',{
+              date_debut: date,
+              date_fin: date
+        }).then(response => {console.log(response.data.data);
+          this.chiffre_affaire  = response.data.data.produits[0].volume_vente
+          this.dernieres_ventes  = response.data.data.ventes
+          this.infos = response.data.data.ventes[2].date_sell
+          console.log('------------------new-----------------+');
+          console.log(this.infos);
+          console.log(moment(this.infos).utc().format('MMMM Do YYYY, h:mm:ss a'));
+          console.log('------------------new-----------------+');
+          // var info = dat.getFullYear()+'-'+(dat.getMonth()+1)+'-'+dat.getDate();
+          // console.log(info);
+
+      
+        // var today = new Date();
+        // console.log(today.toString());
+        // console.log('------------------new-----------------+');
+        
+
+
+        var CA = this.chiffre_affaire
         const ctx = document.getElementById('myChart');
         const myChart = new Chart(ctx, {
           type: 'bar',
           data: {
-              labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+              labels: ['Volume'],
               datasets: [{
                   label: '# ventes',
-                  data: [12, 19, 3, 5, 2, 3],
+                  data: [CA],
                   backgroundColor: 'rgba(153, 102, 255, 0.2)',
                   borderColor:'rgba(153, 102, 255, 1)',
                   borderWidth: 1
@@ -251,11 +247,12 @@ export default {
           }
         });
         myChart;
+        var d1 = this.dernieres_ventes[0].date_sell
         const ctz = document.getElementById('myChartVente');
         const myChartVente = new Chart(ctz, {
           type: 'line',
           data: {
-              labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+              labels: [d1, 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
               datasets: [{
                   label: '# ventes',
                   data: [12, 19, 3, 5, 2, 3],
@@ -293,7 +290,7 @@ export default {
                   }
               }
           }
-        });
+        });  })
         myChartAchat;
 
 
@@ -302,6 +299,10 @@ export default {
     },
 
     methods:{
+        moment: function () {
+          return moment();
+        },
+        
         async logout(){
             this.$auth.logout();
             this.$router.push('/login');
@@ -407,7 +408,7 @@ export default {
 
 .produits{
   display: flex;
-  padding: 5%;
+  padding: 5% 2%;
   text-align: center;
 }
 
@@ -431,7 +432,7 @@ table{
 margin-top: 3%;
 }
 th, td{
-    padding: 15px 20px;
+    padding: 5px 10px;
     text-align: center;
 
 }

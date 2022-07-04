@@ -24,24 +24,24 @@
                 <span class="error">{{error_champ.name}}</span>
             </div>    
             <div class="input-form">        
-                <input type="text" placeholder="Entrer la quantité " v-model="form.quantity" required>
+                <input type="number" placeholder="Entrer la quantité " v-model="form.quantity" required>
                 <span class="error">{{error_champ.phone}}</span>
             </div>
           
             <div class="input-form">    
-                <input type="email" placeholder="Entrer le prix de vente " v-model="form.price_sell" autocomplete="off" required>
+                <input type="number" placeholder="Entrer le prix de vente " v-model="form.price_sell" autocomplete="off" required>
                 <span class="error">{{error_champ.email}}</span>
             </div>
             <div class="input-form"> 
-                <input type="text" placeholder="Entrer le prix d'achat " v-model="form.price_buy" autocomplete="off" required>
+                <input type="number" placeholder="Entrer le prix d'achat " v-model="form.price_buy" autocomplete="off" required>
                 <span class="error">{{error_champ.nature}}</span>
             </div>
             <div class="input-form"> 
-                <input type="text" placeholder="Entrer le stock minimal " v-model="form.stock_min" autocomplete="off" required>
+                <input type="number" placeholder="Entrer le stock minimal " v-model="form.stock_min" autocomplete="off" required>
                 <span class="error">{{error_champ.nature}}</span>
             </div>
             <div class="input-form"> 
-                <input type="text" placeholder="Entrer le stock maximal " v-model="form.stock_max" autocomplete="off" required>
+                <input type="number" placeholder="Entrer le stock maximal " v-model="form.stock_max" autocomplete="off" required>
                 <span class="error">{{error_champ.nature}}</span>
             </div>
             <div class="submit-form">

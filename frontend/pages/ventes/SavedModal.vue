@@ -4,7 +4,7 @@
       <img class="check" src="../images/eff.jpg" alt="" />
       <h6>Enregistré!</h6>
       <p>La facture a été sauvegardé</p>
-      <NuxtLink to="/vente"><button>Nouvelle facture</button></NuxtLink>
+      <NuxtLink to="/ventes/vente"><button>Nouvelle facture</button></NuxtLink>
       <NuxtLink to="/dashboard"><button>Tableau de bord</button></NuxtLink>
     </div>
   </div>

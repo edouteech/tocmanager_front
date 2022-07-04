@@ -6,7 +6,7 @@
         <div class="titre">
             Clients
         </div>
-        <p>Enregistrer un nouveau client</p>
+        <p>Enregistrer un nouveau client{{this.$auth.$storage.getUniversal('company_id')}}</p>
        
         <form action="" method="POST">
             <h1>Ajout de client</h1>
