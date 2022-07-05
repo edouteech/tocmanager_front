@@ -72,48 +72,16 @@
                           Noms
                         </th>
                         <th scope="col" class="px-6 py-3">
-                          Pourcentages
+                          Quantités
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-for="(produits_vendus1, j) in produits_vendus" :key="j">
                       <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td>Coca cola</td>
-                        <td>80 %</td>
-
-                      </tr>
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td>Coca cola</td>
-                        <td>80 %</td>
-
-                      </tr>
-                      
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td>Coca cola</td>
-                        <td>80 %</td>
-
-                      </tr>
-                      
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                        <td>Coca cola</td>
-                        <td>80 %</td>
-
-                      </tr>
-                      
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                        <td>Coca cola</td>
-                        <td>80 %</td>
-
-                      </tr>
-
-                      
-                      
-                      
+                        <td>{{produits_vendus1.name}}</td>
+                        <td>{{produits_vendus1.quantity}}</td>      
+                      </tr>                
                     </tbody>
                   </table>
               </div>
@@ -131,7 +99,7 @@
                           Noms
                         </th>
                         <th scope="col" class="px-6 py-3">
-                          Prix
+                          Total
                         </th>
                         <th scope="col" class="px-6 py-3">
                           Dates
@@ -186,9 +154,14 @@ export default {
   data (){
     return{
       infos:'',
+      volume_vente: '',
       chiffre_affaire: '',
       dernieres_ventes: '',
       dernieres_ventes1: '',
+      produits_vendus: '',
+      produits_vendus1: '',
+      encaissement: '',
+      decaissement: '',
       form:{
         date_debut: '',
         date_fin: ''
@@ -206,12 +179,16 @@ export default {
         this.$axios.post('/tableau/de/bord',{
               date_debut: date,
               date_fin: date
-        }).then(response => {console.log(response.data.data);
-          this.chiffre_affaire  = response.data.data.produits[0].volume_vente
-          this.dernieres_ventes  = response.data.data.ventes
-          this.infos = response.data.data.ventes[2].date_sell
-          console.log('------------------new-----------------+');
-          console.log(this.infos);
+        }).then(response => {console.log(response.data.data[5]);
+           this.volume_vente  = response.data.data[0][0].volume_vente
+           this.chiffre_affaire = response.data.data[1][0].chiffre_d_affaire
+           this.encaissement = response.data.data[2][0].encaissement
+           this.decaissement = response.data.data[3][0].decaissement
+           this.produits_vendus = response.data.data[4]
+           this.dernieres_ventes  = response.data.data[5]
+          // this.infos = response.data.data.ventes[2].date_sell
+          // console.log(this.volume_vente);
+          // console.log(this.infos);
           console.log(moment(this.infos).utc().format('MMMM Do YYYY, h:mm:ss a'));
           console.log('------------------new-----------------+');
           // var info = dat.getFullYear()+'-'+(dat.getMonth()+1)+'-'+dat.getDate();
@@ -224,15 +201,16 @@ export default {
         
 
 
-        var CA = this.chiffre_affaire
+        var VV = this.volume_vente
+        var dd = 'Intervalle de dates'
         const ctx = document.getElementById('myChart');
         const myChart = new Chart(ctx, {
           type: 'bar',
           data: {
-              labels: ['Volume'],
+              labels: [dd],
               datasets: [{
                   label: '# ventes',
-                  data: [CA],
+                  data: [VV],
                   backgroundColor: 'rgba(153, 102, 255, 0.2)',
                   borderColor:'rgba(153, 102, 255, 1)',
                   borderWidth: 1
