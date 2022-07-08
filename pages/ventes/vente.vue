@@ -116,6 +116,7 @@ export default {
     methods: {
         addLine(){
             this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
+            
         },
         
         async submit(){
@@ -150,7 +151,12 @@ export default {
         quantityChange(index){
             let line = this.form.sell_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
-            this.form.amount = line.amount;
+            let sum = 0;
+            for (let j = 0; j < this.form.sell_lines.length; j++) {
+                sum += this.form.sell_lines[j].amount;
+            }
+            this.form.amount = sum;
+                
         },
 
         productChange(e){
@@ -161,8 +167,17 @@ export default {
                 let line = this.form.sell_lines[index]
                 line.price = product.price_sell;
                 line.amount = Number(line.price) * Number(line.quantity);
-                this.form.amount = line.amount;             
+                    
+                
+                let sum = 0;
+                for (let j = 0; j < this.form.sell_lines.length; j++) {
+                    sum += this.form.sell_lines[j].amount;
+                }
+                this.form.amount = sum;
+                console.log(sum); 
             }
+
+                
         }
    
     },
