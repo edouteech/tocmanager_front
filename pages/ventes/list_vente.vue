@@ -61,8 +61,10 @@ export default {
         },
 
         recupClient(){
-          this.$axios.get('/index/client').then(response => {console.log(response);
-          this.clients = response.data.data.data})  
+          this.$axios.post('/index/client',{
+          compagnie_id: this.$auth.$storage.getUniversal('company_id')})
+          .then(response => {console.log(response.data.data.data);
+          this.clients = response.data.data.data })
         }   
     },
     mounted () {

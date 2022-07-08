@@ -27,6 +27,7 @@
                 <td>{{fournisseur.email}}</td>
                 <td>{{fournisseur.nature}}</td>
                 <td>
+                  <button @click="voirFournisseur(fournisseur.id)"><i class='bx bxs-info-circle'></i></button>
                   <NuxtLink :to="'/edit_fournisseur/'+fournisseur.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
                   <button @click="deleteFournisseur(fournisseur.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
                 </td>
@@ -37,20 +38,28 @@
     
     </div>
 
+<voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
 
 <script>
+import voirFournisseur from './voir_fournisseur.vue'
 import SideBar from '../nav.vue'
 export default {
   auth: true,
   components: {
     SideBar,  
+    voirFournisseur
   },
 
   data () {
     return {
+      showModal: false,
+      identifiant1 : "0",
+      identifiant2 : "0",
+      identifiant3 : "0",
+      identifiant4 : "0",
       fournisseurs: [],
       fournisseur: "",
       compagnie_id: ''
@@ -77,7 +86,18 @@ export default {
         
             {console.log(response);
             this.fournisseurs = response.data.data.data})
-        }
+        },
+
+        voirFournisseur(id){
+            this.showModal = true;
+            this.$axios.get('/index/fournisseur/'+ id).then(response => {console.log(response.data.data[0]);
+             this.identifiant1 = response.data.data[0].name
+             this.identifiant2 = response.data.data[0].phone
+             this.identifiant3 = response.data.data[0].email
+             this.identifiant4 = response.data.data[0].nature      
+             }) 
+               
+        },
     },
 
 }

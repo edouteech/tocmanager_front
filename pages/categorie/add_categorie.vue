@@ -14,6 +14,12 @@
                 <input type="text" placeholder="Entrer le nom de la catégorie " v-model="form.name" autocomplete="off" required>
                 <span class="error">{{error_champ.name}}</span>
             </div>    
+            <div class="input-form">
+                <select v-model="form.parent_id" required>
+                    <option disabled value="">Choisissez la catégorie parente associée</option>
+                    <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
+                </select>
+            </div>
             <div class="submit-form">
                 <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer" name="submit">				          
             </div>
@@ -39,18 +45,30 @@ export default {
     },
     data () {
         return{
+            categories: [],
+            categorie: '',
             form: {
                 name: '',
+                parent_id: '',
                 compagnie_id: ''               
             },
             error_message: "",
             error_champ: [],
         }
     },
+    mounted(){
+        this.$axios.post('/index/categorie',{
+        compagnie_id: this.$auth.$storage.getUniversal('company_id')})        
+        .then(response =>{console.log(response.data.data.data);
+            this.categories = response.data.data.data
+            })     
+    },
+    
     methods: {
         async submit(){
             await  this.$axios.post('/create/categorie',{
                 name: this.form.name,
+                parent_id: this.form.parent_id,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })   
             .then(response =>{ this.$router.push({ path:'/categorie/list_categorie', })})

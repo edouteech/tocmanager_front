@@ -12,6 +12,12 @@
             <input type="text" placeholder='Entrer le nom de la categorie' v-model="form.name" autocomplete="off" required>
             <span class="error">{{error_champ.name}}</span>
         </div>     
+        <div class="input-form">
+            <select v-model="form.parent_id" required>
+                <option disabled value="">Choisissez la catégorie parente associée</option>
+                <option v-for="(liste, i) in listes" :key="i" :value="liste.id">{{liste.name}}</option>
+            </select>
+        </div>
         <div class="submit-form">
             <input type="submit" id='submit' v-on:click.prevent="submit()" value="Modifier la categorie" name="submit">				          
         </div>
@@ -35,9 +41,12 @@ export default {
         return{         
             categorie: "",
             categories: [],
+            liste: "",
+            listes: [],
             form: {
                 id: '',
                 name: '',   
+                parent_id: '',
                 compagnie_id:'',          
             },
             error_message: "",
@@ -46,24 +55,34 @@ export default {
     },
 
     mounted() {
+        this.refresh()
         this.$axios.get('/index/categorie/'+ this.$route.params.id)
           .then(response => {console.log(response.data.data[0] )
             let categorie = response.data.data[0];
             // this.categories = response.data.data
-            this.form.name = categorie.name    
+            this.form.name = categorie.name,
+            this.form.name = categorie.parent_id        
           }        
         )          
     },
 
     methods: {
-      submit(){          
-          this.$axios.put('/update/categorie', {
-            id: this.$route.params.id,            
-            name: this.form.name, 
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')      
-          }).then(response =>{this.$router.push({ path:'/categorie/list_categorie',})})
+        submit(){          
+            this.$axios.put('/update/categorie', {
+                id: this.$route.params.id,            
+                name: this.form.name, 
+                parent_id: this.form.parent_id,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')      
+            }).then(response =>{this.$router.push({ path:'/categorie/list_categorie',})})
 
-      }
+        },
+        refresh(){
+            this.$axios.post('/index/categorie',{
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')})        
+            .then(response =>{console.log(response.data.data.data);
+                this.listes = response.data.data.data
+                })     
+        },
     }
 
     

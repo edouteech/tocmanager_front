@@ -22,7 +22,11 @@
                   <span class="error">{{error_champ.email}}</span>
               </div>
               <div class="input-form"> 
-                  <input type="text" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required>
+                  <select v-model="form.nature" required>
+                        <option disabled value="">Choisissez la nature du client</option>
+                        <option value="0">Particulier</option>
+                        <option value="1">Entreprise</option>
+                    </select>
                   <span class="error">{{error_champ.nature}}</span>
               </div>
               <div class="submit-form">

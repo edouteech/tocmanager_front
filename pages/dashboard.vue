@@ -179,18 +179,16 @@ export default {
         this.$axios.post('/tableau/de/bord',{
               date_debut: date,
               date_fin: date
-        }).then(response => {console.log(response.data.data[5]);
+        }).then(response => {console.log(response);
            this.volume_vente  = response.data.data[0][0].volume_vente
            this.chiffre_affaire = response.data.data[1][0].chiffre_d_affaire
            this.encaissement = response.data.data[2][0].encaissement
            this.decaissement = response.data.data[3][0].decaissement
            this.produits_vendus = response.data.data[4]
            this.dernieres_ventes  = response.data.data[5]
-          // this.infos = response.data.data.ventes[2].date_sell
-          // console.log(this.volume_vente);
-          // console.log(this.infos);
-          console.log(moment(this.infos).utc().format('MMMM Do YYYY, h:mm:ss a'));
-          console.log('------------------new-----------------+');
+          
+          // console.log(moment(this.infos).utc().format('MMMM Do YYYY, h:mm:ss a'));
+          // console.log('------------------new-----------------+');
           // var info = dat.getFullYear()+'-'+(dat.getMonth()+1)+'-'+dat.getDate();
           // console.log(info);
 

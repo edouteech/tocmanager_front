@@ -34,6 +34,7 @@
                 <td>{{produit.stock_min}}</td>
                 <td>{{produit.stock_max}}</td>
                 <td>
+                  <button @click="voirProduit(produit.id)"><i class='bx bxs-info-circle'></i></button>
                   <NuxtLink :to="'/edit_produit/'+produit.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
                   <button @click="deleteProduit(produit.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
                 </td>
@@ -43,21 +44,31 @@
         </table>
     
     </div>
-
+<voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
 
 <script>
+import voirProduit from './voir_produit.vue'
 import SideBar from '../nav.vue'
 export default {
   auth: true,
   components: {
     SideBar,  
+    voirProduit
   },
 
   data () {
     return {
+      showModal: false,
+      identifiant1 : "0",
+      identifiant2 : "0",
+      identifiant3 : "0",
+      identifiant4 : "0",
+      identifiant5 : "0",
+      identifiant6 : "0",
+      identifiant7 : "0",
       produits: [],
       produit: "",
       compagnie_id: ""
@@ -90,7 +101,20 @@ export default {
               this.produits = response.data.data.data
             }
           )
-        }
+        },
+        voirProduit(id){
+            this.showModal = true;
+            this.$axios.get('/index/product/'+ id).then(response => {console.log(response.data.data[0]);
+             this.identifiant1 = response.data.data[0].category_id
+             this.identifiant2 = response.data.data[0].name
+             this.identifiant3 = response.data.data[0].quantity
+             this.identifiant4 = response.data.data[0].price_sell      
+             this.identifiant5 = response.data.data[0].price_buy
+             this.identifiant6 = response.data.data[0].stock_min
+             this.identifiant7 = response.data.data[0].stock_max      
+            }) 
+               
+        },
 
     },
    

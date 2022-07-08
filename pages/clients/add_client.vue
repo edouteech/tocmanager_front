@@ -25,7 +25,7 @@
                 <span class="error">{{error_champ.email}}</span>
             </div>
             <div class="input-form"> 
-                <select v-model="form.nature" required>
+                    <select v-model="form.nature" required>
                         <option disabled value="">Choisissez la nature du client</option>
                         <option value="0">Particulier</option>
                         <option value="1">Entreprise</option>

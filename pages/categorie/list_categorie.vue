@@ -55,6 +55,7 @@
 
               			<td>{{categorie.name}}</td>
 						<td>
+              <button @click="voirCategorie(categorie.id)"><i class='bx bxs-info-circle'></i></button>
 							<NuxtLink :to="'/edit_categorie/'+categorie.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
 							<button @click="deleteCategorie(categorie.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
 						</td>
@@ -86,21 +87,26 @@
 
       </table> -->
   </div>
-   
+ <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' v-show="showModal" @close-modal="showModal = false"/>  
 
 </div>
 </template>
 
 <script>
+import voirCategorie from './voir_categorie.vue'
 import SideBar from '../nav.vue'
 export default {
     auth: true,
     components: {
       SideBar,  
+      voirCategorie
     },
 
     data () {
       return {
+        showModal: false,
+        identifiant1 : "0",
+        identifiant2 : "0",
         compagnie_id: ''  ,
         categories: [],
         categorie: "",
@@ -125,7 +131,19 @@ export default {
         .then(response =>{console.log(response.data.data.data);
             this.categories = response.data.data.data
             })     
-        }
+        },
+
+        voirCategorie(id){
+            this.showModal = true;
+            this.$axios.get('/index/categorie/'+ id).then(response => {console.log(response.data.data[0]);
+             this.identifiant1 = response.data.data[0].name
+             this.identifiant2 = response.data.data[0].parent_id
+    
+             }) 
+               
+        },
+
+
         
     },
 
