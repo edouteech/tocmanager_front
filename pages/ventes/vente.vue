@@ -129,7 +129,7 @@ export default {
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines  
             }).then(response =>{ console.log(response)
-                    this.$router.push({path:'/SavedModal',})
+                    this.$router.push({path:'/ventes/SavedModal',})
               }).catch( error => console.log( error ) )                            
         },
 

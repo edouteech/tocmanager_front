@@ -8,7 +8,7 @@
         Ventes
     </div>
       <p>Liste des ventes éffectuées</p>
-      <button type="button" class="custom-btn btn-10"><NuxtLink to="/vente">Nouvelle vente</NuxtLink></button>    
+      <button type="button" class="custom-btn btn-10"><NuxtLink to="/ventes/vente">Nouvelle vente</NuxtLink></button>    
         <table class="tableau">
           <thead>
               <tr>
