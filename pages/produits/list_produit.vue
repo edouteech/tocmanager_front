@@ -35,7 +35,7 @@
                 <td>{{produit.stock_max}}</td>
                 <td>
                   <button @click="voirProduit(produit.id)"><i class='bx bxs-info-circle'></i></button>
-                  <NuxtLink :to="'/edit_produit/'+produit.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
+                  <NuxtLink :to="'/produits/'+produit.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
                   <button @click="deleteProduit(produit.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
                 </td>
               </tr>
@@ -158,7 +158,7 @@ thead tr{
     background-color: transparent;
 }
 th, td{
-    padding: 15px 20px;
+    padding: 20px 10px;
     border: 1px solid #ddd
 }
 tbody, tr, td, th{

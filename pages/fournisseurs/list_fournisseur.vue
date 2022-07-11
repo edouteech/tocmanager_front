@@ -28,7 +28,7 @@
                 <td>{{fournisseur.nature}}</td>
                 <td>
                   <button @click="voirFournisseur(fournisseur.id)"><i class='bx bxs-info-circle'></i></button>
-                  <NuxtLink :to="'/edit_fournisseur/'+fournisseur.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
+                  <NuxtLink :to="'/fournisseurs/'+fournisseur.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
                   <button @click="deleteFournisseur(fournisseur.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
                 </td>
               </tr>

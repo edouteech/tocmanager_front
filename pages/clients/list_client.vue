@@ -27,7 +27,7 @@
               <td>{{client.nature}}</td>
               <td>
                 <button @click="voirClient(client.id)"><i class='bx bxs-info-circle'></i></button>
-                <NuxtLink :to="'/edit_client/'+client.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
+                <NuxtLink :to="'/clients/'+client.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
                 <button @click="deleteClient(client.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
               </td>
             </tr>
@@ -133,7 +133,7 @@ thead tr{
     background-color: transparent;
 }
 th, td{
-    padding: 15px 40px;
+    padding: 15px 20px;
     border: 1px solid #ddd
 }
 tbody, tr, td, th{

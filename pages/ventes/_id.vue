@@ -1,28 +1,27 @@
 <template>
 <div class="contain">
      <SideBar/>
-
-      <div class="zone">
-        <div class="titre">
-            Achats
-        </div>
-        <form action="" method="POST">
-            <h2>Enregistrer une achat</h2><hr>
+  <div class="zone">
+    <div class="titre">
+      Modifier Facture Vente
+    </div>
+   <form action="" method="POST">
+            <h2>Modification</h2><hr>
             <div class="cadre-haut">             
                 <div class="ajout-client">    
                     <i class='bx bxs-user-plus'></i>                                 
-                    <select  v-model="form.fournisseur_id">
-                        <option disabled value="">Choisir le fournisseur</option>
-                        <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
-                            {{fournisseur.name}}
+                    <select  v-model="form.client_id">
+                        <option disabled value="">Choisir le client</option>
+                        <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
+                            {{client.name}}
                         </option>                           
                     </select>          
                     <div class="save-btn">
-                        <div @click="showModal = true">Ajouter un fournisseur</div>
+                        <div @click="showModal = true">Ajouter un client</div>
                     </div>                   
                 </div>
                 <div class="facture-date">
-                   <span class="creation"> Date de création :</span> <input  type="datetime-local"  v-model="form.date_buy"/>                  
+                   <span class="creation"> Date de création :</span> <input  type="datetime-local"  v-model="form.date_sell"/>                  
                 </div>
             </div> <hr>
             
@@ -44,7 +43,7 @@
                     </thead>
                     
                     <tbody>
-                        <tr v-for="(line, index) in form.buy_lines" :key="index">
+                        <tr v-for="(line, index) in form.sell_lines" :key="index">
                             <td>
                                 <select v-model="line.product_id" id="" @change="productChange"> 
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
@@ -61,7 +60,7 @@
                 </table>     
             </div>
             <div class="submit">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">		          
+                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">				          
             </div>  
     
         </form>
@@ -94,18 +93,18 @@ export default {
             showModal: false,
             showSaved: false,
             showProduit: false,
-            fournisseurs: [],
-            fournisseur: "",
+            clients: [],
+            client: "",
             produits: [],
             form:{
                 user_id: '',
-                date_buy: '',
-                fournisseur_id: '',
+                date_sell: '',
+                client_id: '',
                 amount: '',
                 tax: '0',
                 discount: '0',
                 rest: '0',
-                buy_lines: []          
+                sell_lines: []          
                 },
             error_message: "",
             error_champ: [],
@@ -115,34 +114,46 @@ export default {
     mounted () {
       this.refresh()
       this.recupProduct()
+      this.$axios.get('/index/vente/'+ this.$route.params.id)
+          .then(response => {console.log(response.data.data[0] )
+            let vente = response.data.data[0];
+            // this.categories = response.data.data
+            this.form.date_sell = vente.date_sell,
+            this.form.client_id = vente.client_id,
+            this.form.sell_lines = vente.sell_lines,   
+            this.form.tax = vente.tax,
+            this.form.discount = vente.discount,
+            this.form.amount = vente.amount
+          }        
+        )          
     },
     
     methods: {
         addLine(){
-            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
             
         },
         
         async submit(){
-            await  this.$axios.post('/create/achat',{
-              date_buy: this.form.date_buy,
+            await  this.$axios.post('/create/vente',{
+              date_sell: this.form.date_sell,
               tax: this.form.tax,
               discount: this.form.discount,
               amount: this.form.amount,
               rest: this.form.rest,
               user_id: this.$auth.user.id,
-              fournisseur_id: this.form.fournisseur_id,  
-              buy_lines: this.form.buy_lines  
+              client_id: this.form.client_id,  
+              sell_lines: this.form.sell_lines  
             }).then(response =>{ console.log(response)
-                    this.$router.push({path:'/achats/SavedModal',})
+                    this.$router.push({path:'/ventes/SavedModal',})
               }).catch( error => console.log( error ) )                            
         },
 
         refresh(){
-            this.$axios.post('/index/fournisseur',{
+            this.$axios.post('/index/client',{
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response => {console.log(response);
-            this.fournisseurs = response.data.data.data})
+            this.clients = response.data.data.data})
         },
 
         recupProduct(){
@@ -153,11 +164,11 @@ export default {
         },
 
         quantityChange(index){
-            let line = this.form.buy_lines[index]
+            let line = this.form.sell_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
             let sum = 0;
-            for (let j = 0; j < this.form.buy_lines.length; j++) {
-                sum += this.form.buy_lines[j].amount;
+            for (let j = 0; j < this.form.sell_lines.length; j++) {
+                sum += this.form.sell_lines[j].amount;
             }
             this.form.amount = sum;
                 
@@ -168,14 +179,14 @@ export default {
                 let i = e.target.options[e.target.options.selectedIndex].dataset.i;
                 let index = e.target.options[e.target.options.selectedIndex].dataset.index;
                 let product = this.produits[i];
-                let line = this.form.buy_lines[index]
+                let line = this.form.sell_lines[index]
                 line.price = product.price_sell;
                 line.amount = Number(line.price) * Number(line.quantity);
                     
                 
                 let sum = 0;
-                for (let j = 0; j < this.form.buy_lines.length; j++) {
-                    sum += this.form.buy_lines[j].amount;
+                for (let j = 0; j < this.form.sell_lines.length; j++) {
+                    sum += this.form.sell_lines[j].amount;
                 }
                 this.form.amount = sum;
                 console.log(sum); 
@@ -208,26 +219,27 @@ export default {
 .ajout-client{
     margin: 30px 10px;
     border: 1px solid darkblue;
-    padding: 50px ;
+    padding: 50px 80px;
     margin-right: 50%;
   
 }
 
+.new-prod{
+    display: flex;
+}
+
 .btn-ajout{
-    border: 2px solid #53af57;
+    border: 1px solid #53af57;
     padding: 5px;
     width: 100px;
     font-size: 10px;
     border-radius: 20%;
     text-align: center;
-    cursor: pointer;
-    margin: 0 50px;
-}
-
-.btn-ajout:hover{
     background-color: #53af57;
     color: #fff;
+    cursor: pointer;
 }
+
 .btn-ajout i{
     font-size: 18px;
 }
@@ -263,12 +275,22 @@ export default {
     margin: 4%;
     text-align: center;
     width: 90%;
-    background-color: rgb(8, 231, 97);
+    background-color: rgb(238, 134, 64);
     border-radius: 10px;
     padding: 12px;
     cursor: pointer;
 }
 
+.commande{
+    margin: 50px;
+}
+
+
+form {
+    /* width: 90%; */
+    padding: 30px;
+
+}
 .modal .input-form {
     display: flex;
     flex-direction: column-reverse;

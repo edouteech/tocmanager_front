@@ -92,6 +92,7 @@ export default {
         async login() {
             try {
               let response = await this.$auth.loginWith('local', { data: this.form })
+              console.log(response);
               this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
               this.$auth.setUserToken(response.data.data.original.access_token)
               .then(response =>{this.$router.push( '/dashboard',)})

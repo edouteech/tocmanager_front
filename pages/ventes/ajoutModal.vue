@@ -2,7 +2,7 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modal" @click.stop>                     
             <form action="" method="POST"> 
-                        <h4>Ajout de client </h4>
+                        <h4>Ajout rapide de client </h4>
 
                 <div class="input-form">					
                     <input type="text" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" required>

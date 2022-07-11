@@ -39,14 +39,14 @@
                     </div>
                 </NuxtLink>
             </li>
-            <!-- <li>
-                <NuxtLink to="/navigation">
+            <li>
+                <NuxtLink to="/achats/list_achat">
                     <div class="rubrique">
-                        <i class='bx bx-alarm-add'></i>
-                        <span class="links_name">Ajouter un groupe</span>
+                        <i class='bx bxs-save'></i>
+                        <span class="links_name">Factures des achats</span>
                     </div>
                 </NuxtLink>
-            </li> -->
+            </li>
             <li> 
                 <NuxtLink to="/clients/list_client">
                     <div class="rubrique">
@@ -55,6 +55,14 @@
                     </div>
                 </NuxtLink>
             </li>   
+            <li>
+                <NuxtLink to="/encaissements/encaissement">
+                    <div class="rubrique">
+                        <i class='bx bxs-credit-card'></i>
+                        <span class="links_name">Encaissements</span>
+                    </div>
+                </NuxtLink>
+            </li>
             <li> 
                 <NuxtLink to="/fournisseurs/list_fournisseur">
                     <div class="rubrique">
@@ -90,7 +98,7 @@
             <li>
                 <NuxtLink to="/profils/profil">
                     <div class="rubrique">
-                        <i class='bx bxs-group'></i>
+                        <i class='bx bxs-user-detail'></i>
                         <span class="links_name">Utilisateurs</span>
                     </div>
                 </NuxtLink>

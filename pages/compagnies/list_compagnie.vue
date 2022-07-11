@@ -24,7 +24,7 @@
               <td>{{compagnie.phone}}</td>
               <td>{{compagnie.email}}</td>
               <td>
-                <NuxtLink :to="'/edit_compagnie/'+compagnie.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
+                <NuxtLink :to="'/compagnies/'+compagnie.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
                 <button @click="deleteCompagnie(compagnie.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
               </td>
             </tr>

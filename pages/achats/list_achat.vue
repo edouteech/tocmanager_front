@@ -5,28 +5,28 @@
  
   <div class="zone">
     <div class="titre">
-        Ventes
+        Achats
     </div>
-      <p>Liste des ventes éffectuées</p>
-      <button type="button" class="custom-btn btn-10"><NuxtLink to="/ventes/vente">Nouvelle vente</NuxtLink></button>    
+      <p>Liste des achats éffectués</p>
+      <button type="button" class="custom-btn btn-10"><NuxtLink to="/achats/achat">Nouvel achat</NuxtLink></button>    
         <table class="tableau">
           <thead>
               <tr>
                   <th>Date facture</th>
-                  <th>Client concerné</th>
+                  <th>Fournisseur concerné</th>
                   <th>Montant </th>
                   <th>Actions</th>
               </tr>
           </thead>
         
           <tbody>
-            <tr  v-for="(vente, i) in ventes" :key="i">
-              <td>{{vente.date_sell}}</td>
-              <td>{{vente.client_id}}</td>
-              <td>{{vente.amount}}</td>
+            <tr  v-for="(achat, i) in achats" :key="i">
+              <td>{{achat.date_buy}}</td>
+              <td>{{achat.fournisseur_id}}</td>
+              <td>{{achat.amount}}</td>
               <td>
-                <NuxtLink :to="'/ventes/'+vente.id"><i class='bx bxs-edit' label="modifier"></i></NuxtLink>
-                <button @click="deleteVente(vente.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
+                <NuxtLink :to="'/achats/'+achat.id"><i class='bx bxs-edit' label="modifier"></i></NuxtLink>
+                <button @click="deleteAchat(achat.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
               </td>
             </tr>
           </tbody>
@@ -45,31 +45,31 @@ export default {
   },
    data () {
       return {
-        ventes: [],
-        vente: "",
+        achats: [],
+        achat: "",
       }
     },
     methods: {
-        deleteVente(id){
-          this.$axios.delete('/delete/vente/' +id).then(response =>{console.log(response.data.data);
+        deleteAchat(id){
+          this.$axios.delete('/delete/achat/' +id).then(response =>{console.log(response.data.data);
             this.refresh()})                
         },
         
         refresh(){
-          this.$axios.get('/index/vente').then(response => {console.log(response);
-          this.ventes = response.data.data.data})  
+          this.$axios.get('/index/achat').then(response => {console.log(response);
+          this.achats = response.data.data.data})  
         },
 
-        recupClient(){
-          this.$axios.post('/index/client',{
+        recupFournisseur(){
+          this.$axios.post('/index/fournisseur',{
           compagnie_id: this.$auth.$storage.getUniversal('company_id')})
           .then(response => {console.log(response.data.data.data);
-          this.clients = response.data.data.data })
+          this.fournisseurs = response.data.data.data })
         }   
     },
     mounted () {
       this.refresh()
-      this.recupClient()
+      this.recupFournisseur()
     }
 }
 </script>

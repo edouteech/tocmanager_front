@@ -8,8 +8,8 @@
           </div>
           <form action="action=" method="POST">
             <div class="range">
-                <span class="du"> Du : </span><input class="debut" type="date"  v-model="form.date_debut"  required />      
-                <span class="du">Au :</span> <input  class="fin" type="date"  v-model="form.date_fin"  required />   
+                <span class="du"> Du : </span><input class="debut" type="datetime-local"  v-model="form.date_debut"  required />      
+                <span class="du">Au :</span> <input  class="fin" type="datetime-local"  v-model="form.date_fin"  required />   
                 <div class="visualiser" @click="Visualiser()">Visualiser</div>               
             </div>
           </form>
@@ -300,7 +300,6 @@ export default {
 .range{
   display: flex;
   border: 1px solid gainsboro;
-
   border-radius: 10px;
   padding: 1% 10%;
   margin-bottom: 5%;

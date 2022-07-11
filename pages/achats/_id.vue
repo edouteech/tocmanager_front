@@ -4,10 +4,10 @@
 
       <div class="zone">
         <div class="titre">
-            Achats
+           Modifier factures Achats
         </div>
         <form action="" method="POST">
-            <h2>Enregistrer une achat</h2><hr>
+            <h2>Modification</h2><hr>
             <div class="cadre-haut">             
                 <div class="ajout-client">    
                     <i class='bx bxs-user-plus'></i>                                 
@@ -115,8 +115,19 @@ export default {
     mounted () {
       this.refresh()
       this.recupProduct()
+      this.$axios.get('/index/achat/'+ this.$route.params.id)
+          .then(response => {console.log(response.data.data[0] )
+            let achat = response.data.data[0];
+            // this.categories = response.data.data
+            this.form.date_buy = achat.date_buy,
+            this.form.fournisseur_id = achat.fournisseur_id,
+            this.form.buy_lines = achat.sell_lines,   
+            this.form.tax = achat.tax,
+            this.form.discount = achat.discount,
+            this.form.amount = achat.amount
+          }        
+        )          
     },
-    
     methods: {
         addLine(){
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});

@@ -3,14 +3,14 @@
      <SideBar/>
 
       <div class="zone">
-        <div class="titrer">
+        <div class="titre">
             Ventes
         </div>
         <form action="" method="POST">
             <h2>Enregistrer une vente</h2><hr>
             <div class="cadre-haut">             
                 <div class="ajout-client">    
-                    <i class='bx bxs-user-circle'></i>                                 
+                    <i class='bx bxs-user-plus'></i>                                 
                     <select  v-model="form.client_id">
                         <option disabled value="">Choisir le client</option>
                         <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
@@ -22,13 +22,13 @@
                     </div>                   
                 </div>
                 <div class="facture-date">
-                    Date de création : <input  type="date"  v-model="form.date_sell"  required />                  
+                   <span class="creation"> Date de création :</span> <input  type="datetime-local"  v-model="form.date_sell"/>                  
                 </div>
             </div> <hr>
             
             <div class="ajout-article" @click="addLine()"><i class='bx bxs-alarm-add'></i>Ajouter un article</div>
             
-
+              <div class="btn-ajout" @click="showProduit = true"><i class='bx bxs-plus-circle'></i><br> Nouveau produit</div>
             <div class="commande">
                 <table class="tableau">
                     <thead>
@@ -46,7 +46,7 @@
                     <tbody>
                         <tr v-for="(line, index) in form.sell_lines" :key="index">
                             <td>
-                                <select v-model="line.product_id" id="" @change="productChange">
+                                <select v-model="line.product_id" id="" @change="productChange"> 
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
                                 </select>
                             </td>
@@ -61,14 +61,15 @@
                 </table>     
             </div>
             <div class="submit">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">				          
+                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">		          
             </div>  
     
         </form>
     </div>
 
-     <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
+    <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
+    <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
 
 </div>
  
@@ -77,6 +78,7 @@
 <script>
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
+import produitModal from './produitModal.vue'
 import SideBar from '../nav.vue'
 export default {
     auth:true,
@@ -84,12 +86,14 @@ export default {
         SideBar, 
         ajoutModal, 
         SavedModal,
+        produitModal,
     },
 
     data () {
         return{
             showModal: false,
             showSaved: false,
+            showProduit: false,
             clients: [],
             client: "",
             produits: [],
@@ -204,9 +208,29 @@ export default {
 .ajout-client{
     margin: 30px 10px;
     border: 1px solid darkblue;
-    padding: 50px;
-    margin-right: 30%;
+    padding: 50px ;
+    margin-right: 50%;
   
+}
+
+.btn-ajout{
+    border: 2px solid #53af57;
+    padding: 5px;
+    width: 100px;
+    font-size: 10px;
+    border-radius: 20%;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 50px;
+}
+
+.btn-ajout:hover{
+    background-color: #53af57;
+    color: #fff;
+}
+
+.btn-ajout i{
+    font-size: 18px;
 }
 
 .save-btn {
@@ -220,14 +244,16 @@ export default {
 
 .facture-date{
     margin-top: 5%;
-    text-decoration: underline;
+    font-size: 18px;
 }
-
+.facture-date .creation{
+    text-decoration: underline;
+    font-weight: bold;
+    padding-right: 1%;
+}
 .facture-date input{
-    margin-left: 30px;
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 5px;
+    border: none; 
+    outline: none;
 }
 
 .ajout-article .bx{
@@ -244,16 +270,6 @@ export default {
     cursor: pointer;
 }
 
-.commande{
-    margin: 50px;
-}
-
-
-form {
-    /* width: 90%; */
-    padding: 30px;
-
-}
 .modal .input-form {
     display: flex;
     flex-direction: column-reverse;
@@ -331,7 +347,6 @@ input[type=submit]:hover{
 	box-shadow: 0 5px 50px transparent;
 	border: 2px solid transparent;
 	text-align: center;
-	margin-top: 1%;
 	font-size: 13px;
 }      
 thead tr{

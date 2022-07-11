@@ -36,7 +36,10 @@
 							</div> -->
 						</th>
 						<th scope="col" class="px-6 py-3">
-							Noms
+							Noms de Catégorie
+						</th>
+            <th scope="col" class="px-6 py-3">
+							Catégories parentes
 						</th>
 						<th scope="col" class="px-6 py-3">
 							Actions
@@ -53,10 +56,11 @@
 							</div>
 						</td>
 
-              			<td>{{categorie.name}}</td>
+            <td>{{categorie.name}}</td>
+            <td>{{categorie.parent_id}}</td>
 						<td>
               <button @click="voirCategorie(categorie.id)"><i class='bx bxs-info-circle'></i></button>
-							<NuxtLink :to="'/edit_categorie/'+categorie.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
+							<NuxtLink :to="'/categorie/'+categorie.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
 							<button @click="deleteCategorie(categorie.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
 						</td>
 					</tr>

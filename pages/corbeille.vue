@@ -8,9 +8,9 @@
         Eléments supprimés
         </div>
         <div class="cases">
-            <div class="case">
+            <NuxtLink to="/achats/delete_achat" class="case">      
                 Factures achats
-            </div>
+            </NuxtLink>
             <NuxtLink to="/ventes/delete_vente" class="case">      
                 Factures ventes
             </NuxtLink>

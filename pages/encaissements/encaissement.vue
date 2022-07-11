@@ -4,33 +4,33 @@
 
     <div class="zone">
         <div class="titre">
-            Clients
+            Encaissements
         </div>
-        <p>Enregistrer un nouveau client</p>
+        <p>Enregistrer un encaissement</p>
        
         <form action="" method="POST">
-            <h1>Ajout de client</h1>
+            <h1>Ajout d'encaissement</h1>
 
             <div class="input-form">					
-                <input type="text" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" required>
+                <input type="number" placeholder="Entrer le montant " v-model="form.montant" autocomplete="off" required>
                 <span class="error">{{error_champ.name}}</span>
             </div>     
-            <div class="input-form">        
-                <input type="tel" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" required>
-                <span class="error">{{error_champ.phone}}</span>
-            </div>
-          
+            <!-- <div class="input-form">       
+                <input type="number" placeholder="Entrer le montant " v-model="form.facture" autocomplete="off" required> -->
+                <!-- <select v-model="form.facture" required>
+                    <option disabled value="">Choisissez la facture à encaisser</option>
+                    <option v-for="(vente, i) in ventes" :key="i" :value="facture">{{categorie.name}}</option>
+                </select> -->
+            <!-- </div> -->
             <div class="input-form">    
-                <input type="email" placeholder="Entrer l'email du client " v-model="form.email" autocomplete="off" required>
+                <input type="datetime-local" placeholder="Entrer la date de l'encaissement " v-model="form.date" autocomplete="off" required>
                 <span class="error">{{error_champ.email}}</span>
             </div>
             <div class="input-form"> 
-                    <select v-model="form.nature" required>
-                        <option disabled value="">Choisissez la nature du client</option>
-                        <option value="0">Particulier</option>
-                        <option value="1">Entreprise</option>
+                    <select v-model="form.client_id" required>
+                        <option disabled value="">Sélectionner le client</option>
+                        <option v-for="(client, i) in clients" :key="i" :value="client.id">{{client.name}}</option>
                     </select>
-                    <!-- <input type="number" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required> -->
                     <span class="error">{{error_champ.nature}}</span>
                 </div>
             <div class="submit-form">
@@ -54,11 +54,13 @@ export default {
     },
     data () {
         return{
+            clients: [],
+            client: "",
             form: {
-                name: '',
-                email: '',
-                phone: '',
-                nature:'',
+                montant: '',
+                facture: '',
+                date: '',
+                client_id:'',
                 compagnie_id: ''
             },
             error_message: "",
@@ -66,17 +68,24 @@ export default {
         }
     },
 
+    mounted(){
+        this.$axios.post('/index/client',{
+        compagnie_id: this.$auth.$storage.getUniversal('company_id')})
+        .then(response => {console.log(response.data.data.data);
+        this.clients = response.data.data.data })
+    },
+
     methods: {
         async submit(){
-            await  this.$axios.post('/create/client',{
-              name: this.form.name,
-              email: this.form.email,
-              phone: this.form.phone,
-              nature: this.form.nature,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            await  this.$axios.post('/create/encaissement',{
+              montant: this.form.montant,
+              facture: 1,
+              date: this.form.date,
+              client_id: this.form.client_id,
+            //   compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
-                this.$router.push({path:'/clients/list_client',})})
+                this.$router.push({path:'/encaissements/list_encaissement',})})
             .catch( error => console.log( error ) )
                 //  console.log(this.form.name)                
         },

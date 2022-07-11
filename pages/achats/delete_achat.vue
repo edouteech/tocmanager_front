@@ -5,7 +5,7 @@
  
     <div class="zone">
         <div class="titre">
-            Factures de ventes supprimées
+            Factures d'achats supprimés
         </div>
          <!-- début du new table -->
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -47,7 +47,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr  v-for="(vente, i) in ventes" :key="i"
+                            <tr  v-for="(achat, i) in achats" :key="i"
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="w-4 p-4">
                                     <div class="flex items-center">
@@ -56,12 +56,12 @@
                                     </div>
                                 </td>
 
-                                <td>{{vente.date_sell}}</td>
-                                <td>{{vente.client_id}}</td>
-                                <td>{{vente.amount}}</td>
+                                <td>{{achat.date_sell}}</td>
+                                <td>{{achat.client_id}}</td>
+                                <td>{{achat.amount}}</td>
                                 <td><div class="action">
                                     <div class="sup" @click="showModal = true">Supprimer définitivement</div>
-                                    <div class="restore" @click="restaurerVente(vente.id)">Restaurer cette facture</div></div>
+                                    <div class="restore" @click="restaurerAchat(achat.id)">Restaurer cette facture</div></div>
                                 </td>
                             </tr>
                             
@@ -88,33 +88,33 @@ export default {
     data () {
         return {
             showModal: false,
-            vente: "",
+            achat: "",
             identifiant : "0",
-            ventes: [],
+            achats: [],
         }
     },   
 
     mounted () {
-         this.$axios.get('/get/vente')        
-        .then(response => {console.log(response.data.data);
-            this.ventes = response.data.data })        
+         this.$axios.get('/get/achat')        
+        .then(response => {console.log(response);
+            this.achats = response.data.data })        
     },
 
     methods: {
-        restaurerVente(id){
+        restaurerAchat(id){
             console.log(id);
-            this.$axios.get('/restore/vente/' +id)         
+            this.$axios.get('/restore/achat/' +id)         
             .then(response => {console.log(response);
-                this.vente = response.data.data
-                this.$router.push({path:'/ventes/list_vente',})
+                this.achat = response.data.data
+                this.$router.push({path:'/achats/list_achat',})
                 })         
         },
 
-         supVente(id){
+         supAchat(id){
             console.log(id);
-            this.$axios.delete('/destroy/vente/' +id)      
+            this.$axios.delete('/destroy/achat/' +id)      
             .then(response => {console.log(response);
-                    this.vente = response.data.data
+                    this.achat = response.data.data
                     
                 })                
         },
