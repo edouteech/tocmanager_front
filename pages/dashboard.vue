@@ -7,12 +7,11 @@
             Tableau de Bord 
           </div>
           <form action="action=" method="POST">
-          <div class="range">
-              <span class="du"> Du : </span><input class="debut" type="date"  v-model="form.date_debut"  required />      
-              <span class="du">Au :</span> <input  class="fin" type="date"  v-model="form.date_fin"  required />   
-              <div class="visualiser" @click="Visualiser()">Visualiser</div>               
-          
-          </div>
+            <div class="range">
+                <span class="du"> Du : </span><input class="debut" type="date"  v-model="form.date_debut"  required />      
+                <span class="du">Au :</span> <input  class="fin" type="date"  v-model="form.date_fin"  required />   
+                <div class="visualiser" @click="Visualiser()">Visualiser</div>               
+            </div>
           </form>
 
           <div class="carreaux">
@@ -300,13 +299,18 @@ export default {
 <style>
 .range{
   display: flex;
-  border: 3px solid rgb(62, 118, 237);
+  border: 1px solid gainsboro;
+
   border-radius: 10px;
   padding: 1% 10%;
-  letter-spacing: 2px;
   margin-bottom: 5%;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 18px;
+
+}
+
+.range input{
+  border: none; outline: none;
+
 }
 
 .range .debut{

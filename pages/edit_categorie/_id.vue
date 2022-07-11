@@ -61,7 +61,7 @@ export default {
             let categorie = response.data.data[0];
             // this.categories = response.data.data
             this.form.name = categorie.name,
-            this.form.name = categorie.parent_id        
+            this.form.parent_id = categorie.parent_id        
           }        
         )          
     },
