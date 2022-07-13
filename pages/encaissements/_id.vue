@@ -4,31 +4,25 @@
 
     <div class="zone">    
         <div class="titre">
-            Clients
+            Encaissements
         </div>    
           <form action="" method="POST">
-              <p>Modifier les informations du client</p>	
+              <p>Modifier les informations de l'encaissement</p>	
               <div class="input-form">			
-                  <input type="text" placeholder='Entrer le nom du client' v-model="form.name" autocomplete="off" required>
+                  <input type="text" placeholder='Entrer le montant encaissé' v-model="form.montant" autocomplete="off" required>
                   <span class="error">{{error_champ.name}}</span>
               </div>     
               <div class="input-form">        
-                  <input type="text" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" required>
+                  <input type="text" placeholder="Entrer la date de l'enregistrement " v-model="form.date" required>
                   <span class="error">{{error_champ.phone}}</span>
               </div>
-            
-              <div class="input-form">    
-                  <input type="email" placeholder="Entrer l'email du client " v-model="form.email" autocomplete="off" required>
-                  <span class="error">{{error_champ.email}}</span>
-              </div>
-              <div class="input-form"> 
-                  <select v-model="form.nature" required>
-                        <option disabled value="">Choisissez la nature du client</option>
-                        <option value="0">Particulier</option>
-                        <option value="1">Entreprise</option>
+                <div class="input-form"> 
+                    <select v-model="form.client_id" required>
+                        <option disabled value="">Sélectionner le client</option>
+                        <option v-for="(client, i) in clients" :key="i" :value="client.id">{{client.name}}</option>
                     </select>
-                  <span class="error">{{error_champ.nature}}</span>
-              </div>
+                    <span class="error">{{error_champ.nature}}</span>
+                </div>
               <div class="submit-form">
                   <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer les modifications" name="submit">				          
               </div>
@@ -47,52 +41,63 @@ export default {
     },
     data () {
         return{
+            encaissement: "",
+            encaissements: [],
             client: "",
             clients: [],
             form: {
                 id: '',
-                name: '',
-                email: '',
-                phone: '',
-                nature:'',
-                compagnie_id: '',
+                montant: '',
+                date: '',
+                client_id: '',
+                facture:'',
+                // compagnie_id: '',
             },
             error_message: "",
             error_champ: [],
         }
         },
     mounted() {
-        this.$axios.get('/index/client/'+ this.$route.params.id)
+        this.refresh()
+        this.$axios.get('/index/encaissement/'+ this.$route.params.id)
          .then(response => {console.log(response.data.data[0] )
-            let client = response.data.data[0];
+            let encaissement = response.data.data[0];
             // this.clients = response.data.data
-            this.form.name = client.name,
-            this.form.phone = client.phone,
-            this.form.email = client.email,
-            this.form.nature = client.nature
+            this.form.montant = encaissement.montant,
+            this.form.date = encaissement.date,
+            this.form.facture = encaissement.facture,
+            this.form.client_id = encaissement.client_id
             
           }      
-        )
-            
+        )            
     },
 
     methods: {
-
         submit(){          
-            this.$axios.put('/update/client', {
+            this.$axios.put('/update/encaissement', {
             id: this.$route.params.id,
-            name: this.form.name,
-            email: this.form.email,
-            phone: this.form.phone,
-            nature: this.form.nature,
-           compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            montant: this.form.montant,
+            date: this.form.date,
+            facture: this.form.facture,
+            client_id: this.form.client_id,
+        //    compagnie_id: this.$auth.$storage.getUniversal('company_id')
 
             })
             .then(response =>{
                 this.$router.push({
-                  path:'/clients/list_client',})
+                  path:'/encaissements/list_encaissement',})
             })          
-        }
+        },
+
+        refresh(){
+            this.$axios.get('/index/client',{params: {
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+            })
+            .then(response => {console.log(response.data.data.data);
+            this.clients = response.data.data.data })
+        },
+        
     }
    
 }

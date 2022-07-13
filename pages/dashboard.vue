@@ -43,7 +43,7 @@
                         <span class="percent">15%</span>
                       </div>
                       <div class="design">
-                        <p>1 400 000 F CFA</p>
+                        <p>{{encaissement}} F CFA</p>
                         Encaissements
                       </div>
                   </div>
@@ -54,7 +54,7 @@
                         <span class="percent">15%</span>
                       </div>
                       <div class="design">
-                        <p>20 000 F CFA</p>
+                        <p>{{decaissement}}0 F CFA</p>
                         Décaissements
                       </div>
                   </div>
@@ -178,7 +178,7 @@ export default {
         this.$axios.post('/tableau/de/bord',{
               date_debut: date,
               date_fin: date
-        }).then(response => {console.log(response);
+        }).then(response => {console.log(response.data.data);
            this.volume_vente  = response.data.data[0][0].volume_vente
            this.chiffre_affaire = response.data.data[1][0].chiffre_d_affaire
            this.encaissement = response.data.data[2][0].encaissement
@@ -287,8 +287,8 @@ export default {
           this.$axios.post('/tableau/de/bord',{
               date_debut: this.form.date_debut,
               date_fin: this.form.date_fin
-          }).then(response => {console.log(response);
-          this.infos  = response.data.data.data})
+          }).then(response => {console.log(responseresponse.data.data.data);
+          this.infos  = response.data.data})
         }
         
     },

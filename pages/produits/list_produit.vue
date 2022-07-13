@@ -20,19 +20,21 @@
                     <th>Prix d'achat</th>
                     <th>Stock minimal</th>
                     <th>Stock maximal</th>
+                    <th>Valorisation du produit</th>
                     <th>Actions</th>
                 </tr>
             </thead>
           
             <tbody>
               <tr  v-for="(produit, i) in produits" :key="i">
-                <td>{{produit.category_id}}</td>
+                <td>{{produit.category.name}}</td>
                 <td>{{produit.name}}</td>
                 <td>{{produit.quantity}}</td>
                 <td>{{produit.price_sell}}</td>
                 <td>{{produit.price_buy}}</td>
                 <td>{{produit.stock_min}}</td>
                 <td>{{produit.stock_max}}</td>
+                <td>{{produit.quantity * produit.price_sell}}</td>
                 <td>
                   <button @click="voirProduit(produit.id)"><i class='bx bxs-info-circle'></i></button>
                   <NuxtLink :to="'/produits/'+produit.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
@@ -62,13 +64,13 @@ export default {
   data () {
     return {
       showModal: false,
-      identifiant1 : "0",
-      identifiant2 : "0",
-      identifiant3 : "0",
-      identifiant4 : "0",
-      identifiant5 : "0",
-      identifiant6 : "0",
-      identifiant7 : "0",
+      identifiant1 : "",
+      identifiant2 : "",
+      identifiant3 : "",
+      identifiant4 : "",
+      identifiant5 : "",
+      identifiant6 : "",
+      identifiant7 : "",
       produits: [],
       produit: "",
       compagnie_id: ""
@@ -92,12 +94,13 @@ export default {
         },
 
         refresh(){
-          this.$axios.post('/index/product',{
+          this.$axios.get('/index/product',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
-          })     
+          }
+          })
           .then(response => 
             {
-              console.log(response);
+              console.log(response.data.data.data);
               this.produits = response.data.data.data
             }
           )
@@ -158,7 +161,7 @@ thead tr{
     background-color: transparent;
 }
 th, td{
-    padding: 20px 10px;
+    padding: 25px 10px;
     border: 1px solid #ddd
 }
 tbody, tr, td, th{

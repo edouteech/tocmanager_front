@@ -4,12 +4,12 @@
 
     <div class="zone">
         <div class="titre">
-            Encaissements
+            Décaissements
         </div>
-        <p>Enregistrer un encaissement</p>
+        <p>Enregistrer un décaissement</p>
        
         <form action="" method="POST">
-            <h1>Ajout d'encaissement</h1>
+            <h1>Ajout de décaissement</h1>
 
             <div class="input-form">					
                 <input type="number" placeholder="Entrer le montant " v-model="form.montant" autocomplete="off" required>
@@ -23,18 +23,18 @@
                 </select> -->
             <!-- </div> -->
             <div class="input-form">    
-                <input type="datetime-local" placeholder="Entrer la date de l'encaissement " v-model="form.date" autocomplete="off" required>
+                <input type="datetime-local" placeholder="Entrer la date du décaissement " v-model="form.date" autocomplete="off" required>
                 <span class="error">{{error_champ.email}}</span>
             </div>
             <div class="input-form"> 
-                <select v-model="form.client_id" required>
-                    <option disabled value="">Sélectionner le client</option>
-                    <option v-for="(client, i) in clients" :key="i" :value="client.id">{{client.name}}</option>
+                <select v-model="form.supplier_id" required>
+                    <option disabled value="">Sélectionner le fournisseur</option>
+                    <option v-for="(fournisseur, i) in fournisseurs" :key="i" :value="fournisseur.id">{{fournisseur.name}}</option>
                 </select>
                 <span class="error">{{error_champ.nature}}</span>
             </div>
             <div class="submit-form">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer l'encaissement'" name="submit">				          
+                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer le décaissement" name="submit">				          
             </div>
 
         </form>
@@ -54,13 +54,13 @@ export default {
     },
     data () {
         return{
-            clients: [],
-            client: "",
+            fournisseurs: [],
+            fournisseur: "",
             form: {
                 montant: '',
                 facture: '',
                 date: '',
-                client_id:'',
+                supplier_id:'',
                 compagnie_id: ''
             },
             error_message: "",
@@ -69,26 +69,26 @@ export default {
     },
 
     mounted(){
-        this.$axios.get('/index/client',{params: {
+        this.$axios.get('/index/fournisseur',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           })
         .then(response => {console.log(response.data.data.data);
-        this.clients = response.data.data.data })
+        this.fournisseurs = response.data.data.data })
     },
 
     methods: {
         async submit(){
-            await  this.$axios.post('/create/encaissement',{
+            await  this.$axios.post('/create/decaissement',{
               montant: this.form.montant,
               facture: 1,
               date: this.form.date,
-              client_id: this.form.client_id,
+              supplier_id: this.form.supplier_id,
               user_id: this.$auth.user.id,
             //   compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
-                this.$router.push({path:'/encaissements/list_encaissement',})})
+                this.$router.push({path:'/decaissements/list_decaissement',})})
             .catch( error => console.log( error ) )
                 //  console.log(this.form.name)                
         },

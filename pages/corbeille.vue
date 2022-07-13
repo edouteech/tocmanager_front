@@ -31,6 +31,17 @@
             <NuxtLink to="/profils/delete_profil" class="case">      
                 Utilisateurs 
             </NuxtLink>
+        </div><hr>
+        <div class="cases">
+            <NuxtLink to="/encaissements/delete_encaissement" class="case">      
+                Encaissements
+            </NuxtLink>
+            <NuxtLink to="/decaissements/delete_decaissement" class="case">      
+                Décaissements
+            </NuxtLink>
+            <!-- <NuxtLink to="/profils/delete_profil" class="case">      
+                Utilisateurs 
+            </NuxtLink> -->
         </div>
   </div>
  

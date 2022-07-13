@@ -22,7 +22,7 @@
           <tbody>
             <tr  v-for="(achat, i) in achats" :key="i">
               <td>{{achat.date_buy}}</td>
-              <td>{{achat.fournisseur_id}}</td>
+              <td>{{achat.supplier.name}}</td>
               <td>{{achat.amount}}</td>
               <td>
                 <NuxtLink :to="'/achats/'+achat.id"><i class='bx bxs-edit' label="modifier"></i></NuxtLink>
@@ -61,9 +61,10 @@ export default {
         },
 
         recupFournisseur(){
-          this.$axios.post('/index/fournisseur',{
-          compagnie_id: this.$auth.$storage.getUniversal('company_id')})
-          .then(response => {console.log(response.data.data.data);
+          this.$axios.get('/index/client',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response => {console.log(response.data.data.data);
           this.fournisseurs = response.data.data.data })
         }   
     },

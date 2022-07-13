@@ -24,7 +24,7 @@
                 </NuxtLink>
             </li>
             <li>
-                <NuxtLink to="/achatVente">
+                <NuxtLink to="/essai">
                     <div class="rubrique">
                         <i class='bx bx-cart-add'></i>
                         <span class="links_name">Achats & Ventes</span>
@@ -56,10 +56,18 @@
                 </NuxtLink>
             </li>   
             <li>
-                <NuxtLink to="/encaissements/encaissement">
+                <NuxtLink to="/encaissements/list_encaissement">
                     <div class="rubrique">
                         <i class='bx bxs-credit-card'></i>
                         <span class="links_name">Encaissements</span>
+                    </div>
+                </NuxtLink>
+            </li>
+            <li>
+                <NuxtLink to="/decaissements/list_decaissement">
+                    <div class="rubrique">
+                        <i class='bx bxs-credit-card'></i>
+                        <span class="links_name">Décaissements</span>
                     </div>
                 </NuxtLink>
             </li>

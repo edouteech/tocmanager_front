@@ -52,10 +52,10 @@ export default {
    data () {
       return {
         showModal: false,
-        identifiant1 : "0",
-        identifiant2 : "0",
-        identifiant3 : "0",
-        identifiant4 : "0",
+        identifiant1 : "",
+        identifiant2 : "",
+        identifiant3 : "",
+        identifiant4 : "",
         compagnie_id: '',
         clients: [],
         client: "",
@@ -70,14 +70,17 @@ export default {
 
         deleteClient(id){ console.log(id);
           this.$axios.delete('/delete/client/' +id)
-          .then(response =>  {console.log(response.data.data);
+          .then(response =>  {console.log(response);
           this.refresh()})
          },
+          
         
         refresh(){
-          this.$axios.post('/index/client',{
-          compagnie_id: this.$auth.$storage.getUniversal('company_id')})
-          .then(response => {console.log(response.data.data.data);
+          this.$axios.get('/index/client',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          })
+          .then(response => {console.log(response);
           this.clients = response.data.data.data })
         },
 
@@ -133,7 +136,7 @@ thead tr{
     background-color: transparent;
 }
 th, td{
-    padding: 15px 20px;
+    padding: 20px 15px;
     border: 1px solid #ddd
 }
 tbody, tr, td, th{

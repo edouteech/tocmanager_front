@@ -109,8 +109,8 @@ export default {
     data () {
       return {
         showModal: false,
-        identifiant1 : "0",
-        identifiant2 : "0",
+        identifiant1 : "",
+        identifiant2 : "",
         compagnie_id: ''  ,
         categories: [],
         categorie: "",
@@ -130,13 +130,16 @@ export default {
         },      
         
         refresh(){
-          this.$axios.post('/index/categorie',{
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')})        
-        .then(response =>{console.log(response.data.data.data);
+          this.$axios.get('/index/categorie',{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response =>{console.log(response.data.data.data);
             this.categories = response.data.data.data
             })     
         },
-
+  
+        
         voirCategorie(id){
             this.showModal = true;
             this.$axios.get('/index/categorie/'+ id).then(response => {console.log(response.data.data[0]);

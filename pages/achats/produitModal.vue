@@ -93,8 +93,11 @@
         },
 
         refresh(){
-          this.$axios.post('/index/categorie', {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          this.$axios.get('/index/categorie',
+          {
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
           }).then(response =>
             {console.log(response); this.categories = response.data.data.data })
         },

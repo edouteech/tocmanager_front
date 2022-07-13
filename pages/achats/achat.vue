@@ -11,7 +11,7 @@
             <div class="cadre-haut">             
                 <div class="ajout-client">    
                     <i class='bx bxs-user-plus'></i>                                 
-                    <select  v-model="form.fournisseur_id">
+                    <select  v-model="form.supplier_id">
                         <option disabled value="">Choisir le fournisseur</option>
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                             {{fournisseur.name}}
@@ -100,7 +100,7 @@ export default {
             form:{
                 user_id: '',
                 date_buy: '',
-                fournisseur_id: '',
+                supplier_id: '',
                 amount: '',
                 tax: '0',
                 discount: '0',
@@ -131,7 +131,7 @@ export default {
               amount: this.form.amount,
               rest: this.form.rest,
               user_id: this.$auth.user.id,
-              fournisseur_id: this.form.fournisseur_id,  
+              supplier_id: this.form.supplier_id,  
               buy_lines: this.form.buy_lines  
             }).then(response =>{ console.log(response)
                     this.$router.push({path:'/achats/SavedModal',})
@@ -139,16 +139,20 @@ export default {
         },
 
         refresh(){
-            this.$axios.post('/index/fournisseur',{
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }).then(response => {console.log(response);
+            this.$axios.get('/index/fournisseur',
+            {
+                params: {
+                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                }
+          }).then(response => {console.log(response);
             this.fournisseurs = response.data.data.data})
         },
 
         recupProduct(){
-            this.$axios.post('/index/product',{
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }).then(response => {console.log(response.data.data.data);
+            this.$axios.get('/index/product',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response => {console.log(response.data.data.data);
             this.produits = response.data.data.data}) 
         },
 

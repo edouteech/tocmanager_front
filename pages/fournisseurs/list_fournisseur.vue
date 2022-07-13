@@ -56,10 +56,10 @@ export default {
   data () {
     return {
       showModal: false,
-      identifiant1 : "0",
-      identifiant2 : "0",
-      identifiant3 : "0",
-      identifiant4 : "0",
+      identifiant1 : "",
+      identifiant2 : "",
+      identifiant3 : "",
+      identifiant4 : "",
       fournisseurs: [],
       fournisseur: "",
       compagnie_id: ''
@@ -79,8 +79,9 @@ export default {
         },
          
         refresh(){
-          this.$axios.post('/index/fournisseur',{
+          this.$axios.get('/index/fournisseur',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
           })
           .then(response => 
         

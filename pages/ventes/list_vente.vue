@@ -22,9 +22,10 @@
           <tbody>
             <tr  v-for="(vente, i) in ventes" :key="i">
               <td>{{vente.date_sell}}</td>
-              <td>{{vente.client_id}}</td>
+              <td>{{vente.client.name}}</td>
               <td>{{vente.amount}}</td>
               <td>
+                <button @click="voirVente(vente.id)"><i class='bx bxs-info-circle'></i></button>
                 <NuxtLink :to="'/ventes/'+vente.id"><i class='bx bxs-edit' label="modifier"></i></NuxtLink>
                 <button @click="deleteVente(vente.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
               </td>
@@ -32,26 +33,36 @@
           </tbody>
         </table>  
   </div>
+  <voirVente :date= 'identifiant1' :client= 'identifiant2' :montant= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/>
 
 </div>
 
 </template>
 
+
 <script>
+import voirVente from './voir_vente.vue'
 import SideBar from '../nav.vue'
 export default {
   components: {
     SideBar,  
+    voirVente,
   },
    data () {
       return {
+        showModal: false,
+        identifiant1 : "",
+        identifiant2 : "",
+        identifiant3 : "",
+        identifiant4 : "",
         ventes: [],
         vente: "",
       }
     },
     methods: {
         deleteVente(id){
-          this.$axios.delete('/delete/vente/' +id).then(response =>{console.log(response.data.data);
+          console.log(id)
+          this.$axios.delete('/delete/vente/'+id).then(response =>{console.log(response);
             this.refresh()})                
         },
         
@@ -61,11 +72,24 @@ export default {
         },
 
         recupClient(){
-          this.$axios.post('/index/client',{
-          compagnie_id: this.$auth.$storage.getUniversal('company_id')})
-          .then(response => {console.log(response.data.data.data);
+          this.$axios.get('/index/client',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          })
+          .then(response => {
           this.clients = response.data.data.data })
-        }   
+        },
+
+        voirVente(id){
+            this.showModal = true;
+            this.$axios.get('/index/vente/'+ id).then(response => {console.log(response.data.data[0]);
+             this.identifiant1 = response.data.data[0].date_sell
+             this.identifiant2 = response.data.data[0].client_id
+             this.identifiant3 = response.data.data[0].amount
+            //  this.identifiant4 = response.data.data[0].nature      
+             }) 
+               
+        },
     },
     mounted () {
       this.refresh()
