@@ -33,7 +33,7 @@
           </tbody>
         </table>  
   </div>
-  <voirVente :date= 'identifiant1' :client= 'identifiant2' :montant= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/>
+  <voirVente :date= 'identifiant1' :client= 'identifiant2' :montant= 'identifiant3' :facture='identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 
 </div>
 
@@ -86,6 +86,7 @@ export default {
              this.identifiant1 = response.data.data[0].date_sell
              this.identifiant2 = response.data.data[0].client_id
              this.identifiant3 = response.data.data[0].amount
+             this.identifiant4 = response.data.data[0].id
             //  this.identifiant4 = response.data.data[0].nature      
              }) 
                
@@ -120,7 +121,7 @@ thead tr{
     background-color: transparent;
 }
 th, td{
-    padding: 15px 70px;
+    padding: 15px 50px;
     border: 1px solid #ddd
 }
 tbody, tr, td, th{

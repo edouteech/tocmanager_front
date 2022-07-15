@@ -27,13 +27,14 @@
                     <span class="error">{{error_champ.nature}}</span>
                 </div>
                 <div class="submit-form">
-                    <input type="submit" id='submit' @click.stop="submit()" value="Enregistrer le client" name="submit">				          
+                    <input type="submit" id='submit' @click="submit()" value="Enregistrer le client" name="submit">				          
                 </div>
             </form>
     </div>
     <div class="close" @click="$emit('close-modal')">
       <img class="close-img" src="../images/fermer.png" alt="" />
     </div>
+
   </div>
 </template>
 
@@ -65,9 +66,7 @@
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
             // .then(response =>{console.log(response) 
-            //         this.$router.push({ 
-            //           path:'/clients/list_client',
-            //         })})
+            //         this.showModal == false;})
   
             .catch( error => console.log( error ) )
                     // console.log('user login')

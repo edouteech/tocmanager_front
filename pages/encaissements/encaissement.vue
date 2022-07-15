@@ -81,7 +81,7 @@ export default {
         async submit(){
             await  this.$axios.post('/create/encaissement',{
               montant: this.form.montant,
-              facture: 1,
+              facture: 0,
               date: this.form.date,
               client_id: this.form.client_id,
               user_id: this.$auth.user.id,

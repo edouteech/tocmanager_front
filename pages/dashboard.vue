@@ -54,7 +54,7 @@
                         <span class="percent">15%</span>
                       </div>
                       <div class="design">
-                        <p>{{decaissement}}0 F CFA</p>
+                        <p>{{decaissement}} F CFA</p>
                         Décaissements
                       </div>
                   </div>
