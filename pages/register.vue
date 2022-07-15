@@ -131,24 +131,8 @@
         }
       },
 
-      // mounted () {
-      // this.refresh()
-      // },
-            
+
         methods:{
-            // refresh(){
-            //   var that = this;    
-            //   this.$axios
-            //       .post('/create/profil',{ 
-            //         data: this.form })
-            //       .then(response => 
-            //     {console.log(response)
-            //       if (response.data.status == "error") {
-            //                 that.errors = response.data.data
-            //             } 
-            //     });
-                
-            // },
            async register(){
             await  this.$axios.post('/create/profil',{
               name: this.form.name,

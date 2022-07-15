@@ -24,7 +24,7 @@
                 </NuxtLink>
             </li>
             <li>
-                <NuxtLink to="/essai">
+                <NuxtLink to="/achatVente">
                     <div class="rubrique">
                         <i class='bx bx-cart-add'></i>
                         <span class="links_name">Achats & Ventes</span>
@@ -168,13 +168,15 @@ export default {
   width:100%;
   overflow: hidden;
 }
+
 .logo_content img{
     display: flex;
     height: 50px;
     width: 80%;
     align-items: center;
-   margin-bottom: 3%;
-    }
+    margin-bottom: 3%;
+}
+
 .header{
       position: absolute;
       top: 0;
