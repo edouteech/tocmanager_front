@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Clients </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="contenu ">
         <h4>Enregistrer un nouveau client</h4>
         <form action="">
             <div class="form-group ">
@@ -111,6 +111,9 @@ form{
 	margin-top: 5%;
 
 }      
-
+input::placeholder {
+    font-size: 15px;
+    opacity: 0.5;
+}
 
 </style>

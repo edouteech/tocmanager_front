@@ -1,8 +1,8 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop>                     
+    <div class="modaler" @click.stop>                     
                 <br><br>
-            <span class="information">Informations du fournisseur</span><br><br><br>
+            <h4>Informations du fournisseur</h4><br><br><br>
 
                 <div class="input-form">					
                    <span class="mode">Nom du fournisseur: </span> <span class="resp">{{nom}}</span>
@@ -50,7 +50,7 @@
   background-color: #ebebfcda;
 }
 
-.modal {
+.modaler {
   background-color: white;
   height: 600px;
   width: 600px;
@@ -67,15 +67,7 @@
   width: 25px;
 }
 
-.modal .information{
-    text-align: center;
-    padding-left: 20%;
-    font-weight: bold;
-    font-size: 24px;
-    text-decoration: underline;
-    color: darkblue;
 
-}
 
 .input-form .mode{
     font-size: 20px;

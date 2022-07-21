@@ -112,4 +112,8 @@ form{
 
 }      
 
+input::placeholder {
+    font-size: 15px;
+    opacity: 0.5;
+}
 </style>

@@ -10,20 +10,20 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
-                  <th>Noms de Catégorie</th>
-                  <th>Catégories parentes</th>
-                  <th>Actions</th>
+                <th>Noms de Catégorie</th>
+                <th>Catégories parentes</th>
+                <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr  v-for="(categorie, i) in categories" :key="i">
-            <td>{{categorie.name}}</td>
-            <td>{{categorie.parent_id}}</td>
-            <td class="action">
-              <div @click="voirCategorie(categorie.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-							<NuxtLink :to="'/categorie/'+categorie.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-							<div @click="deleteCategorie(categorie.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-						</td>
+              <td>{{categorie.name}}</td>
+              <td>{{categorie.parent_id}}</td>
+              <td class="action">
+                <div @click="voirCategorie(categorie.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/categorie/'+categorie.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteCategorie(categorie.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -106,7 +106,6 @@ export default {
 
 }      
 
-
 thead tr{
     background-color: transparent;
 }
@@ -115,8 +114,10 @@ thead tr{
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
 }
+
 .action{
    display: flex;
+      
 }
 
 .custom-btn {
