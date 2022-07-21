@@ -36,7 +36,7 @@
 
             <div class="form-outline mb-4">
               <span class="fa fa-mobile px-2"></span> <label class="form-label">Téléphone</label>
-              <div class="input-field"><input type="number" class="form-control form-control-lg" v-model="form.phone" required
+              <div class="input-field"><input type="tel" class="form-control form-control-lg" v-model="form.phone" required
                 placeholder="Entrer votre numéro de téléphone" /></div>      
             </div>
             <div class="form-outline mb-4">

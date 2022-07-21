@@ -1,16 +1,16 @@
 <template>
-  <div>
+<div>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
-    <div class="titre">
-      <Sidebar /> <p class="name"> Tableau de Bord </p>
-    </div>
-    <div class="zone">
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Tableau De Bord </h3>
+    </nav>
+    <div class="contenu">
           <form action="action" method="POST">
             <div class="range">
-                <span class="du"> Du : </span><input class="debut" type="datetime-local"  v-model="form.date_debut"  required />      
-                <span class="du">Au :</span> <input  class="fin" type="datetime-local"  v-model="form.date_fin"  required />   
-                <div class="visualiser" @click="Visualiser()">Visualiser</div>               
-            </div>
+              <input class="form-control" type="datetime-local"  v-model="form.date_debut"  required />  
+              <input  class="form-control" type="datetime-local"  v-model="form.date_fin"  required />  
+              <div class="visualiser" @click="Visualiser()"><i class="fa fa-eye" aria-hidden="true"></i></div>    
+            </div>  
           </form>
         <div class="contain">
           <div class="carreaux">
@@ -62,14 +62,13 @@
           <div class="produits">
               <div class="vendu">
                   Produits les plus vendus
-                  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                      
-                      <tr>
-                        <th scope="col" class="px-6 py-3">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr class="table-success">
+                        <th>
                           Noms
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th>
                           Quantités
                         </th>
                       </tr>
@@ -86,33 +85,26 @@
 
               <div class="dernier">
                 Dernières ventes éffectuées
-                  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                      
-                      <tr>
-                        <th scope="col" class="px-6 py-3">
-                        
-                        </th>
-                        <th scope="col" class="px-6 py-3">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr class="table-dark">
+                        <th >
                           Noms
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th>
                           Total
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th>
                           Dates
                         </th>
                       </tr>
                     </thead>
                     <tbody v-for="(dernieres_ventes1, i) in dernieres_ventes" :key="i">
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td></td>
+                      <tr>
                         <td>{{dernieres_ventes1.client_id}}</td>
                         <td>{{dernieres_ventes1.amount}}</td>
                         <td>{{moment(dernieres_ventes1.date_sell).utc().format('DD MM YYYY')}}</td>
                       </tr>
-
                     </tbody>
                   </table>
               </div>
@@ -224,7 +216,7 @@ export default {
         const myChartVente = new Chart(ctz, {
           type: 'line',
           data: {
-              labels: [d1, 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+              labels: ['success', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
               datasets: [{
                   label: '# ventes',
                   data: [12, 19, 3, 5, 2, 3],
@@ -298,62 +290,36 @@ export default {
    margin: 5%;
 }
 
-.titre{
-  display: flex;
-  border: 1px solid #202020;
-  padding: 2% 10%;
-  margin-bottom: 3%;
-  margin-left: -5%;
-  background-color: #202020;
-  color: #fff;
-  letter-spacing: 2px;
-}
+.contenu{
+  margin: 5%;
 
-.titre .name{
-  margin-left: 15%;
-  font-size: 24px;
 }
 
 .range{
   display: flex;
   border: 1px solid gainsboro;
   border-radius: 10px;
-  padding: 1% 10%;
+  padding: 1% 2%;
   margin-bottom: 5%;
   font-size: 18px;
 
 }
 
 .range input{
-  border: none; outline: none;
-
-}
-
-.range .debut{
-  margin-right: 10%;
-  margin-left: 3%;
-}
-
-.range .fin{
-  margin-left: 3%;
-  margin-right: 10%;
-}
-
-.range .du{
-  padding-top: 7px;
+  margin-right: 2%;
 }
 
 .range .visualiser{
-  border: 2px dotted blue;
+  border: 1px solid black;
   padding: 5px 8px;
   cursor: pointer;
   font-weight: normal;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 15px;
 }
 
 .range .visualiser:hover{
-  background-color: rgb(129, 192, 246);
+  background-color: rgb(233, 243, 251);
 }
 
 .contain{
@@ -367,7 +333,7 @@ export default {
 .carreaux .carre{
     margin: 2%;
     width: 25%;
-    height: 150px;
+    height: 5%;
     border: 1px solid transparent;
     background-color: rgb(241, 243, 254);;
 
@@ -397,7 +363,7 @@ export default {
 
 .carre .design{
   margin-left: 5%;
-  padding-top: 15%;
+  padding-top: 12%;
   font-size: 15px;
 }
 
@@ -440,5 +406,25 @@ thead tr{
     background-color: rgb(239, 239, 246);
 }
 
+
+@media screen and (max-width: 400px) {
+  .carreaux{
+    display: inline;
+  }
+
+  .carreaux .carre{
+    width: 90%;
+  }
+
+  .produits{
+    display: inline;
+  }
+
+  .courbes{
+    display: inline;
+  }
+
+
+}
 
 </style>

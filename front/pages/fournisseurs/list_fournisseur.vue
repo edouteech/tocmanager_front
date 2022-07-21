@@ -103,7 +103,6 @@ export default {
 }
 </script>
 
-<styl
 <style scoped>
 .contenu{
   margin: 5%;

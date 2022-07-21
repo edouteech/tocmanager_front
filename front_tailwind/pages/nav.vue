@@ -166,7 +166,7 @@ export default {
   position: relative;
   min-height: 100vh;
   width:100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .logo_content img{
