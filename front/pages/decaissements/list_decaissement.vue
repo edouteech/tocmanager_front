@@ -1,0 +1,214 @@
+<template>
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Décaissements </h3>
+    </nav>
+
+    <div class="contenu">
+      <h4>Liste des décaissements</h4>
+      <NuxtLink  to="/decaissements/decaissement"><button class="custom-btn btn-3"><span>Remplir décaissement</span></button></NuxtLink>
+        <table class="table table-hover">
+          <thead>
+            <tr class="table-primary">
+                  <th>Dates de décaissement</th>
+                  <th>Montants</th>
+                  <th>Fournisseurs concernés</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+        
+          <tbody>
+            <tr  v-for="(decaissement, i) in decaissements" :key="i">
+              <td>{{decaissement.date}}</td>
+              <td>{{decaissement.montant}}</td>
+              <td>{{decaissement.supplier_id}}</td>
+              <td class="action">
+                <div @click="voirDecaissement(decaissement.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/decaissements/'+decaissement.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteDecaissement(decaissement.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>  
+    </div>
+<voirDecaissement :montant= 'identifiant1' :date= 'identifiant2' :supplier_id= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/>
+
+</div>
+
+</template>
+
+<script>
+import voirDecaissement from './voir_decaissement.vue'
+import Sidebar from '../sidebar.vue'
+export default {
+  layout: "empty",
+  auth:true,
+  components: {
+    Sidebar,  
+    voirDecaissement,
+  },
+   data () {
+      return {
+        showModal: false,
+        identifiant1 : "",
+        identifiant2 : "",
+        identifiant3 : "",
+        compagnie_id: '',
+        decaissements: [],
+        decaissement: "",
+      }
+    },
+
+    mounted () {
+      this.refresh()
+    },
+
+    methods: {
+        deleteDecaissement(id){ console.log(id);
+          this.$axios.delete('/delete/decaissement/' +id)
+          .then(response =>  {console.log(response.data.data);
+          this.refresh()})
+         },
+
+        refresh(){
+          this.$axios.get('/index/decaissement',
+            // {
+            //     params: {
+            //         compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            //     }
+            // }
+          ).then(response => {console.log(response.data.data);
+          this.decaissements = response.data.data})
+        },
+
+        voirDecaissement(id){
+            this.showModal = true;
+            this.$axios.get('/index/decaissement/'+ id).then(response => {console.log(response.data.data[0]);
+             this.identifiant1 = response.data.data[0].montant
+             this.identifiant2 = response.data.data[0].date
+             this.identifiant3 = response.data.data[0].supplier_id  
+             }) 
+               
+        },
+
+    },       
+     
+}
+</script>
+
+<style scoped>
+.contenu{
+  margin: 5%;
+
+}
+.fa{
+  margin: 0 5px;
+  font-size: 22px;
+  cursor: pointer;
+}
+.table{
+	margin-top: 5%;
+
+}      
+
+
+thead tr{
+    background-color: transparent;
+}
+
+
+tbody tr:last-of-type{
+    border-bottom: 2px solid rgb(140, 140, 250);
+}
+.action{
+   display: flex;
+}
+
+.custom-btn {
+  width: 180px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+.btn-3 {
+  background: rgb(0,172,238);
+background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+  width: 180px;
+  height: 40px;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  
+}
+.btn-3 span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn-3:before,
+.btn-3:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 0;
+   background: rgba(2,126,251,1);
+  transition: all 0.3s ease;
+}
+.btn-3:before {
+  height: 0%;
+  width: 2px;
+}
+.btn-3:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-3:hover{
+   background: transparent;
+  box-shadow: none;
+}
+.btn-3:hover:before {
+  height: 100%;
+}
+.btn-3:hover:after {
+  width: 100%;
+}
+.btn-3 span:hover{
+   color: rgba(2,126,251,1);
+}
+.btn-3 span:before,
+.btn-3 span:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+   background: rgba(2,126,251,1);
+  transition: all 0.3s ease;
+}
+.btn-3 span:before {
+  width: 2px;
+  height: 0%;
+}
+.btn-3 span:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-3 span:hover:before {
+  height: 100%;
+}
+.btn-3 span:hover:after {
+  width: 100%;
+}
+</style>
