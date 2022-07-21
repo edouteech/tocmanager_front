@@ -393,20 +393,6 @@ export default {
   margin-right: 4%;
 }
 
-table{
-margin-top: 3%;
-}
-th, td{
-    padding: 5px 10px;
-    text-align: center;
-
-}
-
-thead tr{
-    background-color: rgb(239, 239, 246);
-}
-
-
 @media screen and (max-width: 400px) {
   .carreaux{
     display: inline;
