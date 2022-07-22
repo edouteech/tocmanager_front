@@ -140,8 +140,12 @@ form{
 }
 .table{
 	margin-top: 5%;
+}  
 
-}      
+input::placeholder {
+    font-size: 15px;
+    opacity: 0.5;
+}
 
 
 </style>

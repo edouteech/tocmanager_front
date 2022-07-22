@@ -22,7 +22,7 @@
               <td>{{achat.supplier.name}}</td>
               <td>{{achat.amount}}</td>
               <td class="action">
-                <div  @click="voirVente(vente.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <div  @click="voirAchat(achat.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/achats/'+achat.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteAchat(achat.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
               </td>
@@ -30,20 +30,27 @@
           </tbody>
         </table>
   </div><br><br><br>
-
+<voirAchat :date= 'identifiant1' :fournisseur= 'identifiant2' :montant= 'identifiant3' :facture='identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
 
 <script>
+import voirAchat from './voir_achat.vue'
 import Sidebar from '../sidebar.vue'
 export default {
   layout: "empty",
   components: {
     Sidebar,  
+    voirAchat,
   },
    data () {
       return {
+        showModal: false,
+        identifiant1 : "",
+        identifiant2 : "",
+        identifiant3 : "",
+        identifiant4 : "",
         achats: [],
         achat: "",
       }
@@ -65,7 +72,19 @@ export default {
           }
           }).then(response => {console.log(response.data.data.data);
           this.fournisseurs = response.data.data.data })
-        }   
+        },
+        
+        voirAchat(id){
+            this.showModal = true;
+            this.$axios.get('/index/achat/'+ id).then(response => {console.log(response.data.data[0]);
+             this.identifiant1 = response.data.data[0].date_buy
+             this.identifiant2 = response.data.data[0].supplier_id
+             this.identifiant3 = response.data.data[0].amount
+             this.identifiant4 = response.data.data[0].id
+            //  this.identifiant4 = response.data.data[0].nature      
+             }) 
+               
+        },
     },
     mounted () {
       this.refresh()

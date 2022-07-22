@@ -27,7 +27,7 @@
                 <NuxtLink to="/dashboard">
                     <div class="rubrique">
                         <i class="fa fa-th-large" aria-hidden="true"></i>
-                        <span class="links_name">Tableau de bord</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Tableau de bord</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -35,7 +35,7 @@
                 <NuxtLink to="/achatVente">
                     <div class="rubrique">
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                        <span class="links_name">Achats & Ventes</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Achats & Ventes</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -43,7 +43,7 @@
                 <NuxtLink to="/ventes/list_vente">
                     <div class="rubrique">
                         <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                        <span class="links_name">Factures des ventes</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Factures des ventes</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -51,7 +51,7 @@
                 <NuxtLink to="/achats/list_achat">
                     <div class="rubrique">
                         <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                        <span class="links_name">Factures des achats</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Factures des achats</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -59,7 +59,7 @@
                 <NuxtLink to="/clients/list_client">
                     <div class="rubrique">
                         <i class="fa fa-list-ul" aria-hidden="true"></i>
-                        <span class="links_name">Liste des Clients</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Liste des Clients</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -67,7 +67,7 @@
                 <NuxtLink to="/fournisseurs/list_fournisseur">
                     <div class="rubrique">
                         <i class="fa fa-list-ul" aria-hidden="true"></i>
-                        <span class="links_name">Liste des Fournisseurs</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Liste des Fournisseurs</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -88,7 +88,7 @@
                 <NuxtLink to="/encaissements/list_encaissement">
                     <div class="rubrique">
                         <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
-                        <span class="links_name">Encaissements</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Encaissements</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -96,7 +96,7 @@
                 <NuxtLink to="/decaissements/list_decaissement">
                     <div class="rubrique">
                         <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
-                        <span class="links_name">Décaissements</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Décaissements</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -104,7 +104,7 @@
                 <NuxtLink to="/produits/list_produit">
                     <div class="rubrique">
                        <i class="fa fa-cubes" aria-hidden="true"></i>
-                        <span class="links_name">Liste des Produits</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Liste des Produits</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -112,7 +112,7 @@
                 <NuxtLink to="/categorie/list_categorie">
                     <div class="rubrique">
                         <i class="fa fa-database" aria-hidden="true"></i>
-                        <span class="links_name">Toutes les Catégories</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Toutes les Catégories</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -136,7 +136,7 @@
                 <NuxtLink to="/corbeille">
                     <div class="rubrique">
                         <i class="fa fa-trash" aria-hidden="true"></i>
-                        <span class="links_name">Corbeille</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Corbeille</span>
                     </div>
                 </NuxtLink>   
             </li> 
@@ -145,7 +145,7 @@
             <div class="bas-page">
                     <img src="/images/user.png" alt="logo" srcset="">
                     <span class="user_name">{{$auth.user.name}}</span> 
-                    <div class="custom-btn btn-5" @click="logout">
+                    <div class="custom-btn btn-5" @click="logout" data-bs-dismiss="offcanvas">
                     <!-- <i class='bx bx-log-out'></i> -->
                     Déconnexion</div>    
             </div>

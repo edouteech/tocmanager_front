@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay"  @click="$emit('close-modal')">
-    <div class="modal" @click.stop>
+    <div class="modaler" @click.stop>
       <img class="check" src="/images/eff.jpg" alt="" />
       <h6>Enregistré!</h6>
       <p>La facture a été sauvegardé</p>
@@ -30,7 +30,7 @@
   background-color: #000000da;
 }
 
-.modal {
+.modaler {
   text-align: center;
   background-color: white;
   height: 500px;
@@ -50,7 +50,6 @@
 
 .check {
   width: 150px;
-margin-left: 35%;
 }
 
 h6 {

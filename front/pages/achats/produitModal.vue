@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop>                     
+    <div class="modaler" @click.stop>                     
         <form action="" method="POST">
             <h1>Ajout rapide de produit</h1>
             <div class="input-form"> 
@@ -167,7 +167,7 @@ input[type=submit]:hover{
   background-color: #949292da;
 }
 
-.modal {
+.modaler {
   text-align: center;
   background-color: white;
   height: 800px;

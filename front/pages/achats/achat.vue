@@ -1,34 +1,34 @@
 <template>
 <div>
-      <div class="zone">
-        <div class="titre">
-           <Sidebar /> <p class="name"> Achats </p>
-          </div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Achats </h3>
+    </nav>
+
+    <div class="contenu">
+        <h4>Enregistrer un achat</h4><hr>
         <form action="" method="POST">
-            <h2>Enregistrer une achat</h2><hr>
             <div class="cadre-haut">             
-                <div class="ajout-client">    
-                    <i class='bx bxs-user-plus'></i>                                 
-                    <select  v-model="form.supplier_id">
+                <div class="ajout-client">                   
+                    <select class="form-control" v-model="form.supplier_id">
                         <option disabled value="">Choisir le fournisseur</option>
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                             {{fournisseur.name}}
                         </option>                           
                     </select>          
                     <div class="save-btn">
-                        <div @click="showModal = true">Ajouter un fournisseur</div>
+                        <div @click="showModal = true"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur</div>
                     </div>                   
                 </div>
                 <div class="facture-date">
-                   <span class="creation"> Date de création :</span> <input  type="datetime-local"  v-model="form.date_buy"/>                  
+                   <span class="creation"> Date de création :</span> <input  type="datetime-local" class="form-control"  v-model="form.date_buy"/>                  
                 </div>
             </div> <hr>
             
-            <div class="ajout-article" @click="addLine()"><i class='bx bxs-alarm-add'></i>Ajouter un article</div>
+            <div class="ajout-article" @click="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un article</div>
             
-              <div class="btn-ajout" @click="showProduit = true"><i class='bx bxs-plus-circle'></i><br> Nouveau produit</div>
+              <div class="btn-ajout" @click="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</div>
             <div class="commande">
-                <table class="tableau">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Désignation</th>
@@ -44,16 +44,16 @@
                     <tbody>
                         <tr v-for="(line, index) in form.buy_lines" :key="index">
                             <td>
-                                <select v-model="line.product_id" id="" @change="productChange"> 
+                                <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
                                 </select>
                             </td>
-                            <td><input type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                            <td><input type="num" v-model="line.price" autocomplete="off" required></td>
-                            <td><input type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
-                            <td><input type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
-                            <td><input type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
+                            <td><input class="form-control" type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
+                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
@@ -64,7 +64,6 @@
     
         </form>
     </div>
-
     <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
     <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
@@ -193,6 +192,15 @@ export default {
 </script>
 
 <style scoped>
+.contenu{
+  margin: 5%;
+
+}
+
+.commande{
+    margin: 5% 10%;
+}
+
 .titrer{
   border: 1px solid #202020;
   padding: 3%;
@@ -343,31 +351,20 @@ input[type=submit]:hover{
     border: 1px solid #b8a5f6;
     font-size: 16px;
 }
-.tableau{
-	border-collapse: collapse;
-	width: auto;
-	box-shadow: 0 5px 50px transparent;
-	border: 2px solid transparent;
-	text-align: center;
-	font-size: 13px;
+
+
+.table{
+	margin-top: 5%;
 }      
+
+
 thead tr{
     background-color: transparent;
 }
-th, td{
-    padding: 15px 20px;
-    border: 1px solid #ddd
-}
-tbody, tr, td, th{
-    border: 1px solid #ddd
-}
+
 
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
 }
-
-
-
-
 </style>
 

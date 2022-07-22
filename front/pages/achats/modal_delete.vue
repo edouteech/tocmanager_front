@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop>                     
+    <div class="modaler" @click.stop>                     
           <p>Etes vous sur de vouloir supprimer définitivement cette facture ??? </p>
           <div class="reponse">
                 <div class="yes"  @click="supAchats(infos)">
@@ -83,7 +83,7 @@
   background-color: #fbc9c9da;
 }
 
-.modal {
+.modaler {
   text-align: center;
   background-color: white;
   height: 250px;

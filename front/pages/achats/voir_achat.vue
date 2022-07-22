@@ -1,16 +1,14 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop><br>
-      <h4>Informations de la vente</h4><br><br><br>
+      <h4>Informations sur cet achat</h4><br><br>
       <div class="vente"> 
           <div class="info_vente">  
                 <div class="info">					
-                    <span class="mode">Date de la vente : </span> <span class="resp">{{date}}</span>
-                      <!-- {{info.name}}  -->
-                      
+                    <span class="mode">Date de l'achat : </span> <span class="resp">{{date}}</span>
                 </div>     <br>
                 <div class="info">        
-                    <span class="mode">Client concerné : </span><span class="resp"> {{client}}</span>
+                    <span class="mode">Fournisseur concerné : </span><span class="resp"> {{fournisseur}}</span>
                 </div><br>
             
                 <div class="info">    
@@ -22,7 +20,7 @@
           </div>     
       
           <div class="ajout_encais" >                     
-              <h3>Ajouter des encaissements pour ce client</h3><br><br>
+              <h6>Ajouter des décaissements pour ce fournisseur</h6><br><br>
               <form action="" method="POST">
                     <div class="ensemble">
                       <div class="input-form">					
@@ -30,7 +28,7 @@
                         <span class="error">{{error_champ.name}}</span>
                       </div>
                       <div class="input-form1">        
-                        <input type="number" placeholder="Entrer le montant à encaisser " v-model="form.montant" required>
+                        <input type="number" placeholder="Entrer le montant à décaisser " v-model="form.montant" required>
                         <span class="error">{{error_champ.phone}}</span>
                       </div>
                   </div>     
@@ -41,29 +39,27 @@
 
               </form>  
           </div>
-      </div><br><br><hr><br>
+      </div><br><hr><br>
       <div class="list_encais">
-        <h2>Liste des encaissements pour ce client</h2>
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-					<tr>
-						<th scope="col" class="px-6 py-3">
-							Dates d'encaissement
-						</th>
-            <th scope="col" class="px-6 py-3">
-							Montants encaissés
-						</th>
-
-					</tr>
-				</thead>
-				<tbody>
-					<tr 
-						class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <td>Today</td>
-            <td>200</td>
-					</tr>
-				</tbody>
-			</table>
+        <h6>Derniers décaissements pour ce client</h6>
+        <table class="table table-hover">
+          <thead>
+            <tr class="table-success">
+                <th>
+                    Dates de décaissement
+                </th>
+                 <th >
+                    Montants décaissés
+                </th>
+    		</tr>
+		   </thead>
+		   <tbody>
+			<tr>
+                <td>Today</td>
+                <td>200</td>
+			</tr>
+		   </tbody>
+		</table>
       </div>
     </div>
     <div class="close" @click="$emit('close-modal')">
@@ -75,8 +71,8 @@
 <script>
   export default {
     auth:true,
-    props: ['date', 'client', 'montant', 'facture'],
-    name: 'voirVente',
+    props: ['date', 'fournisseur', 'montant', 'facture'],
+    name: 'voirAchat',
     data () {
         return{
             form: {
@@ -92,21 +88,21 @@
     },
     
     mounted(){
-      console.log(this.client)
+      console.log(this.fournisseur)
     },
     methods: {
         async submit(){
-          console.log(this.client)
-            await  this.$axios.post('/create/encaissement',{
+          console.log(this.fournisseur)
+            await  this.$axios.post('/create/decaissement',{
               montant: this.form.montant,
               facture: this.facture,
               date: this.form.date,
-              client_id: this.client,
+              supplier_id: this.fournisseur,
               user_id: this.$auth.user.id,
             //   compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
-                this.$router.push({path:'/ventes/list_vente',})})
+                this.$router.push({path:'/achat/list_achat',})})
             .catch( error => console.log( error ) )
                 //  console.log(this.form.name)                
         },
@@ -148,6 +144,7 @@
   margin-top: 1%;
   padding: 0 5%;
   border-radius: 20px;
+  overflow: scroll;
 }
 .close {
   margin: 2% 0 0 16px;
@@ -158,22 +155,13 @@
   width: 25px;
 }
 
-.modal .information{
-    text-align: center;
-    font-weight: bold;
-    font-size: 24px;
-    text-decoration: underline;
-    color: darkblue;
-
-}
-
 .info .mode{
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
 }
 
 .info .resp{
-    font-size: 22px;
+    font-size: 18px;
     margin-left: 3%;
     color: rgb(11, 7, 40);
 }

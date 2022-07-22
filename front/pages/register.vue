@@ -105,7 +105,7 @@ export default {
 
 <style scoped>
 .img-fluid{
-    width: 500px;
+    width: 400px;
 }
 .input-field {
     border-radius: 5px;

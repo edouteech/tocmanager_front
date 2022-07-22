@@ -1,7 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>                     
-                <br><br>
+    <div class="modaler" @click.stop>   
             <h4>Informations du produit</h4><br><br>
 
                 <div class="input-form">					
