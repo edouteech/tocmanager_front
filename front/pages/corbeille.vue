@@ -26,9 +26,9 @@
             <NuxtLink to="/categorie/delete_categorie" class="case">      
                 Catégories
             </NuxtLink>
-            <NuxtLink to="/profils/delete_profil" class="case">      
+            <!-- <NuxtLink to="/profils/delete_profil" class="case">      
                 Utilisateurs 
-            </NuxtLink>
+            </NuxtLink> -->
         </div><hr>
         <div class="cases">
             <NuxtLink to="/encaissements/delete_encaissement" class="case">      

@@ -41,8 +41,6 @@ export default {
         return{         
             categorie: "",
             categories: [],
-            liste: "",
-            listes: [],
             form: {
                 id: '',
                 name: '',   
@@ -77,10 +75,11 @@ export default {
 
         },
         refresh(){
-            this.$axios.post('/index/categorie',{
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')})        
+            this.$axios.get('/index/categorie',{params: {
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                }})        
             .then(response =>{console.log(response.data.data.data);
-                this.listes = response.data.data.data
+                this.categories = response.data.data.data
                 })     
         },
     }

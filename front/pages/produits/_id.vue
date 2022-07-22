@@ -77,50 +77,52 @@ export default {
             error_message: "",
             error_champ: [],
         }
-        },
-        mounted() {
-            this.$axios
-            .get('/index/product/'+ this.$route.params.id)
-            .then(response => 
-            {console.log(response.data.data[0] )
-            let produit = response.data.data[0];
-            // this.produits = response.data.data        
-            this.form.category_id = produit.category_id,
-            this.form.name = produit.name,
-            this.form.quantity = produit.quantity,
-            this.form.price_sell = produit.price_sell,
-            this.form.price_buy = produit.price_buy,
-            this.form.stock_min = produit.stock_min,
-            this.form.stock_max = produit.stock_max
-            }
-            )
-                
-        },
+    },
 
-        methods: {
-            refresh(){
-                    this.$axios.get('/index/categorie',{params: {
-                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+    mounted() {
+        this.refresh()
+        this.$axios
+        .get('/index/product/'+ this.$route.params.id)
+        .then(response => 
+        {console.log(response.data.data[0] )
+        let produit = response.data.data[0];
+        // this.produits = response.data.data        
+        this.form.category_id = produit.category_id,
+        this.form.name = produit.name,
+        this.form.quantity = produit.quantity,
+        this.form.price_sell = produit.price_sell,
+        this.form.price_buy = produit.price_buy,
+        this.form.stock_min = produit.stock_min,
+        this.form.stock_max = produit.stock_max
+        }
+        )
+            
+    },
+
+    methods: {
+        refresh(){
+                this.$axios.get('/index/categorie',{params: {
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
                 }
                 }).then(response =>{console.log(response.data.data.data);
                     this.categories = response.data.data.data
                     })     
-            },
-            submit(){          
-                this.$axios.put('/update/product', {
-                    id: this.$route.params.id,
-                    category_id: this.form.category_id,
-                    name: this.form.name,
-                    quantity: this.form.quantity,
-                    price_sell: this.form.price_sell,
-                    price_buy: this.form.price_buy,
-                    stock_min: this.form.stock_min,
-                    stock_max: this.form.stock_max,
-                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
-                }).then(response =>{this.$router.push({path:'/produits/list_produit',})   })                     
-            }
+        },
+        submit(){          
+            this.$axios.put('/update/product', {
+                id: this.$route.params.id,
+                category_id: this.form.category_id,
+                name: this.form.name,
+                quantity: this.form.quantity,
+                price_sell: this.form.price_sell,
+                price_buy: this.form.price_buy,
+                stock_min: this.form.stock_min,
+                stock_max: this.form.stock_max,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }).then(response =>{this.$router.push({path:'/produits/list_produit',})   })                     
         }
-   
+    }
+
 }
 </script>
 
