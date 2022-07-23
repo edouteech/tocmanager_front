@@ -1,37 +1,33 @@
 <template>
-<div class="contain">
-     <SideBar/>
-    <div class="zone">
-        <div class="titre">
-            Achats & Ventes
-        </div>
-        
-            <NuxtLink to="/achats/achat">  
-                <div class="case1">
-                    <i class='bx bx-cart-add'></i><br><br>        
-                    Effectuer un achat   
-                </div>              
-            </NuxtLink>
-                <hr>      
-            <NuxtLink to="/ventes/vente"> 
-                <div class="case2">
-                    <i class='bx bx-export'></i><br><br>   
-                    Effectuer une vente
-                </div>
-            </NuxtLink>
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Ordres </h3>
+    </nav>
 
-    
-  </div>
- 
-
+    <div class="contenu">
+        <NuxtLink to="/achats/achat">  
+            <div class="case1">
+                <i class="fa fa-cart-arrow-down" aria-hidden="true"></i><br><br>        
+                <p> Effectuer un achat </p>  
+            </div>              
+        </NuxtLink>
+            <hr>      
+        <NuxtLink to="/ventes/vente"> 
+            <div class="case2">
+                <i class="fa fa-share-square" aria-hidden="true"></i><br><br>   
+                <p> Effectuer une vente </p>  
+            </div>
+        </NuxtLink>
+    </div>
 </div>
 </template>
 
 <script>
-import SideBar from './nav.vue'
+import Sidebar from './sidebar.vue'
 export default {
+  layout: "empty",
   components: {
-    SideBar,    
+    Sidebar,    
   },
 
 
@@ -39,7 +35,11 @@ export default {
 </script>
 
 <style scoped>
-.bx{
+.contenu{
+  margin: 5%;
+
+}
+.fa{
     font-size: 55px;
 }
 .case1{
@@ -47,18 +47,28 @@ export default {
     padding: 6% 5%;
     border: 2px solid rgb(3, 161, 3);
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
     color: rgb(8, 0, 0);
     text-align: center;
+    text-decoration: none;
+}
+
+.case1 p{
+    position: absolute;
+}
+
+.case2 p{
+    position: absolute;
 }
 .case2{
     margin: 5%;
     padding: 6% 5%;
     border: 2px solid rgb(240, 54, 41);
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
     color: rgb(12, 0, 0);
     text-align: center;
+    text-decoration: none;
 }
 
 .case1:hover{

@@ -1,55 +1,49 @@
 <template>
-<div class="contain">
-     <SideBar/>
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Clients </h3>
+    </nav>
 
-    <div class="zone">
-        <div class="titre">
-            Clients
-        </div>
-        <p>Enregistrer un nouveau client{{this.$auth.$storage.getUniversal('company_id')}}</p>
-       
-        <form action="" method="POST">
-            <h1>Ajout de client</h1>
-
-            <div class="input-form">					
-                <input type="text" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" required>
-                <span class="error">{{error_champ.name}}</span>
-            </div>     
-            <div class="input-form">        
-                <input type="tel" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" required>
-                <span class="error">{{error_champ.phone}}</span>
+    <div class="contenu ">
+        <h4>Enregistrer un nouveau client</h4>
+        <form action="">
+            <div class="form-group ">
+                <label class="title">Entrer le nom du client</label>
+                <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
             </div>
-          
-            <div class="input-form">    
-                <input type="email" placeholder="Entrer l'email du client " v-model="form.email" autocomplete="off" required>
-                <span class="error">{{error_champ.email}}</span>
+            <div class="form-group ">
+                <label class="title">Entrer le numero de téléphone du client</label>
+                <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
             </div>
-            <div class="input-form"> 
-                    <select v-model="form.nature" required>
-                        <option disabled value="">Choisissez la nature du client</option>
+            <div class="form-group">
+                <label class="title">Entrer l'email du client</label>
+                <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
+            </div>
+            <div class="form-group">
+                <div class="form-group ">
+                <label class="title">Nature du client</label>
+                <select class="form-control" v-model="form.nature">
+                        <option disabled value="">Choisissez...</option>
                         <option value="0">Particulier</option>
                         <option value="1">Entreprise</option>
-                    </select>
-                    <!-- <input type="number" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required> -->
-                    <span class="error">{{error_champ.nature}}</span>
+                </select>
                 </div>
-            <div class="submit-form">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer le client" name="submit">				          
             </div>
 
+            <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer le client</button>
         </form>
-        
     </div>
 
 </div>
 </template>
 
 <script>
-import SideBar from '../nav.vue'
+import Sidebar from '../sidebar.vue'
 export default {
+    layout: "empty",
     auth:true,
     components: {
-        SideBar,
+        Sidebar,
         
     },
     data () {
@@ -87,62 +81,39 @@ export default {
 </script>
 
 <style scoped>
-.zone p{
-    font-size: 18px;
+form{
+    margin-left: 10%;
+    margin-top: 5%;
+    width: 50%;
 }
 
-form {
-    width: 80%;
-    padding-left: 100px;
-    padding-right: 300px;
-    padding-top: 50px;
-}
-.input-form {
-    display: flex;
-    flex-direction: column-reverse;
-    margin: 1.2em 0;
-    height: 50px;
+.form-group{
+    margin-top: 2%;
 }
 
-.error{               
-    color: red;
-    margin-bottom: -10%;
-    font-size: 12px;
+.title{
+    margin: 1% 0;
 }
-        
 
-input {
-    padding: 8px;
-    border: none; outline: none;
-    border-bottom: 2px solid #605050;
+.btn{
+    margin-top: 5%;
 }
-       
+.contenu{
+  margin: 5%;
+
+}
+.fa{
+  margin: 0 5px;
+  font-size: 22px;
+  cursor: pointer;
+}
+.table{
+	margin-top: 5%;
+
+}      
 input::placeholder {
     font-size: 15px;
     opacity: 0.5;
-}
-
-.submit-form {
-    margin-top: 10%;
-    text-align: right;       
-}
-
-input[type=submit] {
-    background-color: white;
-    color: black;
-    padding: 10px 15px;
-    margin: 8px 0;
-    border: 1px solid #53af57;
-    cursor: pointer;
-    width: 100%;
-    font-size: 15px;
-}
-
-input[type=submit]:hover{
-    background-color: #53af57;
-    color: white;
-    border: 1px solid #53af57;
-    font-size: 16px;
 }
 
 </style>

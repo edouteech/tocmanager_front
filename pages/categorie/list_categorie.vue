@@ -1,92 +1,33 @@
 <template>
-<div class="contain">
-     <SideBar/>
-  <div class="zone">
-    <div class="titre">
-      Catégories de produits
-    </div>
-      <p>Liste des catégories de produits</p>
-      <NuxtLink class="custom-btn btn-10" to="/categorie/add_categorie">Ajouter catégorie</NuxtLink>
-      
-	 <!-- début du new table -->
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Catégories de produits </h3>
+    </nav>
 
-
-		<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-			<div class="p-4">
-				<label for="table-search" class="sr-only">Search</label>
-				<div class="relative mt-1">
-				<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-					<svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-						xmlns="http://www.w3.org/2000/svg">
-						<path fill-rule="evenodd"
-							d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-							clip-rule="evenodd"></path>
-					</svg>
-				</div>
-				<input type="text" id="table-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Recherche...">
-		</div>
-			</div>
-			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-					<tr>
-						<th scope="col" class="p-4">
-							<!-- <div class="flex items-center">
-								<input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-								<label for="checkbox-all-search" class="sr-only">checkbox</label>
-							</div> -->
-						</th>
-						<th scope="col" class="px-6 py-3">
-							Noms
-						</th>
-						<th scope="col" class="px-6 py-3">
-							Actions
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr  v-for="(categorie, i) in categories" :key="i"
-						class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-						<td class="w-4 p-4">
-							<div class="flex items-center">
-								<input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-								<label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-							</div>
-						</td>
-
-              			<td>{{categorie.name}}</td>
-						<td>
-              <button @click="voirCategorie(categorie.id)"><i class='bx bxs-info-circle'></i></button>
-							<NuxtLink :to="'/edit_categorie/'+categorie.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
-							<button @click="deleteCategorie(categorie.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
-						</td>
-					</tr>
-					
-				</tbody>
-			</table>
-		</div>
-
-    <!-- fin du new table -->
-
-      <!-- <table class="tableau">
+    <div class="contenu">
+      <h4>Liste des catégories</h4>
+      <NuxtLink  to="/categorie/add_categorie"><button class="custom-btn btn-3"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
+        <table class="table table-hover">
           <thead>
-              <tr>
-                  <th>Noms</th>              
-                  <th>Actions</th>
-              </tr>
+            <tr class="table-primary">
+                <th>Noms de Catégorie</th>
+                <th>Catégories parentes</th>
+                <th>Actions</th>
+            </tr>
           </thead>
-        
           <tbody>
             <tr  v-for="(categorie, i) in categories" :key="i">
               <td>{{categorie.name}}</td>
-              <td>
-                <NuxtLink :to="'/edit_categorie/'+categorie.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
-                <button @click="deleteCategorie(categorie.id)"><i class='bx bx-stop-circle'></i></button>
+              <td>{{categorie.parent_id}}</td>
+              <td class="action">
+                <div @click="voirCategorie(categorie.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/categorie/'+categorie.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteCategorie(categorie.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
               </td>
             </tr>
           </tbody>
-
-      </table> -->
-  </div>
+        </table>
+  </div><br><br><br><br>
  <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' v-show="showModal" @close-modal="showModal = false"/>  
 
 </div>
@@ -94,30 +35,26 @@
 
 <script>
 import voirCategorie from './voir_categorie.vue'
-import SideBar from '../nav.vue'
+import Sidebar from '../sidebar.vue'
 export default {
+    layout: "empty",
     auth: true,
     components: {
-      SideBar,  
+      Sidebar,  
       voirCategorie
     },
 
     data () {
       return {
         showModal: false,
-        identifiant1 : "0",
-        identifiant2 : "0",
+        identifiant1 : "",
+        identifiant2 : "",
         compagnie_id: ''  ,
         categories: [],
         categorie: "",
       }
     },
     methods: {
-      async logout(){
-          this.$auth.logout();
-          this.$router.push('/login');
-      },
-
        deleteCategorie(id){
           console.log(id);
           this.$axios.delete('/delete/categorie/' +id)
@@ -126,21 +63,22 @@ export default {
         },      
         
         refresh(){
-          this.$axios.post('/index/categorie',{
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')})        
-        .then(response =>{console.log(response.data.data.data);
+          this.$axios.get('/index/categorie',{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response =>{console.log(response.data.data.data);
             this.categories = response.data.data.data
             })     
         },
-
+  
+        
         voirCategorie(id){
             this.showModal = true;
             this.$axios.get('/index/categorie/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
-             this.identifiant2 = response.data.data[0].parent_id
-    
-             }) 
-               
+             this.identifiant2 = response.data.data[0].parent_id   
+             })               
         },
 
 
@@ -154,57 +92,120 @@ export default {
 </script>
 
 <style scoped>
-.bx{
-  margin: 0 10px;
-  font-size: 25px;
-}
-.zone p{
-    font-size: 18px;
-}
+.contenu{
+  margin: 5%;
 
-/* .ajout{
-  border: 1px solid;
-  border-radius: 15px;
-  background-color: rgb(233, 250, 215);
-  padding: 10px;
-  margin-left: 80%;
 }
-
-.ajout:hover{
-  background-color: green;
-  color: #fff;
-  
-} */
-
-.w-full{
-  text-align: center;
+.fa{
+  margin: 0 5px;
+  font-size: 22px;
+  cursor: pointer;
 }
-.tableau{
-	border-collapse: collapse;
-	min-width: 800px;
-	width: auto;
-	box-shadow: 0 5px 50px transparent;
-	border: 2px solid transparent;
-	text-align: center;
-	margin-top: 1%;
-	font-size: 18px;
+.table{
+	margin-top: 5%;
+
 }      
+
 thead tr{
     background-color: transparent;
 }
-th, td{
-    padding: 15px 20px;
-    border: 1px solid #ddd
-}
-tbody, tr, td, th{
-    border: 1px solid #ddd
-}
 
-tbody tr:nth-child(even){
-    background-color: rgb(233, 233, 255);
-}
 
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
 }
+
+.action{
+   display: flex;
+      
+}
+
+.custom-btn {
+  width: 200px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+.btn-3 {
+  background: rgb(0,172,238);
+background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+  width: 200px;
+  height: 40px;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  
+}
+.btn-3 span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn-3:before,
+.btn-3:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 0;
+   background: rgba(2,126,251,1);
+  transition: all 0.3s ease;
+}
+.btn-3:before {
+  height: 0%;
+  width: 2px;
+}
+.btn-3:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-3:hover{
+   background: transparent;
+  box-shadow: none;
+}
+.btn-3:hover:before {
+  height: 100%;
+}
+.btn-3:hover:after {
+  width: 100%;
+}
+.btn-3 span:hover{
+   color: rgba(2,126,251,1);
+}
+.btn-3 span:before,
+.btn-3 span:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+   background: rgba(2,126,251,1);
+  transition: all 0.3s ease;
+}
+.btn-3 span:before {
+  width: 2px;
+  height: 0%;
+}
+.btn-3 span:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-3 span:hover:before {
+  height: 100%;
+}
+.btn-3 span:hover:after {
+  width: 100%;
+}
+
 </style>

@@ -1,30 +1,27 @@
 <template>
-<div class="contain">
-     <SideBar/>
-  <div class="zone">
-    <div class="titre">
-      Catégories de produits
-    </div>
-         <p>Enregistrer une nouvelle catégorie de produit</p>
-       
-      <form action="" method="POST">
-            <h1>Ajout de catégorie</h1>
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Catégories de produits </h3>
+    </nav>
 
-            <div class="input-form">					
-                <input type="text" placeholder="Entrer le nom de la catégorie " v-model="form.name" autocomplete="off" required>
-                <span class="error">{{error_champ.name}}</span>
-            </div>    
-            <div class="input-form">
-                <select v-model="form.parent_id" required>
-                    <option disabled value="">Choisissez la catégorie parente associée</option>
+    <div class="contenu">
+         <h4>Enregistrer une nouvelle catégorie de produit</h4>
+       <form action="">
+            <div class="form-group col-md-6">
+                <label class="title">Entrer le nom de la catégorie </label>
+                <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Pillules">
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group ">
+                <label class="title">Catégorie parente</label>
+                <select class="form-control" v-model="form.parent_id" required>
+                    <option disabled value="">Choisissez...</option>
                     <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
                 </select>
+                </div>
             </div>
-            <div class="submit-form">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer" name="submit">				          
-            </div>
- 
-            
+
+            <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer la catégorie</button>
         </form>
   </div>
  
@@ -36,11 +33,12 @@
 </template>
 
 <script>
-import SideBar from '../nav.vue'
+import Sidebar from '../sidebar.vue'
 export default {
+    layout: "empty",
     auth: true,
     components: {
-        SideBar,
+        Sidebar,
         
     },
     data () {
@@ -57,9 +55,10 @@ export default {
         }
     },
     mounted(){
-        this.$axios.post('/index/categorie',{
-        compagnie_id: this.$auth.$storage.getUniversal('company_id')})        
-        .then(response =>{console.log(response.data.data.data);
+        this.$axios.get('/index/categorie',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response =>{console.log(response.data.data.data);
             this.categories = response.data.data.data
             })     
     },
@@ -83,61 +82,38 @@ export default {
 </script>
 
 <style scoped>
-.zone p{
-    font-size: 18px;
-}
-form {
-    width: 80%;
-    padding-left: 100px;
-    padding-right: 300px;
-    padding-top: 50px;
-}
-.input-form {
-    display: flex;
-    flex-direction: column-reverse;
-    margin: 1.2em 0;
-    height: 50px;
+form{
+    margin-left: 10%;
+    margin-top: 5%;
 }
 
-.error{               
-    color: red;
-    margin-bottom: -10%;
-    font-size: 12px;
+.form-group{
+    margin-top: 2%;
 }
-        
 
-input {
-    padding: 8px;
-    border: none; outline: none;
-    border-bottom: 2px solid #605050;
+.title{
+    margin: 1% 0;
 }
-       
+
+.btn{
+    margin-top: 5%;
+}
+.contenu{
+  margin: 5%;
+
+}
+.fa{
+  margin: 0 5px;
+  font-size: 22px;
+  cursor: pointer;
+}
+.table{
+	margin-top: 5%;
+
+}      
+
 input::placeholder {
     font-size: 15px;
     opacity: 0.5;
 }
-
-.submit-form {
-    margin-top: 10%;
-    text-align: right;       
-}
-
-input[type=submit] {
-    background-color: white;
-    color: black;
-    padding: 10px 15px;
-    margin: 8px 0;
-    border: 1px solid #53af57;
-    cursor: pointer;
-    width: 100%;
-    font-size: 15px;
-}
-
-input[type=submit]:hover{
-    background-color: #53af57;
-    color: white;
-    border: 1px solid #53af57;
-    font-size: 16px;
-}
-
 </style>

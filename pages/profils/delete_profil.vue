@@ -1,12 +1,9 @@
 <template>
-<div class="contain">
-     <SideBar/>
-
- 
+<div >
     <div class="zone">
-        <div class="titre">
-            Utilisateurs supprimés
-        </div>
+          <div class="titre">
+           <Sidebar /> <p class="name"> Utilisateurs</p>
+          </div>
          <!-- début du new table -->
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <div class="p-4">
@@ -82,10 +79,11 @@
 
 <script>
 import deleteModal from './modal_delete.vue'
-import SideBar from '../nav.vue'
+import Sidebar from '../sidebar.vue'
 export default {
+    layout: "empty",
     components: {
-        SideBar,   
+        Sidebar,   
         deleteModal, 
     },
 

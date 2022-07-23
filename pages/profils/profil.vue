@@ -1,18 +1,14 @@
 <template>
-<div class="contain">
-     <SideBar/>
-
- 
-  <div class="zone">
-        <div class="titre">
-            Utilisateurs connectés
-        </div>
+<div>
+    <div class="titre">
+      <Sidebar /> <p class="name"> Profils</p>
+    </div>
+    <div class="container">
       <p>Liste des utilisateurs</p>
       <NuxtLink class="custom-btn btn-10" to="/profils/add_profil">Inscrire un utilisateur</NuxtLink>
-      
-      <table class="tableau">
+      <table class="table table-striped">
           <thead>
-              <tr>
+            <tr class="table-primary">
                   <th>Noms</th>
                   <th>Numéros de téléphone</th>
                   <th>Emails</th>
@@ -27,26 +23,25 @@
               <td>{{profil.phone}}</td>
               <td>{{profil.email}}</td>
               <td>{{profil.country}}</td>
-              <td>
-                <NuxtLink :to="'/edit_profil/'+profil.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
-                <button @click="deleteProfil(profil.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
+              <td class="action">
+                <NuxtLink :to="'/edit_profil/'+profil.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteProfil(profil.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
               </td>
             </tr>
           </tbody>
-
       </table>
-    
-  </div>
+    </div><br><br><br>
 
 </div>
 
 </template>
 
 <script>
-import SideBar from '../nav.vue'
+import Sidebar from '../sidebar.vue'
 export default {
+    layout: "empty",
     components: {
-      SideBar,  
+      Sidebar,  
     },
 
     data () {
@@ -80,54 +75,96 @@ export default {
 </script>
 
 <style scoped>
-.zone p{
-    font-size: 18px;
+.fa{
+  margin: 0 5px;
+  font-size: 22px;
+  cursor: pointer;
 }
-.bx{
-  margin: 0 10px;
-  font-size: 25px;
-}
+.table{
+	margin-top: 5%;
 
-/* .ajout{
-  border: 1px solid;
-  border-radius: 15px;
-  background-color: rgb(233, 250, 215);
-  padding: 10px;
-  margin-left: 80%;
-}
-
-.ajout:hover{
-  background-color: green;
-  color: #fff;
-  
-} */
-
-.tableau{
-	border-collapse: collapse;
-	min-width: 800px;
-	width: auto;
-	box-shadow: 0 5px 50px transparent;
-	border: 2px solid transparent;
-	text-align: center;
-	margin-top: 1%;
-	font-size: 18px;
 }      
+
+
 thead tr{
     background-color: transparent;
 }
-th, td{
-    padding: 15px 40px;
-    border: 1px solid #ddd
-}
-tbody, tr, td, th{
-    border: 1px solid #ddd
-}
 
-tbody tr:nth-child(even){
-    background-color: rgb(233, 233, 255);
-}
 
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
 }
+.action{
+   display: flex;
+}
+
+.titre{
+  display: flex;
+  border: 1px solid #202020;
+  padding: 2% 10%;
+  margin-bottom: 3%;
+  margin-left: -5%;
+  background-color: #202020;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+
+.titre .name{
+  margin-left: 15%;
+  font-size: 24px;
+}
+
+
+.custom-btn {
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+     7px 7px 20px 0px rgba(0,0,0,.1),
+     4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+  }
+
+  
+.btn-10 {
+  background: rgb(35, 240, 82);
+  background: linear-gradient(0deg, rgb(53, 246, 56) 0%, rgb(28, 243, 107) 100%);
+  color: #fff;
+  border: none;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  margin-left: 80%;
+}
+.btn-10:after {
+  position: absolute;
+  content: " ";
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease;
+  -webkit-transform: scale(.1);
+  transform: scale(.1);
+}
+.btn-10:hover {
+  color: #fff;
+  border: none;
+  background: transparent;
+}
+.btn-10:hover:after {
+  background: rgb(50, 242, 73);
+background: linear-gradient(0deg, rgb(92, 228, 42) 0%,  rgb(100, 243, 56)100%);
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
 </style>

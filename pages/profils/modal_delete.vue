@@ -12,7 +12,7 @@
           </div>
     </div>
     <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="../images/fermer.png" alt="" />
+      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>

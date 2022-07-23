@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop>                     
+    <div class="modaler" @click.stop>                     
           <p>Etes vous sur de vouloir supprimer définitivement ce client ??? </p>
           <div class="reponse">
                 <div class="yes"  @click="supClient(infos)">
@@ -12,7 +12,7 @@
           </div>
     </div>
     <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="../images/fermer.png" alt="" />
+      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@
         supClient(infos){
             console.log(infos);
             this.$axios.delete('/destroy/client/' +infos)      
-            .then(response => {console.log(response.data.data);
+            .then(response => {console.log(response.data);
                   this.client = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               
         },
@@ -92,7 +92,7 @@
   background-color: #fbc9c9da;
 }
 
-.modal {
+.modaler {
   text-align: center;
   background-color: white;
   height: 250px;

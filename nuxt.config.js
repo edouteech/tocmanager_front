@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'frontend',
+    title: 'front',
     htmlAttrs: {
       lang: 'en'
     },
@@ -12,30 +12,42 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { 
+        rel: 'icon', 
+        type: 'image/x-icon', 
+        href: '/favicon.ico' 
+      },
+      { 
+        rel: 'stylesheet', 
+        href: '/css/bootstrap.min.css', 
+      },
+      { 
+        rel: 'stylesheet', 
+        href: '/css/custom.css', 
+      }
+    ],
+    script: [
+      { 
+        src: '/js/bootstrap.bundle.min.js', 
+        type: 'text/javascript'
+      }
     ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
   ],
-  
-  // plugins: [
-  //   '@/plugins/view-ui',
-  //   { src: '~/plugins/vue-datepicker', ssr: false },
-  // ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -55,7 +67,6 @@ export default {
         token: {
           property: 'access_token',
           global: true,
-          // required: true,
           type: 'Bearer'
         },
         user: {
@@ -68,30 +79,14 @@ export default {
           logout: false
         },
       },
-      // 'laravelSanctum': {
-      //   provider: 'laravel/sanctum',
-      //   url: 'http://localhost:8000',
-      //   endpoints:{
-      //     login:{ 
-      //       url:'/api/authentifier', method: 'post', propertyName: 'access_token'
-      //     },
-      //     // user:{
-      //     //   url:'/api/user', method: 'get', propertyName: false
-      //     // },
-      //   },
-      
-      // },
+
     }
-    // redirect:{
-    //   login: '/login',
-    //   home: '/dashboard'
-    // }
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: "https://api.tech-plux.com/api",
+    baseURL: "http://localhost:8000/api",
     credentials:true
   },
 

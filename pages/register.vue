@@ -1,120 +1,68 @@
 <template>
-<div class="container">
-    <div class="flex items-center justify-center">
-        <div class="full">
-          <img src="./images/sign.jpg" alt="landing image">
+  <div class="contain ">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
+      <br><br>
+    <h2 class="text px-4">Inscrivez vous</h2>
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img src="/images/sign.jpg"
+            class="img-fluid" alt="Sample image">
         </div>
-        <div class="w-full max-w-md mt-10">
-          <form class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
-            <!-- @csrf -->
-            <div
-              class="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4">
-             Inscription
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form>
+            <div class="divider d-flex align-items-center my-4">
+              <p class="text-center fw-bold mx-3 mb-0">Inscription</p>
             </div>
-            <div class="mb-4">
-                <label
-                  class="block text-gray-700 text-sm font-normal mb-2"
-                  for="name"
-                >
-                  Name
-                </label>
-                <input
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  name="name"
-                  type="text"
-                  v-model="form.name"
-                  required
-                  autofocus
-                  placeholder="Name"
-                />
+            <div class="form-outline mb-4">
+              <span class="fa fa-address-book px-2"></span><label class="form-label">Nom</label>
+              <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.name" required
+                placeholder="Entrer votre nom" /></div>      
             </div>
-            <div class="mb-4">
-              <label
-                class="block text-gray-700 text-sm font-normal mb-2"
-                for="email"
-              >
-                Email
-              </label>
-              <input
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                name="email"
-                type="email"
-                v-model="form.email"
-                autocomplete="off"
-                required
-                autofocus
-                placeholder="Entrer votre email"
-              />
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+              <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
+              <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
+                placeholder="Entrer une addresse email valide" /></div>      
             </div>
-            <div class="mb-6">
-              <label
-                class="block text-gray-700 text-sm font-normal mb-2"
-                for="password"
-              >
-                Mot de passe
-              </label>
-              <input
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
-                type="password"
-                placeholder="Entrer un mot de passe"
-                v-model="form.password"
-                name="password"
-                required
-                autocomplete="off"
-              />
+
+            <!-- Password input -->
+            <div class="form-outline mb-3">
+              <span class="fa fa-envelope px-2"></span><label class="form-label">Mot de passe</label>
+              <div class="input-field">
+              <input type="password" class="form-control form-control-lg" v-model="form.password"
+                placeholder="Entrer un mot de passe"/><span class="far fa-eye-slash px-2" required></span></div>   
             </div>
-            <div class="mb-6">
-              <label
-                class="block text-gray-700 text-sm font-normal mb-2"
-                for="phone"
-              >
-                Numéro de téléphone
-              </label>
-              <input
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                name="phone"
-                type="tel"
-                v-model="form.phone"
-                required
-                autofocus
-                placeholder="Entrer votre numéro de téléphone"
-              />
+
+            <div class="form-outline mb-4">
+              <span class="fa fa-mobile px-2"></span> <label class="form-label">Téléphone</label>
+              <div class="input-field"><input type="tel" class="form-control form-control-lg" v-model="form.phone" required
+                placeholder="Entrer votre numéro de téléphone" /></div>      
             </div>
-            <div class="mb-4">
-              <label
-                class="block text-gray-700 text-sm font-normal mb-2"
-                for="country"
-              >
-                Pays
-              </label>
-              <input
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                name="country"
-                type="text"
-                v-model="form.country"
-                required
-                autofocus
-                placeholder="Entrer votre pays d'origine"
-              />
+            <div class="form-outline mb-4">
+              <span class="fa fa-globe px-2"></span><label class="form-label">Pays</label>
+              <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.country" required
+                placeholder="Entrer le nom de votre pays" /></div>      
             </div>
-            <div class="flex items-center justify-between">
-              <button class="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 mt-5" type="submit" @click.prevent="register()">Inscription</button>             
-            </div>
-            <p><NuxtLink to="/login" class="inline-block align-baseline font-normal text-sm text-blue-500 hover:text-blue-800 mt-8">               
-                  Vous avez déjà un compte ?
+
+            <div class="text-center text-lg-start mt-6 pt-2">
+              <button type="button"  @click.prevent="register()" class="btn btn-primary btn-lg"
+                style="padding-left: 1rem; padding-right: 1rem;">S'inscrire</button><br><br>
+              <p class="small fw-bold mt-2 pt-1 mb-0">Vous avez déjà un compte ? <NuxtLink to="/login"  class="link-primary px-2">               
+                 Connexion
               </NuxtLink></p>
+            </div><br><br><br>
+
           </form>
-          {{error.name}}
         </div>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
- import index from './index.vue'
-    export default{
+export default {
       auth:false,
-      components: {index},
       data: function(){
         return{
           user:'',
@@ -131,24 +79,8 @@
         }
       },
 
-      // mounted () {
-      // this.refresh()
-      // },
-            
+
         methods:{
-            // refresh(){
-            //   var that = this;    
-            //   this.$axios
-            //       .post('/create/profil',{ 
-            //         data: this.form })
-            //       .then(response => 
-            //     {console.log(response)
-            //       if (response.data.status == "error") {
-            //                 that.errors = response.data.data
-            //             } 
-            //     });
-                
-            // },
            async register(){
             await  this.$axios.post('/create/profil',{
               name: this.form.name,
@@ -171,11 +103,32 @@
     }
 </script>
 
-<style>
-.full{
-    flex-basis: 50%; 
-    min-width: 400px;
-    margin-left: 5%;
+<style scoped>
+.img-fluid{
+    width: 400px;
+}
+.input-field {
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #4343ff
+}
 
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
 }
 </style>

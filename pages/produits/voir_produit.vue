@@ -1,8 +1,7 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop>                     
-                <br><br>
-            <span class="information">Informations du produit</span><br><br>
+    <div class="modaler" @click.stop>   
+            <h4>Informations du produit</h4><br><br>
 
                 <div class="input-form">					
                    <span class="mode">Catégorie concernée : </span> <span class="resp">{{id}}</span>
@@ -31,7 +30,7 @@
 
     </div>
     <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="../images/fermer.png" alt="" />
+      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>
@@ -60,7 +59,7 @@
   background-color: #ebebfcda;
 }
 
-.modal {
+.modaler {
   background-color: white;
   height: 600px;
   width: 600px;
@@ -88,12 +87,12 @@
 }
 
 .input-form .mode{
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
 }
 
 .input-form .resp{
-    font-size: 22px;
+    font-size: 18px;
     margin-left: 3%;
     color: rgb(11, 7, 40);
 }

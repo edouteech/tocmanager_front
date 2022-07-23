@@ -1,8 +1,8 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop>                     
+    <div class="modaler" @click.stop>                     
             <form action="" method="POST"> 
-                        <h4>Ajout de client </h4>
+                        <h4>Ajout rapide de client </h4>
 
                 <div class="input-form">					
                     <input type="text" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" required>
@@ -27,13 +27,14 @@
                     <span class="error">{{error_champ.nature}}</span>
                 </div>
                 <div class="submit-form">
-                    <input type="submit" id='submit' @click.stop="submit()" value="Enregistrer le client" name="submit">				          
+                    <input type="submit" id='submit' @click="submit()" value="Enregistrer le client" name="submit">				          
                 </div>
             </form>
     </div>
     <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="../images/fermer.png" alt="" />
+      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
+
   </div>
 </template>
 
@@ -65,9 +66,7 @@
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
             // .then(response =>{console.log(response) 
-            //         this.$router.push({ 
-            //           path:'/clients/list_client',
-            //         })})
+            //         this.showModal == false;})
   
             .catch( error => console.log( error ) )
                     // console.log('user login')
@@ -139,7 +138,7 @@ input[type=submit]:hover{
   background-color: #949292da;
 }
 
-.modal {
+.modaler {
   text-align: center;
   background-color: white;
   height: 600px;

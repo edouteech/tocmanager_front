@@ -1,11 +1,9 @@
 <template>
 <div class="contain">
-     <SideBar/>
-
     <div class="zone">
-        <div class="titre">
-            Compagnies
-        </div>
+          <div class="titre">
+           <Sidebar /> <p class="name">Compagnies</p>
+          </div>
         <p>Enregistrer une compagnie</p>
        
         <form action="" method="POST">
@@ -36,10 +34,11 @@
 </template>
 
 <script>
-import SideBar from '../nav.vue'
+import Sidebar from '../sidebar.vue'
 export default {
+    layout: "empty",
     components: {
-        SideBar,
+        Sidebar,
         
     },
     data () {

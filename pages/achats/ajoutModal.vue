@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop>                     
+    <div class="modaler" @click.stop>                     
             <form action="" method="POST"> 
                         <h4>Ajout de fournisseur</h4>
 
@@ -32,7 +32,7 @@
             </form>
     </div>
     <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="../images/fermer.png" alt="" />
+      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>
@@ -138,7 +138,7 @@ input[type=submit]:hover{
   background-color: #949292da;
 }
 
-.modal {
+.modaler {
   text-align: center;
   background-color: white;
   height: 600px;

@@ -1,24 +1,22 @@
 <template>
-<div class="contain">
-    <SideBar/>
-
-      <div class="zone">
-          <div class="titre">
-            Tableau de Bord 
-          </div>
-          <form action="action=" method="POST">
-          <div class="range">
-              <span class="du"> Du : </span><input class="debut" type="date"  v-model="form.date_debut"  required />      
-              <span class="du">Au :</span> <input  class="fin" type="date"  v-model="form.date_fin"  required />   
-              <div class="visualiser" @click="Visualiser()">Visualiser</div>               
-          
-          </div>
+<div>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Tableau De Bord </h3>
+    </nav>
+    <div class="contenu">
+          <form action="action" method="POST">
+            <div class="range">
+              <input class="form-control" type="datetime-local"  v-model="form.date_debut"  required />  
+              <input  class="form-control" type="datetime-local"  v-model="form.date_fin"  required />  
+              <div class="visualiser" @click="Visualiser()"><i class="fa fa-eye" aria-hidden="true"></i></div>    
+            </div>  
           </form>
-
+        <div class="contain">
           <div class="carreaux">
                   <div class="carre">
                       <div class="icon">
-                        <i class='bx bx-money-withdraw' ></i>
+                        <i class="fa fa-money" aria-hidden="true"></i>
                         <span class="percent">15%</span>
                       </div>
                       <div class="design">
@@ -29,7 +27,7 @@
 
                   <div class="carre">
                       <div class="icon">
-                        <i class='bx bx-money-withdraw' ></i>
+                        <i class="fa fa-money" aria-hidden="true"></i>
                         <span class="percent">15%</span>
                       </div>
                       <div class="design">
@@ -40,22 +38,22 @@
 
                   <div class="carre">
                       <div class="icon">
-                        <i class='bx bx-money-withdraw' ></i>
+                        <i class="fa fa-money" aria-hidden="true"></i>
                         <span class="percent">15%</span>
                       </div>
                       <div class="design">
-                        <p>1 400 000 F CFA</p>
+                        <p>{{encaissement}} F CFA</p>
                         Encaissements
                       </div>
                   </div>
 
                   <div class="carre">
                       <div class="icon">
-                        <i class='bx bx-money-withdraw' ></i>
+                        <i class="fa fa-money" aria-hidden="true"></i>
                         <span class="percent">15%</span>
                       </div>
                       <div class="design">
-                        <p>20 000 F CFA</p>
+                        <p>{{decaissement}} F CFA</p>
                         Décaissements
                       </div>
                   </div>
@@ -64,14 +62,13 @@
           <div class="produits">
               <div class="vendu">
                   Produits les plus vendus
-                  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                      
-                      <tr>
-                        <th scope="col" class="px-6 py-3">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr class="table-success">
+                        <th>
                           Noms
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th>
                           Quantités
                         </th>
                       </tr>
@@ -88,33 +85,26 @@
 
               <div class="dernier">
                 Dernières ventes éffectuées
-                  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                      
-                      <tr>
-                        <th scope="col" class="px-6 py-3">
-                        
-                        </th>
-                        <th scope="col" class="px-6 py-3">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr class="table-dark">
+                        <th >
                           Noms
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th>
                           Total
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th>
                           Dates
                         </th>
                       </tr>
                     </thead>
                     <tbody v-for="(dernieres_ventes1, i) in dernieres_ventes" :key="i">
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td></td>
+                      <tr>
                         <td>{{dernieres_ventes1.client_id}}</td>
                         <td>{{dernieres_ventes1.amount}}</td>
                         <td>{{moment(dernieres_ventes1.date_sell).utc().format('DD MM YYYY')}}</td>
                       </tr>
-
                     </tbody>
                   </table>
               </div>
@@ -136,22 +126,22 @@
                 <canvas id="myChartAchat" width="500" height="350"></canvas>
               </div>
           </div>  
-      
+        </div>
       </div> 
-</div>
+  </div>
 </template>
 
 <script>
-import SideBar from './nav.vue'
+import Sidebar from './sidebar.vue';
 import Chart from 'chart.js/auto';
 import moment from "moment";
-export default {   
-  
-  components: {
-    SideBar,
-    
-  },
-  data (){
+export default {
+    layout: "empty",
+    auth:true,
+    components:{
+        Sidebar,
+    },
+    data (){
     return{
       infos:'',
       volume_vente: '',
@@ -171,15 +161,13 @@ export default {
   },
 
     middleware:'auth',
-    // auth: false,
- 
-    mounted(){      
+ mounted(){      
         var d = new Date();
         var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();  
         this.$axios.post('/tableau/de/bord',{
               date_debut: date,
               date_fin: date
-        }).then(response => {console.log(response);
+        }).then(response => {console.log(response.data.data);
            this.volume_vente  = response.data.data[0][0].volume_vente
            this.chiffre_affaire = response.data.data[1][0].chiffre_d_affaire
            this.encaissement = response.data.data[2][0].encaissement
@@ -228,7 +216,7 @@ export default {
         const myChartVente = new Chart(ctz, {
           type: 'line',
           data: {
-              labels: [d1, 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+              labels: ['success', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
               datasets: [{
                   label: '# ventes',
                   data: [12, 19, 3, 5, 2, 3],
@@ -288,52 +276,60 @@ export default {
           this.$axios.post('/tableau/de/bord',{
               date_debut: this.form.date_debut,
               date_fin: this.form.date_fin
-          }).then(response => {console.log(response);
-          this.infos  = response.data.data.data})
+          }).then(response => {console.log(response.data.data);
+              this.volume_vente  = response.data.data[0][0].volume_vente
+              this.chiffre_affaire = response.data.data[1][0].chiffre_d_affaire
+              this.encaissement = response.data.data[2][0].encaissement
+              this.decaissement = response.data.data[3][0].decaissement
+              this.produits_vendus = response.data.data[4]
+              this.dernieres_ventes  = response.data.data[5]})
         }
+           
         
     },
  
 }
 </script>
 
-<style>
+<style scoped>
+.zone{
+   margin: 5%;
+}
+
+.contenu{
+  margin: 5%;
+
+}
+
 .range{
   display: flex;
-  border: 3px solid rgb(62, 118, 237);
+  border: 1px solid gainsboro;
   border-radius: 10px;
-  padding: 1% 10%;
-  letter-spacing: 2px;
+  padding: 1% 2%;
   margin-bottom: 5%;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 18px;
+
 }
 
-.range .debut{
-  margin-right: 10%;
-  margin-left: 3%;
-}
-
-.range .fin{
-  margin-left: 3%;
-  margin-right: 10%;
-}
-
-.range .du{
-  padding-top: 7px;
+.range input{
+  margin-right: 2%;
 }
 
 .range .visualiser{
-  border: 2px dotted blue;
+  border: 1px solid black;
   padding: 5px 8px;
   cursor: pointer;
   font-weight: normal;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 15px;
 }
 
 .range .visualiser:hover{
-  background-color: rgb(129, 192, 246);
+  background-color: rgb(233, 243, 251);
+}
+
+.contain{
+  margin: 0 3%;
 }
 
 .carreaux{
@@ -343,7 +339,7 @@ export default {
 .carreaux .carre{
     margin: 2%;
     width: 25%;
-    height: 150px;
+    height: 5%;
     border: 1px solid transparent;
     background-color: rgb(241, 243, 254);;
 
@@ -355,7 +351,7 @@ export default {
 .carre .icon{
     display: flex;    
 }
-.carreaux .carre .icon .bx {
+.carreaux .carre .icon .fa {
   font-size: 25px;
   margin-top: 5%;
   margin-left: 6%;
@@ -364,7 +360,7 @@ export default {
 
 .percent{
   margin-top: 5%;
-  margin-left: 57%;
+  margin-left: 63%;
   border: 1px solid black;
   border-radius: 20px;
   padding: 3px 15px;
@@ -373,7 +369,7 @@ export default {
 
 .carre .design{
   margin-left: 5%;
-  padding-top: 20%;
+  padding-top: 12%;
   font-size: 15px;
 }
 
@@ -403,94 +399,24 @@ export default {
   margin-right: 4%;
 }
 
-
-table{
-margin-top: 3%;
-}
-th, td{
-    padding: 5px 10px;
-    text-align: center;
-
-}
-
-thead tr{
-    background-color: rgb(239, 239, 246);
-}
-.contain{
-  display: flex;
-}
-
-.nav{
-  flex-basis: 22%;
-}
-
-.zone{
-  flex-basis: 77%;
-  position: relative;
-}
-
-.titre{
-  border: 1px solid #202020;
-  padding: 3% 10%;
-  margin-bottom: 3%;
-  margin-left: -5%;
-  background-color: #202020;
-  color: #fff;
-  font-size: 24px;
-  letter-spacing: 2px;
-}
-.custom-btn {
-
-    color: #fff;
-    border-radius: 5px;
-    padding: 10px 25px;
-    font-family: 'Lato', sans-serif;
-    font-weight: 500;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    display: inline-block;
-     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-     7px 7px 20px 0px rgba(0,0,0,.1),
-     4px 4px 5px 0px rgba(0,0,0,.1);
-    outline: none;
+@media screen and (max-width: 400px) {
+  .carreaux{
+    display: inline;
   }
 
-  
-.btn-10 {
-  background: rgb(35, 240, 82);
-background: linear-gradient(0deg, rgb(53, 246, 56) 0%, rgb(28, 243, 107) 100%);
-  color: #fff;
-  border: none;
-  transition: all 0.3s ease;
-  overflow: hidden;
-  margin-left: 80%;
+  .carreaux .carre{
+    width: 90%;
+  }
+
+  .produits{
+    display: inline;
+  }
+
+  .courbes{
+    display: inline;
+  }
+
 
 }
-.btn-10:after {
-  position: absolute;
-  content: " ";
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  transition: all 0.3s ease;
-  -webkit-transform: scale(.1);
-  transform: scale(.1);
-}
-.btn-10:hover {
-  color: #fff;
-  border: none;
-  background: transparent;
-}
-.btn-10:hover:after {
-  background: rgb(50, 242, 73);
-background: linear-gradient(0deg, rgb(92, 228, 42) 0%,  rgb(100, 243, 56)100%);
-  -webkit-transform: scale(1);
-  transform: scale(1);
-}
-
 
 </style>

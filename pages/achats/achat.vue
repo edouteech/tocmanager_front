@@ -1,37 +1,34 @@
 <template>
-<div class="contain">
-     <SideBar/>
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Achats </h3>
+    </nav>
 
- 
-    <div class="zone">
-        <div class="titrer">
-            Achats
-        </div>
-        <form action="" method="POST">       
-            <h2>Enregistrer un achat</h2><hr>
+    <div class="contenu">
+        <h4>Enregistrer un achat</h4><hr>
+        <form action="" method="POST">
             <div class="cadre-haut">             
-                <div class="ajout-client">    
-                    <i class='bx bxs-user-circle'></i>                                 
-                    <select  v-model="form.supplier_id">
+                <div class="ajout-client">                   
+                    <select class="form-control" v-model="form.supplier_id">
                         <option disabled value="">Choisir le fournisseur</option>
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                             {{fournisseur.name}}
                         </option>                           
                     </select>          
                     <div class="save-btn">
-                        <div @click="showModal = true">Ajouter un fournisseur</div>
+                        <div @click="showModal = true"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur</div>
                     </div>                   
                 </div>
                 <div class="facture-date">
-                    Date de création : <input  type="date"  v-model="form.date_buy"  required />                  
+                   <span class="creation"> Date de création :</span> <input  type="datetime-local" class="form-control"  v-model="form.date_buy"/>                  
                 </div>
             </div> <hr>
             
-            <div class="ajout-article" @click="addLine()">Ajouter un article</div>
+            <div class="ajout-article" @click="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un article</div>
             
-
+              <div class="btn-ajout" @click="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</div>
             <div class="commande">
-                <table class="tableau">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Désignation</th>
@@ -47,45 +44,54 @@
                     <tbody>
                         <tr v-for="(line, index) in form.buy_lines" :key="index">
                             <td>
-                                <select v-model="line.product_id" id="" @change="productChange">
-                                    <option disabled value="">Sélectionner le produit</option>
+                                <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
                                 </select>
                             </td>
-                            <td><input type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                            <td><input type="num" v-model="line.price" autocomplete="off" required></td>
-                            <td><input type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
-                            <td><input type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
-                            <td><input type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
+                            <td><input class="form-control" type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
+                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
             </div>
-            <!-- <br><br><br>{{form}} -->
             <div class="submit">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">				          
+                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">		          
             </div>  
+    
         </form>
     </div>
-     <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
-</div>      
+    <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
+    <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
+    <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
 
+</div>
  
 </template>
 
 <script>
+import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
-import SideBar from '../nav.vue'
+import produitModal from './produitModal.vue'
+import Sidebar from '../sidebar.vue'
 export default {
+    layout: "empty",
+    auth:true,
     components: {
-        SideBar, 
+        Sidebar, 
         ajoutModal, 
+        SavedModal,
+        produitModal,
     },
 
     data () {
         return{
             showModal: false,
+            showSaved: false,
+            showProduit: false,
             fournisseurs: [],
             fournisseur: "",
             produits: [],
@@ -112,6 +118,7 @@ export default {
     methods: {
         addLine(){
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
+            
         },
         
         async submit(){
@@ -123,26 +130,39 @@ export default {
               rest: this.form.rest,
               user_id: this.$auth.user.id,
               supplier_id: this.form.supplier_id,  
-              buy_lines: this.form.buy_lines      
+              buy_lines: this.form.buy_lines  
             }).then(response =>{ console.log(response)
-                    this.$router.push({path:'/vente',})
+                    this.$router.push({path:'/achats/SavedModal',})
               }).catch( error => console.log( error ) )                            
         },
 
         refresh(){
-            this.$axios.get('/index/fournisseur').then(response => {console.log(response);
+            this.$axios.get('/index/fournisseur',
+            {
+                params: {
+                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                }
+          }).then(response => {console.log(response);
             this.fournisseurs = response.data.data.data})
         },
 
         recupProduct(){
-            this.$axios.get('/index/product').then(response => {console.log(response.data.data.data);
+            this.$axios.get('/index/product',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response => {console.log(response.data.data.data);
             this.produits = response.data.data.data}) 
         },
 
         quantityChange(index){
             let line = this.form.buy_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
-            this.form.amount = line.amount;
+            let sum = 0;
+            for (let j = 0; j < this.form.buy_lines.length; j++) {
+                sum += this.form.buy_lines[j].amount;
+            }
+            this.form.amount = sum;
+                
         },
 
         productChange(e){
@@ -151,10 +171,19 @@ export default {
                 let index = e.target.options[e.target.options.selectedIndex].dataset.index;
                 let product = this.produits[i];
                 let line = this.form.buy_lines[index]
-                line.price = product.price_buy;
+                line.price = product.price_sell;
                 line.amount = Number(line.price) * Number(line.quantity);
-                this.form.amount = line.amount;             
+                    
+                
+                let sum = 0;
+                for (let j = 0; j < this.form.buy_lines.length; j++) {
+                    sum += this.form.buy_lines[j].amount;
+                }
+                this.form.amount = sum;
+                console.log(sum); 
             }
+
+                
         }
    
     },
@@ -163,6 +192,15 @@ export default {
 </script>
 
 <style scoped>
+.contenu{
+  margin: 5%;
+
+}
+
+.commande{
+    margin: 5% 10%;
+}
+
 .titrer{
   border: 1px solid #202020;
   padding: 3%;
@@ -173,6 +211,7 @@ export default {
   font-size: 24px;
   letter-spacing: 2px;
 }
+
 .cadre-haut{
     display: flex;
 }
@@ -180,13 +219,31 @@ export default {
 .ajout-client{
     margin: 30px 10px;
     border: 1px solid darkblue;
-    padding: 50px;
-    margin-right: 30%;
+    padding: 50px ;
+    margin-right: 50%;
   
 }
 
+.btn-ajout{
+    border: 2px solid #53af57;
+    padding: 5px;
+    width: 100px;
+    font-size: 10px;
+    border-radius: 20%;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 50px;
+}
 
-.save-btn{
+.btn-ajout:hover{
+    background-color: #53af57;
+    color: #fff;
+}
+.btn-ajout i{
+    font-size: 18px;
+}
+
+.save-btn {
     background-color: rgb(121, 161, 255);    
     font-size: 10px;
     text-align: center;
@@ -197,16 +254,22 @@ export default {
 
 .facture-date{
     margin-top: 5%;
+    font-size: 18px;
+}
+.facture-date .creation{
     text-decoration: underline;
+    font-weight: bold;
+    padding-right: 1%;
 }
-
 .facture-date input{
-    margin-left: 30px;
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 5px;
+    border: none; 
+    outline: none;
 }
 
+.ajout-article .bx{
+    font-size: 18px;
+    margin-right: 10px;
+}
 .ajout-article{
     margin: 4%;
     text-align: center;
@@ -217,12 +280,6 @@ export default {
     cursor: pointer;
 }
 
-
-form {
-    /* width: 90%; */
-    padding: 30px;
-
-}
 .modal .input-form {
     display: flex;
     flex-direction: column-reverse;
@@ -295,30 +352,19 @@ input[type=submit]:hover{
     font-size: 16px;
 }
 
-.tableau{
-	border-collapse: collapse;
-	width: auto;
-	box-shadow: 0 5px 50px transparent;
-	border: 2px solid transparent;
-	text-align: center;
-	margin-top: 1%;
-	font-size: 13px;
+
+.table{
+	margin-top: 5%;
 }      
+
+
 thead tr{
     background-color: transparent;
 }
-th, td{
-    padding: 15px 20px;
-    border: 1px solid #ddd
-}
-tbody, tr, td, th{
-    border: 1px solid #ddd
-}
+
 
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
 }
-
-
 </style>
 

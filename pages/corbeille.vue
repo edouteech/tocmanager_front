@@ -1,16 +1,14 @@
 <template>
-<div class="contain">
-     <SideBar/>
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Corbeille</h3>
+    </nav>
 
- 
-  <div class="zone">
-        <div class="titre">
-        Eléments supprimés
-        </div>
+    <div class="contenu">
         <div class="cases">
-            <div class="case">
+            <NuxtLink to="/achats/delete_achat" class="case">      
                 Factures achats
-            </div>
+            </NuxtLink>
             <NuxtLink to="/ventes/delete_vente" class="case">      
                 Factures ventes
             </NuxtLink>
@@ -31,19 +29,29 @@
             <NuxtLink to="/profils/delete_profil" class="case">      
                 Utilisateurs 
             </NuxtLink>
+        </div><hr>
+        <div class="cases">
+            <NuxtLink to="/encaissements/delete_encaissement" class="case">      
+                Encaissements
+            </NuxtLink>
+            <NuxtLink to="/decaissements/delete_decaissement" class="case">      
+                Décaissements
+            </NuxtLink>
+            <!-- <NuxtLink to="/profils/delete_profil" class="case">      
+                Utilisateurs 
+            </NuxtLink> -->
         </div>
-  </div>
- 
-
+    </div>  
 </div>
 </template>
 
 
 <script>
-import SideBar from './nav.vue'
+import Sidebar from './sidebar.vue'
 export default {
+  layout: "empty",
   components: {
-    SideBar,    
+    Sidebar,    
   },
 
 
@@ -52,6 +60,10 @@ export default {
 
 <style scoped>
 
+.contenu{
+  margin: 5%;
+
+}
 .cases{
     display: flex;
 }
@@ -64,7 +76,8 @@ export default {
     background-color: rgb(125, 93, 60);
     font-size: 19px;
     font-weight: bold;
-    color: rgb(246, 226, 226)
+    color: rgb(246, 226, 226);
+    text-decoration: none;
 }
 
 .case:hover{

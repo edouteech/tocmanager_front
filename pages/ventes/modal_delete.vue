@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modal" @click.stop>                     
-          <p>Etes vous sur de vouloir supprimer définitivement ce client ??? </p>
+          <p>Etes vous sur de vouloir supprimer définitivement cette facture ??? </p>
           <div class="reponse">
                 <div class="yes"  @click="supVente(infos)">
                     Oui
@@ -12,7 +12,7 @@
           </div>
     </div>
     <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="../images/fermer.png" alt="" />
+      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>

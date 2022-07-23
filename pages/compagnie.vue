@@ -1,92 +1,52 @@
 <template>
-<div class="container">
-    <div class="flex items-center ">
-        <div class="full">
-          <img src="./images/eff.jpg" alt="landing image"><br><br>
-          Inscription presque...Veuillez renseignez les informatins sur votre entreprise pour finaliser...
+  <div class="contain ">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
+      <br><br>
+    <h3 class="text px-4">Informez nous sur votre entreprise</h3>
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img src="/images/enter11.png"
+            class="img-fluid" alt="Sample image">
         </div>
-        <div class="w-full max-w-md">
-          <form class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
-            <!-- @csrf -->
-            <div
-              class="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4">
-                Enregistrer votre compagnie
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form>
+            <div class="divider d-flex align-items-center my-4">
+              <p class="text-center fw-bold mx-3 mb-0">Finaliser l'inscription</p>
             </div>
-            <div class="mb-4">
-                <label
-                  class="block text-gray-700 text-sm font-normal mb-2"
-                  for="name"
-                >
-                  Name
-                </label>
-                <input
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  name="name"
-                  type="text"
-                  v-model="form.name"
-                  required
-                  autofocus
-                  placeholder="Entrer le nom de l'entreprise"
-                />
+            <div class="form-outline mb-4">
+              <span class="fa fa-briefcase px-2"></span><label class="form-label">Nom de l'entreprise</label>
+              <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.name" required
+                placeholder="Entrer le nom de votre entreprise" /></div>      
             </div>
-            <div class="mb-4">
-              <label
-                class="block text-gray-700 text-sm font-normal mb-2"
-                for="email"
-              >
-                Email
-              </label>
-              <input
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                name="email"
-                type="email"
-                v-model="form.email"
-                autocomplete="off"
-                required
-                autofocus
-                placeholder="Entrer l'email de l'entreprise"
-              />
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+              <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
+              <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
+                placeholder="Entrer l'email de l'entreprise" /></div>      
             </div>
-            <div class="mb-6">
-              <label
-                class="block text-gray-700 text-sm font-normal mb-2"
-                for="phone"
-              >
-                Numéro de téléphone
-              </label>
-              <input
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                name="phone"
-                type="tel"
-                v-model="form.phone"
-                required
-                autofocus
-                placeholder="Entrer le numéro de téléphone de l'entreprise"
-              />
+            <div class="form-outline mb-4">
+              <span class="fa fa-phone-square px-2"></span> <label class="form-label">Téléphone</label>
+              <div class="input-field"><input type="number" class="form-control form-control-lg" v-model="form.phone" required
+                placeholder="Entrer votre numéro de téléphone" /></div>      
             </div>
-            
-            <div class="flex items-center justify-between">
-              <button class="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 mt-5" type="submit" @click.prevent="submit()">Finaliser l'inscription</button>             
-            </div>
-            <p><NuxtLink to="/login" class="inline-block align-baseline font-normal text-sm text-blue-500 hover:text-blue-800 mt-8">               
-                  Vous avez déjà un compte ?
-              </NuxtLink></p>
+            <div class="text-center text-lg-start mt-6 pt-2">
+              <button type="button"  @click.prevent="submit()" class="btn btn-primary btn-lg"
+                style="padding-left: 1rem; padding-right: 1rem;">Finaliser</button><br><br>
+            </div><br><br><br>
+
           </form>
-          {{error.name}}
         </div>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
- import index from './index.vue'
-    export default{
+  export default{
         auth:false,
-        components: {index},
         data: function(){
             return{
-            errors: [],
-            error: '',
             form:{
                 name: '',
                 email: '',
@@ -118,20 +78,31 @@
 </script>
 
 <style scoped>
-.container{
-    margin-top: 5%;
-
+.img-fluid{
+    width: 300px;
 }
-.full{
-    flex-basis: 50%; 
-    font-size: 13px;
-    margin-left: 3%;
-    color: rgb(49, 88, 247);
+.input-field {
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #4343ff
 }
 
-.full img{
-    width: 200px;
-    margin-left: 15%;
-    
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
 }
 </style>

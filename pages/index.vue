@@ -1,71 +1,70 @@
 <template>
-<div class="container">
-    <div class="flex items-center justify-center">
-        <div class="w-full">
-          <img src="./images/icon2.png" alt="landing image">
+  <div class="contain ">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
+      <br><br>
+    <h2 class="text px-4">Connectez vous</h2>
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+            class="img-fluid" alt="Sample image">
         </div>
-        <div class="w-full max-w-md mt-10">
-            <form class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4" ref="loginform" >
-                <!-- @csrf -->
-                <img src="./images/logo.png" alt="logo image">
-              <div class="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4">
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form>
+            <div class="divider d-flex align-items-center my-4">
+              <p class="text-center fw-bold mx-3 mb-0">Connexion</p>
+            </div>
 
-              </div>  
-                
-                <div class="mb-4">
-                  <label
-                    class="block text-gray-700 text-sm font-normal mb-2"
-                    for="username">
-                    Email
-                  </label>
-                  <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    name="email"
-                    type="email"
-                    v-model="form.email"                required
-                    autofocus
-                    placeholder="Email"/> 
-                </div>
-                <div class="mb-6">
-                  <label
-                    class="block text-gray-700 text-sm font-normal mb-2"
-                    for="password">                
-                    Password
-                  </label>
-                  <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"/>
-                </div>
-                <div class="flex items-center justify-between">
-                  <button class="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700" type="submit" @click.prevent="login()">Connexion</button>                  
-                  <a class="inline-block align-baseline font-normal text-sm text-blue-500 hover:text-blue-800" href="#">               
-                  Mot de passe oublié ?
-                  </a>
-                  <NuxtLink to="/register" class="inline-block align-baseline font-normal text-sm text-blue-500 hover:text-blue-800 mt-8">               
-                  Vous n'avez pas de compte ?
-                  </NuxtLink>
-                </div>
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+              <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
+              <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
+                placeholder="Entrer votre addresse email" /></div>
+              
+            </div>
+
+            <!-- Password input -->
+            <div class="form-outline mb-3">
+              <span class="fas fa-lock px-2"></span><label class="form-label">Mot de passe</label>
+              <div class="input-field">
+              <input type="password" id="form3Example4" class="form-control form-control-lg" v-model="form.password"
+                placeholder="Entrer votre mot de passe"/><span class="far fa-eye-slash px-2" required></span></div>
+              
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <!-- Checkbox -->
+              <div class="form-check mb-0">
+                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+                <label class="form-check-label" for="form2Example3">
+                  Se rappeler de moi
+                </label>
+              </div>
+              <a href="#!" class="link-primary">Mot de passe oublié ?</a>
+            </div>
+
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <button type="button"  @click.prevent="login()" class="btn btn-primary btn-lg"
+                style="padding-left: 1rem; padding-right: 1rem;">Se connecter</button>
+             <p class="small fw-bold mt-2 pt-1 mb-0">Vous n'avez pas de compte ? <NuxtLink to="/register"  class="link-primary px-2">               
+                  Inscription
+              </NuxtLink></p>
+            </div>
+
+          </form>
+        </div><br><br><br>
+      </div>
+    </div>
                 <div class="error-message">
                     {{error}}
                 </div>
-                
-            </form>
-              <p class="text-center text-gray-500 text-xs"></p> 
-        </div>
-    </div>
-</div>
+  </div>
 </template>
 
-
- <script>
-
+<script>
 export default {
   middleware:'auth',
+  name: 'IndexPage',
   data() {
     return {
       error: '',
@@ -75,8 +74,6 @@ export default {
       }
     }
   },
-
-
   methods: {
     refresh(){
       var that = this;    
@@ -90,6 +87,7 @@ export default {
         });
         
     },
+
     async login() {
       try {
         console.log(this.$auth);
@@ -110,41 +108,11 @@ export default {
       }
     }
   }
+
 }
 </script>
 
 <style scoped>
-body{
-  background-color: rgb(191, 192, 197);
-}
-.container{
-  border: 1px solid transparent;
-  background-color: #fff;
-  width: 70%;
-  margin-left: 15%;
-  margin-top: 4%;
-  border-radius: 10px;
-}
-
-form img{
-  padding-left: 25%;
-  width: 250px;
-}
-
-.flex{
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    padding: 3% ;
-}
-
-.w-full{
-    flex-basis: 50%; 
-    min-width: 350px;
-
-}
-
 .error-message{
   border: 1px solid transparent;
   color: red;
@@ -153,5 +121,29 @@ form img{
   font-weight: bold;
   margin-top: 5%;
 
+}
+.input-field {
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #4343ff
+}
+
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
 }
 </style>

@@ -1,74 +1,75 @@
 <template>
-<div class="contain">
-     <SideBar/>
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Ventes </h3>
+    </nav>
 
-      <div class="zone">
-        <div class="titrer">
-            Ventes
-        </div>
+    <div class="contenu">
+        <h4>Enregistrer une vente</h4><hr>
         <form action="" method="POST">
-            <h2>Enregistrer une vente</h2><hr>
+            
             <div class="cadre-haut">             
-                <div class="ajout-client">    
-                    <i class='bx bxs-user-circle'></i>                                 
-                    <select  v-model="form.client_id">
+                <div class="ajout-client">                                   
+                    <select class="form-control"  v-model="form.client_id">
                         <option disabled value="">Choisir le client</option>
                         <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
                             {{client.name}}
                         </option>                           
                     </select>          
                     <div class="save-btn">
-                        <div @click="showModal = true">Ajouter un client</div>
+                        <div @click="showModal = true"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client</div>
                     </div>                   
                 </div>
                 <div class="facture-date">
-                    Date de création : <input  type="date"  v-model="form.date_sell"  required />                  
+                   <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
                 </div>
             </div> <hr>
             
-            <div class="ajout-article" @click="addLine()"><i class='bx bxs-alarm-add'></i>Ajouter un article</div>
+            <div class="ajout-article" @click="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</div>
             
-
+              <div class="btn-ajout" @click="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</div>
             <div class="commande">
-                <table class="tableau">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Désignation</th>
-                            <th>Quantité voulue</th>
-                            <th>Prix unitaire</th>
-                            <th>Taux de réduction (%)</th>
-                            <th>Taxe appliquée (%)</th>
-                            <th>Net à payer</th>
-                            <th>Total</th>                     
+                            <th scope="col">Désignation</th>
+                            <th scope="col">Quantité voulue</th>
+                            <th scope="col">Prix unitaire</th>
+                            <th scope="col">Taux de réduction (%)</th>
+                            <th scope="col">Taxe appliquée (%)</th>
+                            <th scope="col">Net à payer</th>
+                            <th scope="col">Total</th>                     
                         </tr>
                     </thead>
                     
                     <tbody>
                         <tr v-for="(line, index) in form.sell_lines" :key="index">
                             <td>
-                                <select v-model="line.product_id" id="" @change="productChange">
+                                <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
+                                    <option disabled value="">Choisissez...</option>
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
                                 </select>
                             </td>
-                            <td><input type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                            <td><input type="num" v-model="line.price" autocomplete="off" required></td>
-                            <td><input type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
-                            <td><input type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
-                            <td><input type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
+                            <td><input class="form-control" type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
+                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
             </div>
             <div class="submit">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">				          
+                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">		          
             </div>  
     
         </form>
     </div>
 
-     <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
+    <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
+    <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
 
 </div>
  
@@ -77,19 +78,23 @@
 <script>
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
-import SideBar from '../nav.vue'
+import produitModal from './produitModal.vue'
+import Sidebar from '../sidebar.vue'
 export default {
+    layout : 'empty',
     auth:true,
     components: {
-        SideBar, 
+        Sidebar, 
         ajoutModal, 
         SavedModal,
+        produitModal,
     },
 
     data () {
         return{
             showModal: false,
             showSaved: false,
+            showProduit: false,
             clients: [],
             client: "",
             produits: [],
@@ -129,22 +134,24 @@ export default {
               user_id: this.$auth.user.id,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines  
-            }).then(response =>{ console.log(response)
+            }).then(response =>{ console.log(response.data)
                     this.$router.push({path:'/ventes/SavedModal',})
               }).catch( error => console.log( error ) )                            
         },
 
         refresh(){
-            this.$axios.post('/index/client',{
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }).then(response => {console.log(response);
+            this.$axios.get('/index/client',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response => {console.log(response);
             this.clients = response.data.data.data})
         },
 
         recupProduct(){
-            this.$axios.post('/index/product',{
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }).then(response => {console.log(response.data.data.data);
+            this.$axios.get('/index/product',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response => {console.log(response.data.data.data);
             this.produits = response.data.data.data}) 
         },
 
@@ -186,6 +193,15 @@ export default {
 </script>
 
 <style scoped>
+.contenu{
+  margin: 5%;
+
+}
+
+.commande{
+    margin: 5% 10%;
+}
+
 .titrer{
   border: 1px solid #202020;
   padding: 3%;
@@ -202,11 +218,31 @@ export default {
 }
 
 .ajout-client{
-    margin: 30px 10px;
+    margin: 2% 1%;
     border: 1px solid darkblue;
-    padding: 50px;
-    margin-right: 30%;
+    padding: 2% ;
+    margin-right: 50%;
   
+}
+
+.btn-ajout{
+    border: 2px solid #53af57;
+    padding: 5px;
+    width: 100px;
+    font-size: 10px;
+    border-radius: 20%;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 50px;
+}
+
+.btn-ajout:hover{
+    background-color: #53af57;
+    color: #fff;
+}
+
+.btn-ajout i{
+    font-size: 18px;
 }
 
 .save-btn {
@@ -220,14 +256,16 @@ export default {
 
 .facture-date{
     margin-top: 5%;
-    text-decoration: underline;
+    font-size: 18px;
 }
-
+.facture-date .creation{
+    text-decoration: underline;
+    font-weight: bold;
+    padding-right: 1%;
+}
 .facture-date input{
-    margin-left: 30px;
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 5px;
+    border: none; 
+    outline: none;
 }
 
 .ajout-article .bx{
@@ -244,16 +282,6 @@ export default {
     cursor: pointer;
 }
 
-.commande{
-    margin: 50px;
-}
-
-
-form {
-    /* width: 90%; */
-    padding: 30px;
-
-}
 .modal .input-form {
     display: flex;
     flex-direction: column-reverse;
@@ -325,32 +353,21 @@ input[type=submit]:hover{
     border: 1px solid #b8a5f6;
     font-size: 16px;
 }
-.tableau{
-	border-collapse: collapse;
-	width: auto;
-	box-shadow: 0 5px 50px transparent;
-	border: 2px solid transparent;
-	text-align: center;
-	margin-top: 1%;
-	font-size: 13px;
+
+.table{
+	margin-top: 5%;
+
 }      
+
+
 thead tr{
     background-color: transparent;
 }
-th, td{
-    padding: 15px 20px;
-    border: 1px solid #ddd
-}
-tbody, tr, td, th{
-    border: 1px solid #ddd
-}
+
 
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
 }
-
-
-
 
 </style>
 

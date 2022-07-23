@@ -1,23 +1,21 @@
 <template>
-<div class="contain">
-     <SideBar/>
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Fournisseurs </h3>
+    </nav>
 
-  <div class="zone">
-        <div class="titre">
-            Fournisseurs
-        </div>
-        <p>Liste des fournisseurs</p>
-        <NuxtLink class="custom-btn btn-10" to="/fournisseurs/add_fournisseur">Ajouter fournisseur</NuxtLink>
-        
-        <table class="tableau">
-            <thead>
-                <tr>
+    <div class="contenu">
+      <h4>Liste des fournisseurs</h4>
+      <NuxtLink  to="/fournisseurs/add_fournisseur"><button class="custom-btn btn-3"><span>Ajouter nouveau fournisseur</span></button></NuxtLink>
+        <table class="table table-hover">
+          <thead>
+            <tr class="table-primary">
                     <th>Noms</th>
                     <th>Numéros de téléphone</th>
                     <th>Emails</th>
                     <th>Nature</th>
                     <th>Actions</th>
-                </tr>
+              </tr>
             </thead>
           
             <tbody>
@@ -26,17 +24,17 @@
                 <td>{{fournisseur.phone}}</td>
                 <td>{{fournisseur.email}}</td>
                 <td>{{fournisseur.nature}}</td>
-                <td>
-                  <button @click="voirFournisseur(fournisseur.id)"><i class='bx bxs-info-circle'></i></button>
-                  <NuxtLink :to="'/edit_fournisseur/'+fournisseur.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
-                  <button @click="deleteFournisseur(fournisseur.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
+                <td class="action">
+                  <div @click="voirFournisseur(fournisseur.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/fournisseurs/'+fournisseur.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteFournisseur(fournisseur.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </td>
               </tr>
             </tbody>
 
         </table>
     
-    </div>
+    </div><br><br><br>
 
 <voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
@@ -45,21 +43,22 @@
 
 <script>
 import voirFournisseur from './voir_fournisseur.vue'
-import SideBar from '../nav.vue'
+import Sidebar from '../sidebar.vue'
 export default {
   auth: true,
+  layout: "empty",
   components: {
-    SideBar,  
+    Sidebar,  
     voirFournisseur
   },
 
   data () {
     return {
       showModal: false,
-      identifiant1 : "0",
-      identifiant2 : "0",
-      identifiant3 : "0",
-      identifiant4 : "0",
+      identifiant1 : "",
+      identifiant2 : "",
+      identifiant3 : "",
+      identifiant4 : "",
       fournisseurs: [],
       fournisseur: "",
       compagnie_id: ''
@@ -79,8 +78,9 @@ export default {
         },
          
         refresh(){
-          this.$axios.post('/index/fournisseur',{
+          this.$axios.get('/index/fournisseur',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
           })
           .then(response => 
         
@@ -104,81 +104,118 @@ export default {
 </script>
 
 <style scoped>
-.zone p{
-    font-size: 18px;
-}
-.bx{
-  margin: 0 10px;
-  font-size: 25px;
-}
+.contenu{
+  margin: 5%;
 
-/* .ajout{
-  border: 1px solid;
-  border-radius: 15px;
-  background-color: rgb(233, 250, 215);
-  padding: 10px;
-  margin-left: 80%;
 }
+.fa{
+  margin: 0 5px;
+  font-size: 22px;
+  cursor: pointer;
+}
+.table{
+	margin-top: 5%;
 
-.ajout:hover{
-  background-color: green;
-  color: #fff;
-  
-} */
-.user{
-    display: flex;    
-}
-.user img{
-    width: 30px;
-    border: 1px solid transparent;
-    border-radius: 100%;
-}
-.user .user_name{
-    font-size: 15px;
-    padding: 7px;
-}
-.haut{
-    border: 1px solid transparent;
-    border-radius: 15px;
-    position: fixed;
-    width: 100%;
-    padding: 5px 50px;
-    padding-left: 85%;
-    font-size: 10px;
-    color: #fff;
-    background-color: #202020;
-}
-.espace{
-    padding-top: 5%;
-    margin-left: 18%;
-}
-
-.tableau{
-	border-collapse: collapse;
-	min-width: 800px;
-	width: auto;
-	box-shadow: 0 5px 50px transparent;
-	border: 2px solid transparent;
-	text-align: center;
-	margin-top: 1%;
-	font-size: 18px;
 }      
+
+
 thead tr{
     background-color: transparent;
 }
-th, td{
-    padding: 15px 40px;
-    border: 1px solid #ddd
-}
-tbody, tr, td, th{
-    border: 1px solid #ddd
-}
 
-tbody tr:nth-child(even){
-    background-color: rgb(233, 233, 255);
-}
 
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
+}
+.action{
+   display: flex;
+}
+
+.custom-btn {
+  width: 220px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+.btn-3 {
+  background: rgb(0,172,238);
+background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+  width: 220px;
+  height: 40px;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  
+}
+.btn-3 span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn-3:before,
+.btn-3:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 0;
+   background: rgba(2,126,251,1);
+  transition: all 0.3s ease;
+}
+.btn-3:before {
+  height: 0%;
+  width: 2px;
+}
+.btn-3:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-3:hover{
+   background: transparent;
+  box-shadow: none;
+}
+.btn-3:hover:before {
+  height: 100%;
+}
+.btn-3:hover:after {
+  width: 100%;
+}
+.btn-3 span:hover{
+   color: rgba(2,126,251,1);
+}
+.btn-3 span:before,
+.btn-3 span:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+   background: rgba(2,126,251,1);
+  transition: all 0.3s ease;
+}
+.btn-3 span:before {
+  width: 2px;
+  height: 0%;
+}
+.btn-3 span:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-3 span:hover:before {
+  height: 100%;
+}
+.btn-3 span:hover:after {
+  width: 100%;
 }
 </style>

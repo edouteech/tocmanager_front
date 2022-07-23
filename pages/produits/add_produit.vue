@@ -1,66 +1,62 @@
 <template>
-<div class="contain">
-     <SideBar/>
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Produits </h3>
+    </nav>
 
- 
-  <div class="zone">
-        <div class="titre">
-            Produits
-        </div>
-        <p>Enregistrer un nouveau produit</p>
-       
-        <form action="" method="POST">
-            <h1>Ajout de produit</h1>
-            <div class="input-form"> 
-                <select v-model="form.category_id">
-                    <option disabled value="">Choisissez la categorie du produit à ajouter</option>
+    <div class="contenu">
+      <h4>Enregistrer un nouveau produit </h4>
+        <form action="">
+            <div class="form-group col-md-6">
+                <div class="form-group ">
+                <label class="title">Choisissez la categorie du produit à ajouter</label>
+                <select class="form-control" v-model="form.category_id">
+                    <option  disabled value="">Choisissez...</option>
                     <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
                 </select>
-                <!-- <input type="text" placeholder="Entrer la categorie " v-model="form.category_id" autocomplete="off" required> -->
-                <span class="error">{{error_champ.nature}}</span>
-            </div>  
-            <div class="input-form">					
-                <input type="text" placeholder="Entrer le nom du produit " v-model="form.name" autocomplete="off" required>
-                <span class="error">{{error_champ.name}}</span>
-            </div>    
-            <div class="input-form">        
-                <input type="number" placeholder="Entrer la quantité " v-model="form.quantity" required>
-                <span class="error">{{error_champ.phone}}</span>
+                </div>
             </div>
-          
-            <div class="input-form">    
-                <input type="number" placeholder="Entrer le prix de vente " v-model="form.price_sell" autocomplete="off" required>
-                <span class="error">{{error_champ.email}}</span>
+            <div class="form-group col-md-6">
+                <label class="title">Entrer le nom du produit</label>
+                <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Paracetamol">
             </div>
-            <div class="input-form"> 
-                <input type="number" placeholder="Entrer le prix d'achat " v-model="form.price_buy" autocomplete="off" required>
-                <span class="error">{{error_champ.nature}}</span>
+            <div class="form-group col-md-6">
+                <label class="title">Entrer la quantité</label>
+                <input  type="number" class="form-control" placeholder="1200" v-model="form.quantity">
             </div>
-            <div class="input-form"> 
-                <input type="number" placeholder="Entrer le stock minimal " v-model="form.stock_min" autocomplete="off" required>
-                <span class="error">{{error_champ.nature}}</span>
+            <div class="form-group col-md-6">
+                <label class="title">Entrer le prix de vente </label>
+                <input type="number" class="form-control" placeholder="1500" v-model="form.price_sell" autocomplete="off" required>
             </div>
-            <div class="input-form"> 
-                <input type="number" placeholder="Entrer le stock maximal " v-model="form.stock_max" autocomplete="off" required>
-                <span class="error">{{error_champ.nature}}</span>
+            <div class="form-group col-md-6">
+                <label class="title">Entrer le prix d'achat </label>
+                <input type="number" class="form-control" placeholder="1000" v-model="form.price_buy" autocomplete="off" required>
             </div>
-            <div class="submit-form">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer le produit" name="submit">				          
-            </div>
+            <div class="form-group col-md-6">
+                <label class="title">Entrer le stock minimal </label>
+                <input type="number" class="form-control" placeholder="1000" v-model="form.stock_min" autocomplete="off" required>
+            </div> 
+            <div class="form-group col-md-6">
+                <label class="title">Entrer le stock maximal </label>
+                <input type="number" class="form-control" placeholder="1100" v-model="form.stock_max" autocomplete="off" required>
+            </div> 
 
+
+            <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer le produit</button>
         </form>
-        
+
 </div>
 
 </div>
 </template>
 
 <script>
-import SideBar from '../nav.vue'
+import Sidebar from '../sidebar.vue'
 export default {
+    layout: "empty",
     auth: true,
     components: {
-        SideBar,
+        Sidebar,
         
     },
 
@@ -104,8 +100,9 @@ export default {
         },
 
         refresh(){
-          this.$axios.post('/index/categorie', {
+          this.$axios.get('/index/categorie',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
           }).then(response =>
             {console.log(response); this.categories = response.data.data.data })
         },
@@ -116,62 +113,39 @@ export default {
 </script>
 
 <style scoped>
-.zone p{
-    font-size: 18px;
+form{
+    margin-left: 10%;
+    margin-top: 5%;
 }
 
-form {
-    width: 80%;
-    padding-left: 100px;
-    padding-right: 300px;
-    padding-top: 50px;
-}
-.input-form {
-    display: flex;
-    flex-direction: column-reverse;
-    margin: 1.2em 0;
-    height: 50px;
+.form-group{
+    margin-top: 2%;
 }
 
-.error{               
-    color: red;
-    margin-bottom: -10%;
-    font-size: 12px;
+.title{
+    margin: 1% 0;
 }
-        
 
-input {
-    padding: 8px;
-    border: none; outline: none;
-    border-bottom: 2px solid #605050;
+.btn{
+    margin-top: 5%;
 }
-       
+.contenu{
+  margin: 5%;
+
+}
+.fa{
+  margin: 0 5px;
+  font-size: 22px;
+  cursor: pointer;
+}
+.table{
+	margin-top: 5%;
+}  
+
 input::placeholder {
     font-size: 15px;
     opacity: 0.5;
 }
 
-.submit-form {
-    margin-top: 10%;
-    text-align: right;       
-}
-
-input[type=submit] {
-    background-color: white;
-    color: black;
-    padding: 10px 15px;
-    margin: 8px 0;
-    border: 1px solid #53af57;
-    cursor: pointer;
-    width: 100%;
-    font-size: 15px;
-}
-
-input[type=submit]:hover{
-    background-color: #53af57;
-    color: white;
-    border: 1px solid #53af57;
-    font-size: 16px;
-}
 
 </style>

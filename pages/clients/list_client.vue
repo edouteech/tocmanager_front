@@ -1,61 +1,59 @@
-<template>
-<div class="contain">
-     <SideBar/>
+<template >
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Clients </h3>
+    </nav>
 
-    <div class="zone">
-      <div class="titre">
-            Clients 
-        </div>
-      <p>Liste des clients</p>
-      <NuxtLink class="custom-btn btn-10" to="/clients/add_client">Ajouter client</NuxtLink>
-        <table class="tableau">
+    <div class="contenu">
+      <h4>Liste des clients</h4>
+      <NuxtLink  to="/clients/add_client"><button class="custom-btn btn-3"><span>Ajouter nouveau client</span></button></NuxtLink>
+        <table class="table table-hover">
           <thead>
-              <tr>
+            <tr class="table-primary">
                   <th>Noms</th>
                   <th>Numéros de téléphone</th>
                   <th>Emails</th>
                   <th>Nature</th>
                   <th>Actions</th>
-              </tr>
+            </tr>
           </thead>
-        
           <tbody>
-            <tr  v-for="(client, i) in clients" :key="i">
+           <tr  v-for="(client, i) in clients" :key="i">
               <td>{{client.name}}</td>
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
               <td>{{client.nature}}</td>
-              <td>
-                <button @click="voirClient(client.id)"><i class='bx bxs-info-circle'></i></button>
-                <NuxtLink :to="'/edit_client/'+client.id"><i class='bx bxs-edit' alt="modifier"></i></NuxtLink>
-                <button @click="deleteClient(client.id)"><i class='bx bxs-x-circle text-red-600' ></i></button>
+              <td class="action">
+                <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
               </td>
             </tr>
           </tbody>
-        </table>  
-    </div>
-<voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
-
+        </table>
+    </div><br><br><br> 
+  <voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
 
 <script>
 import voirClient from './voir_client.vue'
-import SideBar from '../nav.vue'
+import Sidebar from '../sidebar.vue'
 export default {
-  auth:true,
+  layout: "empty",
+  auth: true,
   components: {
-    SideBar,  
+    Sidebar,  
     voirClient,
   },
    data () {
       return {
         showModal: false,
-        identifiant1 : "0",
-        identifiant2 : "0",
-        identifiant3 : "0",
-        identifiant4 : "0",
+        identifiant1 : "",
+        identifiant2 : "",
+        identifiant3 : "",
+        identifiant4 : "",
         compagnie_id: '',
         clients: [],
         client: "",
@@ -64,20 +62,23 @@ export default {
 
     mounted () {
       this.refresh()
+      console.log(this.$auth.$storage)
     },
 
     methods: {
-
         deleteClient(id){ console.log(id);
           this.$axios.delete('/delete/client/' +id)
-          .then(response =>  {console.log(response.data.data);
+          .then(response =>  {console.log(response);
           this.refresh()})
          },
+          
         
         refresh(){
-          this.$axios.post('/index/client',{
-          compagnie_id: this.$auth.$storage.getUniversal('company_id')})
-          .then(response => {console.log(response.data.data.data);
+          this.$axios.get('/index/client',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          })
+          .then(response => {console.log(response);
           this.clients = response.data.data.data })
         },
 
@@ -98,53 +99,119 @@ export default {
 </script>
 
 <style scoped>
-.zone p{
-    font-size: 18px;
-}
 
-.bx{
-  margin: 0 10px;
-  font-size: 25px;
-}
-.ajout{
-  border: 1px solid;
-  border-radius: 15px;
-  background-color: rgb(233, 250, 215);
-  padding: 10px;
-  margin-left: 80%;
-}
+.contenu{
+  margin: 5%;
 
-.ajout:hover{
-  background-color: green;
-  color: #fff;
-  
 }
-.tableau{
-	border-collapse: collapse;
+.fa{
+  margin: 0 5px;
+  font-size: 22px;
+  cursor: pointer;
+}
+.table{
+	margin-top: 5%;
 
-
-	box-shadow: 0 5px 50px transparent;
-	border: 2px solid transparent;
-	text-align: center;
-	margin-top: 1%;
-	font-size: 18px;
 }      
+
+
 thead tr{
     background-color: transparent;
 }
-th, td{
-    padding: 15px 40px;
-    border: 1px solid #ddd
-}
-tbody, tr, td, th{
-    border: 1px solid #ddd
-}
 
-tbody tr:nth-child(even){
-    background-color: rgb(233, 233, 255);
-}
 
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
+}
+.action{
+   display: flex;
+}
+
+.custom-btn {
+  width: 180px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+.btn-3 {
+  background: rgb(0,172,238);
+background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+  width: 180px;
+  height: 40px;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  
+}
+.btn-3 span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn-3:before,
+.btn-3:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 0;
+   background: rgba(2,126,251,1);
+  transition: all 0.3s ease;
+}
+.btn-3:before {
+  height: 0%;
+  width: 2px;
+}
+.btn-3:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-3:hover{
+   background: transparent;
+  box-shadow: none;
+}
+.btn-3:hover:before {
+  height: 100%;
+}
+.btn-3:hover:after {
+  width: 100%;
+}
+.btn-3 span:hover{
+   color: rgba(2,126,251,1);
+}
+.btn-3 span:before,
+.btn-3 span:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+   background: rgba(2,126,251,1);
+  transition: all 0.3s ease;
+}
+.btn-3 span:before {
+  width: 2px;
+  height: 0%;
+}
+.btn-3 span:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-3 span:hover:before {
+  height: 100%;
+}
+.btn-3 span:hover:after {
+  width: 100%;
 }
 </style>
