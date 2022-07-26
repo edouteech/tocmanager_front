@@ -20,7 +20,7 @@
             <!-- </div> -->
             <div class="form-group col-md-6">
                 <label class="title">Entrer la date de l'encaissement </label>
-                <input type="datetime-local" class="form-control" v-model="form.date" autocomplete="off" required placeholder="18-05-1989">
+                <input type="date" class="form-control" v-model="form.date" autocomplete="off" required placeholder="18-05-1989">
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group ">

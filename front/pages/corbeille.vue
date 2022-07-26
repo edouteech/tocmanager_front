@@ -1,10 +1,10 @@
 <template>
-<div>
+<div class="page ">
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Corbeille</h3>
     </nav>
 
-    <div class="contenu">
+    <section class="contenu">
         <div class="cases">
             <NuxtLink to="/achats/delete_achat" class="case">      
                 Factures achats
@@ -15,11 +15,11 @@
             <NuxtLink to="/clients/delete_client" class="case">      
                 Clients
             </NuxtLink>
-            <NuxtLink to="/fournisseurs/delete_fournisseur" class="case">      
-                Fournisseurs
-            </NuxtLink>
         </div><hr>
         <div class="cases">
+             <NuxtLink to="/fournisseurs/delete_fournisseur" class="case">      
+                Fournisseurs
+            </NuxtLink>
             <NuxtLink to="/produits/delete_produit" class="case">      
                 Produits
             </NuxtLink>
@@ -41,7 +41,7 @@
                 Utilisateurs 
             </NuxtLink> -->
         </div>
-    </div>  
+    </section>  
 </div>
 </template>
 
@@ -59,11 +59,11 @@ export default {
 </script>
 
 <style scoped>
-
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
+
 .cases{
     display: flex;
 }
@@ -74,7 +74,7 @@ export default {
     border: 1px solid transparent;
     cursor: pointer;
     background-color: rgb(125, 93, 60);
-    font-size: 19px;
+    /* font-size: 19px; */
     font-weight: bold;
     color: rgb(246, 226, 226);
     text-decoration: none;

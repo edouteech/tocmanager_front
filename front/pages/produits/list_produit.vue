@@ -32,10 +32,11 @@
                 <td>{{produit.stock_min}}</td>
                 <td>{{produit.stock_max}}</td>
                 <td>{{produit.quantity * produit.price_sell}}</td>
-                <td class="action">
+                <td><div class="action">
                   <div @click="voirProduit(produit.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/produits/'+produit.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                   <div @click="deleteProduit(produit.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -123,11 +124,9 @@ export default {
 </script>
 
 <style scoped>
-
-
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 .fa{
   margin: 0 5px;
@@ -136,8 +135,8 @@ export default {
 }
 .table{
 	margin-top: 5%;
-
-}      
+  text-align: center;
+}          
 
 
 thead tr{

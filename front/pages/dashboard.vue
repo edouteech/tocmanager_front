@@ -298,7 +298,6 @@ export default {
 
 .contenu{
   margin: 5%;
-
 }
 
 .range{
@@ -399,7 +398,7 @@ export default {
   margin-right: 4%;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 900px) {
   .carreaux{
     display: inline;
   }

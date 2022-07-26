@@ -19,10 +19,11 @@
             <tr  v-for="(categorie, i) in categories" :key="i">
               <td>{{categorie.name}}</td>
               <td>{{categorie.parent_id}}</td>
-              <td class="action">
+              <td><div class="action">
                 <div @click="voirCategorie(categorie.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/categorie/'+categorie.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteCategorie(categorie.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -94,7 +95,7 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 .fa{
   margin: 0 5px;
@@ -103,7 +104,7 @@ export default {
 }
 .table{
 	margin-top: 5%;
-
+  text-align: center;
 }      
 
 thead tr{

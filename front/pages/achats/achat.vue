@@ -9,7 +9,7 @@
         <form action="" method="POST">
             <div class="cadre-haut">             
                 <div class="ajout-client">                   
-                    <select class="form-control" v-model="form.supplier_id">
+                    <select v-model="form.supplier_id">
                         <option disabled value="">Choisir le fournisseur</option>
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                             {{fournisseur.name}}
@@ -37,7 +37,7 @@
                             <th>Taux de réduction (%)</th>
                             <th>Taxe appliquée (%)</th>
                             <th>Net à payer</th>
-                            <th>Total</th>                     
+                            <th> Total</th>                     
                         </tr>
                     </thead>
                     
@@ -51,9 +51,9 @@
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
+                            <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td> 
                             <td><input class="form-control" type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
-                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
@@ -194,7 +194,7 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 
 .commande{
@@ -341,7 +341,7 @@ input[type=submit] {
     margin: 8px 0;
     border: 1px solid #3c05f1;
     cursor: pointer;
-    width: 40%;
+    width: 60%;
     font-size: 15px;
 }
 
@@ -355,12 +355,14 @@ input[type=submit]:hover{
 
 .table{
 	margin-top: 5%;
+    text-align: center;
 }      
 
 
 thead tr{
     background-color: transparent;
 }
+
 
 
 tbody tr:last-of-type{

@@ -21,10 +21,11 @@
               <td>{{achat.date_buy}}</td>
               <td>{{achat.supplier.name}}</td>
               <td>{{achat.amount}}</td>
-              <td class="action">
+              <td><div class="action">
                 <div  @click="voirAchat(achat.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/achats/'+achat.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteAchat(achat.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -97,6 +98,7 @@ export default {
 
 .contenu{
   margin: 5%;
+  overflow: auto;
 
 }
 .fa{
@@ -104,11 +106,12 @@ export default {
   font-size: 22px;
   cursor: pointer;
 }
+
 .table{
 	margin-top: 5%;
-
+  text-align: center;
+   
 }      
-
 
 thead tr{
     background-color: transparent;
@@ -208,5 +211,12 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 }
 .btn-3 span:hover:after {
   width: 100%;
+}
+
+
+@media screen and (max-width: 400px) {
+  .action{
+    padding: 20px 0;
+  }
 }
 </style>

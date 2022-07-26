@@ -22,10 +22,11 @@
               <td>{{encaissement.date}}</td>
               <td>{{encaissement.montant}}</td>
               <td>{{encaissement.client_id}}</td>
-              <td class="action">
+              <td><div class="action">
                 <div @click="voirEncaissement(encaissement.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/encaissements/'+encaissement.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteEncaissement(encaissement.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -99,16 +100,18 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;
   cursor: pointer;
 }
+
 .table{
 	margin-top: 5%;
-
+  text-align: center;
 }      
 
 

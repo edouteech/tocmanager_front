@@ -207,7 +207,7 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 
 .commande{
@@ -379,7 +379,7 @@ input[type=submit]:hover{
 
 .table{
 	margin-top: 5%;
-
+    text-align: center;
 }      
 
 

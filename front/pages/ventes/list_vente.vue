@@ -21,10 +21,11 @@
               <td>{{vente.date_sell}}</td>
               <td>{{vente.client.name}}</td>
               <td>{{vente.amount}}</td>
-              <td class="action">
+              <td><div class="action">
                 <div  @click="voirVente(vente.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/ventes/'+vente.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" @click="deleteVente(vente.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -100,7 +101,7 @@ export default {
 
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 .fa{
   margin: 0 5px;
@@ -109,6 +110,8 @@ export default {
 }
 .table{
 	margin-top: 5%;
+  text-align: center;
+  justify-content: center;
 
 }         
 
@@ -116,7 +119,6 @@ export default {
 thead tr{
     background-color: transparent;
 }
-
 
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);

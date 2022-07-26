@@ -10,7 +10,7 @@
             
             <div class="cadre-haut">             
                 <div class="ajout-client">                                   
-                    <select class="form-control"  v-model="form.client_id">
+                    <select v-model="form.client_id">
                         <option disabled value="">Choisir le client</option>
                         <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
                             {{client.name}}
@@ -195,7 +195,7 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 
 .commande{
@@ -218,9 +218,9 @@ export default {
 }
 
 .ajout-client{
-    margin: 2% 1%;
+    margin: 30px 10px;
     border: 1px solid darkblue;
-    padding: 2% ;
+    padding: 50px ;
     margin-right: 50%;
   
 }
@@ -343,7 +343,7 @@ input[type=submit] {
     margin: 8px 0;
     border: 1px solid #3c05f1;
     cursor: pointer;
-    width: 40%;
+    width: 60%;
     font-size: 15px;
 }
 
@@ -356,7 +356,7 @@ input[type=submit]:hover{
 
 .table{
 	margin-top: 5%;
-
+    text-align: center;
 }      
 
 

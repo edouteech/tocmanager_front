@@ -209,4 +209,12 @@ button {
   border-radius: 16px;
   margin-top: 50px;
 }
+
+@media screen and (max-width: 400px) {
+.modaler {
+ overflow: auto;  
+}
+
+}
+
 </style>

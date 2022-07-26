@@ -23,10 +23,11 @@
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
               <td>{{client.nature}}</td>
-              <td class="action">
+              <td><div class="action">
                 <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -102,7 +103,7 @@ export default {
 
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 .fa{
   margin: 0 5px;
@@ -111,7 +112,7 @@ export default {
 }
 .table{
 	margin-top: 5%;
-
+  text-align: center;
 }      
 
 
