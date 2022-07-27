@@ -27,8 +27,8 @@
             <div class="form-outline mb-3">
               <span class="fas fa-lock px-2"></span><label class="form-label">Mot de passe</label>
               <div class="input-field">
-              <input type="password" id="form3Example4" class="form-control form-control-lg" v-model="form.password"
-                placeholder="Entrer votre mot de passe"/><span class="far fa-eye-slash px-2" required></span></div>
+              <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
+                placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click="changer()"></i></span></div>
               
             </div>
 
@@ -87,7 +87,23 @@ export default {
         
     },
 
-   async login() {
+		changer(){
+    var e = true
+
+        if (e){
+          document.getElementById("password").setAttribute("type","text"); 
+          document.getElementById("eye").class="fa fa-eye px-2";
+          e = false;
+        }
+
+        else{
+          document.getElementById("password").setAttribute("type","password"); 
+          document.getElementById("eye").class="fa fa-eye-slash px-2";
+          e = true;
+        }
+    },
+
+    async login() {
             try {
               let response = await this.$auth.loginWith('local', { data: this.form })
               console.log(response);

@@ -118,7 +118,6 @@ tbody tr:last-of-type{
 
 .action{
    display: flex;
-      
 }
 
 .custom-btn {
