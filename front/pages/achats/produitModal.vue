@@ -4,7 +4,7 @@
         <form action="" method="POST">
             <h1>Ajout rapide de produit</h1>
             <div class="input-form"> 
-                <select v-model="form.category_id">
+                <select v-model="form.category_id" id="categorie">
                     <option disabled value="">Choisissez la categorie du produit à ajouter</option>
                     <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
                 </select>
@@ -12,32 +12,32 @@
                 <span class="error">{{error_champ.nature}}</span>
             </div>  
             <div class="input-form">					
-                <input type="text" placeholder="Entrer le nom du produit " v-model="form.name" autocomplete="off" required>
+                <input type="text" placeholder="Entrer le nom du produit " v-model="form.name" autocomplete="off" id="name_prod" required>
                 <span class="error">{{error_champ.name}}</span>
             </div>    
             <div class="input-form">        
-                <input type="number" placeholder="Entrer la quantité " v-model="form.quantity" required>
+                <input type="number" placeholder="Entrer la quantité " v-model="form.quantity" id="quantite" required>
                 <span class="error">{{error_champ.phone}}</span>
             </div>
           
             <div class="input-form">    
-                <input type="number" placeholder="Entrer le prix de vente " v-model="form.price_sell" autocomplete="off" required>
+                <input type="number" placeholder="Entrer le prix de vente " v-model="form.price_sell" id="vente" autocomplete="off" required>
                 <span class="error">{{error_champ.email}}</span>
             </div>
             <div class="input-form"> 
-                <input type="number" placeholder="Entrer le prix d'achat " v-model="form.price_buy" autocomplete="off" required>
+                <input type="number" placeholder="Entrer le prix d'achat " v-model="form.price_buy" autocomplete="off" id="achat" required>
                 <span class="error">{{error_champ.nature}}</span>
             </div>
             <div class="input-form"> 
-                <input type="number" placeholder="Entrer le stock minimal " v-model="form.stock_min" autocomplete="off" required>
+                <input type="number" placeholder="Entrer le stock minimal " v-model="form.stock_min" autocomplete="off" id="min" required>
                 <span class="error">{{error_champ.nature}}</span>
             </div>
             <div class="input-form"> 
-                <input type="number" placeholder="Entrer le stock maximal " v-model="form.stock_max" autocomplete="off" required>
+                <input type="number" placeholder="Entrer le stock maximal " v-model="form.stock_max" autocomplete="off" id="max" required>
                 <span class="error">{{error_champ.nature}}</span>
             </div>
             <div class="submit-form">
-                <input type="submit" id='submit' @click.stop="submit()" value="Enregistrer le produit" name="submit">				          
+                <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le produit" name="submit">				          
             </div>
 
         </form>
@@ -87,8 +87,14 @@
               stock_max: this.form.stock_max,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
-            // .then(response =>{this.$router.push({path:$emit('close-modal'), })})
-            .catch( error => console.log( error ) )
+           .then(response =>{console.log(response.data.data) })
+            document.getElementById("categorie").value='';
+            document.getElementById("name_prod").value='';
+            document.getElementById("quantite").value='';
+            document.getElementById("vente").value='';
+            document.getElementById("achat").value='';
+            document.getElementById("min").value='';
+            document.getElementById("max").value='';
               
         },
 

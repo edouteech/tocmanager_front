@@ -28,7 +28,7 @@
               <span class="fas fa-lock px-2"></span><label class="form-label">Mot de passe</label>
               <div class="input-field">
               <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
-                placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click="changer()"></i></span></div>
+                placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click.prevent="changer()"></i></span></div>
               
             </div>
 
