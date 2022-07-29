@@ -26,7 +26,7 @@
                     <!-- <input type="number" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required> -->
                     <span class="error">{{error_champ.nature}}</span>
                 </div>
-                <div class="submit-form">
+                <div class="submit-form" @click="$emit('close-modal')">
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
                 </div>
             </form>

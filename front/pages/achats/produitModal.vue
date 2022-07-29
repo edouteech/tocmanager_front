@@ -36,7 +36,7 @@
                 <input type="number" placeholder="Entrer le stock maximal " v-model="form.stock_max" autocomplete="off" id="max" required>
                 <span class="error">{{error_champ.nature}}</span>
             </div>
-            <div class="submit-form">
+            <div class="submit-form" @click="$emit('close-modal')">
                 <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le produit" name="submit">				          
             </div>
 
