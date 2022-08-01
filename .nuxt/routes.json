@@ -1,0 +1,513 @@
+[
+  {
+    "name": "about",
+    "path": "/about",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\about.vue",
+    "chunkName": "pages/about",
+    "_name": "_8faee852"
+  },
+  {
+    "name": "achatVente",
+    "path": "/achatVente",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\achatVente.vue",
+    "chunkName": "pages/achatVente",
+    "_name": "_6c5b9686"
+  },
+  {
+    "name": "compagnie",
+    "path": "/compagnie",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\compagnie.vue",
+    "chunkName": "pages/compagnie",
+    "_name": "_65e5dc82"
+  },
+  {
+    "name": "contact",
+    "path": "/contact",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\contact.vue",
+    "chunkName": "pages/contact",
+    "_name": "_52b1c66a"
+  },
+  {
+    "name": "corbeille",
+    "path": "/corbeille",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\corbeille.vue",
+    "chunkName": "pages/corbeille",
+    "_name": "_15a688ef"
+  },
+  {
+    "name": "dashboard",
+    "path": "/dashboard",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\dashboard.vue",
+    "chunkName": "pages/dashboard",
+    "_name": "_5dd40e5e"
+  },
+  {
+    "name": "login",
+    "path": "/login",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\login.vue",
+    "chunkName": "pages/login",
+    "_name": "_bcefec9a"
+  },
+  {
+    "name": "register",
+    "path": "/register",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\register.vue",
+    "chunkName": "pages/register",
+    "_name": "_5431ce49"
+  },
+  {
+    "name": "services",
+    "path": "/services",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\services.vue",
+    "chunkName": "pages/services",
+    "_name": "_5f054af8"
+  },
+  {
+    "name": "sidebar",
+    "path": "/sidebar",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\sidebar.vue",
+    "chunkName": "pages/sidebar",
+    "_name": "_37c6afa6"
+  },
+  {
+    "name": "achats-achat",
+    "path": "/achats/achat",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\achats\\\\achat.vue",
+    "chunkName": "pages/achats/achat",
+    "_name": "_bbab112e"
+  },
+  {
+    "name": "achats-ajoutModal",
+    "path": "/achats/ajoutModal",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\achats\\\\ajoutModal.vue",
+    "chunkName": "pages/achats/ajoutModal",
+    "_name": "_3b6022b0"
+  },
+  {
+    "name": "achats-delete_achat",
+    "path": "/achats/delete_achat",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\achats\\\\delete_achat.vue",
+    "chunkName": "pages/achats/delete_achat",
+    "_name": "_2ab276a5"
+  },
+  {
+    "name": "achats-list_achat",
+    "path": "/achats/list_achat",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\achats\\\\list_achat.vue",
+    "chunkName": "pages/achats/list_achat",
+    "_name": "_99f73050"
+  },
+  {
+    "name": "achats-modal_delete",
+    "path": "/achats/modal_delete",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\achats\\\\modal_delete.vue",
+    "chunkName": "pages/achats/modal_delete",
+    "_name": "_55d32e7d"
+  },
+  {
+    "name": "achats-produitModal",
+    "path": "/achats/produitModal",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\achats\\\\produitModal.vue",
+    "chunkName": "pages/achats/produitModal",
+    "_name": "_418bd3f8"
+  },
+  {
+    "name": "achats-SavedModal",
+    "path": "/achats/SavedModal",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\achats\\\\SavedModal.vue",
+    "chunkName": "pages/achats/SavedModal",
+    "_name": "_6ee615f4"
+  },
+  {
+    "name": "achats-voir_achat",
+    "path": "/achats/voir_achat",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\achats\\\\voir_achat.vue",
+    "chunkName": "pages/achats/voir_achat",
+    "_name": "_b3f2d848"
+  },
+  {
+    "name": "categorie-add_categorie",
+    "path": "/categorie/add_categorie",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\categorie\\\\add_categorie.vue",
+    "chunkName": "pages/categorie/add_categorie",
+    "_name": "_161249a8"
+  },
+  {
+    "name": "categorie-delete_categorie",
+    "path": "/categorie/delete_categorie",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\categorie\\\\delete_categorie.vue",
+    "chunkName": "pages/categorie/delete_categorie",
+    "_name": "_33ff3ce4"
+  },
+  {
+    "name": "categorie-list_categorie",
+    "path": "/categorie/list_categorie",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\categorie\\\\list_categorie.vue",
+    "chunkName": "pages/categorie/list_categorie",
+    "_name": "_2ed28e52"
+  },
+  {
+    "name": "categorie-modal_delete",
+    "path": "/categorie/modal_delete",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\categorie\\\\modal_delete.vue",
+    "chunkName": "pages/categorie/modal_delete",
+    "_name": "_07515f84"
+  },
+  {
+    "name": "categorie-voir_categorie",
+    "path": "/categorie/voir_categorie",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\categorie\\\\voir_categorie.vue",
+    "chunkName": "pages/categorie/voir_categorie",
+    "_name": "_12497a4a"
+  },
+  {
+    "name": "clients-add_client",
+    "path": "/clients/add_client",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\clients\\\\add_client.vue",
+    "chunkName": "pages/clients/add_client",
+    "_name": "_0c1b0d7b"
+  },
+  {
+    "name": "clients-delete_client",
+    "path": "/clients/delete_client",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\clients\\\\delete_client.vue",
+    "chunkName": "pages/clients/delete_client",
+    "_name": "_458e277d"
+  },
+  {
+    "name": "clients-list_client",
+    "path": "/clients/list_client",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\clients\\\\list_client.vue",
+    "chunkName": "pages/clients/list_client",
+    "_name": "_30503fac"
+  },
+  {
+    "name": "clients-modal_delete",
+    "path": "/clients/modal_delete",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\clients\\\\modal_delete.vue",
+    "chunkName": "pages/clients/modal_delete",
+    "_name": "_3b2e074f"
+  },
+  {
+    "name": "clients-voir_client",
+    "path": "/clients/voir_client",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\clients\\\\voir_client.vue",
+    "chunkName": "pages/clients/voir_client",
+    "_name": "_551b34a6"
+  },
+  {
+    "name": "compagnies-add_compagnie",
+    "path": "/compagnies/add_compagnie",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\compagnies\\\\add_compagnie.vue",
+    "chunkName": "pages/compagnies/add_compagnie",
+    "_name": "_2529947a"
+  },
+  {
+    "name": "compagnies-delete_compagnie",
+    "path": "/compagnies/delete_compagnie",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\compagnies\\\\delete_compagnie.vue",
+    "chunkName": "pages/compagnies/delete_compagnie",
+    "_name": "_5f40d425"
+  },
+  {
+    "name": "compagnies-list_compagnie",
+    "path": "/compagnies/list_compagnie",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\compagnies\\\\list_compagnie.vue",
+    "chunkName": "pages/compagnies/list_compagnie",
+    "_name": "_08fab4d8"
+  },
+  {
+    "name": "compagnies-modal_delete",
+    "path": "/compagnies/modal_delete",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\compagnies\\\\modal_delete.vue",
+    "chunkName": "pages/compagnies/modal_delete",
+    "_name": "_1f626a7e"
+  },
+  {
+    "name": "decaissements-decaissement",
+    "path": "/decaissements/decaissement",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\decaissements\\\\decaissement.vue",
+    "chunkName": "pages/decaissements/decaissement",
+    "_name": "_58f2995d"
+  },
+  {
+    "name": "decaissements-delete_decaissement",
+    "path": "/decaissements/delete_decaissement",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\decaissements\\\\delete_decaissement.vue",
+    "chunkName": "pages/decaissements/delete_decaissement",
+    "_name": "_3782f959"
+  },
+  {
+    "name": "decaissements-list_decaissement",
+    "path": "/decaissements/list_decaissement",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\decaissements\\\\list_decaissement.vue",
+    "chunkName": "pages/decaissements/list_decaissement",
+    "_name": "_6b616fc6"
+  },
+  {
+    "name": "decaissements-modal_delete",
+    "path": "/decaissements/modal_delete",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\decaissements\\\\modal_delete.vue",
+    "chunkName": "pages/decaissements/modal_delete",
+    "_name": "_71f534e1"
+  },
+  {
+    "name": "decaissements-voir_decaissement",
+    "path": "/decaissements/voir_decaissement",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\decaissements\\\\voir_decaissement.vue",
+    "chunkName": "pages/decaissements/voir_decaissement",
+    "_name": "_754b117c"
+  },
+  {
+    "name": "encaissements-delete_encaissement",
+    "path": "/encaissements/delete_encaissement",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\encaissements\\\\delete_encaissement.vue",
+    "chunkName": "pages/encaissements/delete_encaissement",
+    "_name": "_54049fa9"
+  },
+  {
+    "name": "encaissements-encaissement",
+    "path": "/encaissements/encaissement",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\encaissements\\\\encaissement.vue",
+    "chunkName": "pages/encaissements/encaissement",
+    "_name": "_7e36045d"
+  },
+  {
+    "name": "encaissements-list_encaissement",
+    "path": "/encaissements/list_encaissement",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\encaissements\\\\list_encaissement.vue",
+    "chunkName": "pages/encaissements/list_encaissement",
+    "_name": "_f0efffd4"
+  },
+  {
+    "name": "encaissements-modal_delete",
+    "path": "/encaissements/modal_delete",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\encaissements\\\\modal_delete.vue",
+    "chunkName": "pages/encaissements/modal_delete",
+    "_name": "_e61ff48e"
+  },
+  {
+    "name": "encaissements-voir_encaissement",
+    "path": "/encaissements/voir_encaissement",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\encaissements\\\\voir_encaissement.vue",
+    "chunkName": "pages/encaissements/voir_encaissement",
+    "_name": "_3cfdf0dc"
+  },
+  {
+    "name": "fournisseurs-add_fournisseur",
+    "path": "/fournisseurs/add_fournisseur",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\fournisseurs\\\\add_fournisseur.vue",
+    "chunkName": "pages/fournisseurs/add_fournisseur",
+    "_name": "_5407851b"
+  },
+  {
+    "name": "fournisseurs-delete_fournisseur",
+    "path": "/fournisseurs/delete_fournisseur",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\fournisseurs\\\\delete_fournisseur.vue",
+    "chunkName": "pages/fournisseurs/delete_fournisseur",
+    "_name": "_5aa253b6"
+  },
+  {
+    "name": "fournisseurs-list_fournisseur",
+    "path": "/fournisseurs/list_fournisseur",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\fournisseurs\\\\list_fournisseur.vue",
+    "chunkName": "pages/fournisseurs/list_fournisseur",
+    "_name": "_5957bb18"
+  },
+  {
+    "name": "fournisseurs-modal_delete",
+    "path": "/fournisseurs/modal_delete",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\fournisseurs\\\\modal_delete.vue",
+    "chunkName": "pages/fournisseurs/modal_delete",
+    "_name": "_71eed395"
+  },
+  {
+    "name": "fournisseurs-voir_fournisseur",
+    "path": "/fournisseurs/voir_fournisseur",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\fournisseurs\\\\voir_fournisseur.vue",
+    "chunkName": "pages/fournisseurs/voir_fournisseur",
+    "_name": "_2ebc57c8"
+  },
+  {
+    "name": "produits-add_produit",
+    "path": "/produits/add_produit",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\produits\\\\add_produit.vue",
+    "chunkName": "pages/produits/add_produit",
+    "_name": "_756c3f2b"
+  },
+  {
+    "name": "produits-delete_produit",
+    "path": "/produits/delete_produit",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\produits\\\\delete_produit.vue",
+    "chunkName": "pages/produits/delete_produit",
+    "_name": "_047d5425"
+  },
+  {
+    "name": "produits-list_produit",
+    "path": "/produits/list_produit",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\produits\\\\list_produit.vue",
+    "chunkName": "pages/produits/list_produit",
+    "_name": "_e72aeed0"
+  },
+  {
+    "name": "produits-modal_delete",
+    "path": "/produits/modal_delete",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\produits\\\\modal_delete.vue",
+    "chunkName": "pages/produits/modal_delete",
+    "_name": "_13b58ae6"
+  },
+  {
+    "name": "produits-voir_produit",
+    "path": "/produits/voir_produit",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\produits\\\\voir_produit.vue",
+    "chunkName": "pages/produits/voir_produit",
+    "_name": "_70dc78c8"
+  },
+  {
+    "name": "profils-delete_profil",
+    "path": "/profils/delete_profil",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\profils\\\\delete_profil.vue",
+    "chunkName": "pages/profils/delete_profil",
+    "_name": "_2019795f"
+  },
+  {
+    "name": "profils-modal_delete",
+    "path": "/profils/modal_delete",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\profils\\\\modal_delete.vue",
+    "chunkName": "pages/profils/modal_delete",
+    "_name": "_bd61c584"
+  },
+  {
+    "name": "profils-profil",
+    "path": "/profils/profil",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\profils\\\\profil.vue",
+    "chunkName": "pages/profils/profil",
+    "_name": "_693c0986"
+  },
+  {
+    "name": "ventes-ajoutModal",
+    "path": "/ventes/ajoutModal",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\ventes\\\\ajoutModal.vue",
+    "chunkName": "pages/ventes/ajoutModal",
+    "_name": "_315e3071"
+  },
+  {
+    "name": "ventes-delete_vente",
+    "path": "/ventes/delete_vente",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\ventes\\\\delete_vente.vue",
+    "chunkName": "pages/ventes/delete_vente",
+    "_name": "_4594f5c5"
+  },
+  {
+    "name": "ventes-list_vente",
+    "path": "/ventes/list_vente",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\ventes\\\\list_vente.vue",
+    "chunkName": "pages/ventes/list_vente",
+    "_name": "_58703538"
+  },
+  {
+    "name": "ventes-modal_delete",
+    "path": "/ventes/modal_delete",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\ventes\\\\modal_delete.vue",
+    "chunkName": "pages/ventes/modal_delete",
+    "_name": "_1a582206"
+  },
+  {
+    "name": "ventes-produitModal",
+    "path": "/ventes/produitModal",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\ventes\\\\produitModal.vue",
+    "chunkName": "pages/ventes/produitModal",
+    "_name": "_b881ece6"
+  },
+  {
+    "name": "ventes-SavedModal",
+    "path": "/ventes/SavedModal",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\ventes\\\\SavedModal.vue",
+    "chunkName": "pages/ventes/SavedModal",
+    "_name": "_179b36cf"
+  },
+  {
+    "name": "ventes-vente",
+    "path": "/ventes/vente",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\ventes\\\\vente.vue",
+    "chunkName": "pages/ventes/vente",
+    "_name": "_3e880797"
+  },
+  {
+    "name": "ventes-voir_vente",
+    "path": "/ventes/voir_vente",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\ventes\\\\voir_vente.vue",
+    "chunkName": "pages/ventes/voir_vente",
+    "_name": "_4b72613c"
+  },
+  {
+    "name": "achats-id",
+    "path": "/achats/:id?",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\achats\\\\_id.vue",
+    "chunkName": "pages/achats/_id",
+    "_name": "_4b51eb6a"
+  },
+  {
+    "name": "categorie-id",
+    "path": "/categorie/:id?",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\categorie\\\\_id.vue",
+    "chunkName": "pages/categorie/_id",
+    "_name": "_126cc6ee"
+  },
+  {
+    "name": "clients-id",
+    "path": "/clients/:id?",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\clients\\\\_id.vue",
+    "chunkName": "pages/clients/_id",
+    "_name": "_7a7b0350"
+  },
+  {
+    "name": "compagnies-id",
+    "path": "/compagnies/:id?",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\compagnies\\\\_id.vue",
+    "chunkName": "pages/compagnies/_id",
+    "_name": "_1f869ab4"
+  },
+  {
+    "name": "decaissements-id",
+    "path": "/decaissements/:id?",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\decaissements\\\\_id.vue",
+    "chunkName": "pages/decaissements/_id",
+    "_name": "_5f706486"
+  },
+  {
+    "name": "encaissements-id",
+    "path": "/encaissements/:id?",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\encaissements\\\\_id.vue",
+    "chunkName": "pages/encaissements/_id",
+    "_name": "_5756c0ae"
+  },
+  {
+    "name": "fournisseurs-id",
+    "path": "/fournisseurs/:id?",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\fournisseurs\\\\_id.vue",
+    "chunkName": "pages/fournisseurs/_id",
+    "_name": "_f568a95c"
+  },
+  {
+    "name": "produits-id",
+    "path": "/produits/:id?",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\produits\\\\_id.vue",
+    "chunkName": "pages/produits/_id",
+    "_name": "_a7e1e54c"
+  },
+  {
+    "name": "ventes-id",
+    "path": "/ventes/:id?",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\ventes\\\\_id.vue",
+    "chunkName": "pages/ventes/_id",
+    "_name": "_442fac7e"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "C:\\\\wamp64\\\\www\\\\Projet final TocManager\\\\tocmanager_front\\\\front\\\\pages\\\\index.vue",
+    "chunkName": "pages/index",
+    "_name": "_503f32c8"
+  }
+]
