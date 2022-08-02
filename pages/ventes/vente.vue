@@ -5,42 +5,19 @@
     </nav>
 
     <div class="contenu">
-        <h4>Enregistrer une vente</h4><hr>
+        <h4>Enregistrer une vente </h4><hr>
         <form action="" method="POST">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-  Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
             <div class="cadre-haut">             
                 <div class="ajout-client">                                   
                     <select v-model="form.client_id">
                         <option disabled value="">Choisir le client</option>
+                        <option :value= cli_id>{{message}}</option>
                         <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
                             {{client.name}}
                         </option>                           
                     </select>          
-                    <div class="save-btn">
-                        <div @click="showModal = true"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client</div>
+                    <div class="save-btn" @click="showModal = true">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
                     </div>                   
                 </div>
                 <div class="facture-date">
@@ -70,6 +47,7 @@
                             <td>
                                 <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                     <option disabled value="">Choisissez...</option>
+                                    <!-- <option :value= prod_id>{{nom_prod}}</option> -->
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
                                 </select>
                             </td>
@@ -89,8 +67,8 @@
     
         </form>
     </div>
-
-    <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
+    
+    <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
     <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
 
@@ -115,6 +93,10 @@ export default {
 
     data () {
         return{
+            message: '',
+            cli_id: '0',
+            // nom_prod: '',
+            // prod_id: '',
             showModal: false,
             showSaved: false,
             showProduit: false,
@@ -146,7 +128,17 @@ export default {
             this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
             
         },
-        
+
+        setMessage(payload) {
+        this.message = payload.message
+        this.cli_id = payload.cli_id
+        },
+
+        // setProd(payload) {
+        // this.nom_prod = payload.nom_prod
+        // this.prod_id = payload.prod_id
+        // },
+
         async submit(){
             await  this.$axios.post('/create/vente',{
               date_sell: this.form.date_sell,
@@ -166,8 +158,9 @@ export default {
             this.$axios.get('/index/client',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
-          }).then(response => {console.log(response);
-            this.clients = response.data.data.data})
+          }).then(response => {console.log(response.data.data.data);
+            this.clients = response.data.data.data
+            })
         },
 
         recupProduct(){

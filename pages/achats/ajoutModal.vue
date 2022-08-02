@@ -63,7 +63,8 @@
               nature: this.form.nature,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
-            .then(response =>{console.log(response.data.data) })
+            .then(response =>{console.log(response.data.data) 
+            this.$emit('conf', { message: this.form.name, four_id: response.data.data.id })})
             document.getElementById("name_four").value='';
             document.getElementById("phone_four").value='';
             document.getElementById("email_four").value='';

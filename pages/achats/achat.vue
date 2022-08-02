@@ -11,6 +11,7 @@
                 <div class="ajout-client">                   
                     <select v-model="form.supplier_id">
                         <option disabled value="">Choisir le fournisseur</option>
+                        <option :value= four_id>{{message}}</option>
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                             {{fournisseur.name}}
                         </option>                           
@@ -64,7 +65,7 @@
     
         </form>
     </div>
-    <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
+    <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/>
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
     <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
 
@@ -89,6 +90,8 @@ export default {
 
     data () {
         return{
+            message: '',
+            four_id: '',
             showModal: false,
             showSaved: false,
             showProduit: false,
@@ -120,7 +123,12 @@ export default {
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
             
         },
-        
+
+        setMessage(payload) {
+        this.message = payload.message
+        this.four_id = payload.four_id
+        },
+
         async submit(){
             await  this.$axios.post('/create/achat',{
               date_buy: this.form.date_buy,
