@@ -11,7 +11,7 @@
                 <div class="ajout-client">                                   
                     <select v-model="form.client_id">
                         <option disabled value="">Choisir le client</option>
-                        <option :value= cli_id>{{message}}</option>
+                        <!-- <option :value= cli_id>{{message}}</option> -->
                         <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
                             {{client.name}}
                         </option>                           
@@ -70,7 +70,7 @@
     
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
-    <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
+    <produitModal v-show="showProduit" @close-modal="showProduit = false" @prod="setProduit"/>
 
 </div>
  
@@ -117,6 +117,13 @@ export default {
             error_champ: [],
         }
     },
+    // watch: {
+    //     cli_id: {
+    //         handler(, ) {
+    //         },
+    //     deep: true
+    //     }
+    // },
 
     mounted () {
       this.refresh()
@@ -130,10 +137,14 @@ export default {
         },
 
         setMessage(payload) {
+            this.refresh()
         this.message = payload.message
         this.cli_id = payload.cli_id
         },
-
+        
+        setProduit(payload) {
+            this.recupProduct()
+        },
         // setProd(payload) {
         // this.nom_prod = payload.nom_prod
         // this.prod_id = payload.prod_id

@@ -3,7 +3,7 @@
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Clients </h3>
     </nav>
-
+    <Notification :message="error" v-if="error"/>
     <div class="contenu ">
         <h4>Enregistrer un nouveau client</h4>
         <form action="">
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer le client</button>
+            <button type="submit" class="btn btn-primary" @click.prevent="submit()">Enregistrer le client</button>
         </form>
     </div>
 
@@ -39,15 +39,18 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Notification from '../notification.vue'
 export default {
     layout: "empty",
     auth:true,
     components: {
         Sidebar,
-        
+        Notification,        
     },
+
     data () {
         return{
+            error: null,
             form: {
                 name: '',
                 email: '',
@@ -62,21 +65,23 @@ export default {
 
     methods: {
         async submit(){
-            await  this.$axios.post('/create/client',{
-              name: this.form.name,
-              email: this.form.email,
-              phone: this.form.phone,
-              nature: this.form.nature,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }).then(response =>{ 
-                console.log( response ) 
-                this.$router.push({path:'/clients/list_client',})})
-            .catch( error => console.log( error ) )
+            try{
+                await  this.$axios.post('/create/client',{
+                name: this.form.name,
+                email: this.form.email,
+                phone: this.form.phone,
+                nature: this.form.nature,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                })
+                this.$router.push({path:'/clients/list_client',})
+            } catch (e){
+                this.error = e.response.data.message
+                console.log(error)
+            }
                 //  console.log(this.form.name)                
         },
 
-    },
-  
+    }
 }
 </script>
 

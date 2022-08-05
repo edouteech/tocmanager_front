@@ -29,7 +29,7 @@ export default {
     script: [
       { 
         src: '/js/bootstrap.bundle.min.js', 
-        type: 'text/javascript'
+        type: 'text/javascript',
       }
     ]
   },

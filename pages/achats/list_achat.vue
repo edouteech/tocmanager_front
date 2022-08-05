@@ -30,7 +30,16 @@
             </tr>
           </tbody>
         </table>
-  </div><br><br><br>
+   </div><br>
+    <nav aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
+        </nav>
+            <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirAchat :date= 'identifiant1' :fournisseur= 'identifiant2' :montant= 'identifiant3' :facture='identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
@@ -47,6 +56,8 @@ export default {
   },
    data () {
       return {
+        links: [],
+        res_data: null,
         showModal: false,
         identifiant1 : "",
         identifiant2 : "",
@@ -62,9 +73,12 @@ export default {
             this.refresh()})                
         },
         
-        refresh(){
-          this.$axios.get('/index/achat').then(response => {console.log(response);
-          this.achats = response.data.data.data})  
+        refresh(page=1){
+          this.$axios.get('/index/achat',{params: {
+            page: page}
+          }).then(response => {console.log(response);
+          this.achats = response.data.data.data
+          this.res_data= response.data.data})  
         },
 
         recupFournisseur(){

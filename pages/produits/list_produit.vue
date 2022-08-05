@@ -40,10 +40,17 @@
                 </td>
               </tr>
             </tbody>
-
         </table>
-    
-    </div><br><br><br>
+   </div><br>
+        <nav aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
+        </nav>
+            <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
@@ -62,6 +69,8 @@ export default {
 
   data () {
     return {
+      links: [],
+      res_data: null,
       showModal: false,
       identifiant1 : "",
       identifiant2 : "",
@@ -92,15 +101,17 @@ export default {
           )         
         },
 
-        refresh(){
+        refresh(page=1){
           this.$axios.get('/index/product',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            page: page
           }
           })
           .then(response => 
             {
               console.log(response.data.data.data);
               this.produits = response.data.data.data
+              this.res_data= response.data.data
             }
           )
         },
