@@ -69,20 +69,25 @@ export default {
     },
     methods: {
         deleteAchat(id){
-          this.$axios.delete('/delete/achat/' +id).then(response =>{console.log(response.data.data);
+          this.$axios.delete('/buys/' +id).then(response =>{console.log(response.data.data);
             this.refresh()})                
         },
         
         refresh(page=1){
-          this.$axios.get('/index/achat',{params: {
+          this.$axios.get('/buys',{params: {
             page: page}
-          }).then(response => {console.log(response);
-          this.achats = response.data.data.data
-          this.res_data= response.data.data})  
+          }).then(response => 
+          {
+            console.log(response);
+            this.achats = response.data.data.data
+            this.res_data= response.data.data
+            let firstE = response.data.data.links.shift()
+            let lastE = response.data.data.links.splice(-1,1);
+          })  
         },
 
         recupFournisseur(){
-          this.$axios.get('/index/client',{params: {
+          this.$axios.get('/suppliers',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response => {console.log(response.data.data.data);
@@ -91,7 +96,7 @@ export default {
         
         voirAchat(id){
             this.showModal = true;
-            this.$axios.get('/index/achat/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/buys/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].date_buy
              this.identifiant2 = response.data.data[0].supplier_id
              this.identifiant3 = response.data.data[0].amount

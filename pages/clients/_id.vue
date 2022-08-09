@@ -63,7 +63,7 @@ export default {
         }
         },
     mounted() {
-        this.$axios.get('/index/client/'+ this.$route.params.id)
+        this.$axios.get('/clients/'+ this.$route.params.id)
          .then(response => {console.log(response.data.data[0] )
             let client = response.data.data[0];
             // this.clients = response.data.data
@@ -80,7 +80,7 @@ export default {
     methods: {
 
         submit(){          
-            this.$axios.put('/update/client', {
+            this.$axios.put('/clients', {
             id: this.$route.params.id,
             name: this.form.name,
             email: this.form.email,

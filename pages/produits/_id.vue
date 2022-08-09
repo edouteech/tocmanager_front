@@ -82,7 +82,7 @@ export default {
     mounted() {
         this.refresh()
         this.$axios
-        .get('/index/product/'+ this.$route.params.id)
+        .get('/products/'+ this.$route.params.id)
         .then(response => 
         {console.log(response.data.data[0] )
         let produit = response.data.data[0];
@@ -101,7 +101,7 @@ export default {
 
     methods: {
         refresh(){
-                this.$axios.get('/index/categorie',{params: {
+                this.$axios.get('/categories',{params: {
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
                 }
                 }).then(response =>{console.log(response.data.data.data);
@@ -109,7 +109,7 @@ export default {
                     })     
         },
         submit(){          
-            this.$axios.put('/update/product', {
+            this.$axios.put('products', {
                 id: this.$route.params.id,
                 category_id: this.form.category_id,
                 name: this.form.name,

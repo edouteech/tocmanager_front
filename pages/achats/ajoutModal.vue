@@ -6,16 +6,13 @@
 
                 <div class="input-form">					
                     <input type="text" placeholder="Entrer le nom du fournisseur " v-model="form.name" autocomplete="off" id="name_four" required>
-                    <span class="error">{{error_champ.name}}</span>
                 </div>     
                 <div class="input-form">        
                     <input type="tel" placeholder="Entrer le numero de téléphone du fournisseur " v-model="form.phone" id="phone_four" required>
-                    <span class="error">{{error_champ.phone}}</span>
                 </div>
             
                 <div class="input-form">    
                     <input type="email" placeholder="Entrer l'email du fournisseur " v-model="form.email" autocomplete="off" id="email_four" required>
-                    <span class="error">{{error_champ.email}}</span>
                 </div>
                 <div class="input-form"> 
                    <select v-model="form.nature" id="nature_four" required>
@@ -24,7 +21,7 @@
                         <option value="1">Entreprise</option>
                     </select>
                     <!-- <input type="number" placeholder="Entrer la nature du fournisseur " v-model="form.nature" autocomplete="off" required> -->
-                    <span class="error">{{error_champ.nature}}</span>
+                    
                 </div>
                 <div class="submit-form" @click="$emit('close-modal')">
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le fournisseur" name="submit">				          
@@ -49,28 +46,33 @@
             nature:'', 
             compagnie_id: ''
         },
-        error_message: "",
-        error_champ: [],
+        errors: [],
+        error: null,
     }
     },
     
     methods: {
         async submit(){
-            await  this.$axios.post('/create/fournisseur',{
+            await  this.$axios.post('/suppliers',{
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
               nature: this.form.nature,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
-            .then(response =>{console.log(response.data.data) 
-            this.$emit('conf', { message: this.form.name, four_id: response.data.data.id })})
-            document.getElementById("name_four").value='';
-            document.getElementById("phone_four").value='';
-            document.getElementById("email_four").value='';
-            document.getElementById("nature_four").value='';          
-        },
+            .then(response =>{
+                this.$emit('conf', { message: this.form.name, four_id: response.data.data.id })
+                console.log( response ) 
+                this.error = response.data.message
+                console.log(this.error)
 
+                this.errors = response.data.data
+
+
+            })
+            .catch( err => console.log( err ) )
+                //  console.log(this.form.name)                
+        },
     }
 }
 </script>

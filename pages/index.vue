@@ -78,7 +78,7 @@ export default {
     refresh(){
       var that = this;    
        this.$axios
-          .post('/authentifier',{ data: this.form })
+          .post('/login',{ data: this.form })
           .then(response => 
         {console.log(response.data.message)
            if (response.data.status == "error") {

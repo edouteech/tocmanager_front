@@ -81,27 +81,30 @@ export default {
     
        deleteFournisseur(id){
           console.log(id);
-          this.$axios.delete('/delete/fournisseur/' +id)
+          this.$axios.delete('/suppliers/' +id)
           .then(response => {console.log(response.data.data);
             this.refresh()})                 
         },
          
         refresh(page=1){
-          this.$axios.get('/index/fournisseur',{params: {
+          this.$axios.get('/suppliers',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             page: page
           }
           })
           .then(response => 
-        
-            {console.log(response);
-            this.fournisseurs = response.data.data.data
-            this.res_data= response.data.data})
+            {
+              console.log(response);
+              this.fournisseurs = response.data.data.data
+              this.res_data= response.data.data
+              let firstE = response.data.data.links.shift()
+              let lastE = response.data.data.links.splice(-1,1);
+            })
         },
 
         voirFournisseur(id){
             this.showModal = true;
-            this.$axios.get('/index/fournisseur/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/suppliers/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email

@@ -109,7 +109,7 @@ export default {
     mounted () {
       this.refresh()
       this.recupProduct()
-      this.$axios.get('/index/achat/'+ this.$route.params.id)
+      this.$axios.get('buys/'+ this.$route.params.id)
           .then(response => {console.log(response.data.data[0] )
             let achat = response.data.data[0];
             // this.categories = response.data.data
@@ -129,7 +129,7 @@ export default {
         },
         
         async submit(){
-            await  this.$axios.post('/create/achat',{
+            await  this.$axios.post('/buys',{
               date_buy: this.form.date_buy,
               tax: this.form.tax,
               discount: this.form.discount,
@@ -144,7 +144,7 @@ export default {
         },
 
         refresh(){
-            this.$axios.get('/index/fournisseur',{params: {
+            this.$axios.get('/suppliers',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
             }).then(response => {console.log(response);
@@ -152,7 +152,7 @@ export default {
         },
 
         recupProduct(){
-            this.$axios.get('/index/product',{params: {
+            this.$axios.get('/products',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
             }).then(response => {console.log(response.data.data.data);

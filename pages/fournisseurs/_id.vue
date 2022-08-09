@@ -63,7 +63,7 @@ export default {
     },
     mounted() {
         this.$axios
-            .get('/index/fournisseur/'+ this.$route.params.id)
+            .get('/suppliers/'+ this.$route.params.id)
             .then(response => 
         {console.log(response.data.data )
         // this.fournisseurs = response.data.data
@@ -79,7 +79,7 @@ export default {
 
     methods: {
         submit(){          
-                this.$axios.put('/update/fournisseur', {
+                this.$axios.put('/suppliers', {
                 id: this.$route.params.id,
                 name: this.form.name,
                 email: this.form.email,

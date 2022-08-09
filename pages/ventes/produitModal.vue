@@ -77,7 +77,7 @@
 
     methods: {
          async submit(){
-            await  this.$axios.post('/create/product',{
+            await  this.$axios.post('/products',{
               category_id: this.form.category_id,
               name: this.form.name,
               quantity: this.form.quantity,
@@ -90,17 +90,10 @@
             .then(response =>{console.log(response.data.data) 
             this.$emit('prod', { nom_prod: this.form.name, prod_id: response.data.data.id, prod_sell: response.data.data.price_sell })
             })
-            document.getElementById("categorie").value='';
-            document.getElementById("name_prod").value='';
-            document.getElementById("quantite").value='';
-            document.getElementById("vente").value='';
-            document.getElementById("achat").value='';
-            document.getElementById("min").value='';
-            document.getElementById("max").value='';
         },
 
         refresh(){
-          this.$axios.get('/index/categorie',
+          this.$axios.get('/categories',
           {
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')

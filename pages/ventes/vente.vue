@@ -4,6 +4,13 @@
       <Sidebar /><h3 class="name">Ventes </h3>
     </nav>
 
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+      <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
+      <div class="error" v-if="errors['client_id'] != null">{{errors['client_id']}}</div>
+      <div class="error" v-if="errors['date_sell'] != null">{{errors['date_sell']}}</div>
+    </div>
+  
     <div class="contenu">
         <h4>Enregistrer une vente </h4><hr>
         <form action="" method="POST">
@@ -113,8 +120,8 @@ export default {
                 rest: '0',
                 sell_lines: []          
                 },
-            error_message: "",
-            error_champ: [],
+            errors: [],
+            error: null,
         }
     },
     // watch: {
@@ -151,7 +158,7 @@ export default {
         // },
 
         async submit(){
-            await  this.$axios.post('/create/vente',{
+            await  this.$axios.post('/sells',{
               date_sell: this.form.date_sell,
               tax: this.form.tax,
               discount: this.form.discount,
@@ -160,13 +167,25 @@ export default {
               user_id: this.$auth.user.id,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines  
-            }).then(response =>{ console.log(response.data)
-                    this.$router.push({path:'/ventes/SavedModal',})
-              }).catch( error => console.log( error ) )                            
-        },
+            }).then(response =>{ 
+                console.log( response ) 
+                this.error = response.data.message
+                console.log(this.error)
 
+                if(response.data.status == "success"){
+                   this.$router.push({path:'/ventes/SavedModal',})
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/clients/add_client'});
+                }
+            })
+            .catch( err => console.log( err ) )
+                //  console.log(this.form.name)                
+        },
+        
         refresh(){
-            this.$axios.get('/index/client',{params: {
+            this.$axios.get('/clients',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response => {console.log(response.data.data.data);
@@ -175,7 +194,7 @@ export default {
         },
 
         recupProduct(){
-            this.$axios.get('/index/product',{params: {
+            this.$axios.get('/products',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response => {console.log(response.data.data.data);
@@ -315,13 +334,7 @@ export default {
     margin: 1.2em 0;
     height: 50px;
 }
-
-.error{               
-    color: red;
-    margin-bottom: -10%;
-    font-size: 12px;
-}
-        
+     
 
 .modal input {
     padding: 8px;

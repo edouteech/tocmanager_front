@@ -69,13 +69,13 @@ export default {
     methods: {
        deleteCategorie(id){
           console.log(id);
-          this.$axios.delete('/delete/categorie/' +id)
+          this.$axios.delete('/categories/' +id)
           .then(response => {console.log(response.data.data);
             this.refresh()})                 
         },      
         
         refresh(page=1){
-          this.$axios.get('/index/categorie',{
+          this.$axios.get('/categories',{
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id'),
               page: page
@@ -83,13 +83,15 @@ export default {
           }).then(response =>{console.log(response);
             this.categories = response.data.data.data
             this.res_data= response.data.data
+            let firstE = response.data.data.links.shift()
+            let lastE = response.data.data.links.splice(-1,1);
             })     
         },
   
         
         voirCategorie(id){
             this.showModal = true;
-            this.$axios.get('/index/categorie/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/categories/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].parent_id   
              })               

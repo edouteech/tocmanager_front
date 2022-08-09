@@ -4,6 +4,13 @@
       <Sidebar /><h3 class="name">Achats </h3>
     </nav>
 
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+      <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
+      <div class="error" v-if="errors['supplier_id'] != null">{{errors['supplier_id']}}</div>
+      <div class="error" v-if="errors['date_buy'] != null">{{errors['date_buy']}}</div>
+    </div>
+
     <div class="contenu">
         <h4>Enregistrer un achat</h4><hr>
         <form action="" method="POST">
@@ -108,8 +115,8 @@ export default {
                 rest: '0',
                 buy_lines: []          
                 },
-            error_message: "",
-            error_champ: [],
+            errors: [],
+            error: null,
         }
     },
 
@@ -130,7 +137,7 @@ export default {
         },
 
         async submit(){
-            await  this.$axios.post('/create/achat',{
+            await  this.$axios.post('/buys',{
               date_buy: this.form.date_buy,
               tax: this.form.tax,
               discount: this.form.discount,
@@ -139,13 +146,25 @@ export default {
               user_id: this.$auth.user.id,
               supplier_id: this.form.supplier_id,  
               buy_lines: this.form.buy_lines  
-            }).then(response =>{ console.log(response)
-                    this.$router.push({path:'/achats/SavedModal',})
-              }).catch( error => console.log( error ) )                            
+            }).then(response =>{ 
+                console.log( response ) 
+                this.error = response.data.message
+                console.log(this.error)
+
+                if(response.data.status == "success"){
+                   this.$router.push({path:'/achats/SavedModal',})
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/clients/add_client'});
+                }
+            })
+            .catch( err => console.log( err ) )
+                //  console.log(this.form.name)                
         },
 
         refresh(){
-            this.$axios.get('/index/fournisseur',
+            this.$axios.get('/suppliers',
             {
                 params: {
                     compagnie_id: this.$auth.$storage.getUniversal('company_id')
@@ -155,7 +174,7 @@ export default {
         },
 
         recupProduct(){
-            this.$axios.get('/index/product',{params: {
+            this.$axios.get('/products',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response => {console.log(response.data.data.data);
@@ -293,14 +312,7 @@ export default {
     flex-direction: column-reverse;
     margin: 1.2em 0;
     height: 50px;
-}
-
-.error{               
-    color: red;
-    margin-bottom: -10%;
-    font-size: 12px;
-}
-        
+}       
 
 .modal input {
     padding: 8px;

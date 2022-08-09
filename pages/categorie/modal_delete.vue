@@ -30,7 +30,7 @@
     methods: {
         supCategorie(infos){
             console.log(infos);
-            this.$axios.delete('/destroy/categorie/' +infos)      
+            this.$axios.delete('/categories/' +infos)      
             .then(response => {console.log(response);
                     this.categorie = response.data.data
                    this.$router.push({path:'/corbeille',})})  

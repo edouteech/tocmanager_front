@@ -76,7 +76,7 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/achat')        
+         this.$axios.get('/buys')        
         .then(response => {console.log(response);
             this.achats = response.data.data
             this.res_data= response.data.data })        
@@ -85,7 +85,7 @@ export default {
     methods: {
         restaurerAchat(id){
             console.log(id);
-            this.$axios.get('/restore/achat/' +id)         
+            this.$axios.get('/buys/' +id)         
             .then(response => {console.log(response);
                 this.achat = response.data.data
                 this.$router.push({path:'/achats/list_achat',})
@@ -94,7 +94,7 @@ export default {
 
          supAchat(id){
             console.log(id);
-            this.$axios.delete('/destroy/achat/' +id)      
+            this.$axios.delete('/buys/' +id)      
             .then(response => {console.log(response);
                     this.achat = response.data.data
                     

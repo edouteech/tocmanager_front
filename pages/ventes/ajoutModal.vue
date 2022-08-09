@@ -58,7 +58,7 @@
 
     methods: {
         async submit(){
-            await  this.$axios.post('/create/client',{
+            await  this.$axios.post('/clients',{
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
@@ -67,10 +67,6 @@
             })
             .then(response =>{console.log(response.data.data) 
              this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })})
-            document.getElementById("name_cli").value='';
-            document.getElementById("phone_cli").value='';
-            document.getElementById("email_cli").value='';
-            document.getElementById("nature_cli").value='';
         },
 
     }

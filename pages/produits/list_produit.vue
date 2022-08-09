@@ -24,7 +24,7 @@
           
             <tbody>
               <tr  v-for="(produit, i) in produits" :key="i">
-                <td>{{produit.category.name}}</td>
+                <td>{{produit.category_id}}</td>
                 <td>{{produit.name}}</td>
                 <td>{{produit.quantity}}</td>
                 <td>{{produit.price_sell}}</td>
@@ -92,7 +92,7 @@ export default {
   methods: {
         deleteProduit(id){
           console.log(id);
-          this.$axios.delete('/delete/product/' +id)
+          this.$axios.delete('/products/' +id)
           .then(response => 
             {
               console.log(response.data.data);
@@ -102,7 +102,7 @@ export default {
         },
 
         refresh(page=1){
-          this.$axios.get('/index/product',{params: {
+          this.$axios.get('/products',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             page: page
           }
@@ -112,12 +112,14 @@ export default {
               console.log(response.data.data.data);
               this.produits = response.data.data.data
               this.res_data= response.data.data
+              let firstE = response.data.data.links.shift()
+              let lastE = response.data.data.links.splice(-1,1);
             }
           )
         },
         voirProduit(id){
             this.showModal = true;
-            this.$axios.get('/index/product/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('products/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].category_id
              this.identifiant2 = response.data.data[0].name
              this.identifiant3 = response.data.data[0].quantity

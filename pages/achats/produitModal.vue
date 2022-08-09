@@ -77,7 +77,7 @@
 
     methods: {
          async submit(){
-            await  this.$axios.post('/create/product',{
+            await  this.$axios.post('/products',{
               category_id: this.form.category_id,
               name: this.form.name,
               quantity: this.form.quantity,
@@ -99,7 +99,7 @@
         },
 
         refresh(){
-          this.$axios.get('/index/categorie',
+          this.$axios.get('/categories',
           {
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')

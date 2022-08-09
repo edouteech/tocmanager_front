@@ -1,9 +1,13 @@
 <template>
-  <div class="contain ">
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
-      <br><br>
-    <h2 class="text px-4">Inscrivez vous</h2>
-    <div class="container-fluid h-custom">
+<div class="contain ">
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
+  <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+    {{error}}
+  </div>
+  <br><br>
+
+  <h2 class="text px-4">Inscrivez vous</h2>
+  <div class="container-fluid h-custom">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-9 col-lg-6 col-xl-5">
           <img src="/images/sign.jpg"
@@ -30,8 +34,8 @@
             <div class="form-outline mb-3">
               <span class="fa fa-envelope px-2"></span><label class="form-label">Mot de passe</label>
               <div class="input-field">
-              <input type="password" class="form-control form-control-lg" v-model="form.password"
-                placeholder="Entrer un mot de passe"/><span class="far fa-eye-slash px-2" required></span></div>   
+              <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
+                placeholder="Entrer un mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click.prevent="changer()"></i></span></div>   
             </div>
 
             <div class="form-outline mb-4">
@@ -56,51 +60,65 @@
           </form>
         </div>
       </div>
-    </div>
   </div>
+
+</div>
 </template>
 
 <script>
 export default {
-      auth:false,
-      data: function(){
-        return{
-          user:'',
-          errors: [],
-          error: '',
-          form:{
-            name: '',
-            email: '',
-            password: '',
-            phone: '',
-            country: '',
+  auth:false,
+  data() {
+    return{
+      user:'',
+      error: null,
+      form:{
+        name: '',
+        email: '',
+        password: '',
+        phone: '',
+        country: '',
 
-          }
-        }
-      },
-
-
-        methods:{
-           async register(){
-            await  this.$axios.post('/create/profil',{
-              name: this.form.name,
-              email: this.form.email,
-              password: this.form.password,
-              phone: this.form.phone,
-              country: this.form.country
-            }).then(response =>{console.log(response.data.data.original);
-                this.user = response.data.data.original.user_id;
-                // console.log(this.user) 
-                    this.$router.push({
-                      name: 'compagnie', params: { id: this.user  },
-                    })
-  
-                  })
-                   .catch( err => console.log( err ) )
-                    // console.log('user login')
-            }
-        }
+      }
     }
+  },
+
+  methods:{
+    async register(){
+      await  this.$axios.post('/register',{
+        name: this.form.name,
+        email: this.form.email,
+        password: this.form.password,
+        phone: this.form.phone,
+        country: this.form.country
+      }).then(response =>{console.log(response);
+          this.error = response.data.message
+          console.log(this.error)
+          this.user = response.data.data.original.user_id;
+          this.$router.push({
+            name: 'compagnie', params: { id: this.user  }
+          })   
+      }).catch( err => console.log( err ) )
+              // console.log('user login')
+    },
+      
+    changer(){
+      var e = true
+        if (e){
+          document.getElementById("password").setAttribute("type","text"); 
+          document.getElementById("eye").class="fa fa-eye px-2";
+          e = false;
+        }
+
+        else{
+          document.getElementById("password").setAttribute("type","password"); 
+          document.getElementById("eye").class="fa fa-eye-slash px-2";
+          e = true;
+        }
+    },
+
+  }
+}
 </script>
 
 <style scoped>
