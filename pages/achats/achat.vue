@@ -18,7 +18,7 @@
                 <div class="ajout-client">                   
                     <select v-model="form.supplier_id">
                         <option disabled value="">Choisir le fournisseur</option>
-                        <option :value= four_id>{{message}}</option>
+                        <!-- <option :value= four_id>{{message}}</option> -->
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                             {{fournisseur.name}}
                         </option>                           
@@ -74,7 +74,7 @@
     </div>
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/>
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
-    <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
+    <produitModal v-show="showProduit" @close-modal="showProduit = false"  @prod="setProduit"/>
 
 </div>
  
@@ -132,8 +132,13 @@ export default {
         },
 
         setMessage(payload) {
-        this.message = payload.message
-        this.four_id = payload.four_id
+            this.refresh()
+            this.message = payload.message
+            this.four_id = payload.four_id
+        },
+
+        setProduit(payload) {
+            this.recupProduct()
         },
 
         async submit(){

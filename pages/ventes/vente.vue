@@ -145,8 +145,8 @@ export default {
 
         setMessage(payload) {
             this.refresh()
-        this.message = payload.message
-        this.cli_id = payload.cli_id
+            this.message = payload.message
+            this.cli_id = payload.cli_id
         },
         
         setProduit(payload) {

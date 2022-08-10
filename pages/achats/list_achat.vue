@@ -22,7 +22,7 @@
               <td>{{achat.supplier.name}}</td>
               <td>{{achat.amount}}</td>
               <td><div class="action">
-                <div  @click="voirAchat(achat.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/achats/voir/'+achat.id"><i class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
                 <NuxtLink :to="'/achats/'+achat.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteAchat(achat.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>

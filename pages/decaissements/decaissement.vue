@@ -38,7 +38,7 @@
                 </select>
                 </div>
             </div>
-        <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer</button>
+        <button type="submit" class="btn btn-primary" @click.prevent="submit()">Enregistrer</button>
         </form>
           
         

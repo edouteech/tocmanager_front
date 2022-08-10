@@ -22,7 +22,7 @@
               <td>{{vente.client.name}}</td>
               <td>{{vente.amount}}</td>
               <td><div class="action">
-                <div  @click="voirVente(vente.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/ventes/voir/'+vente.id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
                 <NuxtLink :to="'/ventes/'+vente.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" @click="deleteVente(vente.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
@@ -38,7 +38,6 @@
             <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
           </ul>
         </nav>
-<voirVente :date= 'identifiant1' :client= 'identifiant2' :montant= 'identifiant3' :facture='identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div><br> 
 </div>
 
@@ -46,19 +45,18 @@
 
 
 <script>
-import voirVente from './voir_vente.vue'
 import Sidebar from '../sidebar.vue'
 export default {
   layout: "empty",
   components: {
     Sidebar,  
-    voirVente,
   },
    data () {
       return {
         links: [],
         res_data: null,
         showModal: false,
+        identifiant0 : "",
         identifiant1 : "",
         identifiant2 : "",
         identifiant3 : "",
@@ -97,17 +95,17 @@ export default {
           this.clients = response.data.data.data })
         },
 
-        voirVente(id){
-            this.showModal = true;
-            this.$axios.get('/sells/'+ id).then(response => {console.log(response.data.data[0]);
-             this.identifiant1 = response.data.data[0].date_sell
-             this.identifiant2 = response.data.data[0].client_id
-             this.identifiant3 = response.data.data[0].amount
-             this.identifiant4 = response.data.data[0].id
-            //  this.identifiant4 = response.data.data[0].nature      
-             }) 
+        // voirVente(id){
+        //     this.showModal = true;
+        //     this.$axios.get('/sells/'+ id).then(response => {console.log(response.data.data[0]);
+        //      this.identifiant0 = response.data.data[0].id
+        //      this.identifiant1 = response.data.data[0].date_sell
+        //      this.identifiant2 = response.data.data[0].client_id
+        //      this.identifiant3 = response.data.data[0].amount
+        //      this.identifiant4 = response.data.data[0].id   
+        //      }) 
                
-        },
+        // },
     },
     mounted () {
       this.refresh()

@@ -38,7 +38,7 @@
                 </select>
                 </div>
             </div>
-           <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer</button>
+           <button type="submit" class="btn btn-primary" @click.prevent="submit()">Enregistrer</button>
         </form>
         
     </div>
@@ -84,11 +84,10 @@ export default {
         async submit(){
             await  this.$axios.post('/encaissements',{
               montant: this.form.montant,
-              facture: 0,
               date: this.form.date,
               client_id: this.form.client_id,
               user_id: this.$auth.user.id,
-            //   compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
