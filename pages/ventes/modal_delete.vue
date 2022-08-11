@@ -29,7 +29,7 @@
     methods: {
         supVente(infos){
             console.log(infos);
-            this.$axios.delete('/destroy/vente/' +infos)      
+            this.$axios.delete('/sells/' +infos)      
             .then(response => {console.log(response.data.data);
                   this.vente = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               

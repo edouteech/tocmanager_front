@@ -29,7 +29,7 @@
     methods: {
         supFournisseur(infos){
             console.log(infos);
-            this.$axios.delete('/destroy/fournisseur/' +infos)      
+            this.$axios.delete('/suppliers/' +infos)      
             .then(response => {console.log(response.data.data);
                   this.client = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               

@@ -29,7 +29,7 @@
     methods: {
         supClient(infos){
             console.log(infos);
-            this.$axios.delete('/destroy/client/' +infos)      
+            this.$axios.delete('/clients/' +infos)      
             .then(response => {console.log(response.data);
                   this.client = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               

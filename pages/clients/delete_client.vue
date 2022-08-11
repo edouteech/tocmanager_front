@@ -36,17 +36,18 @@
             </tr>
             
         </tbody>
-    </table>
+    </table><br><br> 
+    <nav aria-label="Page navigation example " v-if="res_data != null">
+        <ul class="pagination">
+        <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+        <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+        
+        <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+        </ul>
+    </nav>
 </div><br>
-        <nav aria-label="Page navigation example " v-if="res_data != null">
-          <ul class="pagination">
-            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-            
-            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-          </ul>
-        </nav>
-            <!-- <pre> {{res_data}}</pre> --><br><br> 
+
+            <!-- <pre> {{res_data}}</pre> -->
     <deleteModal :infos= 'identifiant' v-show="showModal" @close-modal="showModal = false"/>
 
     
@@ -75,10 +76,12 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/client')        
+         this.$axios.get('/get/clients')        
         .then(response => {console.log(response);
-            this.clients = response.data.data 
-            this.res_data= response.data.data})        
+            this.clients = response.data.data.data
+            this.res_data= response.data.data
+            let firstE = response.data.data.links.shift()
+            let lastE = response.data.data.links.splice(-1,1);})        
     },
 
     methods: {

@@ -21,23 +21,24 @@
             <tr  v-for="(categorie, i) in categories" :key="i">
                 <td>{{categorie.name}}</td>
                 <td><div class="action">
-                    <div class="sup" @click="supCategorie(client.id)">Supprimer définitivement</div>
+                    <div class="sup" @click="supCategorie(categorie.id)">Supprimer définitivement</div>
                     <div class="restore" @click="restaurerCategorie(categorie.id)">Restaurer cette categorie</div></div>
                 </td>
             </tr>
             
         </tbody>
-    </table>
+    </table><br><br> 
+     <nav aria-label="Page navigation example " v-if="res_data != null">
+        <ul class="pagination">
+        <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+        <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+        
+        <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+        </ul>
+    </nav>
 </div><br>
-        <nav aria-label="Page navigation example " v-if="res_data != null">
-          <ul class="pagination">
-            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-            
-            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-          </ul>
-        </nav>
-            <!-- <pre> {{res_data}}</pre> --><br><br> 
+       
+            <!-- <pre> {{res_data}}</pre> -->
 <deleteModal :infos= 'identifiant' v-show="showModal" @close-modal="showModal = false"/>
 
 </div>
@@ -66,12 +67,17 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/categorie')        
-        .then(response => {console.log(response.data.data);
-            this.categories = response.data.data 
-            this.res_data= response.data.data})        
+         this.$axios.get('/get/categories',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response => {console.log(response);
+            this.categories = response.data.data.data 
+            this.res_data= response.data.data
+            let firstE = response.data.data.links.shift()
+            let lastE = response.data.data.links.splice(-1,1);})        
     },
-
+        
+        
     methods: {
         restaurerCategorie(id){
             console.log(id);

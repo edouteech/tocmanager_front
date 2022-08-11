@@ -30,16 +30,16 @@
     methods: {
         supCategorie(infos){
             console.log(infos);
-            this.$axios.delete('/categories/' +infos)      
-            .then(response => {console.log(response);
-                    this.categorie = response.data.data
-                   this.$router.push({path:'/corbeille',})})  
-                             
+            this.$axios.delete('/categories/' +infos,{params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')}}
+            ).then(response => {console.log(response);
+                this.categorie = response.data.data
+                this.$router.push({path:'/corbeille',})})         
         },
+        
          refresh(){
-          this.$axios
-        .get('/get/categoorie')
-        .then(response => 
+          this.$axios.get('/get/categorie')
+          .then(response => 
             {console.log(response);
             }
             )
@@ -47,6 +47,7 @@
     },
 
 }
+       
 </script>
 
 <style scoped>

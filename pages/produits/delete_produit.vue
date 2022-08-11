@@ -10,9 +10,6 @@
           <thead>
             <tr class="table-success">
                         <th >
-                            Catégories
-                        </th>
-                        <th >
                             Noms 
                         </th>
                         <th >
@@ -24,12 +21,7 @@
                         <th>
                             Prix d'achat
                         </th>
-                        <th>
-                            Stock minimal
-                        </th>
-                        <th>
-                            Stock maximal
-                        </th>
+
                         <th>
                             Actions
                         </th>
@@ -38,13 +30,10 @@
                 <tbody>
                     <tr  v-for="(produit, i) in produits" :key="i"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td>{{produit.category_id}}</td>
                         <td>{{produit.name}}</td>
                         <td>{{produit.quantity}}</td>
                         <td>{{produit.price_sell}}</td>
-                        <td>{{produit.price_buy}}</td>
-                        <td>{{produit.stock_min}}</td>
-                        <td>{{produit.stock_max}}</td>                           
+                        <td>{{produit.price_buy}}</td>                         
                         <td><div class="action">
                             <div class="sup" @click="supProduit(produit.id)">Supprimer définitivement</div>
                             <div class="restore" @click="restaurerProduit(produit.id)">Restaurer ce produit</div></div>
@@ -52,17 +41,16 @@
                     </tr>
                     
                 </tbody>
-            </table>
-</div><br>
-        <nav aria-label="Page navigation example " v-if="res_data != null">
-          <ul class="pagination">
-            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-            
-            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-          </ul>
-        </nav>
-            <!-- <pre> {{res_data}}</pre> --><br><br> 
+            </table><br><br> 
+            <nav aria-label="Page navigation example " v-if="res_data != null">
+                <ul class="pagination">
+                    <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+                    <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+                    
+                    <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+                </ul>
+            </nav>
+    </div><br>
 <deleteModal :infos= 'identifiant' v-show="showModal" @close-modal="showModal = false"/>
 
 
@@ -92,13 +80,15 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/product',{params: {
-            // compagnie_id: this.$auth.$storage.getUniversal('company_id'),
-            page: page
+         this.$axios.get('/get/products',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            // page: page
           }})                
         .then(response => {console.log(response.data.data);
-            this.produits = response.data.data
-            this.res_data= response.data.data })        
+            this.produits = response.data.data.data
+            this.res_data= response.data.data 
+            let firstE = response.data.data.links.shift()
+            let lastE = response.data.data.links.splice(-1,1);})        
     },
 
     methods: {

@@ -30,15 +30,14 @@
                     <td>{{achat.supplier_id}}</td>
                     <td>{{achat.amount}}</td>
                     <td><div class="action">
-                        <div class="sup" @click="showModal = true">Supprimer définitivement</div>
+                        <div class="sup" @click="supAchat(achat.id)">Supprimer définitivement</div>
                         <div class="restore" @click="restaurerAchat(achat.id)">Restaurer cette facture</div></div>
                     </td>
                 </tr>
                 
             </tbody>
-        </table>
-</div><br>
-        <nav aria-label="Page navigation example " v-if="res_data != null">
+        </table><br><br> 
+         <nav aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
             <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
@@ -46,7 +45,8 @@
             <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
           </ul>
         </nav>
-            <!-- <pre> {{res_data}}</pre> --><br><br> 
+</div><br>
+       
     <deleteModal :infos= 'identifiant' v-show="showModal" @close-modal="showModal = false"/>
 
     
@@ -76,16 +76,18 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/buys')        
-        .then(response => {console.log(response);
-            this.achats = response.data.data
-            this.res_data= response.data.data })        
+         this.$axios.get('/get/buys')        
+        .then(response => {console.log(response.data.data);
+            this.achats = response.data.data.data
+            this.res_data= response.data.data 
+            let firstE = response.data.data.links.shift()
+            let lastE = response.data.data.links.splice(-1,1);})        
     },
 
     methods: {
         restaurerAchat(id){
             console.log(id);
-            this.$axios.get('/buys/' +id)         
+            this.$axios.get('/restore/buy/' +id)         
             .then(response => {console.log(response);
                 this.achat = response.data.data
                 this.$router.push({path:'/achats/list_achat',})
@@ -93,12 +95,9 @@ export default {
         },
 
          supAchat(id){
-            console.log(id);
-            this.$axios.delete('/buys/' +id)      
-            .then(response => {console.log(response);
-                    this.achat = response.data.data
-                    
-                })                
+           console.log(id); 
+            this.showModal = true;
+            this.identifiant= id;         
         },
     },
   

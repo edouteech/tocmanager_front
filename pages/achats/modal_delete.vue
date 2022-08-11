@@ -3,7 +3,7 @@
     <div class="modaler" @click.stop>                     
           <p>Etes vous sur de vouloir supprimer définitivement cette facture ??? </p>
           <div class="reponse">
-                <div class="yes"  @click="supAchats(infos)">
+                <div class="yes"  @click="supAchat(infos)">
                     Oui
                 </div>
                 <div class="no" @click="$emit('close-modal')">

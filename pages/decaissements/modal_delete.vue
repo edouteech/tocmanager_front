@@ -29,7 +29,7 @@
     methods: {
         supDecaissement(infos){
             console.log(infos);
-            this.$axios.delete('/destroy/decaissement/' +infos)      
+            this.$axios.delete('/decaissements/' +infos)      
             .then(response => {console.log(response.data.data);
                   this.decaissement = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               
