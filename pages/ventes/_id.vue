@@ -37,7 +37,7 @@
                             <th scope="col">Prix unitaire</th>
                             <th scope="col">Taux de réduction (%)</th>
                             <th scope="col">Taxe appliquée (%)</th>
-                            <th scope="col">Net à payer</th>
+                            <th scope="col">Somme reçue</th>
                             <th scope="col">Total</th>                     
                         </tr>
                     </thead>
@@ -54,7 +54,7 @@
                             <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
-                            <td><input class="form-control" type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
+                            <td><input class="form-control" type="number" v-model="form.amount_received"  autocomplete="off"  required></td>                    
                             <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
@@ -104,7 +104,7 @@ export default {
                 amount: '',
                 tax: '0',
                 discount: '0',
-                rest: '0',
+                amount_received: '0',
                 sell_lines: []          
                 },
             error_message: "",
@@ -142,7 +142,7 @@ export default {
               tax: this.form.tax,
               discount: this.form.discount,
               amount: this.form.amount,
-              rest: this.form.rest,
+              amount_received: this.form.amount_received,
               user_id: this.$auth.user.id,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines  

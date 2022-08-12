@@ -10,8 +10,9 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
-                    <th>Id de la catégorie</th>
+                    
                     <th>Nom</th>
+                    <th>Nom de la catégorie</th>
                     <th>Quantité</th>
                     <th>Prix de vente</th>
                     <th>Prix d'achat</th>
@@ -24,8 +25,9 @@
           
             <tbody>
               <tr  v-for="(produit, i) in produits" :key="i">
-                <td>{{produit.category_id}}</td>
+                
                 <td>{{produit.name}}</td>
+                <td>{{produit.category.name}}</td>
                 <td>{{produit.quantity}}</td>
                 <td>{{produit.price_sell}}</td>
                 <td>{{produit.price_buy}}</td>

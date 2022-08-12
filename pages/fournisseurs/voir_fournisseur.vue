@@ -16,6 +16,11 @@
                 <div class="input-form">    
                     <span class="mode">Email du fournisseur : </span><span class="resp">{{email}}</span>
                 </div><br>
+
+                <div class="input-form">    
+                    <span class="mode">Balance du fournisseur : </span><span class="resp">{{balance}}</span>
+                </div><br>
+
                 <div class="input-form"> 
                    <span class="mode">Nature du fournisseur: </span> <span class="resp">{{nature}}</span>
                 </div>
@@ -30,7 +35,7 @@
 <script>
   export default {
     auth:true,
-    props: ['nom', 'phone', 'email', 'nature'],
+    props: ['nom', 'phone', 'email', 'balance', 'nature'],
     name: 'voirFournisseur',
 }
 

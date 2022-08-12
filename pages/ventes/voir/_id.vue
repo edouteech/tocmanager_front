@@ -112,10 +112,19 @@ export default {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
-                this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
-              document.getElementById("date").value='';
-              document.getElementById("montant").value='';
-            }).catch( error => console.log( error ) )
+                // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
+              
+              if(response.data.status == "success"){
+                document.getElementById("date").value='';
+                document.getElementById("montant").value='';
+                this.recupFacture()
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/clients/add_client'});
+                }
+            })
+            .catch( err => console.log( err ) )
                 //  console.log(this.form.name)                
         },
             

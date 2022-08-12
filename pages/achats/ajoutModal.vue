@@ -67,12 +67,19 @@
                 console.log(this.error)
 
                 this.errors = response.data.data
-
-
-            })
-            .catch( err => console.log( err ) )
-                //  console.log(this.form.name)                
-        },
+                if(response.data.status == "success"){
+                    document.getElementById("name_four").value='';
+                    document.getElementById("phone_four").value='';
+                    document.getElementById("email_four").value='';
+                    document.getElementById("nature_four").value='';
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/categorie/add_client'});
+                }
+             }).catch( err => console.log( err ) )
+            
+            },
     }
 }
 </script>
