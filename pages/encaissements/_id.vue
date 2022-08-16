@@ -80,16 +80,16 @@ export default {
 
     methods: {
         submit(){          
-            this.$axios.put('/encaissements', {
+            this.$axios.put('/encaissements/'+ this.$route.params.id, {
             id: this.$route.params.id,
             montant: this.form.montant,
             date: this.form.date,
             facture: this.form.facture,
             client_id: this.form.client_id,
-        //    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+           compagnie_id: this.$auth.$storage.getUniversal('company_id')
 
             })
-            .then(response =>{
+            .then(response =>{console.log(response)
                 this.$router.push({
                   path:'/encaissements/list_encaissement',})
             })          

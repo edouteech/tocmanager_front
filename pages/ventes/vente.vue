@@ -35,6 +35,7 @@
             <div class="ajout-article" @click="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</div>
             
               <div class="btn-ajout" @click="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</div>
+             
             <div class="commande">
                 <table class="table table-bordered">
                     <thead>
@@ -44,7 +45,6 @@
                             <th scope="col">Prix unitaire</th>
                             <th scope="col">Taux de réduction (%)</th>
                             <th scope="col">Taxe appliquée (%)</th>
-                            <th scope="col">Somme reçue</th>
                             <th scope="col">Total</th>                     
                         </tr>
                     </thead>
@@ -61,13 +61,16 @@
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
-                            <td><input class="form-control" type="num" v-model="form.amount_received"  autocomplete="off"  required></td>                    
+                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                  
                             <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
-            </div>
+            </div><br>
+            <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="num" v-model="form.amount_received"  autocomplete="off"  required></div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
+                {{amount_error}} 
+            </div> 
             <div class="submit">
                 <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">		          
             </div>  
@@ -100,6 +103,7 @@ export default {
 
     data () {
         return{
+            amount_error: null,
             message: '',
             cli_id: '0',
             // nom_prod: '',
@@ -170,18 +174,39 @@ export default {
             }).then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
+                this.errors = response.data.data
                 console.log(this.error)
-
+            if(this.form.amount_sent < this.form.amount){
                 if(response.data.status == "success"){
-                   this.$router.push({path:'/ventes/SavedModal',})
+                    if(this.form.amount_received != 0){
+                    this.$axios.post('/encaissements',{
+                        montant: this.form.amount_received,
+                        date: this.form.date_sell,
+                        client_id: this.form.client_id,
+                        user_id: this.$auth.user.id,
+                        compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                        }) .then(response => {console.log(response);
+                        
+                         this.$router.push({path:'/ventes/SavedModal',})
+                            })
+                            
+                        }
+                        else{
+                            
+                            this.$router.push({path:'/ventes/SavedModal',})
+                            // this.$router.push({path:'/categorie/add_client'});
+                        }
+                        
                 }
                 else{
                     this.errors = response.data.data
                     // this.$router.push({path:'/clients/add_client'});
                 }
-            })
-            .catch( err => console.log( err ) )
-                //  console.log(this.form.name)                
+            }else{
+                this.amount_error = "Veuillez corriger ! La somme reçue ne peut pas etre supérieure au montant total de la facture."
+                }
+                }).catch( err => console.log( err ) )
+                    //  console.log(this.form.name)                                        
         },
         
         refresh(){
@@ -228,9 +253,7 @@ export default {
                 }
                 this.form.amount = sum;
                 console.log(sum); 
-            }
-
-                
+            }    
         }
    
     },
@@ -239,6 +262,11 @@ export default {
 </script>
 
 <style scoped>
+.received {
+    border: none; outline: none;
+    border-bottom: 2px solid #605050;
+}
+
 .contenu{
   margin: 5%;
   overflow: auto;

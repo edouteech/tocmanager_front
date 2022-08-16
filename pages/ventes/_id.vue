@@ -37,7 +37,6 @@
                             <th scope="col">Prix unitaire</th>
                             <th scope="col">Taux de réduction (%)</th>
                             <th scope="col">Taxe appliquée (%)</th>
-                            <th scope="col">Somme reçue</th>
                             <th scope="col">Total</th>                     
                         </tr>
                     </thead>
@@ -53,15 +52,15 @@
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
-                            <td><input class="form-control" type="number" v-model="form.amount_received"  autocomplete="off"  required></td>                    
+                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>            
                             <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
-            </div>
+            </div><br>
+            <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="num" v-model="form.amount_received"  autocomplete="off"  required></div>
             <div class="submit">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Modifier la facture" name="submit">		          
+                <input type="submit" id='submit' @click.prevent="submit()" value="Modifier la facture" name="submit">		          
             </div>  
     
         </form>
@@ -104,7 +103,7 @@ export default {
                 amount: '',
                 tax: '0',
                 discount: '0',
-                amount_received: '0',
+                amount_received: '',
                 sell_lines: []          
                 },
             error_message: "",
@@ -125,6 +124,7 @@ export default {
             this.form.tax = vente.tax,
             this.form.discount = vente.discount,
             this.form.amount = vente.amount
+            this.form.amount_received = vente.amount_received
           }        
         )          
     },
@@ -136,7 +136,7 @@ export default {
         },
         
         submit(){
-            this.$axios.put('/sells',{
+            this.$axios.put('/sells/' +this.$route.params.id,{
               id: this.$route.params.id,
               date_sell: this.form.date_sell,
               tax: this.form.tax,
@@ -147,8 +147,27 @@ export default {
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines  
             }).then(response =>{ console.log(response)
+                    
+                if(this.form.amount_sent != 0){
+                    this.$axios.put('/encaissements',{
+                        montant: this.form.received,
+                        date: this.form.date_sell,
+                        client_id: this.form.client_id,
+                        user_id: this.$auth.user.id,
+                        compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                        }) .then(response => {console.log(response);
+                        
+                        this.$router.push({path:'/ventes/list_vente',}) 
+                    })
+                    
+                }
+                else{
+                    
                     this.$router.push({path:'/ventes/list_vente',})
-              }).catch( error => console.log( error ) )                            
+                    // this.$router.push({path:'/categorie/add_client'});
+                }
+             }).catch( err => console.log( err ) )
+                      
         },
 
         refresh(){
@@ -205,6 +224,11 @@ export default {
 </script>
 
 <style scoped>
+.received {
+    border: none; outline: none;
+    border-bottom: 2px solid #605050;
+}
+
 .contenu{
   margin: 5%;
   overflow: auto;

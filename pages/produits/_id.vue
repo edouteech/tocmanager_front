@@ -109,7 +109,7 @@ export default {
                     })     
         },
         submit(){          
-            this.$axios.put('products', {
+            this.$axios.put('products/' +this.$route.params.id,{
                 id: this.$route.params.id,
                 category_id: this.form.category_id,
                 name: this.form.name,

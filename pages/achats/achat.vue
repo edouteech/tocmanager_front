@@ -44,7 +44,6 @@
                             <th>Prix unitaire</th>
                             <th>Taux de réduction (%)</th>
                             <th>Taxe appliquée (%)</th>
-                            <th> Somme déposée</th>
                             <th> Total</th>                     
                         </tr>
                     </thead>
@@ -59,13 +58,17 @@
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td> 
-                            <td><input class="form-control" type="number" v-model="form.amount_sent"  autocomplete="off"  required></td>                    
+                            <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                    
                             <td><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
-            </div>
+            </div><br>
+            
+            <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
+                {{amount_error}} 
+            </div> 
             <div class="submit">
                 <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">		          
             </div>  
@@ -97,6 +100,7 @@ export default {
 
     data () {
         return{
+            amount_error: null,
             message: '',
             four_id: '',
             showModal: false,
@@ -112,7 +116,7 @@ export default {
                 amount: '',
                 tax: '0',
                 discount: '0',
-                amount_sent: '0',
+                amount_sent: '',
                 buy_lines: []          
                 },
             errors: [],
@@ -142,31 +146,52 @@ export default {
         },
 
         async submit(){
-            await  this.$axios.post('/buys',{
-              date_buy: this.form.date_buy,
-              tax: this.form.tax,
-              discount: this.form.discount,
-              amount: this.form.amount,
-              amount_sent: this.form.amount_sent,
-              user_id: this.$auth.user.id,
-              supplier_id: this.form.supplier_id,  
-              buy_lines: this.form.buy_lines  
-            }).then(response =>{ 
-                console.log( response ) 
-                this.error = response.data.message
-                console.log(this.error)
-
-                if(response.data.status == "success"){
-                   this.$router.push({path:'/achats/SavedModal',})
-                }
-                else{
+                await  this.$axios.post('/buys',{
+                date_buy: this.form.date_buy,
+                tax: this.form.tax,
+                discount: this.form.discount,
+                amount: this.form.amount,
+                amount_sent: this.form.amount_sent,
+                user_id: this.$auth.user.id,
+                supplier_id: this.form.supplier_id,  
+                buy_lines: this.form.buy_lines  
+                }).then(response =>{ 
+                    console.log( response ) 
+                    this.error = response.data.message
                     this.errors = response.data.data
-                    // this.$router.push({path:'/clients/add_client'});
+                    console.log(this.error)
+                if(this.form.amount_sent < this.form.amount){
+                    if(response.data.status == "success"){
+
+                        if(this.form.amount_sent != 0){
+                            this.$axios.post('/decaissements',{
+                                montant: this.form.amount_sent,
+                                date: this.form.date_buy,
+                                supplier_id: this.form.supplier_id,
+                                user_id: this.$auth.user.id,
+                                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                                }) .then(response => {console.log(response);
+                                
+                                this.$router.push({path:'/achats/SavedModal',})
+                            })
+                            
+                        }
+                        else{             
+                            this.$router.push({path:'/achats/SavedModal',})
+                            // this.$router.push({path:'/categorie/add_client'});
+                        }
+                    }
+                    else{ console.log(response)
+                        this.errors = response.data.data
+                        // this.$router.push({path:'/clients/add_client'});
+                    }
+                }else{
+                this.amount_error = "Veuillez corriger ! La somme envoyée ne peut pas etre supérieure au montant total de la facture."
                 }
-            })
-            .catch( err => console.log( err ) )
-                //  console.log(this.form.name)                
+                }).catch( err => console.log( err ) )
+                    //  console.log(this.form.name)                                        
         },
+
 
         refresh(){
             this.$axios.get('/suppliers',

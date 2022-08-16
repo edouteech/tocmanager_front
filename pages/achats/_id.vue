@@ -14,7 +14,10 @@
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                             {{fournisseur.name}}
                         </option>                           
-                    </select>                  
+                    </select>  
+                    <div class="save-btn">
+                        <div @click="showModal = true"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur</div>
+                    </div>                  
                 </div>
                 <div class="facture-date">
                    <span class="creation"> Date de création :</span> <input  type="datetime-local" class="form-control"  v-model="form.date_buy"/>                  
@@ -32,7 +35,6 @@
                             <th>Prix unitaire</th>
                             <th>Taux de réduction (%)</th>
                             <th>Taxe appliquée (%)</th>
-                            <th>Somme déposée</th>
                             <th>Total</th>                     
                         </tr>
                     </thead>
@@ -40,22 +42,22 @@
                     <tbody>
                         <tr v-for="(line, index) in form.buy_lines" :key="index">
                             <td>
-                                <select v-model="line.product_id" id="" @change="productChange"> 
+                                <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
                                 </select>
                             </td>
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
-                            <td><input class="form-control" type="number" v-model="form.amount_received"  autocomplete="off"  required></td>                    
+                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                    
                             <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
-            </div>
+            </div><br>
+            <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="num" v-model="form.amount_sent"  autocomplete="off"  required></div>
             <div class="submit">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">		          
+                <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer la facture" name="submit">		          
             </div>  
     
         </form>
@@ -98,7 +100,7 @@ export default {
                 amount: '',
                 tax: '0',
                 discount: '0',
-                amount_received: '0',
+                amount_sent: '',
                 buy_lines: []          
                 },
             error_message: "",
@@ -119,6 +121,7 @@ export default {
             this.form.tax = achat.tax,
             this.form.discount = achat.discount,
             this.form.amount = achat.amount
+            this.form.amount_sent = achat.amount_sent
           }        
         )          
     },
@@ -128,8 +131,9 @@ export default {
             
         },
         
-        async submit(){
-            await  this.$axios.post('/buys',{
+        submit(){
+           this.$axios.put('/buys/' +this.$route.params.id,{
+              id: this.$route.params.id,
               date_buy: this.form.date_buy,
               tax: this.form.tax,
               discount: this.form.discount,
@@ -138,10 +142,32 @@ export default {
               user_id: this.$auth.user.id,
               fournisseur_id: this.form.fournisseur_id,  
               buy_lines: this.form.buy_lines  
-            }).then(response =>{ console.log(response)
-                    this.$router.push({path:'/achats/SavedModal',})
-              }).catch( error => console.log( error ) )                            
+            }).then(response =>{ 
+                console.log( response ) 
+                this.error = response.data.message
+                console.log(this.error)
+                if(this.form.amount_sent != 0){
+                    this.$axios.put('/decaissements',{
+                        montant: this.form.amount_sent,
+                        date: this.form.date_buy,
+                        supplier_id: this.form.supplier_id,
+                        user_id: this.$auth.user.id,
+                        compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                        }) .then(response => {console.log(response);
+                        
+                        this.$router.push({path:'/encaissements/list_encaissement', })
+                    })
+                    
+                }
+                else{
+                    
+                    this.$router.push({path:'/encaissements/list_encaissement', })
+                    // this.$router.push({path:'/categorie/add_client'});
+                }
+             }).catch( err => console.log( err ) )
+                      
         },
+         
 
         refresh(){
             this.$axios.get('/suppliers',{params: {

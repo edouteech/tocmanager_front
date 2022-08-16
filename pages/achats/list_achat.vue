@@ -30,7 +30,7 @@
             </tr>
           </tbody>
         </table>
-   </div><br>
+<br><br>
     <nav aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -39,7 +39,7 @@
             <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
           </ul>
         </nav>
-            <!-- <pre> {{res_data}}</pre> --><br><br> 
+    </div>           <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirAchat :date= 'identifiant1' :fournisseur= 'identifiant2' :montant= 'identifiant3' :facture='identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
