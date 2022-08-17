@@ -26,6 +26,9 @@
         </table>  <br><br> <hr>
         <div v-if="rest > 0">
           <h4>Ajouter des décaissements pour cette facture</h4><br><br>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="error_rest != null">
+                  {{error_rest}} 
+                </div>
                 <form action="" method="POST">
                     <div class="form-group col-md-6">					
                       <input type="date" class="form-control" placeholder="Entrer la date de ce décaissement " v-model="form.date" autocomplete="off" id="date" required>       
@@ -78,6 +81,7 @@ export default {
 
     data () {
       return {
+        error_rest: null,
         res_data: null,
         date_decaissement: '',
         montant_decaissement: '',
@@ -120,6 +124,10 @@ export default {
                 // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
               document.getElementById("date").value='';
               document.getElementById("montant").value='';
+              if(this.form.montant > this.rest){
+               this.error_rest = "Le montant à encaisser ne doit pas etre supérieur à la somme due"
+              }
+              else{
                if(response.data.status == "success"){
                   this.recupFacture(),
                   this.recupInfos()
@@ -128,6 +136,7 @@ export default {
                     this.errors = response.data.data
                     // this.$router.push({path:'/clients/add_client'});
                 }
+              }
             }).catch( error => console.log( error ) )
                 //  console.log(this.form.name)                
         },
