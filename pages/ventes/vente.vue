@@ -6,9 +6,9 @@
 
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
       {{error}} <br>
-      <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
-      <div class="error" v-if="errors['client_id'] != null">{{errors['client_id']}}</div>
-      <div class="error" v-if="errors['date_sell'] != null">{{errors['date_sell']}}</div>
+      <!-- <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div> -->
+      <!-- <div class="error" v-if="errors['client_id'] != null">{{errors['client_id']}}</div>
+      <div class="error" v-if="errors['date_sell'] != null">{{errors['date_sell']}}</div> -->
     </div>
   
     <div class="contenu">
@@ -106,8 +106,6 @@ export default {
             amount_error: null,
             message: '',
             cli_id: '0',
-            // nom_prod: '',
-            // prod_id: '',
             showModal: false,
             showSaved: false,
             showProduit: false,
@@ -115,14 +113,14 @@ export default {
             client: "",
             produits: [],
             form:{
-                user_id: '',
-                date_sell: '',
-                client_id: '',
-                amount: '',
-                tax: '0',
-                discount: '0',
-                amount_received: '0',
-                sell_lines: []          
+                    user_id: '',
+                    date_sell: '',
+                    client_id: '',
+                    amount: '',
+                    tax: '0',
+                    discount: '0',
+                    amount_received: '',
+                    sell_lines: []          
                 },
             errors: [],
             error: null,
@@ -143,8 +141,7 @@ export default {
     
     methods: {
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
-            
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});           
         },
 
         setMessage(payload) {
@@ -176,37 +173,16 @@ export default {
                 this.error = response.data.message
                 this.errors = response.data.data
                 console.log(this.error)
-            if(this.form.amount_sent < this.form.amount){
-                if(response.data.status == "success"){
-                    if(this.form.amount_received != 0){
-                    this.$axios.post('/encaissements',{
-                        montant: this.form.amount_received,
-                        date: this.form.date_sell,
-                        client_id: this.form.client_id,
-                        user_id: this.$auth.user.id,
-                        compagnie_id: this.$auth.$storage.getUniversal('company_id')
-                        }) .then(response => {console.log(response);
-                        
-                         this.$router.push({path:'/ventes/SavedModal',})
-                            })
-                            
-                        }
-                        else{
-                            
-                            this.$router.push({path:'/ventes/SavedModal',})
-                            // this.$router.push({path:'/categorie/add_client'});
-                        }
-                        
-                }
-                else{
-                    this.errors = response.data.data
-                    // this.$router.push({path:'/clients/add_client'});
-                }
-            }else{
-                this.amount_error = "Veuillez corriger ! La somme reçue ne peut pas etre supérieure au montant total de la facture."
-                }
-                }).catch( err => console.log( err ) )
-                    //  console.log(this.form.name)                                        
+                    if(response.data.status == "success"){
+                        this.$router.push({path:'/ventes/SavedModal',})
+                    }
+                    else{
+                        this.errors = response.data.data
+                        // this.$router.push({path:'/clients/add_client'});
+                    }
+                
+            }).catch( err => console.log( err ) )
+                        //  console.log(this.form.name)                                        
         },
         
         refresh(){

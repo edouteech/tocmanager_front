@@ -18,7 +18,8 @@
           <tbody>
             <tr  v-for="(categorie, i) in categories" :key="i">
               <td>{{categorie.name}}</td>
-              <td>{{categorie.parent_id}}</td>
+              <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
+              <td v-else>---</td>
               <td><div class="action">
                 <div @click="voirCategorie(categorie.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/categorie/'+categorie.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
@@ -94,7 +95,12 @@ export default {
             this.showModal = true;
             this.$axios.get('/categories/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
-             this.identifiant2 = response.data.data[0].parent_id   
+             if(response.data.data[0].parent != null){
+                this.identifiant2 = response.data.data[0].parent.name  
+             }else{
+                this.identifiant2 = "Pas de catégorie parente associée"
+             }
+             
              })               
         },
 
