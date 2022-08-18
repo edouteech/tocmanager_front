@@ -27,25 +27,7 @@
     }
     },
     
-    methods: {
-        async submit(){
-            await  this.$axios.post('/create/client',{
-              name: this.form.name,
-              email: this.form.email,
-              phone: this.form.phone,
-              nature: this.form.nature
-            })
-            // .then(response =>{console.log(response) 
-            //         this.$router.push({ 
-            //           path:'/clients/list_client',
-            //         })})
-  
-            .catch( error => console.log( error ) )
-                    // console.log('user login')
-                 console.log(this.form.name)                
-        },
-
-    }
+   
 }
 </script>
 

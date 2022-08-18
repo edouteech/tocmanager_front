@@ -4,24 +4,28 @@
       <Sidebar /><h3 class="name">Catégories de produits </h3>
     </nav>
 
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
+      <div class="error" v-if="errors['parent_id'] != null">{{errors['parent_id']}}</div>
+    </div>
+
     <div class="contenu">
          <h4>Enregistrer une nouvelle catégorie de produit</h4>
        <form action="">
-            <div class="form-group col-md-6">
+            <div class="form-group ">
                 <label class="title">Entrer le nom de la catégorie </label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Pillules">
             </div>
-            <div class="form-group col-md-6">
-                <div class="form-group ">
+            <div class="form-group ">
                 <label class="title">Catégorie parente</label>
                 <select class="form-control" v-model="form.parent_id" required>
                     <option disabled value="">Choisissez...</option>
                     <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
                 </select>
-                </div>
             </div>
 
-            <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer la catégorie</button>
+            <button type="submit" class="btn btn-primary" @click.prevent="submit()">Enregistrer la catégorie</button>
         </form>
   </div>
  
@@ -50,12 +54,12 @@ export default {
                 parent_id: '',
                 compagnie_id: ''               
             },
-            error_message: "",
-            error_champ: [],
+            errors: [],
+            error: null,
         }
     },
     mounted(){
-        this.$axios.get('/index/categorie',{params: {
+        this.$axios.get('/categories',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response =>{console.log(response.data.data.data);
@@ -65,15 +69,26 @@ export default {
     
     methods: {
         async submit(){
-            await  this.$axios.post('/create/categorie',{
+            await  this.$axios.post('/categories',{
                 name: this.form.name,
                 parent_id: this.form.parent_id,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })   
-            .then(response =>{ this.$router.push({ path:'/categorie/list_categorie', })})
-            .catch( error => console.log( error ) )      
-                 console.log(this.form.name)                
-        },
+            .then(response =>{ 
+                console.log( response ) 
+                this.error = response.data.message
+                console.log(this.error)
+
+                if(response.data.status == "success"){
+                    this.$router.push({path:'/categorie/list_categorie', })
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/categorie/add_client'});
+                }
+             }).catch( err => console.log( err ) )
+            
+            },
 
     },
   

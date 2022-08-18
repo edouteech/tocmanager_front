@@ -4,6 +4,14 @@
       <Sidebar /><h3 class="name">Clients </h3>
     </nav>
 
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
+      <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
+      <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
+      <div class="error" v-if="errors['nature'] != null">{{errors['nature']}}</div>
+    </div>
+
     <div class="contenu ">
         <h4>Enregistrer un nouveau client</h4>
         <form action="">
@@ -55,14 +63,14 @@ export default {
                 nature:'',
                 compagnie_id: ''
             },
-            error_message: "",
-            error_champ: [],
+            errors: [],
+            error: null,
         }
     },
 
     methods: {
         async submit(){
-            await  this.$axios.post('/create/client',{
+            await  this.$axios.post('/clients',{
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
@@ -70,11 +78,22 @@ export default {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
-                this.$router.push({path:'/clients/list_client',})})
+                this.error = response.data.message
+                console.log(this.error)
+
+                if(response.data.status == "success"){
+                    this.$router.push({path:'/clients/list_client'});
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/clients/add_client'});
+                }
+            })
             .catch( error => console.log( error ) )
                 //  console.log(this.form.name)                
         },
 
+        
     },
   
 }

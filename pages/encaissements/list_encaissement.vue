@@ -22,15 +22,24 @@
               <td>{{encaissement.date}}</td>
               <td>{{encaissement.montant}}</td>
               <td>{{encaissement.client_id}}</td>
-              <td class="action">
+              <td><div class="action">
                 <div @click="voirEncaissement(encaissement.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/encaissements/'+encaissement.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteEncaissement(encaissement.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
               </td>
             </tr>
           </tbody>
-        </table>  
-    </div>
+        </table><br><br> 
+        <nav aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
+        </nav>
+    </div><br>
 <voirEncaissement :montant= 'identifiant1' :date= 'identifiant2' :client_id= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/>
 
 </div>
@@ -49,6 +58,8 @@ export default {
   },
    data () {
       return {
+        links: [],
+        res_data: null,
         showModal: false,
         identifiant1 : "",
         identifiant2 : "",
@@ -65,25 +76,32 @@ export default {
 
     methods: {
         deleteEncaissement(id){ console.log(id);
-          this.$axios.delete('/delete/encaissement/' +id)
+          this.$axios.delete('/encaissements/' +id)
           .then(response =>  {console.log(response.data.data);
           this.refresh()})
          },
 
-        refresh(){
-          this.$axios.get('/index/encaissement',
-            // {
-            //     params: {
-            //         compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            //     }
-            // }
-          ).then(response => {console.log(response.data.data);
-          this.encaissements = response.data.data})
+        refresh(page=1){
+          this.$axios.get('/encaissements',
+            {
+                params: {
+                  page: page
+                    // compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                }
+            }
+          ).then(response => 
+          {
+            console.log(response);
+            this.encaissements = response.data.data.data
+            this.res_data= response.data.data
+            let firstE = response.data.data.links.shift()
+            let lastE = response.data.data.links.splice(-1,1);
+          })
         },
 
         voirEncaissement(id){
             this.showModal = true;
-            this.$axios.get('/index/encaissement/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/encaissements/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].montant
              this.identifiant2 = response.data.data[0].date
              this.identifiant3 = response.data.data[0].client_id  
@@ -99,16 +117,18 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;
   cursor: pointer;
 }
+
 .table{
 	margin-top: 5%;
-
+  text-align: center;
 }      
 
 

@@ -4,6 +4,13 @@
       <Sidebar /><h3 class="name">Décaissements </h3>
     </nav>
 
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+      <div class="error" v-if="errors['montant'] != null">{{errors['montant']}}</div>
+      <div class="error" v-if="errors['date'] != null">{{errors['date']}}</div>
+      <div class="error" v-if="errors['supplier_id'] != null">{{errors['supplier_id']}}</div>
+    </div>
+
     <div class="contenu">
         <h4>Enregistrer un décaissement</h4>
         <form action="">
@@ -31,7 +38,7 @@
                 </select>
                 </div>
             </div>
-        <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer</button>
+        <button type="submit" class="btn btn-primary" @click.prevent="submit()">Enregistrer</button>
         </form>
           
         
@@ -60,13 +67,13 @@ export default {
                 supplier_id:'',
                 compagnie_id: ''
             },
-            error_message: "",
-            error_champ: [],
+            errors: [],
+            error: null,
         }
     },
 
     mounted(){
-        this.$axios.get('/index/fournisseur',{params: {
+        this.$axios.get('/suppliers',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           })
@@ -76,20 +83,29 @@ export default {
 
     methods: {
         async submit(){
-            await  this.$axios.post('/create/decaissement',{
+            await  this.$axios.post('/decaissements',{
               montant: this.form.montant,
               facture: 1,
               date: this.form.date,
               supplier_id: this.form.supplier_id,
               user_id: this.$auth.user.id,
-            //   compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
-                console.log( response ) 
-                this.$router.push({path:'/decaissements/list_decaissement',})})
-            .catch( error => console.log( error ) )
-                //  console.log(this.form.name)                
-        },
+               console.log( response ) 
+                this.error = response.data.message
+                console.log(this.error)
 
+                if(response.data.status == "success"){
+                    this.$router.push({path:'/decaissements/list_decaissement', })
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/categorie/add_client'});
+                }
+             }).catch( err => console.log( err ) )
+            
+            },
+            
     },
   
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop>                     
+    <div class="modaler" @click.stop>                     
           <p>Etes vous sur de vouloir supprimer définitivement ce produit ??? </p>
           <div class="reponse">
                 <div class="yes"  @click="supProduit(infos)">
@@ -29,7 +29,7 @@
     methods: {
         supProduit(infos){
             console.log(infos);
-            this.$axios.delete('/destroy/product/' +infos)      
+            this.$axios.delete('/products/' +infos)      
             .then(response => {console.log(response.data.data);
                   this.produit = response.data.data;
                    this.$router.push({path:'/corbeille',})})                   
@@ -91,7 +91,7 @@
   background-color: #fbc9c9da;
 }
 
-.modal {
+.modaler {
   text-align: center;
   background-color: white;
   height: 250px;

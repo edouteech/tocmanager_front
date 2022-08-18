@@ -3,7 +3,7 @@
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Clients </h3>
     </nav>
-
+    
     <div class="contenu">
       <h4>Liste des clients</h4>
       <NuxtLink  to="/clients/add_client"><button class="custom-btn btn-3"><span>Ajouter nouveau client</span></button></NuxtLink>
@@ -23,16 +23,27 @@
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
               <td>{{client.nature}}</td>
-              <td class="action">
+              <td><div class="action">
                 <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
-    </div><br><br><br> 
-  <voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+    <br><br>
+    <nav aria-label="Page navigation example px-8 " v-if="res_data != null">
+      <ul class="pagination">
+        <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+        <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+        
+        <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+      </ul>
+    </nav>
+    <br> 
+  </div>
+<voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
@@ -49,6 +60,7 @@ export default {
   },
    data () {
       return {
+        res_data: null,
         showModal: false,
         identifiant1 : "",
         identifiant2 : "",
@@ -67,24 +79,30 @@ export default {
 
     methods: {
         deleteClient(id){ console.log(id);
-          this.$axios.delete('/delete/client/' +id)
+          this.$axios.delete('/clients/' +id)
           .then(response =>  {console.log(response);
           this.refresh()})
          },
           
         
-        refresh(){
-          this.$axios.get('/index/client',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+        refresh(page=1){
+          this.$axios.get('/clients',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            page: page
           }
           })
-          .then(response => {console.log(response);
-          this.clients = response.data.data.data })
+          .then(response => {console.log(response.data);
+          this.clients = response.data.data.data 
+          this.res_data= response.data.data
+          // this.links = response.data.data.links
+          let firstE = response.data.data.links.shift()
+          let lastE = response.data.data.links.splice(-1,1);
+          })
         },
 
         voirClient(id){
             this.showModal = true;
-            this.$axios.get('/index/client/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/clients/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email
@@ -92,7 +110,7 @@ export default {
              }) 
                
         },
-
+        
     },       
      
 }
@@ -102,7 +120,7 @@ export default {
 
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 .fa{
   margin: 0 5px;
@@ -111,7 +129,7 @@ export default {
 }
 .table{
 	margin-top: 5%;
-
+  text-align: center;
 }      
 
 

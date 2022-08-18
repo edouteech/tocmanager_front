@@ -93,7 +93,7 @@
     methods: {
         async submit(){
           console.log(this.fournisseur)
-            await  this.$axios.post('/create/decaissement',{
+            await  this.$axios.post('/decaissements',{
               montant: this.form.montant,
               facture: this.facture,
               date: this.form.date,

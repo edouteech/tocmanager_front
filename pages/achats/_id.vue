@@ -14,10 +14,7 @@
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                             {{fournisseur.name}}
                         </option>                           
-                    </select>          
-                    <div class="save-btn">
-                        <div @click="showModal = true"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur</div>
-                    </div>                   
+                    </select>                  
                 </div>
                 <div class="facture-date">
                    <span class="creation"> Date de création :</span> <input  type="datetime-local" class="form-control"  v-model="form.date_buy"/>                  
@@ -26,7 +23,6 @@
             
             <div class="ajout-article" @click="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un article</div>
             
-              <div class="btn-ajout" @click="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</div>
             <div class="commande">
                 <table class="table table-bordered">
                     <thead>
@@ -48,12 +44,12 @@
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
                                 </select>
                             </td>
-                            <td><input type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                            <td><input type="num" v-model="line.price" autocomplete="off" required></td>
-                            <td><input type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
-                            <td><input type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
-                            <td><input type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
+                            <td><input class="form-control" type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
+                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
@@ -113,13 +109,13 @@ export default {
     mounted () {
       this.refresh()
       this.recupProduct()
-      this.$axios.get('/index/achat/'+ this.$route.params.id)
+      this.$axios.get('buys/'+ this.$route.params.id)
           .then(response => {console.log(response.data.data[0] )
             let achat = response.data.data[0];
             // this.categories = response.data.data
             this.form.date_buy = achat.date_buy,
-            this.form.fournisseur_id = achat.fournisseur_id,
-            this.form.buy_lines = achat.sell_lines,   
+            this.form.supplier_id = achat.supplier_id,
+            this.form.buy_lines = achat.buy_lines,   
             this.form.tax = achat.tax,
             this.form.discount = achat.discount,
             this.form.amount = achat.amount
@@ -133,7 +129,7 @@ export default {
         },
         
         async submit(){
-            await  this.$axios.post('/create/achat',{
+            await  this.$axios.post('/buys',{
               date_buy: this.form.date_buy,
               tax: this.form.tax,
               discount: this.form.discount,
@@ -148,15 +144,17 @@ export default {
         },
 
         refresh(){
-            this.$axios.post('/index/fournisseur',{
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            this.$axios.get('/suppliers',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
             }).then(response => {console.log(response);
             this.fournisseurs = response.data.data.data})
         },
 
         recupProduct(){
-            this.$axios.post('/index/product',{
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            this.$axios.get('/products',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
             }).then(response => {console.log(response.data.data.data);
             this.produits = response.data.data.data}) 
         },
@@ -201,7 +199,7 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 
 .commande{
@@ -350,7 +348,7 @@ input[type=submit]:hover{
 
 .table{
 	margin-top: 5%;
-
+    text-align: center;
 }      
 
 

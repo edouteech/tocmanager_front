@@ -29,7 +29,7 @@ export default {
     script: [
       { 
         src: '/js/bootstrap.bundle.min.js', 
-        type: 'text/javascript'
+        type: 'text/javascript',
       }
     ]
   },
@@ -74,7 +74,7 @@ export default {
           autoFetch: true
         },
         endpoints: {
-          login: { url: '/authentifier', method: 'post', propertyName: 'access_token' },
+          login: { url: '/login', method: 'post', propertyName: 'access_token' },
           user: { url: '/user', method: 'get', propertyName: 'content' },
           logout: false
         },
@@ -86,7 +86,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: "https://api.tech-plux.com/api",
+    baseURL: "http://localhost:8000/api",
     credentials:true
   },
 

@@ -4,20 +4,27 @@
       <Sidebar /><h3 class="name">Ventes </h3>
     </nav>
 
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+      <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
+      <div class="error" v-if="errors['client_id'] != null">{{errors['client_id']}}</div>
+      <div class="error" v-if="errors['date_sell'] != null">{{errors['date_sell']}}</div>
+    </div>
+  
     <div class="contenu">
-        <h4>Enregistrer une vente</h4><hr>
+        <h4>Enregistrer une vente </h4><hr>
         <form action="" method="POST">
-            
             <div class="cadre-haut">             
                 <div class="ajout-client">                                   
-                    <select class="form-control"  v-model="form.client_id">
+                    <select v-model="form.client_id">
                         <option disabled value="">Choisir le client</option>
+                        <!-- <option :value= cli_id>{{message}}</option> -->
                         <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
                             {{client.name}}
                         </option>                           
                     </select>          
-                    <div class="save-btn">
-                        <div @click="showModal = true"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client</div>
+                    <div class="save-btn" @click="showModal = true">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
                     </div>                   
                 </div>
                 <div class="facture-date">
@@ -47,6 +54,7 @@
                             <td>
                                 <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                     <option disabled value="">Choisissez...</option>
+                                    <!-- <option :value= prod_id>{{nom_prod}}</option> -->
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
                                 </select>
                             </td>
@@ -66,10 +74,10 @@
     
         </form>
     </div>
-
-    <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
+    
+    <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
-    <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
+    <produitModal v-show="showProduit" @close-modal="showProduit = false" @prod="setProduit"/>
 
 </div>
  
@@ -92,6 +100,10 @@ export default {
 
     data () {
         return{
+            message: '',
+            cli_id: '0',
+            // nom_prod: '',
+            // prod_id: '',
             showModal: false,
             showSaved: false,
             showProduit: false,
@@ -108,10 +120,17 @@ export default {
                 rest: '0',
                 sell_lines: []          
                 },
-            error_message: "",
-            error_champ: [],
+            errors: [],
+            error: null,
         }
     },
+    // watch: {
+    //     cli_id: {
+    //         handler(, ) {
+    //         },
+    //     deep: true
+    //     }
+    // },
 
     mounted () {
       this.refresh()
@@ -123,9 +142,23 @@ export default {
             this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
             
         },
+
+        setMessage(payload) {
+            this.refresh()
+            this.message = payload.message
+            this.cli_id = payload.cli_id
+        },
         
+        setProduit(payload) {
+            this.recupProduct()
+        },
+        // setProd(payload) {
+        // this.nom_prod = payload.nom_prod
+        // this.prod_id = payload.prod_id
+        // },
+
         async submit(){
-            await  this.$axios.post('/create/vente',{
+            await  this.$axios.post('/sells',{
               date_sell: this.form.date_sell,
               tax: this.form.tax,
               discount: this.form.discount,
@@ -134,21 +167,34 @@ export default {
               user_id: this.$auth.user.id,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines  
-            }).then(response =>{ console.log(response.data)
-                    this.$router.push({path:'/ventes/SavedModal',})
-              }).catch( error => console.log( error ) )                            
-        },
+            }).then(response =>{ 
+                console.log( response ) 
+                this.error = response.data.message
+                console.log(this.error)
 
+                if(response.data.status == "success"){
+                   this.$router.push({path:'/ventes/SavedModal',})
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/clients/add_client'});
+                }
+            })
+            .catch( err => console.log( err ) )
+                //  console.log(this.form.name)                
+        },
+        
         refresh(){
-            this.$axios.get('/index/client',{params: {
+            this.$axios.get('/clients',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
-          }).then(response => {console.log(response);
-            this.clients = response.data.data.data})
+          }).then(response => {console.log(response.data.data.data);
+            this.clients = response.data.data.data
+            })
         },
 
         recupProduct(){
-            this.$axios.get('/index/product',{params: {
+            this.$axios.get('/products',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response => {console.log(response.data.data.data);
@@ -195,7 +241,7 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 
 .commande{
@@ -220,7 +266,7 @@ export default {
 .ajout-client{
     margin: 2% 1%;
     border: 1px solid darkblue;
-    padding: 2% ;
+    padding: 50px ;
     margin-right: 50%;
   
 }
@@ -288,13 +334,7 @@ export default {
     margin: 1.2em 0;
     height: 50px;
 }
-
-.error{               
-    color: red;
-    margin-bottom: -10%;
-    font-size: 12px;
-}
-        
+     
 
 .modal input {
     padding: 8px;
@@ -343,7 +383,7 @@ input[type=submit] {
     margin: 8px 0;
     border: 1px solid #3c05f1;
     cursor: pointer;
-    width: 40%;
+    width: 60%;
     font-size: 15px;
 }
 
@@ -356,7 +396,7 @@ input[type=submit]:hover{
 
 .table{
 	margin-top: 5%;
-
+    text-align: center;
 }      
 
 

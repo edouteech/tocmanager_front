@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop><br>
-      <h4>Informations de la vente</h4><br><br><br>
+      <h4>Informations de la vente{{sell}}</h4><br><br><br>
       <div class="vente"> 
           <div class="info_vente">  
                 <div class="info">					
@@ -26,12 +26,10 @@
               <form action="" method="POST">
                     <div class="ensemble">
                       <div class="input-form">					
-                        <input type="date" placeholder="Entrer la date " v-model="form.date" autocomplete="off" required>
-                        <span class="error">{{error_champ.name}}</span>
+                        <input type="date" placeholder="Entrer la date " v-model="form.date" autocomplete="off" id="date" required>       
                       </div>
                       <div class="input-form1">        
-                        <input type="number" placeholder="Entrer le montant à encaisser " v-model="form.montant" required>
-                        <span class="error">{{error_champ.phone}}</span>
+                        <input type="number" placeholder="Entrer le montant à encaisser " v-model="form.montant" id="montant" required>
                       </div>
                   </div>     
                  
@@ -43,27 +41,21 @@
           </div>
       </div><br><br><hr><br>
       <div class="list_encais">
-        <h2>Liste des encaissements pour ce client</h2>
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-					<tr>
-						<th scope="col" class="px-6 py-3">
-							Dates d'encaissement
-						</th>
-            <th scope="col" class="px-6 py-3">
-							Montants encaissés
-						</th>
-
-					</tr>
-				</thead>
-				<tbody>
-					<tr 
-						class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <td>Today</td>
-            <td>200</td>
-					</tr>
-				</tbody>
-			</table>
+        <h2>Liste des encaissements pour cette facture</h2>
+        <table class="table table-hover">
+          <thead>
+            <tr class="table-primary">
+              <th>Date encaissement</th>
+              <th>Montant </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr  v-for="(encaissement, i) in encaissements" :key="i">
+              <td>{{encaissement.date}}</td>
+              <td>{{encaissement.montant}}</td>
+            </tr>
+          </tbody>
+        </table>  <br><br> 
       </div>
     </div>
     <div class="close" @click="$emit('close-modal')">
@@ -75,7 +67,7 @@
 <script>
   export default {
     auth:true,
-    props: ['date', 'client', 'montant', 'facture'],
+    props: ['sell','date', 'client', 'montant', 'facture'],
     name: 'voirVente',
     data () {
         return{
@@ -86,29 +78,47 @@
                 nature:'',
                 compagnie_id: ''
             },
-            error_message: "",
-            error_champ: [],
+            encaissements: [],
         }
     },
     
     mounted(){
-      console.log(this.client)
+      this.recupFacture()
+      console.log(this.sell)
     },
     methods: {
         async submit(){
-          console.log(this.client)
-            await  this.$axios.post('/create/encaissement',{
+            await  this.$axios.post('/encaissements',{
               montant: this.form.montant,
-              facture: this.facture,
               date: this.form.date,
               client_id: this.client,
               user_id: this.$auth.user.id,
-            //   compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              sell_id: this.sell,
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
-                this.$router.push({path:'/ventes/list_vente',})})
+                // this.$router.push({path:'/ventes/list_vente',})
+                
+            document.getElementById("date").value='';
+            document.getElementById("montant").value='';
+                })
             .catch( error => console.log( error ) )
                 //  console.log(this.form.name)                
+        },
+
+        recupFacture(){
+          this.$axios.get('/encaissements',
+            {
+                params: {
+                  sell_id: this.sell
+                }
+            }
+          ).then(response => 
+          {
+            console.log(response);
+            this.encaissements = response.data.data.data
+            
+          })
         },
 
     },
@@ -148,6 +158,7 @@
   margin-top: 1%;
   padding: 0 5%;
   border-radius: 20px;
+  overflow: auto;
 }
 .close {
   margin: 2% 0 0 16px;

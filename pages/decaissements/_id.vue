@@ -68,7 +68,7 @@ export default {
         },
     mounted() {
         this.refresh()
-        this.$axios.get('/index/decaissement/'+ this.$route.params.id)
+        this.$axios.get('/decaissements/'+ this.$route.params.id)
          .then(response => {console.log(response.data.data[0] )
             let decaissement = response.data.data[0];
             // this.clients = response.data.data
@@ -83,7 +83,7 @@ export default {
 
     methods: {
         submit(){          
-            this.$axios.put('/update/decaissement', {
+            this.$axios.put('/decaissements', {
             id: this.$route.params.id,
             montant: this.form.montant,
             date: this.form.date,
@@ -100,7 +100,7 @@ export default {
         },
 
         refresh(){
-            this.$axios.get('/index/fournisseur',{
+            this.$axios.get('/suppliers',{
                 params: {
                     compagnie_id: this.$auth.$storage.getUniversal('company_id')
                 }

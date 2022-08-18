@@ -4,6 +4,17 @@
       <Sidebar /><h3 class="name">Produits </h3>
     </nav>
 
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+      <div class="error" v-if="errors['category_id'] != null">{{errors['category_id']}}</div>
+      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
+      <div class="error" v-if="errors['quantity'] != null">{{errors['quantity']}}</div>
+      <div class="error" v-if="errors['price_sell'] != null">{{errors['price_sell']}}</div>
+      <div class="error" v-if="errors['price_buy'] != null">{{errors['price_buy']}}</div>
+      <div class="error" v-if="errors['stock_min'] != null">{{errors['stock_min']}}</div>
+      <div class="error" v-if="errors['stock_max'] != null">{{errors['stock_max']}}</div>
+    </div>
+  
     <div class="contenu">
       <h4>Enregistrer un nouveau produit </h4>
         <form action="">
@@ -74,8 +85,8 @@ export default {
                 stock_max:'',
                 compagnie_id:''
             },
-            error_message: "",
-            error_champ: [],
+            errors: [],
+            error: null,
         }
     },
 
@@ -85,7 +96,7 @@ export default {
 
     methods: {
         async submit(){
-            await  this.$axios.post('/create/product',{
+            await  this.$axios.post('/products',{
               category_id: this.form.category_id,
               name: this.form.name,
               quantity: this.form.quantity,
@@ -94,13 +105,25 @@ export default {
               stock_min: this.form.stock_min,
               stock_max: this.form.stock_max,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }).then(response =>{this.$router.push({path:'/produits/list_produit', })
-                 }).catch( error => console.log( error ) )
-              
+            }).then(response =>{
+                console.log( response ) 
+                this.error = response.data.message
+                console.log(this.error)
+
+                if(response.data.status == "success"){
+                    this.$router.push({path:'/produits/list_produit'});
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/clients/add_client'});
+                }
+            })
+            .catch( error => console.log( error ) )
+                //  console.log(this.form.name)                
         },
 
         refresh(){
-          this.$axios.get('/index/categorie',{params: {
+          this.$axios.get('/categories',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response =>

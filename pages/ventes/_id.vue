@@ -115,7 +115,7 @@ export default {
     mounted () {
       this.refresh()
       this.recupProduct()
-      this.$axios.get('/index/vente/'+ this.$route.params.id)
+      this.$axios.get('/sells/'+ this.$route.params.id)
           .then(response => {console.log(response.data.data[0] )
             let vente = response.data.data[0];
             // this.categories = response.data.data
@@ -136,7 +136,7 @@ export default {
         },
         
         submit(){
-            this.$axios.put('/update/vente',{
+            this.$axios.put('/sells',{
               id: this.$route.params.id,
               date_sell: this.form.date_sell,
               tax: this.form.tax,
@@ -152,7 +152,7 @@ export default {
         },
 
         refresh(){
-            this.$axios.get('/index/client',{params: {
+            this.$axios.get('/clients',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response => {console.log(response);
@@ -160,7 +160,7 @@ export default {
         },
 
         recupProduct(){
-            this.$axios.get('/index/product',{params: {
+            this.$axios.get('/products',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response => {console.log(response.data.data.data);
@@ -207,7 +207,7 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 
 .commande{
@@ -379,7 +379,7 @@ input[type=submit]:hover{
 
 .table{
 	margin-top: 5%;
-
+    text-align: center;
 }      
 
 

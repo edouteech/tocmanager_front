@@ -4,13 +4,21 @@
       <Sidebar /><h3 class="name">Achats </h3>
     </nav>
 
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+      <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
+      <div class="error" v-if="errors['supplier_id'] != null">{{errors['supplier_id']}}</div>
+      <div class="error" v-if="errors['date_buy'] != null">{{errors['date_buy']}}</div>
+    </div>
+
     <div class="contenu">
         <h4>Enregistrer un achat</h4><hr>
         <form action="" method="POST">
             <div class="cadre-haut">             
                 <div class="ajout-client">                   
-                    <select class="form-control" v-model="form.supplier_id">
+                    <select v-model="form.supplier_id">
                         <option disabled value="">Choisir le fournisseur</option>
+                        <!-- <option :value= four_id>{{message}}</option> -->
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                             {{fournisseur.name}}
                         </option>                           
@@ -37,7 +45,7 @@
                             <th>Taux de réduction (%)</th>
                             <th>Taxe appliquée (%)</th>
                             <th>Net à payer</th>
-                            <th>Total</th>                     
+                            <th> Total</th>                     
                         </tr>
                     </thead>
                     
@@ -51,9 +59,9 @@
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
+                            <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td> 
                             <td><input class="form-control" type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
-                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
@@ -64,9 +72,9 @@
     
         </form>
     </div>
-    <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
+    <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/>
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
-    <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
+    <produitModal v-show="showProduit" @close-modal="showProduit = false"  @prod="setProduit"/>
 
 </div>
  
@@ -89,6 +97,8 @@ export default {
 
     data () {
         return{
+            message: '',
+            four_id: '',
             showModal: false,
             showSaved: false,
             showProduit: false,
@@ -105,8 +115,8 @@ export default {
                 rest: '0',
                 buy_lines: []          
                 },
-            error_message: "",
-            error_champ: [],
+            errors: [],
+            error: null,
         }
     },
 
@@ -120,9 +130,19 @@ export default {
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
             
         },
-        
+
+        setMessage(payload) {
+            this.refresh()
+            this.message = payload.message
+            this.four_id = payload.four_id
+        },
+
+        setProduit(payload) {
+            this.recupProduct()
+        },
+
         async submit(){
-            await  this.$axios.post('/create/achat',{
+            await  this.$axios.post('/buys',{
               date_buy: this.form.date_buy,
               tax: this.form.tax,
               discount: this.form.discount,
@@ -131,13 +151,25 @@ export default {
               user_id: this.$auth.user.id,
               supplier_id: this.form.supplier_id,  
               buy_lines: this.form.buy_lines  
-            }).then(response =>{ console.log(response)
-                    this.$router.push({path:'/achats/SavedModal',})
-              }).catch( error => console.log( error ) )                            
+            }).then(response =>{ 
+                console.log( response ) 
+                this.error = response.data.message
+                console.log(this.error)
+
+                if(response.data.status == "success"){
+                   this.$router.push({path:'/achats/SavedModal',})
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/clients/add_client'});
+                }
+            })
+            .catch( err => console.log( err ) )
+                //  console.log(this.form.name)                
         },
 
         refresh(){
-            this.$axios.get('/index/fournisseur',
+            this.$axios.get('/suppliers',
             {
                 params: {
                     compagnie_id: this.$auth.$storage.getUniversal('company_id')
@@ -147,7 +179,7 @@ export default {
         },
 
         recupProduct(){
-            this.$axios.get('/index/product',{params: {
+            this.$axios.get('/products',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response => {console.log(response.data.data.data);
@@ -194,7 +226,7 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 
 .commande{
@@ -285,14 +317,7 @@ export default {
     flex-direction: column-reverse;
     margin: 1.2em 0;
     height: 50px;
-}
-
-.error{               
-    color: red;
-    margin-bottom: -10%;
-    font-size: 12px;
-}
-        
+}       
 
 .modal input {
     padding: 8px;
@@ -341,7 +366,7 @@ input[type=submit] {
     margin: 8px 0;
     border: 1px solid #3c05f1;
     cursor: pointer;
-    width: 40%;
+    width: 60%;
     font-size: 15px;
 }
 
@@ -355,6 +380,7 @@ input[type=submit]:hover{
 
 .table{
 	margin-top: 5%;
+    text-align: center;
 }      
 
 

@@ -5,20 +5,20 @@
                         <h4>Ajout rapide de client </h4>
 
                 <div class="input-form">					
-                    <input type="text" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" required>
+                    <input type="text" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" id="name_cli" required>
                     <span class="error">{{error_champ.name}}</span>
                 </div>     
                 <div class="input-form">        
-                    <input type="tel" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" required>
+                    <input type="tel" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" id="phone_cli" required>
                     <span class="error">{{error_champ.phone}}</span>
                 </div>
             
                 <div class="input-form">    
-                    <input type="email" placeholder="Entrer l'email du client " v-model="form.email" autocomplete="off" required>
+                    <input type="email" placeholder="Entrer l'email du client " v-model="form.email" autocomplete="off" id="email_cli" required>
                     <span class="error">{{error_champ.email}}</span>
                 </div>
                 <div class="input-form"> 
-                   <select v-model="form.nature" required>
+                   <select v-model="form.nature" id="nature_cli" required>
                         <option disabled value="">Choisissez la nature du client</option>
                         <option value="0">Particulier</option>
                         <option value="1">Entreprise</option>
@@ -26,8 +26,8 @@
                     <!-- <input type="number" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required> -->
                     <span class="error">{{error_champ.nature}}</span>
                 </div>
-                <div class="submit-form">
-                    <input type="submit" id='submit' @click="submit()" value="Enregistrer le client" name="submit">				          
+                <div class="submit-form" @click="$emit('close-modal')">
+                    <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
                 </div>
             </form>
     </div>
@@ -55,22 +55,18 @@
         error_champ: [],
     }
     },
-    
+
     methods: {
         async submit(){
-            await  this.$axios.post('/create/client',{
+            await  this.$axios.post('/clients',{
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
               nature: this.form.nature,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
-            // .then(response =>{console.log(response) 
-            //         this.showModal == false;})
-  
-            .catch( error => console.log( error ) )
-                    // console.log('user login')
-                 console.log(this.form.name)                
+            .then(response =>{console.log(response.data.data) 
+             this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })})
         },
 
     }

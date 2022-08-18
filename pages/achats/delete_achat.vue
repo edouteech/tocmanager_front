@@ -26,18 +26,27 @@
             </thead>
             <tbody>
                 <tr  v-for="(achat, i) in achats" :key="i">
-                    <td>{{achat.date_sell}}</td>
-                    <td>{{achat.client_id}}</td>
+                    <td>{{achat.date_buy}}</td>
+                    <td>{{achat.supplier_id}}</td>
                     <td>{{achat.amount}}</td>
                     <td><div class="action">
-                        <div class="sup" @click="showModal = true">Supprimer définitivement</div>
+                        <div class="sup" @click="supAchat(achat.id)">Supprimer définitivement</div>
                         <div class="restore" @click="restaurerAchat(achat.id)">Restaurer cette facture</div></div>
                     </td>
                 </tr>
                 
             </tbody>
-        </table>
-</div>
+        </table><br><br> 
+         <nav aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
+        </nav>
+</div><br>
+       
     <deleteModal :infos= 'identifiant' v-show="showModal" @close-modal="showModal = false"/>
 
     
@@ -57,6 +66,8 @@ export default {
 
     data () {
         return {
+            links: [],
+            res_data: null,
             showModal: false,
             achat: "",
             identifiant : "0",
@@ -65,15 +76,18 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/achat')        
-        .then(response => {console.log(response);
-            this.achats = response.data.data })        
+         this.$axios.get('/get/buys')        
+        .then(response => {console.log(response.data.data);
+            this.achats = response.data.data.data
+            this.res_data= response.data.data 
+            let firstE = response.data.data.links.shift()
+            let lastE = response.data.data.links.splice(-1,1);})        
     },
 
     methods: {
         restaurerAchat(id){
             console.log(id);
-            this.$axios.get('/restore/achat/' +id)         
+            this.$axios.get('/restore/buy/' +id)         
             .then(response => {console.log(response);
                 this.achat = response.data.data
                 this.$router.push({path:'/achats/list_achat',})
@@ -81,12 +95,9 @@ export default {
         },
 
          supAchat(id){
-            console.log(id);
-            this.$axios.delete('/destroy/achat/' +id)      
-            .then(response => {console.log(response);
-                    this.achat = response.data.data
-                    
-                })                
+           console.log(id); 
+            this.showModal = true;
+            this.identifiant= id;         
         },
     },
   
@@ -96,18 +107,16 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
-.fa{
-  margin: 0 5px;
-  font-size: 22px;
-  cursor: pointer;
+.action{
+    display: flex;
+    margin: 0 15%;
 }
 .table{
-	margin-top: 5%;
-
-}      
-
+  margin-top: 5%;
+  text-align: center;
+}  
 
 thead tr{
     background-color: transparent;
@@ -115,7 +124,7 @@ thead tr{
 
 
 tbody tr:last-of-type{
-    border-bottom: 2px solid rgb(140, 140, 250);
+    border-bottom: 2px solid rgb(241, 20, 20);
 }
 .action{
    display: flex;

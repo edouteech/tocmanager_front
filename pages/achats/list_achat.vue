@@ -21,22 +21,28 @@
               <td>{{achat.date_buy}}</td>
               <td>{{achat.supplier.name}}</td>
               <td>{{achat.amount}}</td>
-              <td class="action">
-                <div  @click="voirAchat(achat.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+              <td><div class="action">
+                <NuxtLink :to="'/achats/voir/'+achat.id"><i class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
                 <NuxtLink :to="'/achats/'+achat.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteAchat(achat.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
-  </div><br><br><br>
+   </div><br>
+    <nav aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+          </ul>
+        </nav>
+            <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirAchat :date= 'identifiant1' :fournisseur= 'identifiant2' :montant= 'identifiant3' :facture='identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
 
 <script>
-import voirAchat from './voir_achat.vue'
 import Sidebar from '../sidebar.vue'
 export default {
   layout: "empty",
@@ -46,6 +52,8 @@ export default {
   },
    data () {
       return {
+        links: [],
+        res_data: null,
         showModal: false,
         identifiant1 : "",
         identifiant2 : "",
@@ -57,17 +65,25 @@ export default {
     },
     methods: {
         deleteAchat(id){
-          this.$axios.delete('/delete/achat/' +id).then(response =>{console.log(response.data.data);
+          this.$axios.delete('/buys/' +id).then(response =>{console.log(response.data.data);
             this.refresh()})                
         },
         
-        refresh(){
-          this.$axios.get('/index/achat').then(response => {console.log(response);
-          this.achats = response.data.data.data})  
+        refresh(page=1){
+          this.$axios.get('/buys',{params: {
+            page: page}
+          }).then(response => 
+          {
+            console.log(response);
+            this.achats = response.data.data.data
+            this.res_data= response.data.data
+            let firstE = response.data.data.links.shift()
+            let lastE = response.data.data.links.splice(-1,1);
+          })  
         },
 
         recupFournisseur(){
-          this.$axios.get('/index/client',{params: {
+          this.$axios.get('/suppliers',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response => {console.log(response.data.data.data);
@@ -76,7 +92,7 @@ export default {
         
         voirAchat(id){
             this.showModal = true;
-            this.$axios.get('/index/achat/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/buys/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].date_buy
              this.identifiant2 = response.data.data[0].supplier_id
              this.identifiant3 = response.data.data[0].amount
@@ -97,6 +113,7 @@ export default {
 
 .contenu{
   margin: 5%;
+  overflow: auto;
 
 }
 .fa{
@@ -104,11 +121,12 @@ export default {
   font-size: 22px;
   cursor: pointer;
 }
+
 .table{
 	margin-top: 5%;
-
+  text-align: center;
+   
 }      
-
 
 thead tr{
     background-color: transparent;
@@ -208,5 +226,12 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 }
 .btn-3 span:hover:after {
   width: 100%;
+}
+
+
+@media screen and (max-width: 400px) {
+  .action{
+    padding: 20px 0;
+  }
 }
 </style>

@@ -24,18 +24,25 @@
                 <td>{{fournisseur.phone}}</td>
                 <td>{{fournisseur.email}}</td>
                 <td>{{fournisseur.nature}}</td>
-                <td class="action">
+                <td><div class="action">
                   <div @click="voirFournisseur(fournisseur.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/fournisseurs/'+fournisseur.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                   <div @click="deleteFournisseur(fournisseur.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  </div>
                 </td>
               </tr>
             </tbody>
-
         </table>
-    
-    </div><br><br><br>
-
+        <br><br>
+        <nav aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
+        </nav>
+ </div><br> 
 <voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
@@ -54,6 +61,8 @@ export default {
 
   data () {
     return {
+      links: [],
+      res_data: null,
       showModal: false,
       identifiant1 : "",
       identifiant2 : "",
@@ -72,25 +81,30 @@ export default {
     
        deleteFournisseur(id){
           console.log(id);
-          this.$axios.delete('/delete/fournisseur/' +id)
+          this.$axios.delete('/suppliers/' +id)
           .then(response => {console.log(response.data.data);
             this.refresh()})                 
         },
          
-        refresh(){
-          this.$axios.get('/index/fournisseur',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+        refresh(page=1){
+          this.$axios.get('/suppliers',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            page: page
           }
           })
           .then(response => 
-        
-            {console.log(response);
-            this.fournisseurs = response.data.data.data})
+            {
+              console.log(response);
+              this.fournisseurs = response.data.data.data
+              this.res_data= response.data.data
+              let firstE = response.data.data.links.shift()
+              let lastE = response.data.data.links.splice(-1,1);
+            })
         },
 
         voirFournisseur(id){
             this.showModal = true;
-            this.$axios.get('/index/fournisseur/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/suppliers/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email
@@ -106,7 +120,7 @@ export default {
 <style scoped>
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 .fa{
   margin: 0 5px;
@@ -115,8 +129,8 @@ export default {
 }
 .table{
 	margin-top: 5%;
-
-}      
+  text-align: center;
+}        
 
 
 thead tr{

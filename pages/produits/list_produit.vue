@@ -32,17 +32,25 @@
                 <td>{{produit.stock_min}}</td>
                 <td>{{produit.stock_max}}</td>
                 <td>{{produit.quantity * produit.price_sell}}</td>
-                <td class="action">
+                <td><div class="action">
                   <div @click="voirProduit(produit.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/produits/'+produit.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                   <div @click="deleteProduit(produit.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  </div>
                 </td>
               </tr>
             </tbody>
-
         </table>
-    
-    </div><br><br><br>
+   </div><br>
+        <nav aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
+        </nav>
+            <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
@@ -61,6 +69,8 @@ export default {
 
   data () {
     return {
+      links: [],
+      res_data: null,
       showModal: false,
       identifiant1 : "",
       identifiant2 : "",
@@ -82,7 +92,7 @@ export default {
   methods: {
         deleteProduit(id){
           console.log(id);
-          this.$axios.delete('/delete/product/' +id)
+          this.$axios.delete('/products/' +id)
           .then(response => 
             {
               console.log(response.data.data);
@@ -91,21 +101,25 @@ export default {
           )         
         },
 
-        refresh(){
-          this.$axios.get('/index/product',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+        refresh(page=1){
+          this.$axios.get('/products',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            page: page
           }
           })
           .then(response => 
             {
               console.log(response.data.data.data);
               this.produits = response.data.data.data
+              this.res_data= response.data.data
+              let firstE = response.data.data.links.shift()
+              let lastE = response.data.data.links.splice(-1,1);
             }
           )
         },
         voirProduit(id){
             this.showModal = true;
-            this.$axios.get('/index/product/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('products/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].category_id
              this.identifiant2 = response.data.data[0].name
              this.identifiant3 = response.data.data[0].quantity
@@ -123,11 +137,9 @@ export default {
 </script>
 
 <style scoped>
-
-
 .contenu{
   margin: 5%;
-
+  overflow: auto;
 }
 .fa{
   margin: 0 5px;
@@ -136,8 +148,8 @@ export default {
 }
 .table{
 	margin-top: 5%;
-
-}      
+  text-align: center;
+}          
 
 
 thead tr{
