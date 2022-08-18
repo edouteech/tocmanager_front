@@ -66,8 +66,25 @@
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
             .then(response =>{console.log(response.data.data) 
-             this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })})
-        },
+             this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })
+             console.log( response ) 
+                this.error = response.data.message
+                console.log(this.error)
+
+                this.errors = response.data.data
+                if(response.data.status == "success"){
+                    document.getElementById("name_cli").value='';
+                    document.getElementById("phone_cli").value='';
+                    document.getElementById("email_cli").value='';
+                    document.getElementById("nature_cli").value='';
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/categorie/add_client'});
+                }
+             }).catch( err => console.log( err ) )
+            
+            },
 
     }
 }

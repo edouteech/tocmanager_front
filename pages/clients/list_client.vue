@@ -13,6 +13,7 @@
                   <th>Noms</th>
                   <th>Numéros de téléphone</th>
                   <th>Emails</th>
+                  <th>Balance </th>
                   <th>Nature</th>
                   <th>Actions</th>
             </tr>
@@ -22,6 +23,7 @@
               <td>{{client.name}}</td>
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
+              <td>{{client.balance}}</td>
               <td>{{client.nature}}</td>
               <td><div class="action">
                 <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
@@ -43,7 +45,7 @@
     </nav>
     <br> 
   </div>
-<voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+<voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance="identifiant5" :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
@@ -66,6 +68,7 @@ export default {
         identifiant2 : "",
         identifiant3 : "",
         identifiant4 : "",
+        identifiant5 : "",
         compagnie_id: '',
         clients: [],
         client: "",
@@ -106,7 +109,8 @@ export default {
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email
-             this.identifiant4 = response.data.data[0].nature      
+             this.identifiant4 = response.data.data[0].nature  
+             this.identifiant5 = response.data.data[0].balance     
              }) 
                
         },

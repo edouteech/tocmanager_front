@@ -83,14 +83,14 @@ export default {
 
     methods: {
         submit(){          
-            this.$axios.put('/decaissements', {
+            this.$axios.put('/decaissements/' +this.$route.params.id, {
             id: this.$route.params.id,
             montant: this.form.montant,
             date: this.form.date,
             facture: this.form.facture,
             supplier_id: this.form.supplier_id,
             user_id: this.$auth.user.id,
-        //    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+           compagnie_id: this.$auth.$storage.getUniversal('company_id')
 
             })
             .then(response =>{console.log(response.data.data);

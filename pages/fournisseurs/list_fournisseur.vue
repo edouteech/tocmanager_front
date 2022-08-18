@@ -13,6 +13,7 @@
                     <th>Noms</th>
                     <th>Numéros de téléphone</th>
                     <th>Emails</th>
+                    <th>Balance</th>
                     <th>Nature</th>
                     <th>Actions</th>
               </tr>
@@ -23,6 +24,7 @@
                 <td>{{fournisseur.name}}</td>
                 <td>{{fournisseur.phone}}</td>
                 <td>{{fournisseur.email}}</td>
+                <td>{{fournisseur.balance}}</td>
                 <td>{{fournisseur.nature}}</td>
                 <td><div class="action">
                   <div @click="voirFournisseur(fournisseur.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
@@ -43,7 +45,7 @@
           </ul>
         </nav>
  </div><br> 
-<voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+<voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance= 'identifiant5' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
@@ -68,6 +70,7 @@ export default {
       identifiant2 : "",
       identifiant3 : "",
       identifiant4 : "",
+      identifiant5 : "",
       fournisseurs: [],
       fournisseur: "",
       compagnie_id: ''
@@ -108,7 +111,8 @@ export default {
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email
-             this.identifiant4 = response.data.data[0].nature      
+             this.identifiant4 = response.data.data[0].nature
+             this.identifiant5 = response.data.data[0].balance      
              }) 
                
         },

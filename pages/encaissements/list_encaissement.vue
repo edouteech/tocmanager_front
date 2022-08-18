@@ -21,7 +21,7 @@
             <tr  v-for="(encaissement, i) in encaissements" :key="i">
               <td>{{encaissement.date}}</td>
               <td>{{encaissement.montant}}</td>
-              <td>{{encaissement.client_id}}</td>
+              <td>{{encaissement.client.name}}</td>
               <td><div class="action">
                 <div @click="voirEncaissement(encaissement.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/encaissements/'+encaissement.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
@@ -104,7 +104,7 @@ export default {
             this.$axios.get('/encaissements/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].montant
              this.identifiant2 = response.data.data[0].date
-             this.identifiant3 = response.data.data[0].client_id  
+             this.identifiant3 = response.data.data[0].client.name 
              }) 
                
         },

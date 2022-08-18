@@ -66,7 +66,7 @@ export default {
 
     methods: {
         submit(){          
-            this.$axios.put('/categories', {
+            this.$axios.put('/categories/' +this.$route.params.id,{
                 id: this.$route.params.id,            
                 name: this.form.name, 
                 parent_id: this.form.parent_id,

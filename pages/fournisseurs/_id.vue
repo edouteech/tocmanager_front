@@ -79,7 +79,7 @@ export default {
 
     methods: {
         submit(){          
-                this.$axios.put('/suppliers', {
+                this.$axios.put('/suppliers/' +this.$route.params.id,{
                 id: this.$route.params.id,
                 name: this.form.name,
                 email: this.form.email,

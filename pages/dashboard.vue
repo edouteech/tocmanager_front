@@ -1,14 +1,18 @@
 <template>
 <div>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Tableau De Bord </h3>
     </nav>
+
     <div class="contenu">
+
           <form action="action" method="POST">
             <div class="range">
-              <input class="form-control" type="datetime-local"  v-model="form.date_debut"  required />  
-              <input  class="form-control" type="datetime-local"  v-model="form.date_fin"  required />  
+              <input class="form-control" type="date"  v-model="form.date_debut"  required />  
+              <input  class="form-control" type="date"  v-model="form.date_fin"  required />  
               <div class="visualiser" @click="Visualiser()"><i class="fa fa-eye" aria-hidden="true"></i></div>    
             </div>  
           </form>
@@ -103,7 +107,7 @@
                       <tr>
                         <td>{{dernieres_ventes1.client_id}}</td>
                         <td>{{dernieres_ventes1.amount}}</td>
-                        <td>{{moment(dernieres_ventes1.date_sell).utc().format('DD MM YYYY')}}</td>
+                        <td>{{dernieres_ventes1.date_sell}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -136,6 +140,22 @@ import Sidebar from './sidebar.vue';
 import Chart from 'chart.js/auto';
 import moment from "moment";
 export default {
+    head() {
+      return {
+        script: [
+          {
+            src: "https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+          },
+          {
+            src: "https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+          },
+          {
+            src: "https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+          }
+        ],
+
+      }
+    },
     layout: "empty",
     auth:true,
     components:{
@@ -153,21 +173,19 @@ export default {
       encaissement: '',
       decaissement: '',
       form:{
-        date_debut: '',
-        date_fin: ''
+        date_debut: moment().format("yyyy-MM-D"),
+        date_fin: moment().format("yyyy-MM-D")
       }
     }
       
   },
 
     middleware:'auth',
- mounted(){      
-        var d = new Date();
-        var date = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();  
+    mounted(){      
         this.$axios.post('/tableau/de/bord',{
-              date_debut: date,
-              date_fin: date
-        }).then(response => {console.log(response.data.data);
+              date_debut: this.form.date_debut,
+              date_fin: this.form.date_fin
+        }).then(response => {console.log(response.data);
            this.volume_vente  = response.data.data[0][0].volume_vente
            this.chiffre_affaire = response.data.data[1][0].chiffre_d_affaire
            this.encaissement = response.data.data[2][0].encaissement
@@ -175,89 +193,78 @@ export default {
            this.produits_vendus = response.data.data[4]
            this.dernieres_ventes  = response.data.data[5]
           
-          // console.log(moment(this.infos).utc().format('MMMM Do YYYY, h:mm:ss a'));
-          // console.log('------------------new-----------------+');
-          // var info = dat.getFullYear()+'-'+(dat.getMonth()+1)+'-'+dat.getDate();
-          // console.log(info);
+          var VV = this.volume_vente
+          var dd = 'Intervalle de dates'
+          const ctx = document.getElementById('myChart');
+          const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [dd],
+                datasets: [{
+                    label: '# ventes',
+                    data: [VV],
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor:'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+          });
+          myChart;
 
-      
-        // var today = new Date();
-        // console.log(today.toString());
-        // console.log('------------------new-----------------+');
-        
+          var d1 = this.dernieres_ventes[0].date_sell
+          const ctz = document.getElementById('myChartVente');
+          const myChartVente = new Chart(ctz, {
+            type: 'line',
+            data: {
+                labels: ['success', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# ventes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor:'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+          });
+          myChartAchat;
 
-
-        var VV = this.volume_vente
-        var dd = 'Intervalle de dates'
-        const ctx = document.getElementById('myChart');
-        const myChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: [dd],
-              datasets: [{
-                  label: '# ventes',
-                  data: [VV],
-                  backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                  borderColor:'rgba(153, 102, 255, 1)',
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              scales: {
-                  y: {
-                      beginAtZero: true
-                  }
-              }
-          }
-        });
-        myChart;
-        var d1 = this.dernieres_ventes[0].date_sell
-        const ctz = document.getElementById('myChartVente');
-        const myChartVente = new Chart(ctz, {
-          type: 'line',
-          data: {
-              labels: ['success', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-              datasets: [{
-                  label: '# ventes',
-                  data: [12, 19, 3, 5, 2, 3],
-                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                  borderColor:'rgba(255, 99, 132, 1)',
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              scales: {
-                  y: {
-                      beginAtZero: true
-                  }
-              }
-          }
-        });
-        myChartAchat;
-        const cty = document.getElementById('myChartAchat');
-        const myChartAchat = new Chart(cty, {
-          type: 'line',
-          data: {
-              labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-              datasets: [{
-                  label: '# achats',
-                  data: [12, 19, 3, 5, 2, 3],
-                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                  borderColor:'rgba(54, 162, 235, 1)',
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              scales: {
-                  y: {
-                      beginAtZero: true
-                  }
-              }
-          }
-        });  })
-        myChartAchat;
-
-
+          const cty = document.getElementById('myChartAchat');
+          const myChartAchat = new Chart(cty, {
+            type: 'line',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# achats',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor:'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+          });  
+          myChartAchat;
+        })
       // console.log(this.$auth);
       // console.log(this.$auth.$storage.getUniversal('company_id'));
     },
@@ -266,7 +273,19 @@ export default {
         moment: function () {
           return moment();
         },
-        
+        // picker(){
+        //   let recap = document.createElement('script') 
+        //   recap.setAttribute('src', 'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js') 
+        //   recap.setAttribute('src', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js') 
+        //   recap.setAttribute('src', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js')
+        //   document.head.appendChild(recap);
+        //     $('input[name="daterange"]').daterangepicker({
+        //     opens: 'left'
+        //   }, function(start, end, label) {
+        //     console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        //   });
+        // },
+
         async logout(){
             this.$auth.logout();
             this.$router.push('/login');

@@ -6,9 +6,9 @@
 
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
       {{error}} <br>
-      <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
-      <div class="error" v-if="errors['client_id'] != null">{{errors['client_id']}}</div>
-      <div class="error" v-if="errors['date_sell'] != null">{{errors['date_sell']}}</div>
+      <!-- <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div> -->
+      <!-- <div class="error" v-if="errors['client_id'] != null">{{errors['client_id']}}</div>
+      <div class="error" v-if="errors['date_sell'] != null">{{errors['date_sell']}}</div> -->
     </div>
   
     <div class="contenu">
@@ -35,6 +35,7 @@
             <div class="ajout-article" @click="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</div>
             
               <div class="btn-ajout" @click="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</div>
+             
             <div class="commande">
                 <table class="table table-bordered">
                     <thead>
@@ -44,7 +45,6 @@
                             <th scope="col">Prix unitaire</th>
                             <th scope="col">Taux de réduction (%)</th>
                             <th scope="col">Taxe appliquée (%)</th>
-                            <th scope="col">Net à payer</th>
                             <th scope="col">Total</th>                     
                         </tr>
                     </thead>
@@ -61,13 +61,16 @@
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td> 
-                            <td><input class="form-control" type="number" v-model="form.rest"  autocomplete="off"  required></td>                    
+                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                  
                             <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
-            </div>
+            </div><br>
+            <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="num" v-model="form.amount_received"  autocomplete="off"  required></div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
+                {{amount_error}} 
+            </div> 
             <div class="submit">
                 <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture" name="submit">		          
             </div>  
@@ -100,10 +103,9 @@ export default {
 
     data () {
         return{
+            amount_error: null,
             message: '',
             cli_id: '0',
-            // nom_prod: '',
-            // prod_id: '',
             showModal: false,
             showSaved: false,
             showProduit: false,
@@ -111,14 +113,14 @@ export default {
             client: "",
             produits: [],
             form:{
-                user_id: '',
-                date_sell: '',
-                client_id: '',
-                amount: '',
-                tax: '0',
-                discount: '0',
-                rest: '0',
-                sell_lines: []          
+                    user_id: '',
+                    date_sell: '',
+                    client_id: '',
+                    amount: '',
+                    tax: '0',
+                    discount: '0',
+                    amount_received: '',
+                    sell_lines: []          
                 },
             errors: [],
             error: null,
@@ -139,8 +141,7 @@ export default {
     
     methods: {
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
-            
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});           
         },
 
         setMessage(payload) {
@@ -163,25 +164,25 @@ export default {
               tax: this.form.tax,
               discount: this.form.discount,
               amount: this.form.amount,
-              rest: this.form.rest,
+              amount_received: this.form.amount_received,
               user_id: this.$auth.user.id,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines  
             }).then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
+                this.errors = response.data.data
                 console.log(this.error)
-
-                if(response.data.status == "success"){
-                   this.$router.push({path:'/ventes/SavedModal',})
-                }
-                else{
-                    this.errors = response.data.data
-                    // this.$router.push({path:'/clients/add_client'});
-                }
-            })
-            .catch( err => console.log( err ) )
-                //  console.log(this.form.name)                
+                    if(response.data.status == "success"){
+                        this.$router.push({path:'/ventes/SavedModal',})
+                    }
+                    else{
+                        this.errors = response.data.data
+                        // this.$router.push({path:'/clients/add_client'});
+                    }
+                
+            }).catch( err => console.log( err ) )
+                        //  console.log(this.form.name)                                        
         },
         
         refresh(){
@@ -228,9 +229,7 @@ export default {
                 }
                 this.form.amount = sum;
                 console.log(sum); 
-            }
-
-                
+            }    
         }
    
     },
@@ -239,6 +238,11 @@ export default {
 </script>
 
 <style scoped>
+.received {
+    border: none; outline: none;
+    border-bottom: 2px solid #605050;
+}
+
 .contenu{
   margin: 5%;
   overflow: auto;

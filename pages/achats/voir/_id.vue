@@ -11,29 +11,35 @@
             <tr class="table-primary">
               <th>Date de l'achat</th>
               <th>Fournisseur concerné </th>
-              <th>Montant </th>
+              <th>Montant de la facture</th>
+              <th>Montant restant à payer </th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>{{date_buy}}</td>
-              <td>{{supplier}}</td>
+              <td>{{supplier.name}}</td>
               <td>{{montant}}</td>
+              <td>{{rest}}</td>
             </tr>
           </tbody>
         </table>  <br><br> <hr>
-
-        <h4>Ajouter des décaissements pour cette facture</h4><br><br>
-              <form action="" method="POST">
-                  <div class="form-group col-md-6">					
-                    <input type="date" class="form-control" placeholder="Entrer la date de ce décaissement " v-model="form.date" autocomplete="off" id="date" required>       
-                  </div> <br>
-                  <div class="form-group col-md-6">        
-                    <input type="number" class="form-control" placeholder="Entrer le montant à décaisser " v-model="form.montant" id="montant" required>
-                  </div> <br><br>
-                      
-                  <button type="submit" class="btn btn-success" @click.prevent="submit()" @conf="AddEncaissement">Ajouter ...</button>          
-              </form>  <br><br><hr>
+        <div v-if="rest > 0">
+          <h4>Ajouter des décaissements pour cette facture</h4><br><br>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="error_rest != null">
+                  {{error_rest}} 
+                </div>
+                <form action="" method="POST">
+                    <div class="form-group col-md-6">					
+                      <input type="date" class="form-control" placeholder="Entrer la date de ce décaissement " v-model="form.date" autocomplete="off" id="date" required>       
+                    </div> <br>
+                    <div class="form-group col-md-6">        
+                      <input type="number" class="form-control" placeholder="Entrer le montant à décaisser " v-model="form.montant" id="montant" required>
+                    </div> <br><br>
+                        
+                    <button type="submit" class="btn btn-success" @click.prevent="submit()">Ajouter ...</button>          
+                </form>  <br><br><hr>
+        </div>
         <div>
           <h4>Liste des décaissements pour cette facture</h4>
           <table class="table table-hover">
@@ -75,12 +81,14 @@ export default {
 
     data () {
       return {
+        error_rest: null,
         res_data: null,
         date_decaissement: '',
         montant_decaissement: '',
         date_buy: '',
         montant: '',
         supplier: '',
+        rest: '',
         decaissements: [],
         form: {
             date: '',
@@ -95,8 +103,9 @@ export default {
     mounted(){
       this.$axios.get('/buys/'+ this.$route.params.id).then(response => {console.log(response.data.data);
         this.date_buy = response.data.data[0].date_buy,
-        this.supplier = response.data.data[0].supplier_id,
-        this.montant = response.data.data[0].amount
+        this.supplier = response.data.data[0].supplier,
+        this.montant = response.data.data[0].amount,
+        this.rest = response.data.data[0].rest
       }) 
       this.recupFacture()
     },
@@ -106,23 +115,39 @@ export default {
             await  this.$axios.post('/decaissements',{
               montant: this.form.montant,
               date: this.form.date,
-              supplier_id: this.supplier,
+              supplier_id: this.supplier.id,
               user_id: this.$auth.user.id,
               buy_id: this.$route.params.id,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
-                this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
+                // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
               document.getElementById("date").value='';
               document.getElementById("montant").value='';
+              if(this.form.montant > this.rest){
+               this.error_rest = "Le montant à encaisser ne doit pas etre supérieur à la somme due"
+              }
+              else{
+               if(response.data.status == "success"){
+                  this.recupFacture(),
+                  this.recupInfos()
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/clients/add_client'});
+                }
+              }
             }).catch( error => console.log( error ) )
                 //  console.log(this.form.name)                
         },
             
-        AddEncaissement(payload) {
-            this.recupFacture()
-            this.date_encaissement = payload.date_encaissement
-            this.montant_encaissement = payload.montant_encaissement
+        recupInfos(){
+          this.$axios.get('/buys/'+ this.$route.params.id).then(response => {console.log(response.data.data);
+            this.date_buy = response.data.data[0].date_buy,
+            this.supplier = response.data.data[0].supplier,
+            this.montant = response.data.data[0].amount,
+            this.rest = response.data.data[0].rest
+      }) 
         },
 
         recupFacture(page){
@@ -130,7 +155,7 @@ export default {
             {
                 params: {
                   page : page,
-                  sell_id: this.$route.params.id
+                  buy_id: this.$route.params.id
                 }
             }
           ).then(response => 

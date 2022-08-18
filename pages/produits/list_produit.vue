@@ -10,8 +10,9 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
-                    <th>Id de la catégorie</th>
+                    
                     <th>Nom</th>
+                    <th>Nom de la catégorie</th>
                     <th>Quantité</th>
                     <th>Prix de vente</th>
                     <th>Prix d'achat</th>
@@ -24,8 +25,8 @@
           
             <tbody>
               <tr  v-for="(produit, i) in produits" :key="i">
-                <td>{{produit.category.name}}</td>
                 <td>{{produit.name}}</td>
+                <td>{{produit.category.name}}</td>
                 <td>{{produit.quantity}}</td>
                 <td>{{produit.price_sell}}</td>
                 <td>{{produit.price_buy}}</td>
@@ -41,7 +42,7 @@
               </tr>
             </tbody>
         </table>
-   </div><br>
+   <br><br>
         <nav aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -50,7 +51,7 @@
             <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
           </ul>
         </nav>
-            <!-- <pre> {{res_data}}</pre> --><br><br> 
+  </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
@@ -120,7 +121,7 @@ export default {
         voirProduit(id){
             this.showModal = true;
             this.$axios.get('products/'+ id).then(response => {console.log(response.data.data[0]);
-             this.identifiant1 = response.data.data[0].category_id
+             this.identifiant1 = response.data.data[0].category.name
              this.identifiant2 = response.data.data[0].name
              this.identifiant3 = response.data.data[0].quantity
              this.identifiant4 = response.data.data[0].price_sell      

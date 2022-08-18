@@ -12,7 +12,8 @@
             <tr class="table-primary">
                   <th>Date facture</th>
                   <th>Fournisseur concerné</th>
-                  <th>Montant </th>
+                  <th>Montant de la facture</th>
+                  <th>Montant restant à payer </th>
                   <th>Actions</th>
             </tr>
           </thead>
@@ -21,6 +22,7 @@
               <td>{{achat.date_buy}}</td>
               <td>{{achat.supplier.name}}</td>
               <td>{{achat.amount}}</td>
+              <td>{{achat.rest}}</td>
               <td><div class="action">
                 <NuxtLink :to="'/achats/voir/'+achat.id"><i class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
                 <NuxtLink :to="'/achats/'+achat.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
@@ -30,13 +32,13 @@
             </tr>
           </tbody>
         </table>
-   </div><br>
+<br><br>
     <nav aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
           </ul>
         </nav>
-            <!-- <pre> {{res_data}}</pre> --><br><br> 
+    </div>           <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirAchat :date= 'identifiant1' :fournisseur= 'identifiant2' :montant= 'identifiant3' :facture='identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 

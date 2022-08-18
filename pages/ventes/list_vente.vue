@@ -12,7 +12,8 @@
             <tr class="table-primary">
               <th>Date facture</th>
               <th>Client concerné</th>
-              <th>Montant </th>
+              <th>Montant facture </th>
+              <th>Montant du</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -21,6 +22,7 @@
               <td>{{vente.date_sell}}</td>
               <td>{{vente.client.name}}</td>
               <td>{{vente.amount}}</td>
+              <td>{{vente.rest}}</td>
               <td><div class="action">
                 <NuxtLink :to="'/ventes/voir/'+vente.id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
                 <NuxtLink :to="'/ventes/'+vente.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>

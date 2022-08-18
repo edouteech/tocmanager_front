@@ -80,7 +80,7 @@ export default {
     methods: {
 
         submit(){          
-            this.$axios.put('/clients', {
+            this.$axios.put('/clients/' +this.$route.params.id,{
             id: this.$route.params.id,
             name: this.form.name,
             email: this.form.email,
