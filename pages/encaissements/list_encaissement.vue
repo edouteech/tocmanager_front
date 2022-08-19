@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import voirEncaissement from './voir_encaissement.vue'
 import Sidebar from '../sidebar.vue'
 export default {
@@ -103,7 +104,7 @@ export default {
             this.showModal = true;
             this.$axios.get('/encaissements/'+ id).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].montant
-             this.identifiant2 = response.data.data[0].date
+             this.identifiant2 = moment(response.data.data[0].date).format("YYYY-MM-D")
              this.identifiant3 = response.data.data[0].client.name 
              }) 
                

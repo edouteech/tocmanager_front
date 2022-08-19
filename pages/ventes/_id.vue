@@ -21,7 +21,7 @@
                     </div>                   
                 </div>
                 <div class="facture-date">
-                   <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
+                   <span class="creation"> Date de création :</span> <input class="form-control"  type="date"  v-model="form.date_sell"/>                  
                 </div>
             </div> <hr>
             
@@ -118,13 +118,13 @@ export default {
           .then(response => {console.log(response.data.data[0] )
             let vente = response.data.data[0];
             // this.categories = response.data.data
-            this.form.date_sell = vente.date_sell,
+            this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-D"),
             this.form.client_id = vente.client_id,
             this.form.sell_lines = vente.sell_lines,   
             this.form.tax = vente.tax,
             this.form.discount = vente.discount,
             this.form.amount = vente.amount
-            this.form.amount_received = vente.amount_received
+            // this.form.amount_received = vente.amount_received
           }        
         )          
     },

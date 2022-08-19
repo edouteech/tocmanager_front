@@ -20,7 +20,7 @@
             <!-- </div> -->
             <div class="form-group col-md-6">
                 <label class="title">Entrer la date du décaissement </label>
-                <input type="datetime-local" class="form-control" v-model="form.date" autocomplete="off" required placeholder="18-05-1989">
+                <input type="date" class="form-control" v-model="form.date" autocomplete="off" required placeholder="18-05-1989">
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group ">
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import Sidebar from '../sidebar.vue'
 export default {
     layout: "empty",
@@ -73,7 +74,7 @@ export default {
             let decaissement = response.data.data[0];
             // this.clients = response.data.data
             this.form.montant = decaissement.montant,
-            this.form.date = decaissement.date,
+            this.form.date =  moment(decaissement.date).format("YYYY-MM-D"),
             this.form.facture = decaissement.facture,
             this.form.supplier_id = decaissement.supplier_id
             
