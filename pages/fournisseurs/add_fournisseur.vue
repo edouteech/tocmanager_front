@@ -60,7 +60,7 @@ export default {
                 name: '',
                 email: '',
                 phone: '',
-                nature:'', 
+                nature: 0, 
                 compagnie_id: ''
             },
             errors: [],

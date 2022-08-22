@@ -1,32 +1,37 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>                     
+    <div class="modaler" @click.stop>  
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        {{error}} <br>
+        <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
+        <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
+        <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
+        <div class="error" v-if="errors['nature'] != null">{{errors['nature']}}</div>
+      </div>                    
             <form action="" method="POST"> 
                         <h4>Ajout rapide de client </h4>
 
                 <div class="input-form">					
-                    <input type="text" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" id="name_cli" required>
-                    <span class="error">{{error_champ.name}}</span>
+                    <input type="text" class="form-control" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" id="name_cli" required>
                 </div>     
                 <div class="input-form">        
-                    <input type="tel" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" id="phone_cli" required>
-                    <span class="error">{{error_champ.phone}}</span>
+                    <input type="tel" class="form-control" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" id="phone_cli" required>
                 </div>
             
                 <div class="input-form">    
-                    <input type="email" placeholder="Entrer l'email du client " v-model="form.email" autocomplete="off" id="email_cli" required>
-                    <span class="error">{{error_champ.email}}</span>
+                    <input type="email" class="form-control" placeholder="Entrer l'email du client " v-model="form.email" autocomplete="off" id="email_cli" required>
                 </div>
                 <div class="input-form"> 
-                   <select v-model="form.nature" id="nature_cli" required>
+                   <select v-model="form.nature" class="form-control"  required>
                         <option disabled value="">Choisissez la nature du client</option>
-                        <option value="0">Particulier</option>
+                        <option value="0" >Particulier</option>
                         <option value="1">Entreprise</option>
                     </select>
-                    <!-- <input type="number" placeholder="Entrer la nature du client " v-model="form.nature" autocomplete="off" required> -->
-                    <span class="error">{{error_champ.nature}}</span>
                 </div>
-                <div class="submit-form" @click="$emit('close-modal')">
+                <div v-if="error != null" class="submit-form" @click="$emit('close-modal')">
+                    <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
+                </div>
+                <div v-else class="submit-form">
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
                 </div>
             </form>
@@ -48,11 +53,11 @@
             name: '',
             email: '',
             phone: '',
-            nature:'', 
+            nature: 0, 
             compagnie_id: ''
         },
-        error_message: "",
-        error_champ: [],
+        errors: [],
+        error: null,
     }
     },
 
@@ -101,11 +106,6 @@ form {
     margin: 1.2em 0;
     height: 50px;
 }
-.error{               
-    color: red;
-    margin-bottom: -10%;
-    font-size: 12px;
-}
     
 input {
     padding: 8px;
@@ -149,19 +149,20 @@ input[type=submit]:hover{
   display: flex;
   justify-content: center;
   background-color: #949292da;
+  overflow: auto;
 }
 
 .modaler {
   text-align: center;
   background-color: white;
-  height: 600px;
+  height: 700px;
   width: 600px;
   margin-top: 5%;
   padding: 30px 0;
   border-radius: 20px;
 }
 .close {
-  margin: 5% 0 0 16px;
+  margin: 5% 0 0 0;
   cursor: pointer;
 }
 

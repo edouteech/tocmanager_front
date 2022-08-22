@@ -16,7 +16,7 @@
         <form action="" method="POST">
             <div class="cadre-haut">             
                 <div class="ajout-client">                                   
-                    <select v-model="form.client_id">
+                    <select class="form-control" v-model="form.client_id">
                         <option disabled value="">Choisir le client</option>
                         <!-- <option :value= cli_id>{{message}}</option> -->
                         <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
@@ -43,8 +43,8 @@
                             <th scope="col">Désignation</th>
                             <th scope="col">Quantité voulue</th>
                             <th scope="col">Prix unitaire</th>
-                            <th scope="col">Taux de réduction (%)</th>
-                            <th scope="col">Taxe appliquée (%)</th>
+                            <!-- <th scope="col">Taux de réduction (%)</th>
+                            <th scope="col">Taxe appliquée (%)</th> -->
                             <th scope="col">Total</th>                     
                         </tr>
                     </thead>
@@ -60,14 +60,14 @@
                             </td>
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                  
+                            <!-- <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
                             <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
                 </table>     
             </div><br>
-            <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="num" v-model="form.amount_received"  autocomplete="off"  required></div>
+            <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
             <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                 {{amount_error}} 
             </div> 
@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
 import produitModal from './produitModal.vue'
@@ -114,7 +115,7 @@ export default {
             produits: [],
             form:{
                     user_id: '',
-                    date_sell: '',
+                    date_sell: moment().format("yyyy-MM-D"),
                     client_id: '',
                     amount: '',
                     tax: '0',
@@ -249,7 +250,7 @@ export default {
 }
 
 .commande{
-    margin: 5% 10%;
+    margin: 5%;
 }
 
 .titrer{
@@ -413,5 +414,22 @@ tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
 }
 
+
+@media screen and (max-width: 900px) {
+    .cadre-haut{
+        display: inline;
+    }
+
+    .ajout-client{
+        margin-right: 0;
+        margin: 10px 5px;
+        border: 1px solid darkblue;
+        padding: 50px ;
+    }
+
+    .table{
+        overflow: auto;
+    }
+}
 </style>
 

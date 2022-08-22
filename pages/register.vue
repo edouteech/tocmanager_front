@@ -2,7 +2,13 @@
 <div class="contain ">
   <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
   <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-    {{error}}
+    {{error}} <br>
+      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
+      <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
+      <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
+      <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div>
+      <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
+      <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div>
   </div>
   <br><br>
 
@@ -32,10 +38,17 @@
 
             <!-- Password input -->
             <div class="form-outline mb-3">
-              <span class="fa fa-envelope px-2"></span><label class="form-label">Mot de passe</label>
+              <span class="fas fa-lock px-2"></span><label class="form-label">Mot de passe</label>
               <div class="input-field">
               <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
                 placeholder="Entrer un mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click.prevent="changer()"></i></span></div>   
+            </div>
+
+            <div class="form-outline mb-3">
+              <span class="fas fa-lock px-2"></span><label class="form-label">Confirmer le Mot de passe</label>
+              <div class="input-field">
+              <input type="password" id="password1" class="form-control form-control-lg" v-model="form.password_confirmation"
+                placeholder="Entrer un mot de passe"/><span><i class="fa fa-eye px-2" id="eyes" @click.prevent="change()"></i></span></div>   
             </div>
 
             <div class="form-outline mb-4">
@@ -71,11 +84,13 @@ export default {
   data() {
     return{
       user:'',
+      errors: [],
       error: null,
       form:{
         name: '',
         email: '',
         password: '',
+        password_confirmation: '',
         phone: '',
         country: '',
 
@@ -89,10 +104,12 @@ export default {
         name: this.form.name,
         email: this.form.email,
         password: this.form.password,
+        password_confirmation: this.form.password_confirmation,
         phone: this.form.phone,
         country: this.form.country
       }).then(response =>{console.log(response);
           this.error = response.data.message
+           this.errors = response.data.data
           console.log(this.error)
           this.user = response.data.data.original.user_id;
           this.$router.push({
@@ -116,6 +133,22 @@ export default {
           e = true;
         }
     },
+
+    change(){
+      var e = true
+        if (e){
+          document.getElementById("password1").setAttribute("type","text"); 
+          document.getElementById("eyes").class="fa fa-eye px-2";
+          e = false;
+        }
+
+        else{
+          document.getElementById("password1").setAttribute("type","password"); 
+          document.getElementById("eyes").class="fa fa-eye-slash px-2";
+          e = true;
+        }
+    },
+
 
   }
 }
