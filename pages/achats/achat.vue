@@ -16,7 +16,7 @@
         <form action="" method="POST">
             <div class="cadre-haut">             
                 <div class="ajout-client">                   
-                    <select v-model="form.supplier_id">
+                    <select class="form-control" v-model="form.supplier_id">
                         <option disabled value="">Choisir le fournisseur</option>
                         <!-- <option :value= four_id>{{message}}</option> -->
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
@@ -28,7 +28,7 @@
                     </div>                   
                 </div>
                 <div class="facture-date">
-                   <span class="creation"> Date de création :</span> <input  type="datetime-local" class="form-control"  v-model="form.date_buy"/>                  
+                   <span class="creation"> Date de création :</span> <input  type="date" class="form-control"  v-model="form.date_buy"/>                  
                 </div>
             </div> <hr>
             
@@ -42,8 +42,8 @@
                             <th>Désignation</th>
                             <th>Quantité voulue</th>
                             <th>Prix unitaire</th>
-                            <th>Taux de réduction (%)</th>
-                            <th>Taxe appliquée (%)</th>
+                            <!-- <th>Taux de réduction (%)</th>
+                            <th>Taxe appliquée (%)</th> -->
                             <th> Total</th>                     
                         </tr>
                     </thead>
@@ -57,8 +57,8 @@
                             </td>
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                    
+                            <!-- <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
+                            <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
                             <td><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required></td>
                         </tr>
                     </tbody>
@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
 import produitModal from './produitModal.vue'
@@ -111,7 +112,7 @@ export default {
             produits: [],
             form:{
                     user_id: '',
-                    date_buy: '',
+                    date_buy: moment().format("yyyy-MM-D"),
                     supplier_id: '',
                     amount: '',
                     tax: '0',
@@ -229,13 +230,18 @@ export default {
 </script>
 
 <style scoped>
+.received {
+    border: none; outline: none;
+    border-bottom: 2px solid #605050;
+}
+
 .contenu{
   margin: 5%;
   overflow: auto;
 }
 
 .commande{
-    margin: 5% 10%;
+    margin: 5% ;
 }
 
 .titrer{
@@ -388,14 +394,29 @@ input[type=submit]:hover{
     text-align: center;
 }      
 
-
 thead tr{
     background-color: transparent;
 }
 
-
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
+}
+
+@media screen and (max-width: 900px) {
+    .cadre-haut{
+        display: inline;
+    }
+
+    .ajout-client{
+        margin-right: 0;
+        margin: 10px 5px;
+        border: 1px solid darkblue;
+        padding: 50px ;
+    }
+
+    .table{
+        overflow: auto;
+    }
 }
 </style>
 

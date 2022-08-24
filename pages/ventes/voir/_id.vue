@@ -26,9 +26,10 @@
         </table>  <br><br> <hr>
           <div v-if="rest > 0">
           <h4>Ajouter des encaissements pour cette facture</h4><br><br>
+                <div  v-if="number == 0">
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="error_rest != null">
                   {{error_rest}} 
-                </div>
+                </div></div>
                 <form action="" method="POST">
                     <div class="form-group col-md-6">					
                       <input type="date" class="form-control" placeholder="Entrer la date de l'encaissement " v-model="form.date" autocomplete="off" id="date" required>       
@@ -89,6 +90,7 @@ export default {
         montant: '',
         client: '',
         rest: '',
+        number : 0,
         encaissements: [],
         form: {
             date: '',
@@ -114,35 +116,41 @@ export default {
 
         async submit(){
             if(this.form.montant > this.rest){
-                this.error_rest = "Le montant à encaisser ne doit pas etre supérieur à la somme due"
+                var that = this;
+                this.error_rest = "Le montant à encaisser ne doit pas etre supérieur à la somme due";
+                that.form.montant='';
               }
             else{
-            await  this.$axios.post('/encaissements',{
-              montant: this.form.montant,
-              date: this.form.date,
-              client_id: this.client.id,
-              user_id: this.$auth.user.id,
-              sell_id: this.$route.params.id,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }).then(response =>{ 
-                console.log( response ) 
-                // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
-            
-                if(response.data.status == "success"){
-                  this.recupFacture(),
-                  this.recupInfos()
-                }
-                else{
-                    this.errors = response.data.data
-                    // this.$router.push({path:'/clients/add_client'});
-                }
-              document.getElementById("date").value='';
-              document.getElementById("montant").value=''
+              await  this.$axios.post('/encaissements',{
+                montant: this.form.montant,
+                date: this.form.date,
+                client_id: this.client.id,
+                user_id: this.$auth.user.id,
+                sell_id: this.$route.params.id,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              }).then(response =>{ 
+                  console.log( response ) 
+                  // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
+
+                  if(response.data.status == "success"){
+                    var that = this;
+                    this.number = 1;
+                    that.form.montant='';
+                    that.form.date='';
+                    this.recupFacture(),
+                    this.recupInfos()
+                  
+                  }
+                  else{
+                      this.errors = response.data.data
+                      // this.$router.push({path:'/clients/add_client'});
+                  }
+                
              
-            })
-            .catch( err => console.log( err ) )
-                //  console.log(this.form.name)
-           }                
+              })
+              .catch( err => console.log( err ) )
+                  //  console.log(this.form.name)
+            }                
         },
 
         recupInfos(){

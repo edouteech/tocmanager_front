@@ -1,7 +1,9 @@
 <template>
 <div class="contain ">
   <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
-    
+  <!-- <div class="alert alert-success justify-content-center" role="alert">
+      {{this.params.errors}}
+  </div> -->
   <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
       {{error}}
   </div>
@@ -45,7 +47,9 @@
                 Se rappeler de moi
               </label>
             </div>
-            <a href="#!" class="link-primary">Mot de passe oublié ?</a>
+            <NuxtLink to="/password1"  class="link-primary px-2">               
+                Mot de passe oublié ?
+            </NuxtLink>
           </div>
 
           <div class="text-center text-lg-start mt-4 pt-2">

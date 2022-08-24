@@ -1,21 +1,28 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>                     
+    <div class="modaler" @click.stop>    
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
+      <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
+      <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
+      <div class="error" v-if="errors['nature'] != null">{{errors['nature']}}</div>
+    </div>                 
             <form action="" method="POST"> 
                         <h4>Ajout de fournisseur</h4>
 
                 <div class="input-form">					
-                    <input type="text" placeholder="Entrer le nom du fournisseur " v-model="form.name" autocomplete="off" id="name_four" required>
+                    <input type="text" class="form-control" placeholder="Entrer le nom du fournisseur " v-model="form.name" autocomplete="off" id="name_four" required>
                 </div>     
                 <div class="input-form">        
-                    <input type="tel" placeholder="Entrer le numero de téléphone du fournisseur " v-model="form.phone" id="phone_four" required>
+                    <input type="tel" class="form-control" placeholder="Entrer le numero de téléphone du fournisseur " v-model="form.phone" id="phone_four" required>
                 </div>
             
                 <div class="input-form">    
-                    <input type="email" placeholder="Entrer l'email du fournisseur " v-model="form.email" autocomplete="off" id="email_four" required>
+                    <input type="email" class="form-control" placeholder="Entrer l'email du fournisseur " v-model="form.email" autocomplete="off" id="email_four" required>
                 </div>
                 <div class="input-form"> 
-                   <select v-model="form.nature" id="nature_four" required>
+                   <select class="form-control" v-model="form.nature" id="nature_four" required>
                         <option disabled value="">Choisissez la nature du fournisseur</option>
                         <option value="0">Particulier</option>
                         <option value="1">Entreprise</option>
@@ -23,8 +30,11 @@
                     <!-- <input type="number" placeholder="Entrer la nature du fournisseur " v-model="form.nature" autocomplete="off" required> -->
                     
                 </div>
-                <div class="submit-form" @click="$emit('close-modal')">
-                    <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le fournisseur" name="submit">				          
+                <div v-if="error != null" class="submit-form" @click="$emit('close-modal')">
+                    <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
+                </div>
+                <div v-else class="submit-form">
+                    <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
                 </div>
             </form>
     </div>
@@ -43,7 +53,7 @@
             name: '',
             email: '',
             phone: '',
-            nature:'', 
+            nature: 0, 
             compagnie_id: ''
         },
         errors: [],
@@ -61,7 +71,7 @@
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
             .then(response =>{
-                this.$emit('conf', { message: this.form.name, four_id: response.data.data.id })
+              this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })
                 console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
@@ -95,12 +105,7 @@ form {
     margin: 1.2em 0;
     height: 50px;
 }
-.error{               
-    color: red;
-    margin-bottom: -10%;
-    font-size: 12px;
-}
-    
+  
 input {
     padding: 8px;
     border: none; outline: none;
@@ -143,19 +148,20 @@ input[type=submit]:hover{
   display: flex;
   justify-content: center;
   background-color: #949292da;
+  overflow: auto;
 }
 
 .modaler {
   text-align: center;
   background-color: white;
-  height: 600px;
+  height: 700px;
   width: 600px;
   margin-top: 5%;
   padding: 30px 0;
   border-radius: 20px;
 }
 .close {
-  margin: 5% 0 0 16px;
+  margin: 5% 0 0 0;
   cursor: pointer;
 }
 

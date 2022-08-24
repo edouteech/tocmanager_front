@@ -26,9 +26,10 @@
         </table>  <br><br> <hr>
         <div v-if="rest > 0">
           <h4>Ajouter des décaissements pour cette facture</h4><br><br>
+                <div  v-if="number == 0">
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="error_rest != null">
                   {{error_rest}} 
-                </div>
+                </div></div>
                 <form action="" method="POST">
                     <div class="form-group col-md-6">					
                       <input type="date" class="form-control" placeholder="Entrer la date de ce décaissement " v-model="form.date" autocomplete="off" id="date" required>       
@@ -89,6 +90,7 @@ export default {
         montant: '',
         supplier: '',
         rest: '',
+        number : 0,
         decaissements: [],
         form: {
             date: '',
@@ -112,6 +114,12 @@ export default {
 
     methods: {
         async submit(){
+          if(this.form.montant > this.rest){
+               this.error_rest = "Le montant à encaisser ne doit pas etre supérieur à la somme due"
+               var that = this;
+               that.form.montant='';
+              }
+          else{
             await  this.$axios.post('/decaissements',{
               montant: this.form.montant,
               date: this.form.date,
@@ -122,13 +130,12 @@ export default {
             }).then(response =>{ 
                 console.log( response ) 
                 // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
-              document.getElementById("date").value='';
-              document.getElementById("montant").value='';
-              if(this.form.montant > this.rest){
-               this.error_rest = "Le montant à encaisser ne doit pas etre supérieur à la somme due"
-              }
-              else{
+               
                if(response.data.status == "success"){
+                  var that = this;
+                  this.number = 1;
+                  that.form.montant='';
+                  that.form.date='';
                   this.recupFacture(),
                   this.recupInfos()
                 }
@@ -136,9 +143,9 @@ export default {
                     this.errors = response.data.data
                     // this.$router.push({path:'/clients/add_client'});
                 }
-              }
             }).catch( error => console.log( error ) )
-                //  console.log(this.form.name)                
+                //  console.log(this.form.name)     
+          }           
         },
             
         recupInfos(){
