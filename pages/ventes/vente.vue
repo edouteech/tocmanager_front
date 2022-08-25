@@ -28,7 +28,7 @@
                     </div>                   
                 </div>
                 <div class="facture-date">
-                   <span class="creation"> Date de création :</span> <input class="form-control"  type="date"  v-model="form.date_sell"/>                  
+                   <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
                 </div>
             </div> <hr>
             
@@ -115,7 +115,7 @@ export default {
             produits: [],
             form:{
                     user_id: '',
-                    date_sell: moment().format("yyyy-MM-D"),
+                    date_sell: moment().format("YYYY-MM-DThh:mm"),
                     client_id: '',
                     amount: '',
                     tax: '0',
