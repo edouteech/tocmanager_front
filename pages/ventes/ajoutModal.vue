@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>  
-      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="status == 'error'">
         {{error}} <br>
         <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
         <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
@@ -58,6 +58,7 @@
         },
         errors: [],
         error: null,
+        status: '',
     }
     },
 
@@ -75,18 +76,20 @@
              console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
-
+                this.status = response.data.status
+                console.log(this.error)
                 this.errors = response.data.data
-                if(response.data.status == "success"){
-                    document.getElementById("name_cli").value='';
-                    document.getElementById("phone_cli").value='';
-                    document.getElementById("email_cli").value='';
-                    document.getElementById("nature_cli").value='';
-                }
-                else{
-                    this.errors = response.data.data
-                    // this.$router.push({path:'/categorie/add_client'});
-                }
+                  if(this.status == 'success'){
+                      this.form.name = '',
+                      this.form.phone = '',
+                      this.form.email = '',
+                      this.status = response.data.status
+                  }
+                  else{
+                    this.status = response.data.status
+                      this.errors = response.data.data
+                      // this.$router.push({path:'/categorie/add_client'});
+                  }
              }).catch( err => console.log( err ) )
             
             },

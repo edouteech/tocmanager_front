@@ -89,7 +89,7 @@
                                     <div class="widget-subheading">Total des transactions</div>
                                 </div>
                                 <div class="widget-content-right">
-                                    <div class="widget-numbers text-white"><span>{{chiffre_affaire}} F cfa</span></div>
+                                    <div class="widget-numbers text-white"><span>{{chiffre_affaire}} F</span></div>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                     <div class="widget-subheading">Somme totale des encaissements</div>
                                 </div>
                                 <div class="widget-content-right">
-                                    <div class="widget-numbers text-white"><span>{{encaissement}} F cfa</span></div>
+                                    <div class="widget-numbers text-white"><span>{{encaissement}} F</span></div>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                                     <div class="widget-subheading">Somme totale des décaissements</div>
                                 </div>
                                 <div class="widget-content-right">
-                                    <div class="widget-numbers text-white"><span>{{decaissement}} F cfa</span></div>
+                                    <div class="widget-numbers text-white"><span>{{decaissement}} F</span></div>
                                 </div>
                             </div>
                         </div>
@@ -460,22 +460,22 @@ import Sidebar from './sidebar.vue';
 import moment from "moment";
 import Chart from 'chart.js/auto';
 export default {
-    head() {
-      return {
-        script: [
-          {
-            src: "https://demo.dashboardpack.com/architectui-html-free/assets/scripts/main.js"
-          },
-          {
-            src: "http://maps.google.com/maps/api/js?sensor=true"
-          },
-          {
-            src: "https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
-          }
-        ],
+    // head() {
+    //   return {
+    //     script: [
+    //       {
+    //         src: "https://demo.dashboardpack.com/architectui-html-free/assets/scripts/main.js"
+    //       },
+    //       {
+    //         src: "http://maps.google.com/maps/api/js?sensor=true"
+    //       },
+    //       {
+    //         src: "https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+    //       }
+    //     ],
 
-      }
-    },
+    //   }
+    // },
     layout: "empty",
     auth:true,
     components:{
@@ -530,7 +530,7 @@ export default {
         data: {
             labels: [dd],
             datasets: [{
-                label: '# ventes',
+                label: '# ventes effectuées',
                 data: [VV],
                 backgroundColor: 'rgba(153, 102, 255, 0.2)',
                 borderColor:'rgba(153, 102, 255, 1)',
@@ -694,7 +694,7 @@ export default {
                 data: {
                     labels: [dd],
                     datasets: [{
-                        label: '# ventes',
+                        label: '# ventes éffectuées',
                         data: [VV],
                         backgroundColor: 'rgba(153, 102, 255, 0.2)',
                         borderColor:'rgba(153, 102, 255, 1)',

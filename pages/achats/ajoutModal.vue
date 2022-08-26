@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>    
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="status == 'error'">
       {{error}} <br>
       <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
       <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
@@ -30,7 +30,7 @@
                     <!-- <input type="number" placeholder="Entrer la nature du fournisseur " v-model="form.nature" autocomplete="off" required> -->
                     
                 </div>
-                <div v-if="error != null" class="submit-form" @click="$emit('close-modal')">
+                <div v-if="error != null" class="submit-form" @click="$emit('close-modal')" >
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
                 </div>
                 <div v-else class="submit-form">
@@ -58,6 +58,7 @@
         },
         errors: [],
         error: null,
+        status: '',
     }
     },
     
@@ -74,19 +75,20 @@
               this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })
                 console.log( response ) 
                 this.error = response.data.message
+                this.status = response.data.status
                 console.log(this.error)
-
                 this.errors = response.data.data
-                if(response.data.status == "success"){
-                    document.getElementById("name_four").value='';
-                    document.getElementById("phone_four").value='';
-                    document.getElementById("email_four").value='';
-                    document.getElementById("nature_four").value='';
-                }
-                else{
-                    this.errors = response.data.data
-                    // this.$router.push({path:'/categorie/add_client'});
-                }
+                  if(this.status == 'success'){
+                      this.form.name = '',
+                      this.form.phone = '',
+                      this.form.email = '',
+                      this.status = response.data.status
+                  }
+                  else{
+                    this.status = response.data.status
+                      this.errors = response.data.data
+                      // this.$router.push({path:'/categorie/add_client'});
+                  }
              }).catch( err => console.log( err ) )
             
             },
