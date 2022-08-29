@@ -1,12 +1,13 @@
 <template>
 <div>
-    <div class="titre">
-      <Sidebar /> <p class="name"> Profils</p>
-    </div>
-    <div class="container">
-      <p>Liste des utilisateurs</p>
-      <NuxtLink class="custom-btn btn-10" to="/profils/add_profil">Inscrire un utilisateur</NuxtLink>
-      <table class="table table-striped">
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Utilisateurs </h3>
+    </nav>
+
+    <div class="contenu">
+      <h4>Liste des utilisateurs enregistrés</h4>
+      <NuxtLink  to="/profils/add_profil"><button class="custom-btn btn-3"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
+        <table class="table table-hover">
           <thead>
             <tr class="table-primary">
                   <th>Noms</th>
@@ -23,31 +24,52 @@
               <td>{{profil.phone}}</td>
               <td>{{profil.email}}</td>
               <td>{{profil.country}}</td>
-              <td class="action">
-                <NuxtLink :to="'/edit_profil/'+profil.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteProfil(profil.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              <td><div class="action">
+                    <div @click="voirProfil(profil.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    <!-- <NuxtLink :to="'/profils/'+profil.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink> -->
+                    <div @click="deleteProfil(profil.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  </div>
               </td>
             </tr>
           </tbody>
-      </table>
+      </table><br><br>
+        <nav aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
+        </nav>
     </div><br><br><br>
 
+<voirProfil :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :pays= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
 
 <script>
+import voirProfil from './voir_profil.vue'
 import Sidebar from '../sidebar.vue'
 export default {
     layout: "empty",
+    auth: true,
     components: {
       Sidebar,  
+      voirProfil
     },
 
     data () {
         return {
+          links: [],
+          res_data: null,
+          showModal: false,
           profils: [],
           profil: "",
+          identifiant1 : "",
+          identifiant2 : "",
+          identifiant3 : "",
+          identifiant4 : "",
         }
       },
 
@@ -58,23 +80,48 @@ export default {
 
         deleteProfil(id){
           console.log(id);
-          this.$axios.delete('/delete/profil/' +id)         
+          this.$axios.delete('/users/' +id)         
           .then(response => {console.log(response.data.data);
             this.refresh()})                            
         },
         
-        refresh(){
-          this.$axios.get('/index/profil')
+        refresh(page=1){
+          this.$axios.get('/users',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            page: page
+          }
+          })
           .then(response => 
-            {console.log(response);
+            {
+              console.log(response.data.data.data);
               this.profils = response.data.data.data
-            })         
-        }
+              this.res_data= response.data.data
+              let firstE = response.data.data.links.shift()
+              let lastE = response.data.data.links.splice(-1,1);
+            }
+          )
+        },
+
+        voirProfil(id){
+            this.showModal = true;
+            this.$axios.get('users/'+ id).then(response => {console.log(response.data.data[0]);
+             this.identifiant1 = response.data.data[0].name
+             this.identifiant2 = response.data.data[0].phone
+             this.identifiant3 = response.data.data[0].email
+             this.identifiant4 = response.data.data[0].country      
+    
+            }) 
+               
+        },
     },
 }
 </script>
 
 <style scoped>
+.contenu{
+  margin: 5%;
+  overflow: auto;
+}
 .fa{
   margin: 0 5px;
   font-size: 22px;
@@ -82,9 +129,27 @@ export default {
 }
 .table{
 	margin-top: 5%;
+  text-align: center;
+}          
 
-}      
+.replace{
+  display: flex;
+}
 
+.replace img{
+  width: 20%;
+  cursor: pointer;
+}
+
+.controler{
+  width: 15%;
+}
+.replace input{
+  margin-left: 10%;
+}
+/* .replace_button{
+  width: 20%;
+} */
 
 thead tr{
     background-color: transparent;
@@ -98,73 +163,92 @@ tbody tr:last-of-type{
    display: flex;
 }
 
-.titre{
-  display: flex;
-  border: 1px solid #202020;
-  padding: 2% 10%;
-  margin-bottom: 3%;
-  margin-left: -5%;
-  background-color: #202020;
-  color: #fff;
-  letter-spacing: 2px;
-}
-
-
-.titre .name{
-  margin-left: 15%;
-  font-size: 24px;
-}
-
-
 .custom-btn {
-    color: #fff;
-    border-radius: 5px;
-    padding: 10px 25px;
-    font-family: 'Lato', sans-serif;
-    font-weight: 500;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    display: inline-block;
-     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-     7px 7px 20px 0px rgba(0,0,0,.1),
-     4px 4px 5px 0px rgba(0,0,0,.1);
-    outline: none;
-  }
-
-  
-.btn-10 {
-  background: rgb(35, 240, 82);
-  background: linear-gradient(0deg, rgb(53, 246, 56) 0%, rgb(28, 243, 107) 100%);
+  width: 180px;
+  height: 40px;
   color: #fff;
-  border: none;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
   transition: all 0.3s ease;
-  overflow: hidden;
-  margin-left: 80%;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
 }
-.btn-10:after {
-  position: absolute;
-  content: " ";
-  top: 0;
-  left: 0;
-  z-index: -1;
+.btn-3 {
+  background: rgb(0,172,238);
+background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+  width: 180px;
+  height: 40px;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  
+}
+.btn-3 span {
+  position: relative;
+  display: block;
   width: 100%;
   height: 100%;
+}
+.btn-3:before,
+.btn-3:after {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 0;
+   background: rgba(2,126,251,1);
   transition: all 0.3s ease;
-  -webkit-transform: scale(.1);
-  transform: scale(.1);
 }
-.btn-10:hover {
-  color: #fff;
-  border: none;
-  background: transparent;
+.btn-3:before {
+  height: 0%;
+  width: 2px;
 }
-.btn-10:hover:after {
-  background: rgb(50, 242, 73);
-background: linear-gradient(0deg, rgb(92, 228, 42) 0%,  rgb(100, 243, 56)100%);
-  -webkit-transform: scale(1);
-  transform: scale(1);
+.btn-3:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-3:hover{
+   background: transparent;
+  box-shadow: none;
+}
+.btn-3:hover:before {
+  height: 100%;
+}
+.btn-3:hover:after {
+  width: 100%;
+}
+.btn-3 span:hover{
+   color: rgba(2,126,251,1);
+}
+.btn-3 span:before,
+.btn-3 span:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+   background: rgba(2,126,251,1);
+  transition: all 0.3s ease;
+}
+.btn-3 span:before {
+  width: 2px;
+  height: 0%;
+}
+.btn-3 span:after {
+  width: 0%;
+  height: 2px;
+}
+.btn-3 span:hover:before {
+  height: 100%;
+}
+.btn-3 span:hover:after {
+  width: 100%;
 }
 
 </style>

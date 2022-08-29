@@ -2,43 +2,53 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>                     
                 <br><br>
-            <h4 class="titre">Informations du décaissement</h4><br><br><br>
+            <h4 class="titre">Informations de l'utilisateur</h4><br><br><br>
               <table class="table table-hover">
                 <thead>
                   <tr class="table-success">
                         <th>A savoir</th>
-                        <th>Décaissement</th>
+                        <th>Utilisateur</th>
                         
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Date du décaissement </td>
-                    <td>{{date}}</td>
+                    <td>Nom de l'utilisateur</td>
+                    <td>{{nom}}</td>
                   </tr>
                   <tr>
-                    <td>Montant</td>
-                    <td>{{montant}}</td>
+                    <td>Numéro de téléphone</td>
+                    <td>{{phone}}</td>
                   </tr>
                   <tr>
-                    <td>Fournisseur concerné</td>
-                    <td>{{supplier_id}}</td>
+                    <td>Email de l'utilsaateur</td>
+                    <td>{{email}}</td>
                   </tr>
-                  
+                  <tr>
+                    <td>Pays de l'utilisateur</td>
+                    <td>{{pays}}</td>
+                  </tr>
                   
                 </tbody>
               </table>
                 <!-- <div class="input-form">					
-                   <span class="mode">Date du décaissement : </span> <span class="resp">{{date}}</span>
-                     
+                   <span class="mode">Nom du client : </span> <span class="resp">{{nom}}</span>
                 </div>     <br>
                 <div class="input-form">        
-                   <span class="mode">Montant : </span><span class="resp"> {{montant}}</span>
+                   <span class="mode">Numéro de téléphone : </span><span class="resp"> {{phone}}</span>
                 </div><br>
             
                 <div class="input-form">    
-                    <span class="mode">Fournisseur concerné: </span><span class="resp">{{supplier_id}}</span>
-                </div><br> -->
+                    <span class="mode">Email du client : </span><span class="resp">{{email}}</span>
+                </div><br>
+
+                <div class="input-form">    
+                    <span class="mode">Balance du client : </span><span class="resp">{{balance}}</span>
+                </div><br>
+
+                <div class="input-form"> 
+                   <span class="mode">Nature du client : </span> <span class="resp">{{nature}}</span>
+                </div> -->
 
     </div>
     <div class="close" @click="$emit('close-modal')">
@@ -50,8 +60,13 @@
 <script>
   export default {
     auth:true,
-    props: ['montant', 'date', 'supplier_id'],
-    name: 'voirDecaissement',
+    props: ['nom', 'phone', 'email', 'pays'],
+    name: 'voirProfil',
+    data () {
+    return{
+        client: '',
+    }
+    },
 }
 
 </script>
@@ -75,8 +90,8 @@
   height: 600px;
   width: 600px;
   margin-top: 5%;
-  border-radius: 20px;
   padding: 1%;
+  border-radius: 20px;
 }
 .close {
   margin: 5% 0 0 16px;
@@ -87,7 +102,6 @@
   width: 25px;
 }
 
-
 .titre{
   border: 1px solid black;
   background-color: black;
@@ -97,13 +111,12 @@
 }
 
 tbody tr:nth-child(even){
-	background-color: rgb(243, 245, 228);
+	background-color: rgb(249, 247, 236);
 }
 
 tbody tr:last-of-type{
 	border-bottom: 2px solid rgb(92, 237, 8);
 }
-
 
 .input-form .mode{
     font-size: 16px;

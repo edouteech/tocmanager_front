@@ -13,11 +13,12 @@
                     
                     <th>Nom</th>
                     <th>Nom de la catégorie</th>
-                    <th>Quantité</th>
+                    <th>Quantité en stock</th>
+                    <th>Quantité réelle</th>
                     <th>Prix de vente</th>
                     <th>Prix d'achat</th>
-                    <th>Stock minimal</th>
-                    <th>Stock maximal</th>
+                    <!-- <th>Stock minimal</th>
+                    <th>Stock maximal</th> -->
                     <th>Valorisation du produit</th>
                     <th>Actions</th>
                 </tr>
@@ -29,10 +30,11 @@
                 <td>{{produit.name}}</td>
                 <td>{{produit.category.name}}</td>
                 <td>{{produit.quantity}}</td>
+                <td class="controler"><div class="replace"><input type="number" class="form-control w-75" placeholder="---" v-model="quantity0" autocomplete="off" required><img src="/images/ok.png" alt="logo" srcset="" @click="replaceQuantity(produit.id)"></div></td>
                 <td>{{produit.price_sell}}</td>
                 <td>{{produit.price_buy}}</td>
-                <td>{{produit.stock_min}}</td>
-                <td>{{produit.stock_max}}</td>
+                <!-- <td>{{produit.stock_min}}</td>
+                <td>{{produit.stock_max}}</td> -->
                 <td>{{produit.quantity * produit.price_sell}}</td>
                 <td><div class="action">
                   <div @click="voirProduit(produit.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
@@ -83,7 +85,15 @@ export default {
       identifiant7 : "",
       produits: [],
       produit: "",
-      compagnie_id: ""
+      compagnie_id: "",
+      category_id0:'',
+      name0: '',
+      quantity0: '',
+      price_sell0: '',      
+      price_buy0: '',
+      stock_min0: '',
+      stock_max0: ''
+
     }
   },
 
@@ -133,6 +143,38 @@ export default {
                
         },
 
+        replaceQuantity(id){   
+          this.$axios
+                .get('/products/'+id)
+                .then(response => 
+                {console.log(response.data.data[0] )
+                let produit = response.data.data[0];
+                // this.produits = response.data.data        
+                  this.category_id0 = produit.category_id;
+                  this.name0 = produit.name;
+                  this.quantity = produit.quantity;
+                  this.price_sell0 = produit.price_sell;
+                  this.price_buy0 = produit.price_buy;
+                  this.stock_min0 = produit.stock_min;
+                  this.stock_max0 = produit.stock_max
+                }
+                )     
+            this.$axios.put('products/' +id,{
+                id: this.produit.id,
+                category_id: this.category_id0 ,
+                name: this.name0,
+                quantity: this.quantity0,
+                price_sell: this.price_sell0,
+                price_buy: this.price_buy0,
+                stock_min: this.stock_min0,
+                stock_max: this.stock_max0,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }).then(response =>{console.log(response)
+            this.refresh()
+            this.quantity0 = ''
+            })                     
+        }
+
     },
    
 }
@@ -153,6 +195,24 @@ export default {
   text-align: center;
 }          
 
+.replace{
+  display: flex;
+}
+
+.replace img{
+  width: 20%;
+  cursor: pointer;
+}
+
+.controler{
+  width: 15%;
+}
+.replace input{
+  margin-left: 10%;
+}
+/* .replace_button{
+  width: 20%;
+} */
 
 thead tr{
     background-color: transparent;
