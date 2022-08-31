@@ -63,7 +63,11 @@ export default {
     },
     mounted() {
         this.$axios
-            .get('/suppliers/'+ this.$route.params.id)
+            .get('/suppliers/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
             .then(response => 
         {console.log(response.data.data )
         // this.fournisseurs = response.data.data

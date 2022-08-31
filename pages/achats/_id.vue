@@ -142,7 +142,8 @@ export default {
               amount_received: this.form.amount_received,
               user_id: this.$auth.user.id,
               fournisseur_id: this.form.fournisseur_id,  
-              buy_lines: this.form.buy_lines  
+              buy_lines: this.form.buy_lines,  
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message

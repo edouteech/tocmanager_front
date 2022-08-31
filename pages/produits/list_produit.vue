@@ -104,14 +104,18 @@ export default {
   methods: {
         deleteProduit(id){
           console.log(id);
-          this.$axios.delete('/products/' +id)
-          .then(response => 
+          this.$axios.delete('/products/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => 
             {
               console.log(response.data.data);
               this.refresh()
             }
           )         
         },
+          
 
         refresh(page=1){
           this.$axios.get('/products',{params: {
@@ -131,7 +135,11 @@ export default {
         },
         voirProduit(id){
             this.showModal = true;
-            this.$axios.get('products/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('products/'+ id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].category.name
              this.identifiant2 = response.data.data[0].name
              this.identifiant3 = response.data.data[0].quantity
@@ -144,35 +152,30 @@ export default {
         },
 
         replaceQuantity(id){   
-          this.$axios
-                .get('/products/'+id)
-                .then(response => 
-                {console.log(response.data.data[0] )
-                let produit = response.data.data[0];
-                // this.produits = response.data.data        
-                  this.category_id0 = produit.category_id;
-                  this.name0 = produit.name;
-                  this.quantity = produit.quantity;
-                  this.price_sell0 = produit.price_sell;
-                  this.price_buy0 = produit.price_buy;
-                  this.stock_min0 = produit.stock_min;
-                  this.stock_max0 = produit.stock_max
-                }
-                )     
+          this.$axios.get('/products/'+id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })               
+          .then(response => { console.log(response.data.data[0] )        
+            let produit = response.data.data[0];            
+              console.log(this.name0)             
             this.$axios.put('products/' +id,{
                 id: this.produit.id,
-                category_id: this.category_id0 ,
-                name: this.name0,
+                category_id: produit.category_id ,
+                name: produit.name,
                 quantity: this.quantity0,
-                price_sell: this.price_sell0,
-                price_buy: this.price_buy0,
-                stock_min: this.stock_min0,
-                stock_max: this.stock_max0,
+                price_sell: produit.price_sell,
+                price_buy: produit.price_buy,
+                stock_min: produit.stock_min,
+                stock_max: produit.stock_max,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{console.log(response)
+              console.log(this.name0)
             this.refresh()
             this.quantity0 = ''
-            })                     
+            })  
+          })                   
         }
 
     },

@@ -70,8 +70,7 @@
             <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
             <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                 {{amount_error}} 
-            </div> 
-            br><br><br><br><br>
+            </div> <br><br><br><br>
             <button class="custom-btn btn-9" v-on:click.prevent="submit()">Enregistrer la facture pour {{this.form.amount}}</button>
             
             
@@ -146,7 +145,7 @@ export default {
     
     methods: {
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});           
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});           
         },
 
         setMessage(payload) {
@@ -172,7 +171,8 @@ export default {
               amount_received: this.form.amount_received,
               user_id: this.$auth.user.id,
               client_id: this.form.client_id,  
-              sell_lines: this.form.sell_lines  
+              sell_lines: this.form.sell_lines,
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')  
             }).then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message

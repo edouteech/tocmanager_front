@@ -76,7 +76,8 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/buys')        
+         this.$axios.get('/get/buys',{ params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')} })  
         .then(response => {console.log(response.data.data);
             this.achats = response.data.data.data
             this.res_data= response.data.data 

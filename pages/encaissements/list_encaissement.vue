@@ -77,7 +77,11 @@ export default {
 
     methods: {
         deleteEncaissement(id){ console.log(id);
-          this.$axios.delete('/encaissements/' +id)
+          this.$axios.delete('/encaissements/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
           .then(response =>  {console.log(response.data.data);
           this.refresh()})
          },
@@ -86,8 +90,8 @@ export default {
           this.$axios.get('/encaissements',
             {
                 params: {
-                  page: page
-                    // compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                  page: page,
+                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
                 }
             }
           ).then(response => 
@@ -102,7 +106,11 @@ export default {
 
         voirEncaissement(id){
             this.showModal = true;
-            this.$axios.get('/encaissements/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/encaissements/'+ id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].montant
              this.identifiant2 = moment(response.data.data[0].date).format("YYYY-MM-D")
              this.identifiant3 = response.data.data[0].client.name 

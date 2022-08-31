@@ -81,9 +81,11 @@ export default {
 
     mounted() {
         this.refresh()
-        this.$axios
-        .get('/products/'+ this.$route.params.id)
-        .then(response => 
+        this.$axios.get('/products/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => 
         {console.log(response.data.data[0] )
         let produit = response.data.data[0];
         // this.produits = response.data.data        
@@ -96,6 +98,8 @@ export default {
         this.form.stock_max = produit.stock_max
         }
         )
+        
+        
             
     },
 

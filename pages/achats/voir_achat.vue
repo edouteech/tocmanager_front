@@ -99,7 +99,7 @@
               date: this.form.date,
               supplier_id: this.fournisseur,
               user_id: this.$auth.user.id,
-            //   compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 this.$router.push({path:'/achat/list_achat',})})

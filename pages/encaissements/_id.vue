@@ -66,7 +66,12 @@ export default {
         },
     mounted() {
         this.refresh()
-        this.$axios.get('/encaissements/'+ this.$route.params.id)
+        this.$axios.get('/encaissements/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+              page: page
+            }
+          })
          .then(response => {console.log(response.data.data[0] )
             let encaissement = response.data.data[0];
             // this.clients = response.data.data

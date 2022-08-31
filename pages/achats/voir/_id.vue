@@ -103,7 +103,12 @@ export default {
     },
 
     mounted(){
-      this.$axios.get('/buys/'+ this.$route.params.id).then(response => {console.log(response.data.data);
+      this.$axios.get('/buys/'+ this.$route.params.id,
+        {
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+        }).then(response => {console.log(response.data.data);
         this.date_buy = response.data.data[0].date_buy,
         this.supplier = response.data.data[0].supplier,
         this.montant = response.data.data[0].amount,
@@ -149,7 +154,13 @@ export default {
         },
             
         recupInfos(){
-          this.$axios.get('/buys/'+ this.$route.params.id).then(response => {console.log(response.data.data);
+          this.$axios.get('/buys/'+ this.$route.params.id,
+            {
+                params: {
+                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                }
+            })
+          .then(response => {console.log(response.data.data);
             this.date_buy = response.data.data[0].date_buy,
             this.supplier = response.data.data[0].supplier,
             this.montant = response.data.data[0].amount,
@@ -162,7 +173,8 @@ export default {
             {
                 params: {
                   page : page,
-                  buy_id: this.$route.params.id
+                  buy_id: this.$route.params.id,
+                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
                 }
             }
           ).then(response => 

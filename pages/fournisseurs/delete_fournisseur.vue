@@ -77,7 +77,8 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/suppliers')        
+         this.$axios.get('/get/suppliers',{ params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')} })   
         .then(response => {console.log(response.data.data);
             this.fournisseurs = response.data.data.data 
             this.res_data= response.data.data
@@ -88,7 +89,11 @@ export default {
     methods: {
         restaurerFournisseur(id){
             console.log(id);
-            this.$axios.get('/restore/supplier/' +id)         
+            this.$axios.get('/restore/supplier/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })         
             .then(response => {console.log(response);
                 this.fournisseur = response.data.data
                 this.$router.push({path:'/fournisseurs/list_fournisseur',})

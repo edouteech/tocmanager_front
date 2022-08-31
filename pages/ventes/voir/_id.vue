@@ -103,7 +103,11 @@ export default {
     },
 
     mounted(){
-      this.$axios.get('/sells/'+ this.$route.params.id).then(response => {console.log(response.data.data);
+      this.$axios.get('/sells/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+      }).then(response => {console.log(response.data.data);
         this.date_sell = response.data.data[0].date_sell,
         this.client = response.data.data[0].client,
         this.montant = response.data.data[0].amount,
@@ -111,6 +115,7 @@ export default {
       }) 
       this.recupFacture()
     },
+      
 
     methods: {
 
@@ -154,13 +159,18 @@ export default {
         },
 
         recupInfos(){
-          this.$axios.get('/sells/'+ this.$route.params.id).then(response => {console.log(response.data.data);
+          this.$axios.get('/sells/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => {console.log(response.data.data);
             this.date_sell = response.data.data[0].date_sell,
             this.client = response.data.data[0].client,
             this.montant = response.data.data[0].amount,
             this.rest = response.data.data[0].rest
           }) 
         },
+          
             
         // AddEncaissement(payload) {
         //     this.recupFacture(),
@@ -172,7 +182,8 @@ export default {
             {
                 params: {
                   page : page,
-                  sell_id: this.$route.params.id
+                  sell_id: this.$route.params.id,
+                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
                 }
             }
           ).then(response => 

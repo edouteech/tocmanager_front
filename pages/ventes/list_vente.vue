@@ -76,7 +76,7 @@ export default {
         
         refresh(page=1){
           this.$axios.get('/sells',{params: {
-            // compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             page: page
           }}).then(response => 
           {

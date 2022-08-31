@@ -63,7 +63,11 @@ export default {
         }
         },
     mounted() {
-        this.$axios.get('/clients/'+ this.$route.params.id)
+        this.$axios.get('/clients/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
          .then(response => {console.log(response.data.data[0] )
             let client = response.data.data[0];
             // this.clients = response.data.data
@@ -81,12 +85,12 @@ export default {
 
         submit(){          
             this.$axios.put('/clients/' +this.$route.params.id,{
-            id: this.$route.params.id,
-            name: this.form.name,
-            email: this.form.email,
-            phone: this.form.phone,
-            nature: this.form.nature,
-           compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                id: this.$route.params.id,
+                name: this.form.name,
+                email: this.form.email,
+                phone: this.form.phone,
+                nature: this.form.nature,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
 
             })
             .then(response =>{

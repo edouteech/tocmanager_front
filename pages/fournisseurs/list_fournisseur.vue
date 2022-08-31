@@ -107,7 +107,11 @@ export default {
 
         voirFournisseur(id){
             this.showModal = true;
-            this.$axios.get('/suppliers/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/suppliers/'+ id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email

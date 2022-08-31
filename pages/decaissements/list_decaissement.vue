@@ -86,7 +86,7 @@ export default {
           this.$axios.get('/decaissements',
             {
                 params: {
-                    // compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                    compagnie_id: this.$auth.$storage.getUniversal('company_id'),
                     page: page
                 }
             }
@@ -102,7 +102,11 @@ export default {
 
         voirDecaissement(id){
             this.showModal = true;
-            this.$axios.get('/decaissements/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/decaissements/'+ id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].montant
              this.identifiant2 = moment(response.data.data[0].date).format("D-MM-YYYY")
              this.identifiant3 = response.data.data[0].supplier.name

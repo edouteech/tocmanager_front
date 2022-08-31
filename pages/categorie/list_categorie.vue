@@ -93,7 +93,12 @@ export default {
         
         voirCategorie(id){
             this.showModal = true;
-            this.$axios.get('/categories/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/categories/'+ id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+              page: page
+            }
+          }).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              if(response.data.data[0].parent != null){
                 this.identifiant2 = response.data.data[0].parent.name  

@@ -134,7 +134,7 @@ export default {
     
     methods: {
         addLine(){
-            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
+            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});
             
         },
 
@@ -157,7 +157,8 @@ export default {
                     amount_sent: this.form.amount_sent,
                     user_id: this.$auth.user.id,
                     supplier_id: this.form.supplier_id,  
-                    buy_lines: this.form.buy_lines  
+                    buy_lines: this.form.buy_lines,
+                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
                     }).then(response =>{ 
                         console.log( response ) 
                         this.error = response.data.message

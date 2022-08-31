@@ -58,8 +58,11 @@ export default {
         }
         },
     mounted() {
-        this.$axios.get('/users/'+ this.$route.params.id)
-         .then(response => {console.log(response.data.data[0],console.log(response.data.data[0].password ) )
+        this.$axios.get('/users/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }) .then(response => {console.log(response.data.data[0],console.log(response.data.data[0].password ) )
             let user = response.data.data[0];
             // this.clients = response.data.data
             this.form.name = user.name,
@@ -72,6 +75,7 @@ export default {
         )
             
     },
+        
 
     methods: {
 

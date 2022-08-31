@@ -74,7 +74,8 @@ export default {
     },   
 
     mounted () {
-        this.$axios.get('/get/encaissements')        
+        this.$axios.get('/get/encaissements',{ params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')} })          
         .then(response => {console.log(response);
             this.encaissements = response.data.data.data
             this.res_data= response.data.data

@@ -3,27 +3,39 @@
     <div class="modaler" @click.stop>                     
                 <br><br>
             <h4>Informations du fournisseur</h4><br><br><br>
+            <table class="table table-hover">
+                <thead>
+                  <tr class="table-success">
+                        <th>A savoir</th>
+                        <th>Fournisseur</th>
+                        
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Nom du fournisseur</td>
+                    <td>{{nom}}</td>
+                  </tr>
+                  <tr>
+                    <td>Numéro de téléphone</td>
+                    <td>{{phone}}</td>
+                  </tr>
+                  <tr>
+                    <td>Email du fournisseur</td>
+                    <td>{{email}}</td>
+                  </tr>
+                  <tr>
+                    <td>Balance du fournisseur</td>
+                    <td>{{balance}}</td>
+                  </tr>
+                  <tr>
+                    <td>Nature du fournisseur</td>
+                    <td>{{nature}}</td>
+                  </tr>
+                  
+                </tbody>
+              </table>
 
-                <div class="input-form">					
-                   <span class="mode">Nom du fournisseur: </span> <span class="resp">{{nom}}</span>
-                     <!-- {{info.name}}  -->
-                      
-                </div>     <br>
-                <div class="input-form">        
-                   <span class="mode">Numéro de téléphone : </span><span class="resp"> {{phone}}</span>
-                </div><br>
-            
-                <div class="input-form">    
-                    <span class="mode">Email du fournisseur : </span><span class="resp">{{email}}</span>
-                </div><br>
-
-                <div class="input-form">    
-                    <span class="mode">Balance du fournisseur : </span><span class="resp">{{balance}}</span>
-                </div><br>
-
-                <div class="input-form"> 
-                   <span class="mode">Nature du fournisseur: </span> <span class="resp">{{nature}}</span>
-                </div>
 
     </div>
     <div class="close" @click="$emit('close-modal')">
@@ -70,6 +82,22 @@
 
 .close-img {
   width: 25px;
+}
+
+.titre{
+  border: 1px solid black;
+  background-color: black;
+  color: #ffff;
+  padding: 10px;
+  text-align: center;
+}
+
+tbody tr:nth-child(even){
+	background-color: rgb(228, 239, 245);
+}
+
+tbody tr:last-of-type{
+	border-bottom: 2px solid rgb(92, 237, 8);
 }
 
 
