@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Ventes </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Liste des ventes effectuées</h4>
       <NuxtLink  to="/ventes/vente"><button class="custom-btn btn-3"><span>Nouvelle vente</span></button></NuxtLink>
       <table class="table table-hover">
@@ -40,7 +40,8 @@
             <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
           </ul>
         </nav>
-</div><br> 
+    </div>
+    <br> 
 </div>
 
 </template>
@@ -117,11 +118,10 @@ export default {
 </script>
 
 <style scoped>
-
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;

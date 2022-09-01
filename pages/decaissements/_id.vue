@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Décaissements </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Modifier les informations de ce décaissement</h4>
         <form action="">
             <div class="form-group col-md-6">
@@ -20,7 +20,7 @@
             <!-- </div> -->
             <div class="form-group col-md-6">
                 <label class="title">Entrer la date du décaissement </label>
-                <input type="date" class="form-control" v-model="form.date" autocomplete="off" required placeholder="18-05-1989">
+                <input type="date" class="form-control" v-model="form.date" autocomplete="off" required >
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group ">
@@ -74,7 +74,7 @@ export default {
             let decaissement = response.data.data[0];
             // this.clients = response.data.data
             this.form.montant = decaissement.montant,
-            this.form.date =  moment(decaissement.date).format("YYYY-MM-D"),
+            this.form.date =  moment(decaissement.date).format("YYYY-MM-DD"),
             this.form.facture = decaissement.facture,
             this.form.supplier_id = decaissement.supplier_id
             
@@ -132,8 +132,9 @@ form{
 .btn{
     margin-top: 5%;
 }
-.contenu{
-  margin: 5%;
+
+.app-main__outer{
+  overflow: auto;
 }
 
 input {

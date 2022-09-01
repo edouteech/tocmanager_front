@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Catégories deproduits </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Catégories supprimées</h4>
        <table class="table table-hover">
           <thead>
@@ -99,10 +99,10 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
-
+.app-main__outer{
+  overflow: auto;
 }
+
 .action{
     display: flex;
 }

@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Encaissements </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Liste des encaissements</h4>
        <NuxtLink to="/encaissements/encaissement"><button class="custom-btn btn-3"><span>Remplir encaissement</span></button></NuxtLink>
         <table class="table table-hover">
@@ -124,8 +124,7 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
 

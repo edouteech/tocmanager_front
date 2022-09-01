@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Catégories de produits </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Liste des catégories</h4>
       <NuxtLink  to="/categorie/add_categorie"><button class="custom-btn btn-3"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
         <table class="table table-hover">
@@ -120,10 +120,10 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;

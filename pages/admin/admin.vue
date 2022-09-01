@@ -23,7 +23,7 @@
                 <li class="nav-item mx-4">
                     <NuxtLink to="/" class="nav-link fsize-2">Nos Services</NuxtLink>
                 </li>
-                <div class="bas-page">
+                <div class="bas-page mx-5">
                     <div class="custom-btn btn-5" @click="logout" data-bs-dismiss="offcanvas">
                     <!-- <i class='bx bx-log-out'></i> -->
                     Déconnexion</div>    
@@ -381,147 +381,14 @@
                this.montant_decaissements = response.data.data.montant_decaissements
     
     
-            // var VV = this.volume_vente
-            // console.log(VV)
-            // var dd = 'Intervalle de dates'
-            // const ctx = document.getElementById('myChart');
-            // const myChart = new Chart(ctx, {
-            // type: 'bar',
-            // data: {
-            //     labels: [dd],
-            //     datasets: [{
-            //         label: '# ventes effectuées',
-            //         data: [VV],
-            //         backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            //         borderColor:'rgba(153, 102, 255, 1)',
-            //         borderWidth: 1
-            //     }]
-            // },
-            // options: {
-            //     scales: {
-            //         y: {
-            //             beginAtZero: true
-            //         }
-            //     }
-            // }
-            // });
-            // myChart;
-            // var q1 = this.courbe_vente[0].amount
-            // var q2 = this.courbe_vente[1].amount
-            // var q3 = this.courbe_vente[2].amount
-            // var q4 = this.courbe_vente[3].amount
-            // var q5 = this.courbe_vente[4].amount
-            // var q6 = this.courbe_vente[5].amount
-            // var q7 = this.courbe_vente[6].amount
-    
-            // var Q1 = this.courbe_achat[0].amount
-            // var Q2 = this.courbe_achat[1].amount
-            // var Q3 = this.courbe_achat[2].amount
-            // var Q4 = this.courbe_achat[3].amount
-            // var Q5 = this.courbe_achat[4].amount
-            // var Q6 = this.courbe_achat[5].amount
-            // var Q7 = this.courbe_achat[6].amount
-    
-            // var d1 = moment(this.courbe_vente[0].date_sell).format("YYYY-MM-D")
-            // var d2 = moment(this.courbe_vente[1].date_sell).format("YYYY-MM-D")
-            // var d3 = moment(this.courbe_vente[2].date_sell).format("YYYY-MM-D")
-            // var d4 = moment(this.courbe_vente[3].date_sell).format("YYYY-MM-D")
-            // var d5 = moment(this.courbe_vente[4].date_sell).format("YYYY-MM-D")
-            // var d6 = moment(this.courbe_vente[5].date_sell).format("YYYY-MM-D")
-            // var d7 = moment(this.courbe_vente[6].date_sell).format("YYYY-MM-D")
-    
-            //   const ctz = document.getElementById('myChartVente');
-            //   const myChartVente = new Chart(ctz, {
-            //     type: 'line',
-            //     data: {
-            //         labels: [d7, d6, d5, d4, d3, d2, d1],
-            //         datasets: [{
-            //             label: '# montant vente',
-            //             data: [q7, q6, q5, q4, q3, q2, q1],
-            //             backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            //             borderColor:'rgba(255, 99, 132, 1)',
-            //             borderWidth: 3,
-            //             tension: 0.5,
-            //         },
-            //         {
-            //             label: '# montant achat',
-            //             data: [Q7, Q6, Q5, Q4, Q3, Q2, Q1],
-            //             backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            //             borderColor: 'rgba(54, 162, 235, 1)',
-            //             borderWidth: 3,
-            //             tension: 0.5,
-            //         }]
-            //     },
-            //     options: {
-            //         scales: {
-            //             y: {
-            //                 beginAtZero: false
-            //             }
-            //         }
-            //     }
-            //   });
-            //   myChartVente;
-    
-            // var Q1 = this.courbe_achat[0].amount
-            // var Q2 = this.courbe_achat[1].amount
-            // var Q3 = this.courbe_achat[2].amount
-            // var Q4 = this.courbe_achat[3].amount
-            // var Q5 = this.courbe_achat[4].amount
-            // var Q6 = this.courbe_achat[5].amount
-            // var Q7 = this.courbe_achat[6].amount
-    
-            // var D1 = moment(this.courbe_achat[0].date_buy).format("YYYY-MM-D")
-            // var D2 = moment(this.courbe_achat[1].date_buy).format("YYYY-MM-D")
-            // var D3 = moment(this.courbe_achat[2].date_buy).format("YYYY-MM-D")
-            // var D4 = moment(this.courbe_achat[3].date_buy).format("YYYY-MM-D")
-            // var D5 = moment(this.courbe_achat[4].date_buy).format("YYYY-MM-D")
-            // var D6 = moment(this.courbe_achat[5].date_buy).format("YYYY-MM-D")
-            // var D7 = moment(this.courbe_achat[6].date_buy).format("YYYY-MM-D")
-    
-            //   const cty = document.getElementById('myChartAchat');
-            //   const myChartAchat = new Chart(cty, {
-            //     type: 'line',
-            //     data: {
-            //         labels: [D7, D6, D5, D4, D3, D2, D1],
-            //         datasets: [{
-            //             label: '# montant',
-            //             data: [Q7, Q6, Q5, Q4, Q3, Q2, Q1],
-            //             backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            //             borderColor: 'rgba(54, 162, 235, 1)',
-            //             borderWidth: 3,
-            //             tension: 0.5,
-            //         }]
-            //     },
-            //     options: {
-            //         scales: {
-            //             y: {
-            //                 beginAtZero: false
-            //             }
-            //         }
-            //     }
-            //   });
-            //   myChartAchat;
          })
-          // console.log(this.$auth);
-          // console.log(this.$auth.$storage.getUniversal('company_id'));
         },
     
         methods:{
             moment: function () {
               return moment();
             },
-            // picker(){
-            //   let recap = document.createElement('script') 
-            //   recap.setAttribute('src', 'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js') 
-            //   recap.setAttribute('src', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js') 
-            //   recap.setAttribute('src', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js')
-            //   document.head.appendChild(recap);
-            //     $('input[name="daterange"]').daterangepicker({
-            //     opens: 'left'
-            //   }, function(start, end, label) {
-            //     console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-            //   });
-            // },
+            
     
             async logout(){
                 this.$auth.logout();
@@ -529,102 +396,25 @@
             },
             
             Visualiser(){
-                this.$axios.post('/tableau/de/bord',{
-                    date_debut: this.form.date_debut,
-                    date_fin: this.form.date_fin
-                }).then(response => {console.log(response.data);
+                this.$axios.post('/stats',{
+                  date_debut: this.form.date_debut,
+                  date_fin: this.form.date_fin
+            }).then(response => {console.log(response.data);
     
-                    this.volume_vente  = response.data.data[0][0].volume_vente
-                    this.chiffre_affaire = response.data.data[1][0].chiffre_d_affaire
-                    this.encaissement = response.data.data[2][0].encaissement
-                    this.decaissement = response.data.data[3][0].decaissement
-                    this.produits_vendus = response.data.data[4]
-                    this.produits_achetes = response.data.data[5]
-                    this.dernieres_ventes  = response.data.data[6]
-                    this.courbe_vente = response.data.data[7]
-                    this.courbe_achat = response.data.data[8]
-    
-    
-                    var VV = this.volume_vente
-                    console.log(VV)
-                    var dd = 'Intervalle de dates'
-                    const cty = document.getElementById('myChart');
-                    const myChart = new Chart(cty, {
-                    type: 'bar',
-                    data: {
-                        labels: [dd],
-                        datasets: [{
-                            label: '# ventes éffectuées',
-                            data: [VV],
-                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                            borderColor:'rgba(153, 102, 255, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                    });
-                    myChart;
-                    var q1 = this.courbe_vente[0].amount
-                    var q2 = this.courbe_vente[1].amount
-                    var q3 = this.courbe_vente[2].amount
-                    var q4 = this.courbe_vente[3].amount
-                    var q5 = this.courbe_vente[4].amount
-                    var q6 = this.courbe_vente[5].amount
-                    var q7 = this.courbe_vente[6].amount
-    
-                    var Q1 = this.courbe_achat[0].amount
-                    var Q2 = this.courbe_achat[1].amount
-                    var Q3 = this.courbe_achat[2].amount
-                    var Q4 = this.courbe_achat[3].amount
-                    var Q5 = this.courbe_achat[4].amount
-                    var Q6 = this.courbe_achat[5].amount
-                    var Q7 = this.courbe_achat[6].amount
-    
-                    var d1 = moment(this.courbe_vente[0].date_sell).format("YYYY-MM-D")
-                    var d2 = moment(this.courbe_vente[1].date_sell).format("YYYY-MM-D")
-                    var d3 = moment(this.courbe_vente[2].date_sell).format("YYYY-MM-D")
-                    var d4 = moment(this.courbe_vente[3].date_sell).format("YYYY-MM-D")
-                    var d5 = moment(this.courbe_vente[4].date_sell).format("YYYY-MM-D")
-                    var d6 = moment(this.courbe_vente[5].date_sell).format("YYYY-MM-D")
-                    var d7 = moment(this.courbe_vente[6].date_sell).format("YYYY-MM-D")
-    
-                    const ctz = document.getElementById('myChartVente');
-                    const myChartVente = new Chart(ctz, {
-                        type: 'line',
-                        data: {
-                            labels: [d7, d6, d5, d4, d3, d2, d1],
-                            datasets: [{
-                                label: '# montant vente',
-                                data: [q7, q6, q5, q4, q3, q2, q1],
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                borderColor:'rgba(255, 99, 132, 1)',
-                                borderWidth: 3,
-                                tension: 0.5,
-                            },
-                            {
-                                label: '# montant achat',
-                                data: [Q7, Q6, Q5, Q4, Q3, Q2, Q1],
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 3,
-                                tension: 0.5,
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: false
-                                }
-                            }
-                        }
-                    });
-                    myChartVente;
+               this.users  = response.data.data.total_users
+               this.suppliers = response.data.data.total_suppliers
+               this.clients = response.data.data.total_clients
+               this.categories = response.data.data.total_categories
+               this.products = response.data.data.total_products
+               this.compagnies = response.data.data.total_compagnies
+               this.encaissements  = response.data.data.total_encaissements
+               this.decaissements = response.data.data.total_decaissements
+               this.buys = response.data.data.total_buys
+               this.sells = response.data.data.total_sells
+               this.montant_buys = response.data.data.montant_buys
+               this.montant_sells = response.data.data.montant_sells
+               this.montant_encaissements = response.data.data.montant_encaissements
+               this.montant_decaissements = response.data.data.montant_decaissements
             })
             }
             
@@ -662,4 +452,105 @@
       background-color: rgb(233, 243, 251);
     }
     
+    
+/* .bas-page{
+    margin-top: 10%;
+    display: flex;    
+    border: 1px solid rgb(88, 87, 87);
+    padding: 10px;
+} */
+
+.bas-page img{
+    width: 45px;
+    border: 1px solid transparent;
+    border-radius: 100%;
+    cursor: pointer;
+}
+.bas-page .user_name{
+    font-size: 12px;
+    padding: 10px;
+    color: black;
+}
+
+.bas-page .btn{
+    margin-left: 7%;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid ;
+    background-color: red;
+    border-radius: 10px;
+    font-size: 13px;
+     color: rgba(255, 255, 255, 0.86);
+}
+
+.bas-page .btn:hover{
+     background-color: rgba(255, 255, 255, 0.86);
+     color: red;
+}
+
+
+.custom-btn {
+    width: 130px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+     7px 7px 20px 0px rgba(0,0,0,.1),
+     4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+  }
+
+.btn-5 {
+    text-align: center;
+    width: 130px;
+    height: 40px;
+    line-height: 42px;
+    padding: 0;
+    border: none;
+    background: rgb(255,27,0);
+    background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
+  }
+
+.btn-5:hover {
+    color: #f0094a;
+    background: transparent;
+     box-shadow:none;
+  }
+
+.btn-5:before,
+.btn-5:after{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    height:2px;
+    width:0;
+    background: #f0094a;
+    box-shadow:
+     -1px -1px 5px 0px #fff,
+     7px 7px 20px 0px #0003,
+     4px 4px 5px 0px #0002;
+    transition:400ms ease all;
+  }
+
+.btn-5:after{
+    right:inherit;
+    top:inherit;
+    left:0;
+    bottom:0;
+  }
+
+.btn-5:hover:before,
+.btn-5:hover:after{
+    width:100%;
+    transition:800ms ease all;
+  }
     </style>

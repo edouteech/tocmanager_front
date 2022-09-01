@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Décaissements </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Liste des décaissements</h4>
       <NuxtLink  to="/decaissements/decaissement"><button class="custom-btn btn-3"><span>Remplir décaissement</span></button></NuxtLink>
         <table class="table table-hover">
@@ -120,8 +120,7 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
 .fa{

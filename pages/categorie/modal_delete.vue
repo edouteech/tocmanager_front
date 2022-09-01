@@ -62,7 +62,6 @@
     text-align: center;
     border: 1px solid;
     cursor: pointer;
-    border-radius: 10px;
     margin-left: 30%;
 }
 .no{
@@ -71,7 +70,6 @@
     text-align: center;
     border: 1px solid;
     cursor: pointer;
-    border-radius: 10px;
 }
 
 .yes:hover{
@@ -101,7 +99,6 @@
   width: 500px;
   margin-top: 12%;
   padding: 30px 0;
-  border-radius: 20px;
 }
 .close {
   margin: 12% 0 0 16px;

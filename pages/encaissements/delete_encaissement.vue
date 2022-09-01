@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Encaissements </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Encaissements supprimés</h4>
        <table class="table table-hover">
           <thead>
@@ -109,10 +109,10 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .action{
     display: flex;
     margin: 0 15%;

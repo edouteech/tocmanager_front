@@ -75,8 +75,8 @@
             </div>     
             <form action="action" method="POST">
                 <div class="range">
-                <input class="form-control" type="date"  v-model="form.date_debut"  required />  
-                <input  class="form-control" type="date"  v-model="form.date_fin"  required />  
+                <input class="form-control" type="datetime-local"  v-model="form.date_debut"  required />  
+                <input  class="form-control" type="datetime-local"  v-model="form.date_fin"  required />  
                 <div class="visualiser" @click="Visualiser()"><i class="fa fa-eye" aria-hidden="true"></i></div>    
                 </div>  
             </form>       
@@ -450,7 +450,6 @@
 
 </div>
 
-
 </template>
 
 <script>
@@ -493,16 +492,18 @@ export default {
       courbe_achat: '',
       encaissement: '',
       decaissement: '',
+      
       form:{
-        date_debut: moment().format("yyyy-MM-D"),
-        date_fin: moment().format("yyyy-MM-D")
+        date_debut:  "",
+        date_fin:  "",
       }
     }
       
   },
-
+//   moment().format("YYYY-MM-DDThh:mm")
     middleware:'auth',
-    mounted(){      
+    mounted(){   
+        console.log(this.form.date_debut)   
         this.$axios.post('/tableau/de/bord',{
               date_debut: this.form.date_debut,
               date_fin: this.form.date_fin,

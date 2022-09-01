@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Produits </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Liste des produits dans le magazin</h4>
       <NuxtLink  to="/produits/add_produit"><button class="custom-btn btn-3"><span>Ajouter nouveau produit</span></button></NuxtLink>
         <table class="table table-hover">
@@ -30,7 +30,7 @@
                 <td>{{produit.name}}</td>
                 <td>{{produit.category.name}}</td>
                 <td>{{produit.quantity}}</td>
-                <td class="controler"><div class="replace"><input type="number" class="form-control w-75" placeholder="---"  autocomplete="off" required><img src="/images/ok.png" alt="logo" srcset="" @click="replaceQuantity(produit.id)"></div></td>
+                <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="---" autocomplete="off" required><img src="/images/ok.png" alt="logo" srcset="" @click="replaceQuantity(produit.id)"></div></td>
                 <td>{{produit.price_sell}}</td>
                 <td>{{produit.price_buy}}</td>
                 <!-- <td>{{produit.stock_min}}</td>
@@ -88,7 +88,7 @@ export default {
       compagnie_id: "",
       category_id0:'',
       name0: '',
-      quantity0: '',
+      // quantity0: '',
       price_sell0: '',      
       price_buy0: '',
       stock_min0: '',
@@ -151,7 +151,10 @@ export default {
                
         },
 
-        replaceQuantity(id){   
+        replaceQuantity(id){  
+          let input_btn = "real_quantity_"+id;
+          let quantity0 = document.getElementById(input_btn).value
+          console.log(document.getElementById(input_btn).value); 
           this.$axios.get('/products/'+id,{
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
@@ -164,7 +167,7 @@ export default {
                 id: this.produit.id,
                 category_id: produit.category_id ,
                 name: produit.name,
-                quantity: this.quantity0,
+                quantity: quantity0,
                 price_sell: produit.price_sell,
                 price_buy: produit.price_buy,
                 stock_min: produit.stock_min,
@@ -173,7 +176,7 @@ export default {
             }).then(response =>{console.log(response)
               console.log(this.name0)
             this.refresh()
-            this.quantity0 = ''
+            document.getElementById(input_btn).value = ''
             })  
           })                   
         }

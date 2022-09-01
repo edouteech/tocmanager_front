@@ -10,7 +10,7 @@
       <div class="error" v-if="errors['parent_id'] != null">{{errors['parent_id']}}</div>
     </div>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
          <h4>Informations du client</h4><hr><br><br><br>
          <table class="table table-hover">
             <thead>

@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Clients </h3>
     </nav>
     
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Liste des clients</h4>
       <NuxtLink  to="/clients/add_client"><button class="custom-btn btn-3"><span>Ajouter nouveau client</span></button></NuxtLink>
         <table class="table table-hover">
@@ -122,11 +122,10 @@ export default {
 </script>
 
 <style scoped>
-
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;

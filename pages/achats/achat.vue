@@ -11,7 +11,7 @@
       <div class="error" v-if="errors['date_buy'] != null">{{errors['date_buy']}}</div>
     </div>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Enregistrer un achat</h4><hr>
         <form action="" method="POST">
             <div class="cadre-haut">             
@@ -114,7 +114,7 @@ export default {
             produits: [],
             form:{
                     user_id: '',
-                    date_buy: moment().format("YYYY-MM-DThh:mm"),
+                    date_buy: moment().format("YYYY-MM-DDThh:mm"),
                     supplier_id: '',
                     amount: '',
                     tax: '0',
@@ -238,8 +238,7 @@ export default {
     border-bottom: 2px solid #605050;
 }
 
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
 

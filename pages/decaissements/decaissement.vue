@@ -11,7 +11,7 @@
       <div class="error" v-if="errors['supplier_id'] != null">{{errors['supplier_id']}}</div>
     </div>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Enregistrer un décaissement</h4>
         <form action="">
             <div class="form-group col-md-6">
@@ -27,7 +27,7 @@
             <!-- </div> -->
             <div class="form-group col-md-6">
                 <label class="title">Entrer la date du décaissement </label>
-                <input type="datetime-local" class="form-control" v-model="form.date" autocomplete="off" required placeholder="18-05-1989">
+                <input type="date" class="form-control" v-model="form.date" autocomplete="off" required >
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group ">
@@ -63,7 +63,7 @@ export default {
             form: {
                 montant: '',
                 facture: '',
-                date: '',
+                date:  moment().format("YYYY-MM-DD"),
                 supplier_id:'',
                 compagnie_id: ''
             },
@@ -127,10 +127,11 @@ form{
 .btn{
     margin-top: 5%;
 }
-.contenu{
-  margin: 5%;
 
+.app-main__outer{
+  overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;

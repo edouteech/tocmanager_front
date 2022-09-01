@@ -117,22 +117,31 @@ export default {
           try {
             let response = await this.$auth.loginWith('local', { data: this.form })
             console.log(response);
-            this.$auth.setUserToken(response.data.data.original.access_token)            
-            .then(response =>{ console.log(response);
-              if(response.data.status == "success"){
-                  this.$router.push({path:'/admin/admin'});
-              }
-              else{
-                this.error = response.data.message
-                  // this.$router.push({path:'/clients/add_client'});
-              } 
+            this.error = response.data.message
             console.log(this.error)
-            
+            this.$auth.setUserToken(response.data.data.original.access_token)     
+            .then(response =>{this.$router.push( '/admin/admin',)
             })
             console.log(this.$auth);
           } catch (err) {
             console.log(err);
-          }
+            // this.refresh();
+          }       
+          //   .then(response =>{ console.log(response);
+          //     if(response.data.status == "success"){
+          //         this.$router.push({path:'/admin/admin'});
+          //     }
+          //     else{
+          //       this.error = response.data.message
+          //       this.$router.push({path:'/login'});
+          //     } 
+            
+            
+          //   })
+          //   console.log(this.$auth);
+          // } catch (err) {
+          //   console.log(err);
+          // }
         } else {
           try {
             let response = await this.$auth.loginWith('local', { data: this.form })

@@ -4,8 +4,9 @@
       <Sidebar /><h3 class="name">Ventes </h3>
     </nav>
 
-    <div class="contenu">
-      <h4>Informations sur la facture</h4>
+    <div class="app-main__outer p-5">
+      <h4>Informations sur la facture</h4>  <br>
+      <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Imprimer</span></div><br>
       <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -24,7 +25,7 @@
             </tr>
           </tbody>
         </table>  <br><br> <hr>
-        <div v-if="rest > 0">
+        <div class="caisse" v-if="rest > 0">
           <h4>Ajouter des décaissements pour cette facture</h4><br><br>
                 <div  v-if="number == 0">
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="error_rest != null">
@@ -93,7 +94,7 @@ export default {
         number : 0,
         decaissements: [],
         form: {
-            date: '',
+            date:  moment().format("YYYY-MM-DD"),
             montant: '',
             phone: '',
             nature:'',
@@ -118,6 +119,11 @@ export default {
     },
 
     methods: {
+
+        generatePdf() {
+            window.print();
+        },
+
         async submit(){
           if(this.form.montant > this.rest){
                this.error_rest = "Le montant à encaisser ne doit pas etre supérieur à la somme due"
@@ -192,10 +198,40 @@ export default {
 </script>
 
 <style scoped>
+.text-end{
+  font-size: 13px;
+}
 
-.contenu{
-  margin: 5%;
+.print i{
+  font-size: 25px;
+}
+
+.print{
+  border: 1px solid black;
+  width: 150px;
+  border-radius: 5px;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.print:hover{
+  background-color: rgb(236, 244, 251);
+}
+
+.app-main__outer{
   overflow: auto;
+}
+
+@media print {
+  /* .navbar {
+    display: none !important;
+  } */
+  .print, .caisse {
+    display: none !important;
+  }
+  nav{
+    display: none !important;
+  }
 }
 .fa{
   margin: 0 5px;

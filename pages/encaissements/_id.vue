@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Encaissements </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Modifier les informations de cet encaissement</h4>
                      <form action="">
             <div class="form-group col-md-6">
@@ -132,8 +132,9 @@ form{
 .btn{
     margin-top: 5%;
 }
-.contenu{
-  margin: 5%;
+
+.app-main__outer{
+  overflow: auto;
 }
 
 input {

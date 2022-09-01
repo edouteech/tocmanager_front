@@ -11,7 +11,7 @@
       <div class="error" v-if="errors['date_sell'] != null">{{errors['date_sell']}}</div> -->
     </div>
   
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Enregistrer une vente </h4><hr>
         <form action="" method="POST">
             <div class="cadre-haut">             
@@ -118,7 +118,7 @@ export default {
             produits: [],
             form:{
                     user_id: '',
-                    date_sell: moment().format("YYYY-MM-DThh:mm"),
+                    date_sell: moment().format("YYYY-MM-DDThh:mm"),
                     client_id: '',
                     amount: '',
                     tax: '0',
@@ -248,8 +248,7 @@ export default {
     border-bottom: 2px solid #605050;
 }
 
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
 
