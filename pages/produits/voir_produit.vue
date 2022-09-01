@@ -1,9 +1,48 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>   
-            <h4>Informations du produit</h4><br><br>
-
-                <div class="input-form">					
+            <h4 class="titre">Informations du produit</h4><br><br>
+              <table class="table table-hover">
+                <thead>
+                  <tr class="table-success">
+                        <th>A savoir</th>
+                        <th>Client</th>
+                        
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Catégorie concernée</td>
+                    <td>{{id}}</td>
+                  </tr>
+                  <tr>
+                    <td>Nom du produit</td>
+                    <td>{{nom}}</td>
+                  </tr>
+                  <tr>
+                    <td>Quantité stockée</td>
+                    <td>{{quantite}}</td>
+                  </tr>
+                  <tr>
+                    <td>Prix de vente</td>
+                    <td>{{vente}}</td>
+                  </tr>
+                  <tr>
+                    <td>Prix d'achat</td>
+                    <td>{{achat}}</td>
+                  </tr>
+                  <tr>
+                    <td>Stock minimal</td>
+                    <td>{{min}}</td>
+                  </tr>
+                  <tr>
+                    <td>Stock maximal</td>
+                    <td>{{max}}</td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+                <!-- <div class="input-form">					
                    <span class="mode">Catégorie concernée : </span> <span class="resp">{{id}}</span>
                 </div>     <br>
 
@@ -26,7 +65,7 @@
                 </div>     <br>
                 <div class="input-form">					
                    <span class="mode">Stock maximal : </span> <span class="resp">{{max}}</span>
-                </div>    
+                </div>     -->
 
     </div>
     <div class="close" @click="$emit('close-modal')">
@@ -59,13 +98,32 @@
   background-color: #ebebfcda;
 }
 
+
+.titre{
+  border: 1px solid black;
+  background-color: black;
+  color: #ffff;
+  padding: 10px;
+  text-align: center;
+}
+
+tbody tr:nth-child(even){
+	background-color: rgb(246, 241, 246);
+}
+
+tbody tr:last-of-type{
+	border-bottom: 2px solid rgb(92, 237, 8);
+}
+
+
 .modaler {
   background-color: white;
   height: 600px;
   width: 600px;
   margin-top: 5%;
-  padding: 5%;
+  padding: 1%;
   border-radius: 20px;
+  font-size: 18px;
 }
 .close {
   margin: 5% 0 0 16px;

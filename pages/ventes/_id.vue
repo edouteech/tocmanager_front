@@ -21,7 +21,7 @@
                     </div>                   
                 </div>
                 <div class="facture-date">
-                   <span class="creation"> Date de création :</span> <input class="form-control"  type="date"  v-model="form.date_sell"/>                  
+                   <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
                 </div>
             </div> <hr>
             
@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
 import produitModal from './produitModal.vue'
@@ -118,7 +119,7 @@ export default {
           .then(response => {console.log(response.data.data[0] )
             let vente = response.data.data[0];
             // this.categories = response.data.data
-            this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-D"),
+            this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-DThh:mm"),
             this.form.client_id = vente.client_id,
             this.form.sell_lines = vente.sell_lines,   
             this.form.tax = vente.tax,

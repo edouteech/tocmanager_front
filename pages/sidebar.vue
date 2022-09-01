@@ -123,7 +123,7 @@
                         <span class="links_name">Compagnies</span>
                     </div>
                 </NuxtLink>
-            </li>
+            </li> -->
             <li>
                 <NuxtLink to="/profils/profil">
                     <div class="rubrique">
@@ -131,7 +131,7 @@
                         <span class="links_name">Utilisateurs</span>
                     </div>
                 </NuxtLink>
-            </li>  -->
+            </li> 
             <li>
                 <NuxtLink to="/corbeille">
                     <div class="rubrique">

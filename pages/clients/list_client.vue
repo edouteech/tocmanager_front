@@ -12,7 +12,6 @@
             <tr class="table-primary">
                   <th>Noms</th>
                   <th>Numéros de téléphone</th>
-                  <th>Emails</th>
                   <th>Balance </th>
                   <th>Nature</th>
                   <th>Actions</th>
@@ -22,7 +21,6 @@
            <tr  v-for="(client, i) in clients" :key="i">
               <td>{{client.name}}</td>
               <td>{{client.phone}}</td>
-              <td>{{client.email}}</td>
               <td>{{client.balance}}</td>
               <td>{{client.nature}}</td>
               <td><div class="action">

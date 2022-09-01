@@ -2,12 +2,35 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>                     
                 <br><br>
-            <h4>Informations de l'encaissement</h4><br><br><br>
-
-                <div class="input-form">					
+            <h4 class="titre">Informations de l'encaissement</h4><br><br><br>
+              <table class="table table-hover">
+                <thead>
+                  <tr class="table-success">
+                        <th>A savoir</th>
+                        <th>Décaissement</th>
+                        
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Date de l'encaissement </td>
+                    <td>{{date}}</td>
+                  </tr>
+                  <tr>
+                    <td>Montant</td>
+                    <td>{{montant}}</td>
+                  </tr>
+                  <tr>
+                    <td>Client concerné</td>
+                    <td>{{client_id}}</td>
+                  </tr>
+                  
+                  
+                </tbody>
+              </table>
+                <!-- <div class="input-form">					
                    <span class="mode">Date de l'encaissement : </span> <span class="resp">{{date}}</span>
-                     <!-- {{info.name}}  -->
-                      
+                    
                 </div>     <br>
                 <div class="input-form">        
                    <span class="mode">Montant : </span><span class="resp"> {{montant}}</span>
@@ -15,7 +38,7 @@
             
                 <div class="input-form">    
                     <span class="mode">Client concerné: </span><span class="resp">{{client_id}}</span>
-                </div><br>
+                </div><br> -->
 
     </div>
     <div class="close" @click="$emit('close-modal')">
@@ -57,8 +80,9 @@
   height: 600px;
   width: 600px;
   margin-top: 5%;
-  padding: 5%;
   border-radius: 20px;
+  font-size: 18px;
+  padding: 1%;
 }
 .close {
   margin: 5% 0 0 16px;
@@ -69,6 +93,22 @@
   width: 25px;
 }
 
+
+.titre{
+  border: 1px solid black;
+  background-color: black;
+  color: #ffff;
+  padding: 10px;
+  text-align: center;
+}
+
+tbody tr:nth-child(even){
+	background-color: rgb(228, 240, 245);
+}
+
+tbody tr:last-of-type{
+	border-bottom: 2px solid rgb(92, 237, 8);
+}
 
 .input-form .mode{
     font-size: 18px;

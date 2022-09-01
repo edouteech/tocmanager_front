@@ -89,7 +89,7 @@
                                     <div class="widget-subheading">Total des transactions</div>
                                 </div>
                                 <div class="widget-content-right">
-                                    <div class="widget-numbers text-white"><span>{{chiffre_affaire}} F cfa</span></div>
+                                    <div class="widget-numbers text-white"><span>{{chiffre_affaire}} F</span></div>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                     <div class="widget-subheading">Somme totale des encaissements</div>
                                 </div>
                                 <div class="widget-content-right">
-                                    <div class="widget-numbers text-white"><span>{{encaissement}} F cfa</span></div>
+                                    <div class="widget-numbers text-white"><span>{{encaissement}} F</span></div>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                                     <div class="widget-subheading">Somme totale des décaissements</div>
                                 </div>
                                 <div class="widget-content-right">
-                                    <div class="widget-numbers text-white"><span>{{decaissement}} F cfa</span></div>
+                                    <div class="widget-numbers text-white"><span>{{decaissement}} F</span></div>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <h6 class="text-muted text-uppercase font-size-md opacity-5 font-weight-normal">Top des 10 produits les plus vendus</h6>
+                                        <h6 class="text-muted text-uppercase  opacity-8 font-weight-normal">Top des 10 produits les plus vendus</h6>
                                         <div class="scroll-area-sm">
                                             <div class="scrollbar-container">
                                                 <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
@@ -187,6 +187,41 @@
                                                     
                                                 </ul>
                                             </div>
+                                        </div> <br><br>
+                                        <h6 class="text-muted text-uppercase  opacity-8 font-weight-normal">Top des 10 produits les plus achetés</h6>
+                                        <div class="scroll-area-sm">
+                                            <div class="scrollbar-container">
+                                                <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
+                                                    <li class="list-group-item">
+                                                        <div class="widget-content p-0">
+                                                            <div class="widget-content-wrapper">
+                                                                Noms des produits
+                                                                <div class="widget-content-right">
+                                                                    <div class="font-size-xlg text-muted">
+                                                                        <span>Quantités achetées</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item" v-for="(produits_achetes1, k) in produits_achetes" :key="k">
+                                                        <div class="widget-content p-0">
+                                                            <div class="widget-content-wrapper fsize-2">
+                                                                {{produits_achetes1.name}}
+                                                                <div class="widget-content-right">
+                                                                    <div class="font-size-xlg text-muted">
+                                                                        <span>{{produits_achetes1.quantity}}</span>
+                                                                        <small class="text-danger pl-2">
+                                                                            <i class="fa fa-angle-down"></i>
+                                                                        </small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -198,107 +233,22 @@
                             <div class="card-header-tab card-header">
                                 <div class="card-header-title">
                                     <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
-                                    Courbe évolutive des produits vendus dernierement
+                                    Courbe évolutive des 07 derniers jours
                                 </div>
                             </div>
                             <div class="tab-content">
                                 <div class="tab-pane fade active show" id="tab-eg-55">
                                     <div class="widget-chart p-3">
-                                        <div style="height: 350px">
+                                        <div style="height: 500px">
                                             <canvas id="myChartVente"></canvas>
-                                        </div><br><br><br><br><br><br><br><br><br>
-                                        <div class="widget-chart-content text-center mt-5">
-                                            <div class="widget-description mt-0 text-warning">
-                                                <i class="fa fa-arrow-left"></i>
-                                                <span class="pl-1">175.5%</span>
-                                                <span class="text-muted opacity-8 pl-1">augmentation des ressources du serveur</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="pt-2 card-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="widget-content">
-                                                    <div class="widget-content-outer">
-                                                        <div class="widget-content-wrapper">
-                                                            <div class="widget-content-left">
-                                                                <div class="widget-numbers fsize-3 text-muted">63%</div>
-                                                            </div>
-                                                            <div class="widget-content-right">
-                                                                <div class="text-muted opacity-6">Stocks</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="widget-progress-wrapper mt-1">
-                                                            <div class="progress-bar-sm progress-bar-animated-alt progress">
-                                                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="63" aria-valuemin="0" aria-valuemax="100" style="width: 63%;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="widget-content">
-                                                    <div class="widget-content-outer">
-                                                        <div class="widget-content-wrapper">
-                                                            <div class="widget-content-left">
-                                                                <div class="widget-numbers fsize-3 text-muted">32%</div>
-                                                            </div>
-                                                            <div class="widget-content-right">
-                                                                <div class="text-muted opacity-6">Balance des clients</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="widget-progress-wrapper mt-1">
-                                                            <div class="progress-bar-sm progress-bar-animated-alt progress">
-                                                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100" style="width: 32%;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="widget-content">
-                                                    <div class="widget-content-outer">
-                                                        <div class="widget-content-wrapper">
-                                                            <div class="widget-content-left">
-                                                                <div class="widget-numbers fsize-3 text-muted">71%</div>
-                                                            </div>
-                                                            <div class="widget-content-right">
-                                                                <div class="text-muted opacity-6">Balance des fournisseurs</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="widget-progress-wrapper mt-1">
-                                                            <div class="progress-bar-sm progress-bar-animated-alt progress">
-                                                                <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="71" aria-valuemin="0" aria-valuemax="100" style="width: 71%;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="widget-content">
-                                                    <div class="widget-content-outer">
-                                                        <div class="widget-content-wrapper">
-                                                            <div class="widget-content-left">
-                                                                <div class="widget-numbers fsize-3 text-muted">41%</div>
-                                                            </div>
-                                                            <div class="widget-content-right">
-                                                                <div class="text-muted opacity-6">Corbeille</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="widget-progress-wrapper mt-1">
-                                                            <div class="progress-bar-sm progress-bar-animated-alt progress">
-                                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="41" aria-valuemin="0" aria-valuemax="100" style="width: 41%;"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </div><br><br><br><br><br><br>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-xl-4">
@@ -409,7 +359,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-6 col-lg-3">
                         <div class="card-shadow-danger mb-3 widget-chart widget-chart2 text-left card">
                             <div class="widget-content">
@@ -494,7 +444,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
                 
         </div>
@@ -510,22 +460,22 @@ import Sidebar from './sidebar.vue';
 import moment from "moment";
 import Chart from 'chart.js/auto';
 export default {
-    head() {
-      return {
-        script: [
-          {
-            src: "https://demo.dashboardpack.com/architectui-html-free/assets/scripts/main.js"
-          },
-          {
-            src: "http://maps.google.com/maps/api/js?sensor=true"
-          },
-          {
-            src: "https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
-          }
-        ],
+    // head() {
+    //   return {
+    //     script: [
+    //       {
+    //         src: "https://demo.dashboardpack.com/architectui-html-free/assets/scripts/main.js"
+    //       },
+    //       {
+    //         src: "http://maps.google.com/maps/api/js?sensor=true"
+    //       },
+    //       {
+    //         src: "https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+    //       }
+    //     ],
 
-      }
-    },
+    //   }
+    // },
     layout: "empty",
     auth:true,
     components:{
@@ -539,7 +489,10 @@ export default {
       dernieres_ventes: '',
       dernieres_ventes1: '',
       produits_vendus: '',
+      produits_achetes: '',
       produits_vendus1: '',
+      courbe_vente: '',
+      courbe_achat: '',
       encaissement: '',
       decaissement: '',
       form:{
@@ -562,7 +515,10 @@ export default {
            this.encaissement = response.data.data[2][0].encaissement
            this.decaissement = response.data.data[3][0].decaissement
            this.produits_vendus = response.data.data[4]
-           this.dernieres_ventes  = response.data.data[5]
+           this.produits_achetes = response.data.data[5]
+           this.dernieres_ventes  = response.data.data[6]
+           this.courbe_vente = response.data.data[7]
+           this.courbe_achat = response.data.data[8]
 
 
         var VV = this.volume_vente
@@ -574,7 +530,7 @@ export default {
         data: {
             labels: [dd],
             datasets: [{
-                label: '# ventes',
+                label: '# ventes effectuées',
                 data: [VV],
                 backgroundColor: 'rgba(153, 102, 255, 0.2)',
                 borderColor:'rgba(153, 102, 255, 1)',
@@ -590,34 +546,49 @@ export default {
         }
         });
         myChart;
-        var q1 = this.dernieres_ventes[0].amount
-        var q2 = this.dernieres_ventes[1].amount
-        var q3 = this.dernieres_ventes[2].amount
-        var q4 = this.dernieres_ventes[3].amount
-        var q6 = this.dernieres_ventes[5].amount
-        var q7 = this.dernieres_ventes[6].amount
-        var q8 = this.dernieres_ventes[7].amount
-        var q10 = this.dernieres_ventes[9].amount
+        var q1 = this.courbe_vente[0].amount
+        var q2 = this.courbe_vente[1].amount
+        var q3 = this.courbe_vente[2].amount
+        var q4 = this.courbe_vente[3].amount
+        var q5 = this.courbe_vente[4].amount
+        var q6 = this.courbe_vente[5].amount
+        var q7 = this.courbe_vente[6].amount
 
-        var d1 = moment(this.dernieres_ventes[0].date_sell).format("YYYY-MM-D")
-        var d2 = moment(this.dernieres_ventes[1].date_sell).format("YYYY-MM-D")
-        var d3 = moment(this.dernieres_ventes[2].date_sell).format("YYYY-MM-D")
-        var d4 = moment(this.dernieres_ventes[3].date_sell).format("YYYY-MM-D")
-        var d6 = moment(this.dernieres_ventes[5].date_sell).format("YYYY-MM-D")
-        var d7 = moment(this.dernieres_ventes[6].date_sell).format("YYYY-MM-D")
-        var d8 = moment(this.dernieres_ventes[7].date_sell).format("YYYY-MM-D")
-        var d10 = moment(this.dernieres_ventes[9].date_sell).format("YYYY-MM-D")
+        var Q1 = this.courbe_achat[0].amount
+        var Q2 = this.courbe_achat[1].amount
+        var Q3 = this.courbe_achat[2].amount
+        var Q4 = this.courbe_achat[3].amount
+        var Q5 = this.courbe_achat[4].amount
+        var Q6 = this.courbe_achat[5].amount
+        var Q7 = this.courbe_achat[6].amount
+
+        var d1 = moment(this.courbe_vente[0].date_sell).format("YYYY-MM-D")
+        var d2 = moment(this.courbe_vente[1].date_sell).format("YYYY-MM-D")
+        var d3 = moment(this.courbe_vente[2].date_sell).format("YYYY-MM-D")
+        var d4 = moment(this.courbe_vente[3].date_sell).format("YYYY-MM-D")
+        var d5 = moment(this.courbe_vente[4].date_sell).format("YYYY-MM-D")
+        var d6 = moment(this.courbe_vente[5].date_sell).format("YYYY-MM-D")
+        var d7 = moment(this.courbe_vente[6].date_sell).format("YYYY-MM-D")
+
           const ctz = document.getElementById('myChartVente');
           const myChartVente = new Chart(ctz, {
             type: 'line',
             data: {
-                labels: [d10, d8, d7, d6, d4, d3, d2, d1],
+                labels: [d7, d6, d5, d4, d3, d2, d1],
                 datasets: [{
-                    label: '# montant',
-                    data: [q10, q8, q7, q6, q4, q3, q2, q1],
+                    label: '# montant vente',
+                    data: [q7, q6, q5, q4, q3, q2, q1],
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor:'rgba(255, 99, 132, 1)',
-                    borderWidth: 4,
+                    borderWidth: 3,
+                    tension: 0.5,
+                },
+                {
+                    label: '# montant achat',
+                    data: [Q7, Q6, Q5, Q4, Q3, Q2, Q1],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 3,
                     tension: 0.5,
                 }]
             },
@@ -630,6 +601,46 @@ export default {
             }
           });
           myChartVente;
+
+        // var Q1 = this.courbe_achat[0].amount
+        // var Q2 = this.courbe_achat[1].amount
+        // var Q3 = this.courbe_achat[2].amount
+        // var Q4 = this.courbe_achat[3].amount
+        // var Q5 = this.courbe_achat[4].amount
+        // var Q6 = this.courbe_achat[5].amount
+        // var Q7 = this.courbe_achat[6].amount
+
+        // var D1 = moment(this.courbe_achat[0].date_buy).format("YYYY-MM-D")
+        // var D2 = moment(this.courbe_achat[1].date_buy).format("YYYY-MM-D")
+        // var D3 = moment(this.courbe_achat[2].date_buy).format("YYYY-MM-D")
+        // var D4 = moment(this.courbe_achat[3].date_buy).format("YYYY-MM-D")
+        // var D5 = moment(this.courbe_achat[4].date_buy).format("YYYY-MM-D")
+        // var D6 = moment(this.courbe_achat[5].date_buy).format("YYYY-MM-D")
+        // var D7 = moment(this.courbe_achat[6].date_buy).format("YYYY-MM-D")
+
+        //   const cty = document.getElementById('myChartAchat');
+        //   const myChartAchat = new Chart(cty, {
+        //     type: 'line',
+        //     data: {
+        //         labels: [D7, D6, D5, D4, D3, D2, D1],
+        //         datasets: [{
+        //             label: '# montant',
+        //             data: [Q7, Q6, Q5, Q4, Q3, Q2, Q1],
+        //             backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        //             borderColor: 'rgba(54, 162, 235, 1)',
+        //             borderWidth: 3,
+        //             tension: 0.5,
+        //         }]
+        //     },
+        //     options: {
+        //         scales: {
+        //             y: {
+        //                 beginAtZero: false
+        //             }
+        //         }
+        //     }
+        //   });
+        //   myChartAchat;
      })
       // console.log(this.$auth);
       // console.log(this.$auth.$storage.getUniversal('company_id'));
@@ -658,20 +669,104 @@ export default {
         },
         
         Visualiser(){
-          this.$axios.post('/tableau/de/bord',{
-              date_debut: this.form.date_debut,
-              date_fin: this.form.date_fin
-          }).then(response => {console.log(response.data.data);
-              this.volume_vente  = response.data.data[0][0].volume_vente
-              this.chiffre_affaire = response.data.data[1][0].chiffre_d_affaire
-              this.encaissement = response.data.data[2][0].encaissement
-              this.decaissement = response.data.data[3][0].decaissement
-              this.produits_vendus = response.data.data[4]
-              this.dernieres_ventes  = response.data.data[5]})
+            this.$axios.post('/tableau/de/bord',{
+                date_debut: this.form.date_debut,
+                date_fin: this.form.date_fin
+            }).then(response => {console.log(response.data);
 
-              myChart;
+                this.volume_vente  = response.data.data[0][0].volume_vente
+                this.chiffre_affaire = response.data.data[1][0].chiffre_d_affaire
+                this.encaissement = response.data.data[2][0].encaissement
+                this.decaissement = response.data.data[3][0].decaissement
+                this.produits_vendus = response.data.data[4]
+                this.produits_achetes = response.data.data[5]
+                this.dernieres_ventes  = response.data.data[6]
+                this.courbe_vente = response.data.data[7]
+                this.courbe_achat = response.data.data[8]
+
+
+                var VV = this.volume_vente
+                console.log(VV)
+                var dd = 'Intervalle de dates'
+                const cty = document.getElementById('myChart');
+                const myChart = new Chart(cty, {
+                type: 'bar',
+                data: {
+                    labels: [dd],
+                    datasets: [{
+                        label: '# ventes éffectuées',
+                        data: [VV],
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor:'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+                });
+                myChart;
+                var q1 = this.courbe_vente[0].amount
+                var q2 = this.courbe_vente[1].amount
+                var q3 = this.courbe_vente[2].amount
+                var q4 = this.courbe_vente[3].amount
+                var q5 = this.courbe_vente[4].amount
+                var q6 = this.courbe_vente[5].amount
+                var q7 = this.courbe_vente[6].amount
+
+                var Q1 = this.courbe_achat[0].amount
+                var Q2 = this.courbe_achat[1].amount
+                var Q3 = this.courbe_achat[2].amount
+                var Q4 = this.courbe_achat[3].amount
+                var Q5 = this.courbe_achat[4].amount
+                var Q6 = this.courbe_achat[5].amount
+                var Q7 = this.courbe_achat[6].amount
+
+                var d1 = moment(this.courbe_vente[0].date_sell).format("YYYY-MM-D")
+                var d2 = moment(this.courbe_vente[1].date_sell).format("YYYY-MM-D")
+                var d3 = moment(this.courbe_vente[2].date_sell).format("YYYY-MM-D")
+                var d4 = moment(this.courbe_vente[3].date_sell).format("YYYY-MM-D")
+                var d5 = moment(this.courbe_vente[4].date_sell).format("YYYY-MM-D")
+                var d6 = moment(this.courbe_vente[5].date_sell).format("YYYY-MM-D")
+                var d7 = moment(this.courbe_vente[6].date_sell).format("YYYY-MM-D")
+
+                const ctz = document.getElementById('myChartVente');
+                const myChartVente = new Chart(ctz, {
+                    type: 'line',
+                    data: {
+                        labels: [d7, d6, d5, d4, d3, d2, d1],
+                        datasets: [{
+                            label: '# montant vente',
+                            data: [q7, q6, q5, q4, q3, q2, q1],
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor:'rgba(255, 99, 132, 1)',
+                            borderWidth: 3,
+                            tension: 0.5,
+                        },
+                        {
+                            label: '# montant achat',
+                            data: [Q7, Q6, Q5, Q4, Q3, Q2, Q1],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 3,
+                            tension: 0.5,
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: false
+                            }
+                        }
+                    }
+                });
+                myChartVente;
+        })
         }
-           
         
     },
  

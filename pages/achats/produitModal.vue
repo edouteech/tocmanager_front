@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>  
-      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="status == 'error'">
         {{error}} <br>
         <div class="error" v-if="errors['category_id'] != null">{{errors['category_id']}}</div>
         <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
@@ -73,6 +73,7 @@
         },
         errors: [],
         error: null,
+        status: '',
     }
     },
 
@@ -96,10 +97,25 @@
             this.$emit('prod', { nom_prod: this.form.name, prod_id: response.data.data.id, prod_sell: response.data.data.price_sell })
             this.error = response.data.message
                 console.log(this.error)
-
+                this.status = response.data.status
                 this.errors = response.data.data
-            })   
-        },
+                if(this.status == 'success'){
+                    this.form.category_id = '',
+                    this.form.name = '',
+                    this.form.quantity = '',
+                    this.form.price_sell = '',
+                    this.form.price_buy = '',
+                    this.form.stock_min = '',
+                    this.form.stock_max = ''
+                }
+                else{
+                  this.status = response.data.status
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/categorie/add_client'});
+                }
+            }).catch( err => console.log( err ) )
+            
+            },
 
         refresh(){
           this.$axios.get('/categories',
