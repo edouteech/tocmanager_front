@@ -30,7 +30,12 @@
                 <td>{{produit.name}}</td>
                 <td>{{produit.category.name}}</td>
                 <td>{{produit.quantity}}</td>
-                <td class="controler"><div class="replace"><input type="number" class="form-control w-75" placeholder="---" v-model="quantity0" autocomplete="off" required><img src="/images/ok.png" alt="logo" srcset="" @click="replaceQuantity(produit.id)"></div></td>
+                <td class="controler">
+                  <div class="replace">
+                    <input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="---" autocomplete="off" required>
+                    <img src="/images/ok.png" alt="logo" srcset="" @click="replaceQuantity(produit.id)">
+                  </div>
+                </td>
                 <td>{{produit.price_sell}}</td>
                 <td>{{produit.price_buy}}</td>
                 <!-- <td>{{produit.stock_min}}</td>
@@ -143,7 +148,9 @@ export default {
                
         },
 
-        replaceQuantity(id){   
+        replaceQuantity(id){
+          let input_btn = "real_quantity_"+id;
+          console.log(document.getElementById(input_btn).value); 
           this.$axios
                 .get('/products/'+id)
                 .then(response => 
