@@ -1,7 +1,14 @@
 <template>
   <div class="contain ">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
-      <br><br>
+    <!-- <div class="alert alert-success justify-content-center" role="alert">
+        {{this.params.errors}}
+    </div> -->
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        {{error}}
+    </div>
+    <br><br>
+      
     <h2 class="text px-4">Connectez vous</h2>
     <div class="container-fluid h-custom">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -14,24 +21,24 @@
             <div class="divider d-flex align-items-center my-4">
               <p class="text-center fw-bold mx-3 mb-0">Connexion</p>
             </div>
-
+  
             <!-- Email input -->
             <div class="form-outline mb-4">
               <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
               <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
-                placeholder="Entrer votre addresse email" /></div>
+                placeholder="Entrer votre addresse email " /></div>
               
             </div>
-
+  
             <!-- Password input -->
             <div class="form-outline mb-3">
               <span class="fas fa-lock px-2"></span><label class="form-label">Mot de passe</label>
               <div class="input-field">
               <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
-                placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click="changer()"></i></span></div>
+                placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click.prevent="changer()"></i></span></div>
               
             </div>
-
+  
             <div class="d-flex justify-content-between align-items-center">
               <!-- Checkbox -->
               <div class="form-check mb-0">
@@ -40,126 +47,146 @@
                   Se rappeler de moi
                 </label>
               </div>
-              <a href="#!" class="link-primary">Mot de passe oublié ?</a>
+              <NuxtLink to="/password1"  class="link-primary px-2">               
+                  Mot de passe oublié ?
+              </NuxtLink>
             </div>
-
+  
             <div class="text-center text-lg-start mt-4 pt-2">
               <button type="button"  @click.prevent="login()" class="btn btn-primary btn-lg"
                 style="padding-left: 1rem; padding-right: 1rem;">Se connecter</button>
-             <p class="small fw-bold mt-2 pt-1 mb-0">Vous n'avez pas de compte ? <NuxtLink to="/register"  class="link-primary px-2">               
+              <p class="small fw-bold mt-2 pt-1 mb-0">Vous n'avez pas de compte ? <NuxtLink to="/register"  class="link-primary px-2">               
                   Inscription
               </NuxtLink></p>
-            </div>
-
+            </div><br><br><br>
           </form>
-        </div><br><br><br>
+        </div>
       </div>
     </div>
-                <div class="error-message">
-                    {{error}}
-                </div>
+                  <!-- <div class="error-message">
+                      {{error}}
+                  </div> -->
   </div>
-</template>
-
-<script>
-export default {
-  middleware:'auth',
-  name: 'IndexPage',
-  data() {
-    return {
-      error: '',
-      form: {
-        email: '' ,
-        password: ''
-      }
-    }
-  },
-  methods: {
-    refresh(){
-      var that = this;    
-       this.$axios
-          .post('/login',{ data: this.form })
-          .then(response => 
-        {console.log(response.data.message)
-           if (response.data.status == "error") {
-                    that.error = response.data.message
-                } 
-        });
-        
-    },
-
-    changer(){
-    var e = true
-
-        if (e){
-          document.getElementById("password").setAttribute("type","text"); 
-          document.getElementById("eye").class="fa fa-eye px-2";
-          e = false;
-        }
-
-        else{
-          document.getElementById("password").setAttribute("type","password"); 
-          document.getElementById("eye").class="fa fa-eye-slash px-2";
-          e = true;
-        }
-    },
-
-    async login() {
-      try {
-        console.log(this.$auth);
-        console.log('--------------------------uhukh-------------------------------');
-        let response = await this.$auth.loginWith('local', { data: this.form })
-        this.$auth.setUserToken(response.data.data.original.access_token)
-        .then(response =>{
-                    this.$router.push(
-                     '/dashboard',
-                    )
+  </template>
   
-                  })
-                    
-        // console.log(response.data.data.original.access_token);
-        console.log(this.$auth);
-      } catch (err) {
-        console.log(err);this.refresh();
+  <script>
+  export default {
+    middleware:'auth',
+    name: 'login',
+    data() {
+      return {
+        error: null,
+        form: {
+          email: '' ,
+          password: ''
+        }
       }
+    },
+    methods: {
+      // refresh(){
+      //   var that = this;    
+      //    this.$axios
+      //       .post('/login',{ data: this.form })
+      //       .then(response => 
+      //     {console.log(response.data.message)
+      //        if (response.data.status == "error") {
+      //                 that.error = response.data.message
+      //             } 
+      //     });
+          
+      // },
+  
+        changer(){
+        var e = true
+  
+            if (e){
+              document.getElementById("password").setAttribute("type","text"); 
+              document.getElementById("eye").class="fa fa-eye px-2";
+              e = false;
+            }
+  
+            else{
+              document.getElementById("password").setAttribute("type","password"); 
+              document.getElementById("eye").class="fa fa-eye-slash px-2";
+              e = true;
+            }
+        },
+  
+        async login() {
+          if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
+            try {
+              let response = await this.$auth.loginWith('local', { data: this.form })
+              console.log(response);
+              this.$auth.setUserToken(response.data.data.original.access_token)            
+              .then(response =>{ console.log(response);
+                if(response.data.status == "success"){
+                    this.$router.push({path:'/admin/admin'});
+                }
+                else{
+                  this.error = response.data.message
+                    // this.$router.push({path:'/clients/add_client'});
+                } 
+              console.log(this.error)
+              
+              })
+              console.log(this.$auth);
+            } catch (err) {
+              console.log(err);
+            }
+          } else {
+            try {
+              let response = await this.$auth.loginWith('local', { data: this.form })
+              console.log(response);
+              this.error = response.data.message
+              console.log(this.error)
+              this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
+              this.$auth.setUserToken(response.data.data.original.access_token)
+              .then(response =>{this.$router.push( '/dashboard',)
+              })
+              console.log(this.$auth);
+            } catch (err) {
+              console.log(err);
+              // this.refresh();
+            }
+          }
+      }   
     }
+  
   }
-
-}
-</script>
-
-<style scoped>
-.error-message{
-  border: 1px solid transparent;
-  color: red;
-  font-size: 15px;
-  text-align: center;
-  font-weight: bold;
-  margin-top: 5%;
-
-}
-.input-field {
-    border-radius: 5px;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    color: #4343ff
-}
-
-.divider:after,
-.divider:before {
-content: "";
-flex: 1;
-height: 1px;
-background: #eee;
-}
-.h-custom {
-height: calc(100% - 73px);
-}
-@media (max-width: 450px) {
-.h-custom {
-height: 100%;
-}
-}
-</style>
+  </script>
+  
+  <style scoped>
+  .error-message{
+    border: 1px solid transparent;
+    color: red;
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 5%;
+  
+  }
+  .input-field {
+      border-radius: 5px;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      color: #4343ff
+  }
+  
+  .divider:after,
+  .divider:before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
+  }
+  .h-custom {
+  height: calc(100% - 73px);
+  }
+  @media (max-width: 450px) {
+  .h-custom {
+  height: 100%;
+  }
+  }
+  </style>
