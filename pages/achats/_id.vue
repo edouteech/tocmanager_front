@@ -226,7 +226,8 @@ export default {
 
 <style scoped>
 .app-main__outer{
-  overflow: auto;
+  overflow: auto; 
+  margin: 0 5%;
 }
 
 .commande{

@@ -5,7 +5,30 @@
     </nav>
 
     <div class="app-main__outer p-5">
-      <h4>Liste des fournisseurs</h4>
+      <h4>Liste des fournisseurs</h4><br>
+      <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+          <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
+      </form>
+      <div class="search_result" v-if="this.element_search != ''">
+        <!-- <div >{{result.name}}</div> -->
+        <table class="table table-hover">
+          <tbody>
+           <tr  v-for="(result, j) in results" :key="j" @click="voirFournisseur(result.id)">
+              <td>{{result.name}}</td>
+              <td>{{result.phone}}</td>
+              <td>{{result.balance}}</td>
+              <td>{{result.nature}}</td>
+              <!-- <td><div class="action">
+                <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div><br>
       <NuxtLink  to="/fournisseurs/add_fournisseur"><button class="custom-btn btn-3"><span>Ajouter nouveau fournisseur</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
@@ -63,6 +86,8 @@ export default {
 
   data () {
     return {
+      element_search: '',
+      results: '',
       links: [],
       res_data: null,
       showModal: false,
@@ -81,6 +106,17 @@ export default {
   },
 
   methods: {
+        search(){
+          this.$axios.get('/suppliers',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            search: this.element_search
+          }
+          })
+          .then(response => {console.log(response.data);
+          this.results = response.data.data.data 
+          
+          })
+        },
     
        deleteFournisseur(id){
           console.log(id);

@@ -75,7 +75,7 @@
                     <div class="widget-content-outer">
                         <div class="widget-content-wrapper p-5">
                             <div class="widget-content-left">
-                                <div class="widget-heading">Produits supprimés</div>
+                                <div class="widget-heading fsize-2">Produits supprimés</div>
                             </div>
                         </div>
                     </div>

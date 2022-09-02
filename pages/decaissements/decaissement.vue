@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import Sidebar from '../sidebar.vue'
 export default {
     auth:true,

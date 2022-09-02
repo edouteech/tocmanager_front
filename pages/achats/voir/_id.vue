@@ -74,6 +74,7 @@
 
 
 <script>
+import moment from "moment";
 import Sidebar from '../../sidebar.vue'
 export default {
     layout: "empty",
@@ -229,9 +230,10 @@ export default {
   .print, .caisse {
     display: none !important;
   }
-  nav{
+  nav, footer{
     display: none !important;
   }
+  
 }
 .fa{
   margin: 0 5px;

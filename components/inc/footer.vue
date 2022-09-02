@@ -31,7 +31,7 @@
 
   <!-- Copyright -->
   <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
-    Copyright © 2022 - Tous droits réservés DS
+    Copyright © 2022 - Tous droits réservés TocManager-dS
   </div>
   <!-- Copyright -->
 </footer>

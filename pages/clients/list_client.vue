@@ -2,10 +2,38 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Clients </h3>
+      <div class="bas-page " data-bs-dismiss="offcanvas">
+                    <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
+                    <span class="user_name" data-bs-dismiss="offcanvas">{{$auth.user.name}}</span> 
+                       
+            </div>
     </nav>
     
     <div class="app-main__outer p-5">
-      <h4>Liste des clients</h4>
+      <h4>Liste des clients</h4><br>
+      <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
+      </form>
+      <div class="search_result" v-if="this.element_search != ''">
+        <!-- <div >{{result.name}}</div> -->
+        <table class="table table-hover">
+          <tbody>
+           <tr  v-for="(result, j) in results" :key="j" @click="voirClient(result.id)">
+              <td>{{result.name}}</td>
+              <td>{{result.phone}}</td>
+              <td>{{result.balance}}</td>
+              <td>{{result.nature}}</td>
+              <!-- <td><div class="action">
+                <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div><br>
       <NuxtLink  to="/clients/add_client"><button class="custom-btn btn-3"><span>Ajouter nouveau client</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
@@ -61,6 +89,8 @@ export default {
    data () {
       return {
         res_data: null,
+        element_search: '',
+        results: '',
         showModal: false,
         identifiant1 : "",
         identifiant2 : "",
@@ -78,6 +108,19 @@ export default {
     },
 
     methods: {
+
+        search(){
+          this.$axios.get('/clients',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            search: this.element_search
+          }
+          })
+          .then(response => {console.log(response.data);
+          this.results = response.data.data.data 
+          
+          })
+        },
+        
         deleteClient(id){ console.log(id);
           this.$axios.delete('/clients/' +id)
           .then(response =>  {console.log(response);
@@ -122,6 +165,26 @@ export default {
 </script>
 
 <style scoped>
+/* .bas-page{
+    display: flex;    
+    border: 1px solid rgb(88, 87, 87);
+    padding: 10px;
+} */
+
+.bas-page img{
+    width: 45px;
+    border: 1px solid transparent;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.bas-page .user_name{
+    font-size: 12px;
+    padding: 10px;
+    color: rgb(246, 245, 245);
+    font-weight: bold;
+}
+
 .app-main__outer{
   overflow: auto;
 }

@@ -231,7 +231,8 @@ export default {
 }
 
 .app-main__outer{
-  overflow: auto;
+  overflow: auto; 
+  margin: 0 5%;
 }
 
 .commande{

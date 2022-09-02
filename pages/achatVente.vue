@@ -49,11 +49,11 @@ export default {
   overflow: auto;
 }
 .fa{
-    font-size: 55px;
+    font-size: 35px;
 }
 .case1{
-    margin: 5%;
-    padding: 6% 5%;
+    margin: 5% 25%;
+    padding: 4% 3%;
     border: 2px solid rgb(3, 161, 3);
     cursor: pointer;
     font-size: 14px;
@@ -70,8 +70,8 @@ export default {
     position: absolute;
 }
 .case2{
-    margin: 5%;
-    padding: 6% 5%;
+    margin: 5% 25%;
+    padding: 4% 3%;
     border: 2px solid rgb(240, 54, 41);
     cursor: pointer;
     font-size: 14px;

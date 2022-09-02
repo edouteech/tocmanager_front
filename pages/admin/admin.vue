@@ -94,7 +94,7 @@
                     <div class="row">
                         <div class="col-md-6 col-xl-3 ">
                             <div class="card mb-3 widget-content bg-midnight-bloom">
-                                <div class="widget-content-wrapper text-white p-5">
+                                <div class="widget-content-wrapper text-white p-4">
                                     <div class="widget-content-left">
                                         <div class="widget-heading">Sommes Achats</div>
                                         <div class="widget-subheading">Montant total des achats</div>
@@ -107,7 +107,7 @@
                         </div>
                         <div class="col-md-6 col-xl-3">
                             <div class="card mb-3 widget-content bg-arielle-smile">
-                                <div class="widget-content-wrapper text-white p-5">
+                                <div class="widget-content-wrapper text-white p-4">
                                     <div class="widget-content-left">
                                         <div class="widget-heading">Sommes Ventes</div>
                                         <div class="widget-subheading">Montant total des ventes</div>
@@ -120,7 +120,7 @@
                         </div>
                         <div class="col-md-6 col-xl-3">
                             <div class="card mb-3 widget-content bg-grow-early">
-                                <div class="widget-content-wrapper text-white p-5">
+                                <div class="widget-content-wrapper text-white p-4">
                                     <div class="widget-content-left">
                                         <div class="widget-heading">Sommes Encaissements</div>
                                         <div class="widget-subheading">Montant total des encaissements</div>
@@ -133,7 +133,7 @@
                         </div>
                         <div class="col-md-6 col-xl-3">
                             <div class="card mb-3 widget-content bg-premium-dark">
-                                <div class="widget-content-wrapper text-white p-5">
+                                <div class="widget-content-wrapper text-white p-4">
                                     <div class="widget-content-left">
                                         <div class="widget-heading">Sommes Décaissements</div>
                                         <div class="widget-subheading">Montant total des décaissements </div>

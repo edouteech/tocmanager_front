@@ -250,6 +250,7 @@ export default {
 
 .app-main__outer{
   overflow: auto;
+  margin: 0 5%;
 }
 
 .commande{

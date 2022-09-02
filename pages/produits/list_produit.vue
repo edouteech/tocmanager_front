@@ -5,7 +5,29 @@
     </nav>
 
     <div class="app-main__outer p-5">
-      <h4>Liste des produits dans le magazin</h4>
+      <h4>Liste des produits dans le magazin</h4><br>
+      <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+          <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
+      </form>
+      <div class="search_result" v-if="this.element_search != ''">
+        <!-- <div >{{result.name}}</div> -->
+        <table class="table table-hover">
+          <tbody>
+           <tr  v-for="(result, j) in results" :key="j" @click="voirProduit(result.id)">
+              <td>{{result.name}}</td>
+              <td>{{result.category.name}}</td>
+              <td>{{result.quantity}}</td>
+              <!-- <td><div class="action">
+                <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div><br>
       <NuxtLink  to="/produits/add_produit"><button class="custom-btn btn-3"><span>Ajouter nouveau produit</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
@@ -73,6 +95,8 @@ export default {
 
   data () {
     return {
+      element_search: '',
+      results: '',
       links: [],
       res_data: null,
       showModal: false,

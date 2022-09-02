@@ -80,10 +80,10 @@
                 <div class="visualiser" @click="Visualiser()"><i class="fa fa-eye" aria-hidden="true"></i></div>    
                 </div>  
             </form>       
-            <div class="row">
+            <div class="row mb-5">
                 <div class="col-md-6 col-xl-4">
                     <div class="card mb-3 widget-content bg-midnight-bloom">
-                        <div class="widget-content-wrapper text-white">
+                        <div class="widget-content-wrapper text-white p-4">
                             <div class="widget-content-left">
                                 <div class="widget-heading">Chiffre d'affaire</div>
                                 <div class="widget-subheading">Total des transactions</div>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-md-6 col-xl-4">
                     <div class="card mb-3 widget-content bg-arielle-smile">
-                        <div class="widget-content-wrapper text-white">
+                        <div class="widget-content-wrapper text-white p-4">
                             <div class="widget-content-left">
                                 <div class="widget-heading">Encaissements</div>
                                 <div class="widget-subheading">Somme totale des encaissements</div>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="col-md-6 col-xl-4">
                     <div class="card mb-3 widget-content bg-grow-early">
-                        <div class="widget-content-wrapper text-white">
+                        <div class="widget-content-wrapper text-white p-4">
                             <div class="widget-content-left">
                                 <div class="widget-heading">Décaissements</div>
                                 <div class="widget-subheading">Somme totale des décaissements</div>
@@ -120,7 +120,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
+                <!-- <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
                     <div class="card mb-3 widget-content bg-premium-dark">
                         <div class="widget-content-wrapper text-white">
                             <div class="widget-content-left">
@@ -132,7 +132,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="row">
                 <div class="col-md-12 col-lg-6">
