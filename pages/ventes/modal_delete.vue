@@ -87,12 +87,12 @@
   right: 0;
   display: flex;
   justify-content: center;
-  background-color: #fbc9c9da;
+  background-color: transparent;
 }
 
 .modaler {
   text-align: center;
-  background-color: white;
+  background-color: rgb(253, 167, 121);;
   height: 250px;
   width: 500px;
   margin-top: 12%;

@@ -6,7 +6,7 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des catégories</h4><br>
-      <form class="d-flex" role="search"><input type="file" id="fichier"/> <button class="btn btn-outline-success" type="submit" @click.prevent="importe()">Importer</button></form>
+      <form class="d-flex" role="search"><input type="file" @change="onChange" /> <button class="btn btn-outline-success" type="submit" @click.prevent="importe()">Importer</button></form>
       <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
           <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import readXlsxFile from 'read-excel-file'
 import voirCategorie from './voir_categorie.vue'
 import Sidebar from '../sidebar.vue'
 export default {
@@ -113,15 +114,27 @@ export default {
       }
     },
     methods: {
+      onChange(event) {
+          this.file = event.target.files ? event.target.files[0] : null;
+          console.log(this.file);
+          this.$axios.post('/categories/import',
+          {
+                fichier: this.file
+            }
+            )   
+          .then(response => {console.log(response)
+    //       readXlsxFile(this.file).then((rows) => {
+    //   console.log("rows:", rows)
+    })
+        },
+
         importe(){
-            var file = e.target.files[0].name;
-            alert('Le fichier "' + file + '" a été sélectionné.');
-            
-          console.log(file);
-          this.$axios.post('/categories/import',{params: {
-            fichier
-          }})
-          .then(response => {console.log(response.data);
+            // alert('Le fichier "' + file + '" a été sélectionné.');
+            console.log(this.file.name);
+          this.$axios.post('/categories/import',{
+                fichier: this.file
+            })   
+          .then(response => {console.log(response);
           })
         },
 

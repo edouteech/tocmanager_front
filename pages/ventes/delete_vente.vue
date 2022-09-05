@@ -27,7 +27,7 @@
             <tr  v-for="(vente, i) in ventes" :key="i"
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td>{{vente.date_sell}}</td>
-                <td>{{vente.client_id}}</td>
+                <td>{{vente.client.name}}</td>
                 <td>{{vente.amount}}</td>
                 <td><div class="action">
                     <div class="sup" @click="supVente(vente.id)">Supprimer définitivement</div>

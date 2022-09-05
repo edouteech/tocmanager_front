@@ -27,7 +27,7 @@
             <tbody>
                 <tr  v-for="(achat, i) in achats" :key="i">
                     <td>{{achat.date_buy}}</td>
-                    <td>{{achat.supplier_id}}</td>
+                    <td>{{achat.supplier.name}}</td>
                     <td>{{achat.amount}}</td>
                     <td><div class="action">
                         <div class="sup" @click="supAchat(achat.id)">Supprimer définitivement</div>
