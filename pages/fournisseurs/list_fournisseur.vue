@@ -13,26 +13,37 @@
       <div class="search_result" v-if="this.element_search != ''">
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
+          <thead>
+            <tr class="table-primary" >
+                    <th>Noms</th>
+                    <th>Numéros de téléphone</th>
+                    <th>Emails</th>
+                    <th>Balance</th>
+                    <th>Nature</th>
+                    <th>Actions</th>
+            </tr>
+          </thead>
           <tbody>
            <tr  v-for="(result, j) in results" :key="j" @click="voirFournisseur(result.id)">
               <td>{{result.name}}</td>
               <td>{{result.phone}}</td>
+              <td>{{result.email}}</td>
               <td>{{result.balance}}</td>
               <td>{{result.nature}}</td>
-              <!-- <td><div class="action">
-                <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                </div>
-              </td> -->
+              <td><div class="action">
+                  <div @click="voirFournisseur(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/fournisseurs/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteFournisseur(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  </div>
+                </td>
             </tr>
           </tbody>
         </table>
       </div><br>
       <NuxtLink  to="/fournisseurs/add_fournisseur"><button class="custom-btn btn-3"><span>Ajouter nouveau fournisseur</span></button></NuxtLink>
-        <table class="table table-hover">
+        <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
-            <tr class="table-primary">
+            <tr class="table-primary" >
                     <th>Noms</th>
                     <th>Numéros de téléphone</th>
                     <th>Emails</th>
@@ -59,13 +70,25 @@
             </tbody>
         </table>
         <br><br>
-        <nav aria-label="Page navigation example " v-if="res_data != null">
+        <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
             <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
             
             <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
           </ul>
+          <label class="title">Affichage :</label> 
+          <form action="">
+          <div class="nombre">
+            <!-- -->
+            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+                <option disabled value>10</option>
+                <option value="25" >25</option>
+                <option value="50">50</option>
+                <option value="10">100</option>
+            </select>
+          </div>
+          </form>
         </nav>
  </div><br> 
 <voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance= 'identifiant5' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
@@ -98,7 +121,10 @@ export default {
       identifiant5 : "",
       fournisseurs: [],
       fournisseur: "",
-      compagnie_id: ''
+      compagnie_id: '',
+      form: {
+          nombre: '',
+      }
     }
   },
   mounted () {
@@ -128,7 +154,8 @@ export default {
         refresh(page=1){
           this.$axios.get('/suppliers',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
-            page: page
+            page: page,
+            per_page : this.form.nombre
           }
           })
           .then(response => 
@@ -162,6 +189,19 @@ export default {
 </script>
 
 <style scoped>
+.page{
+    display: flex;    
+}
+
+.nombre{
+  margin: 0 ;
+}
+
+.title{
+  margin: 0.5% 2% 0 10%;
+  font-weight: bold;
+}
+
 .app-main__outer{
   overflow: auto;
 }

@@ -2,10 +2,9 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Clients </h3>
-      <div class="bas-page " data-bs-dismiss="offcanvas">
+            <div class="bas-page " data-bs-dismiss="offcanvas">
                     <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
-                    <span class="user_name" data-bs-dismiss="offcanvas">{{$auth.user.name}}</span> 
-                       
+                    <span class="user_name" data-bs-dismiss="offcanvas">{{$auth.user.name}}</span>                        
             </div>
     </nav>
     
@@ -18,28 +17,40 @@
       <div class="search_result" v-if="this.element_search != ''">
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
+          <thead>
+            <tr class="table-primary">
+                  <th>Noms</th>
+                  <th>Numéros de téléphone</th>
+                  <th>Emails </th>
+                  <th>Balance </th>
+                  <th>Nature</th>
+                  <th>Actions</th>
+            </tr>
+          </thead>
           <tbody>
            <tr  v-for="(result, j) in results" :key="j" @click="voirClient(result.id)">
               <td>{{result.name}}</td>
               <td>{{result.phone}}</td>
+              <td>{{result.email}}</td>
               <td>{{result.balance}}</td>
               <td>{{result.nature}}</td>
-              <!-- <td><div class="action">
-                <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              <td><div class="action">
+                <div @click="voirClient(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/clients/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteClient(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
-              </td> -->
+              </td>
             </tr>
           </tbody>
         </table>
       </div><br>
       <NuxtLink  to="/clients/add_client"><button class="custom-btn btn-3"><span>Ajouter nouveau client</span></button></NuxtLink>
-        <table class="table table-hover">
+        <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
                   <th>Noms</th>
                   <th>Numéros de téléphone</th>
+                  <th>Emails </th>
                   <th>Balance </th>
                   <th>Nature</th>
                   <th>Actions</th>
@@ -49,6 +60,7 @@
            <tr  v-for="(client, i) in clients" :key="i">
               <td>{{client.name}}</td>
               <td>{{client.phone}}</td>
+              <td>{{client.email}}</td>
               <td>{{client.balance}}</td>
               <td>{{client.nature}}</td>
               <td><div class="action">
@@ -61,13 +73,26 @@
           </tbody>
         </table>
     <br><br>
-    <nav aria-label="Page navigation example px-8 " v-if="res_data != null">
+   
+    <nav class="page" aria-label="Page navigation example px-8 " v-if="res_data != null">
       <ul class="pagination">
         <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
         <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
         
         <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
       </ul>
+      <label class="title">Affichage :</label> 
+      <form action="">
+      <div class="nombre">
+        <!-- -->
+        <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+            <option disabled value>10</option>
+            <option value="25" >25</option>
+            <option value="50">50</option>
+            <option value="10">100</option>
+        </select>
+      </div>
+    </form>
     </nav>
     <br> 
   </div>
@@ -100,6 +125,9 @@ export default {
         compagnie_id: '',
         clients: [],
         client: "",
+        form: {
+          nombre: '',
+        }
       }
     },
 
@@ -131,7 +159,8 @@ export default {
         refresh(page=1){
           this.$axios.get('/clients',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
-            page: page
+            page: page,
+            per_page : this.form.nombre
           }
           })
           .then(response => {console.log(response.data);
@@ -165,11 +194,18 @@ export default {
 </script>
 
 <style scoped>
-/* .bas-page{
+.page{
     display: flex;    
-    border: 1px solid rgb(88, 87, 87);
-    padding: 10px;
-} */
+}
+
+.nombre{
+  margin: 0;
+}
+
+.title{
+  margin: 0.5% 2% 0 10%;
+  font-weight: bold;
+}
 
 .bas-page img{
     width: 45px;

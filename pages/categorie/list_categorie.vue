@@ -6,29 +6,37 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des catégories</h4><br>
+      <form class="d-flex" role="search"><input type="file" id="fichier"/> <button class="btn btn-outline-success" type="submit" @click.prevent="importe()">Importer</button></form>
       <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
           <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
       </form>
       <div class="search_result" v-if="this.element_search != ''">
         <table class="table table-hover">
+          <thead>
+            <tr class="table-primary">
+                <th>Noms de Catégorie</th>
+                <th>Catégories parentes</th>
+                <th>Actions</th>
+            </tr>
+          </thead>
           <tbody>
            <tr  v-for="(result, j) in results" :key="j" @click="voirCategorie(result.id)">
               <td>{{result.name}}</td>
               <td v-if="result.parent != null">{{result.parent.name}}</td>
               <td v-else>---</td>
-              <!-- <td><div class="action">
-                <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              <td><div class="action">
+                <div @click="voirCategorie(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/categorie/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteCategorie(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
-              </td> -->
+              </td>
             </tr>
           </tbody>
         </table>
       </div><br>
       <NuxtLink  to="/categorie/add_categorie"><button class="custom-btn btn-3"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
-        <table class="table table-hover">
+        <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
                 <th>Noms de Catégorie</th>
@@ -50,13 +58,25 @@
             </tr>
           </tbody>
         </table><br><br> 
-        <nav aria-label="Page navigation example " v-if="res_data != null ">
+        <nav class="page" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
             <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
             
             <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
           </ul>
+          <label class="title">Affichage :</label> 
+          <form action="">
+          <div class="nombre">
+            <!-- -->
+            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+                <option disabled value>10</option>
+                <option value="25" >25</option>
+                <option value="50">50</option>
+                <option value="10">100</option>
+            </select>
+          </div>
+          </form>
         </nav>
   </div><br>
  <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' v-show="showModal" @close-modal="showModal = false"/>  
@@ -87,9 +107,24 @@ export default {
         compagnie_id: ''  ,
         categories: [],
         categorie: "",
+        form: {
+          nombre: '',
+        }
       }
     },
     methods: {
+        importe(){
+            var file = e.target.files[0].name;
+            alert('Le fichier "' + file + '" a été sélectionné.');
+            
+          console.log(file);
+          this.$axios.post('/categories/import',{params: {
+            fichier
+          }})
+          .then(response => {console.log(response.data);
+          })
+        },
+
         search(){
           this.$axios.get('/categories',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
@@ -113,7 +148,8 @@ export default {
           this.$axios.get('/categories',{
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id'),
-              page: page
+              page: page,
+              per_page : this.form.nombre
             }
           }).then(response =>{console.log(response);
             this.categories = response.data.data.data
@@ -128,8 +164,7 @@ export default {
             this.showModal = true;
             this.$axios.get('/categories/'+ id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id'),
-              page: page
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
           }).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
@@ -153,6 +188,19 @@ export default {
 </script>
 
 <style scoped>
+.page{
+    display: flex;    
+}
+
+.nombre{
+  margin: 0 ;
+}
+
+.title{
+  margin: 0.5% 2% 0 10%;
+  font-weight: bold;
+}
+
 .app-main__outer{
   overflow: auto;
 }

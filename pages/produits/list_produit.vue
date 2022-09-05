@@ -13,26 +13,46 @@
       <div class="search_result" v-if="this.element_search != ''">
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
+          <thead>
+            <tr class="table-primary">
+                    
+                    <th>Nom</th>
+                    <th>Nom de la catégorie</th>
+                    <th>Quantité en stock</th>
+                    <th>Quantité réelle</th>
+                    <th>Prix de vente</th>
+                    <th>Prix d'achat</th>
+                    <!-- <th>Stock minimal</th>
+                    <th>Stock maximal</th> -->
+                    <th>Valorisation du produit</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
           <tbody>
            <tr  v-for="(result, j) in results" :key="j" @click="voirProduit(result.id)">
               <td>{{result.name}}</td>
               <td>{{result.category.name}}</td>
               <td>{{result.quantity}}</td>
-              <!-- <td><div class="action">
-                <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                </div>
-              </td> -->
-            </tr>
-          </tbody>
+              <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="---" autocomplete="off" required><img src="/images/ok.png" alt="logo" srcset="" @click="replaceQuantity(produit.id)"></div></td>
+                <td>{{result.price_sell}}</td>
+                <td>{{result.price_buy}}</td>
+                <!-- <td>{{result.stock_min}}</td>
+                <td>{{result.stock_max}}</td> -->
+                <td>{{result.quantity * result.price_sell}}</td>
+                <td><div class="action">
+                  <div @click="voirProduit(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/produits/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteProduit(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
         </table>
       </div><br>
       <NuxtLink  to="/produits/add_produit"><button class="custom-btn btn-3"><span>Ajouter nouveau produit</span></button></NuxtLink>
-        <table class="table table-hover">
+        <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
-                    
                     <th>Nom</th>
                     <th>Nom de la catégorie</th>
                     <th>Quantité en stock</th>
@@ -68,13 +88,25 @@
             </tbody>
         </table>
    <br><br>
-        <nav aria-label="Page navigation example " v-if="res_data != null">
+        <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
             <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
             
             <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
           </ul>
+          <label class="title">Affichage :</label> 
+          <form action="">
+          <div class="nombre">
+            <!-- -->
+            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+                <option disabled value>10</option>
+                <option value="25" >25</option>
+                <option value="50">50</option>
+                <option value="10">100</option>
+            </select>
+          </div>
+          </form>
         </nav>
   </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
@@ -116,7 +148,10 @@ export default {
       price_sell0: '',      
       price_buy0: '',
       stock_min0: '',
-      stock_max0: ''
+      stock_max0: '',
+      form: {
+          nombre: '',
+      }
 
     }
   },
@@ -126,6 +161,17 @@ export default {
   },
 
   methods: {
+        search(){
+          this.$axios.get('/products',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            search: this.element_search
+          }
+          })
+          .then(response => {console.log(response.data);
+          this.results = response.data.data.data 
+          
+          })
+        },
         deleteProduit(id){
           console.log(id);
           this.$axios.delete('/products/' +id,{
@@ -144,12 +190,13 @@ export default {
         refresh(page=1){
           this.$axios.get('/products',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
-            page: page
+            page: page,
+            per_page : this.form.nombre
           }
           })
           .then(response => 
             {
-              console.log(response.data.data.data);
+              console.log(response.data);
               this.produits = response.data.data.data
               this.res_data= response.data.data
               let firstE = response.data.data.links.shift()
@@ -211,8 +258,19 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.page{
+    display: flex;    
+}
+
+.nombre{
+  margin: 0 ;
+}
+
+.title{
+  margin: 0.5% 2% 0 10%;
+  font-weight: bold;
+}
+.app-main__outer{
   overflow: auto;
 }
 .fa{

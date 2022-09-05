@@ -201,10 +201,11 @@ export default {
 
         recupProduct(){
             this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            is_paginated: 0
           }
-          }).then(response => {console.log(response.data.data.data);
-            this.produits = response.data.data.data}) 
+          }).then(response => {console.log(response.data.data);
+            this.produits = response.data.data}) 
         },
 
         quantityChange(index){
