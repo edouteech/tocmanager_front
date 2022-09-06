@@ -8,7 +8,7 @@
       <Sidebar /><h3 class="name">Tableau De Bord </h3>
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer ">
         <div class="app-main__inner">
             <div class="app-page-title">
                 <div class="page-title-wrapper">
@@ -775,10 +775,13 @@ export default {
 </script>
 
 <style>
+.app-main__outer{
+    padding: 5%;
+}
 
 .range{
   display: flex;
-  border: 1px solid gainsboro;
+  /* border: 1px solid gainsboro; */
   border-radius: 10px;
   padding: 1% 2%;
   margin-bottom: 5%;
@@ -801,6 +804,15 @@ export default {
 
 .range .visualiser:hover{
   background-color: rgb(233, 243, 251);
+}
+
+
+@media screen and (max-width: 900px) {
+.app-main__outer{
+    padding: 3%;
+}
+
+
 }
 
 </style>

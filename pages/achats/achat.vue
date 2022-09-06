@@ -28,7 +28,7 @@
                         <div @click="showModal = true"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur</div>
                     </div>                   
                 </div>
-                <div class="facture-date">
+                <div class="facture-date ">
                    <span class="creation"> Date de création :</span> <input  type="datetime-local" class="form-control"  v-model="form.date_buy"/>                  
                 </div>
             </div> <hr>
@@ -62,7 +62,7 @@
                             <!-- <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
                             <td><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required></td>
-                            <td @click="deleteLine(line.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
+                            <td @click="deleteLine(line)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                         </tr>
                     </tbody>
                 </table>     
@@ -147,7 +147,17 @@ export default {
     methods: {
         addLine(){
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});
-            
+            console.log(this.form.buy_lines)
+        },
+
+        // deleteLine(){
+        //     this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});
+        // },
+        deleteLine(id){
+          console.log(id);
+          console.log(this.form.buy_lines)
+          var newtable = this.form.buy_lines.filter(function(f) { return f !== id });
+          console.log(newtable)
         },
 
         setMessage(payload) {
@@ -160,13 +170,7 @@ export default {
             this.recupProduct()
         },
 
-        deleteLine(id){
-          console.log(id);
-          this.$axios.delete('/suppliers/' +id)
-          .then(response => {console.log(response.data.data);
-            // this.refresh()
-        })                 
-        },
+       
 
         async submit(){
                 await  this.$axios.post('/buys',{

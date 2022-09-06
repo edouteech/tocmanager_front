@@ -6,7 +6,6 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des catégories</h4><br>
-      <form class="d-flex" role="search"><input type="file" @change="onChange" /> <button class="btn btn-outline-success" type="submit" @click.prevent="importe()">Importer</button></form>
       <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
           <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
@@ -58,6 +57,7 @@
             </tr>
           </tbody>
         </table><br><br> 
+        <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br>
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -85,7 +85,6 @@
 </template>
 
 <script>
-import readXlsxFile from 'read-excel-file'
 import voirCategorie from './voir_categorie.vue'
 import Sidebar from '../sidebar.vue'
 export default {
@@ -98,6 +97,7 @@ export default {
 
     data () {
       return {
+        file: '',
         element_search: '',
         results: '',
         links: [],
@@ -114,29 +114,37 @@ export default {
       }
     },
     methods: {
-      onChange(event) {
-          this.file = event.target.files ? event.target.files[0] : null;
-          console.log(this.file);
+        submitFile(){
+          let formData = new FormData();
+          formData.append('fichier', this.file);
+
           this.$axios.post('/categories/import',
-          {
-                fichier: this.file
+            formData,
+            {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              }
             }
-            )   
-          .then(response => {console.log(response)
-    //       readXlsxFile(this.file).then((rows) => {
-    //   console.log("rows:", rows)
-    })
+          ).then(response => {console.log(response);
+            if(response.data.status == "success"){
+              this.refresh()
+              alert("L'importation s'est bien effectuée ...");
+                
+             }else{
+              alert("Echec de l'importation. Veuillez réessayer !!!");
+             }
+            })
+              
         },
 
-        importe(){
-            // alert('Le fichier "' + file + '" a été sélectionné.');
-            console.log(this.file.name);
-          this.$axios.post('/categories/import',{
-                fichier: this.file
-            })   
-          .then(response => {console.log(response);
-          })
+        handleFileUpload(){
+          this.file = this.$refs.file.files[0];
         },
+    
+
+        // importe(){
+        //     alert('Le fichier "' + file + '" a été sélectionné.');
+        // },
 
         search(){
           this.$axios.get('/categories',{params: {
@@ -201,6 +209,7 @@ export default {
 </script>
 
 <style scoped>
+
 .page{
     display: flex;    
 }

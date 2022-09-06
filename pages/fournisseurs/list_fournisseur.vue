@@ -70,6 +70,7 @@
             </tbody>
         </table>
         <br><br>
+    <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br>
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -109,6 +110,7 @@ export default {
 
   data () {
     return {
+      file: '',
       element_search: '',
       results: '',
       links: [],
@@ -132,6 +134,32 @@ export default {
   },
 
   methods: {
+      submitFile(){
+          let formData = new FormData();
+          formData.append('fichier', this.file);
+
+          this.$axios.post('/suppliers/import',
+            formData,
+            {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              }
+            }
+          ).then(response => {console.log(response);
+            if(response.data.status == "success"){
+              this.refresh()
+              alert("L'importation s'est bien effectuée ...");
+                
+             }else{
+              alert("Echec de l'importation. Veuillez réessayer !!!");
+             }
+          })
+        },
+
+        handleFileUpload(){
+          this.file = this.$refs.file.files[0];
+        },
+
         search(){
           this.$axios.get('/suppliers',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),

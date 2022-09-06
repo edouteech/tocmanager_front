@@ -68,8 +68,7 @@ export default {
         this.refresh()
         this.$axios.get('/encaissements/'+ this.$route.params.id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id'),
-              page: page
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
           })
          .then(response => {console.log(response.data.data[0] )
