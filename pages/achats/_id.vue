@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Achats </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Modifier les informations de cet achat</h4><hr>
         <form action="" method="POST">
             <div class="cadre-haut">             
@@ -116,7 +116,7 @@ export default {
           .then(response => {console.log(response.data.data[0] )
             let achat = response.data.data[0];
             // this.categories = response.data.data
-            this.form.date_buy = moment(achat.date_buy).format("YYYY-MM-DThh:mm"),
+            this.form.date_buy = moment(achat.date_buy).format("YYYY-MM-DDThh:mm"),
             this.form.supplier_id = achat.supplier_id,
             this.form.buy_lines = achat.buy_lines,   
             this.form.tax = achat.tax,
@@ -142,7 +142,8 @@ export default {
               amount_received: this.form.amount_received,
               user_id: this.$auth.user.id,
               fournisseur_id: this.form.fournisseur_id,  
-              buy_lines: this.form.buy_lines  
+              buy_lines: this.form.buy_lines,  
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
@@ -224,9 +225,9 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
-  overflow: auto;
+.app-main__outer{
+  overflow: auto; 
+  margin: 0 5%;
 }
 
 .commande{

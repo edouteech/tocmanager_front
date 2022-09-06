@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Décaissements </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Décaissements supprimés</h4>
        <table class="table table-hover">
             <thead>
@@ -77,7 +77,8 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/suppliers')        
+         this.$axios.get('/get/suppliers',{ params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')} })   
         .then(response => {console.log(response.data.data);
             this.fournisseurs = response.data.data.data 
             this.res_data= response.data.data
@@ -88,7 +89,11 @@ export default {
     methods: {
         restaurerFournisseur(id){
             console.log(id);
-            this.$axios.get('/restore/supplier/' +id)         
+            this.$axios.get('/restore/supplier/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })         
             .then(response => {console.log(response);
                 this.fournisseur = response.data.data
                 this.$router.push({path:'/fournisseurs/list_fournisseur',})
@@ -107,10 +112,10 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .action{
     display: flex;
     margin: 0 15%;

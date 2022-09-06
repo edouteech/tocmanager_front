@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Décaissements </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Décaissements supprimés</h4>
        <table class="table table-hover">
           <thead>
@@ -28,7 +28,7 @@
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td>{{decaissement.date}}</td>
                     <td>{{decaissement.montant}}</td>
-                    <td>{{decaissement.supplier_id}}</td>
+                    <td>{{decaissement.supplier.name}}</td>
                     <td><div class="action">
                         <div class="sup" @click="supDecaissement(decaissement.id)">Supprimer définitivement</div>
                         <div class="restore" @click="restaurerDecaissement(decaissement.id)">Restaurer ce décaissement</div></div>
@@ -77,7 +77,8 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/decaissements')        
+         this.$axios.get('/get/decaissements',{ params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')} })          
         .then(response => {console.log(response);
             this.decaissements = response.data.data.data
             this.res_data= response.data.data
@@ -111,10 +112,10 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .action{
     display: flex;
     margin: 0 15%;

@@ -4,10 +4,39 @@
       <Sidebar /><h3 class="name">Catégories de produits </h3>
     </nav>
 
-    <div class="contenu">
-      <h4>Liste des catégories</h4>
-      <NuxtLink  to="/categorie/add_categorie"><button class="custom-btn btn-3"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
+    <div class="app-main__outer p-5">
+      <h4>Liste des catégories</h4><br>
+      <form class="d-flex" role="search"><input type="file" @change="onChange" /> <button class="btn btn-outline-success" type="submit" @click.prevent="importe()">Importer</button></form>
+      <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+          <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
+      </form>
+      <div class="search_result" v-if="this.element_search != ''">
         <table class="table table-hover">
+          <thead>
+            <tr class="table-primary">
+                <th>Noms de Catégorie</th>
+                <th>Catégories parentes</th>
+                <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+           <tr  v-for="(result, j) in results" :key="j" @click="voirCategorie(result.id)">
+              <td>{{result.name}}</td>
+              <td v-if="result.parent != null">{{result.parent.name}}</td>
+              <td v-else>---</td>
+              <td><div class="action">
+                <div @click="voirCategorie(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/categorie/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteCategorie(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div><br>
+      <NuxtLink  to="/categorie/add_categorie"><button class="custom-btn btn-3"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
+        <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
                 <th>Noms de Catégorie</th>
@@ -29,23 +58,34 @@
             </tr>
           </tbody>
         </table><br><br> 
-        <nav aria-label="Page navigation example " v-if="res_data != null ">
+        <nav class="page" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
             <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
             
             <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
           </ul>
+          <label class="title">Affichage :</label> 
+          <form action="">
+          <div class="nombre">
+            <!-- -->
+            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+                <option disabled value>10</option>
+                <option value="25" >25</option>
+                <option value="50">50</option>
+                <option value="10">100</option>
+            </select>
+          </div>
+          </form>
         </nav>
   </div><br>
-
-            <!-- <pre> {{res_data}}</pre> -->
  <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' v-show="showModal" @close-modal="showModal = false"/>  
 
 </div>
 </template>
 
 <script>
+import readXlsxFile from 'read-excel-file'
 import voirCategorie from './voir_categorie.vue'
 import Sidebar from '../sidebar.vue'
 export default {
@@ -58,6 +98,8 @@ export default {
 
     data () {
       return {
+        element_search: '',
+        results: '',
         links: [],
         res_data: null,
         showModal: false,
@@ -66,9 +108,48 @@ export default {
         compagnie_id: ''  ,
         categories: [],
         categorie: "",
+        form: {
+          nombre: '',
+        }
       }
     },
     methods: {
+      onChange(event) {
+          this.file = event.target.files ? event.target.files[0] : null;
+          console.log(this.file);
+          this.$axios.post('/categories/import',
+          {
+                fichier: this.file
+            }
+            )   
+          .then(response => {console.log(response)
+    //       readXlsxFile(this.file).then((rows) => {
+    //   console.log("rows:", rows)
+    })
+        },
+
+        importe(){
+            // alert('Le fichier "' + file + '" a été sélectionné.');
+            console.log(this.file.name);
+          this.$axios.post('/categories/import',{
+                fichier: this.file
+            })   
+          .then(response => {console.log(response);
+          })
+        },
+
+        search(){
+          this.$axios.get('/categories',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            search: this.element_search
+          }
+          })
+          .then(response => {console.log(response.data);
+          this.results = response.data.data.data 
+          
+          })
+        },
+
        deleteCategorie(id){
           console.log(id);
           this.$axios.delete('/categories/' +id)
@@ -80,7 +161,8 @@ export default {
           this.$axios.get('/categories',{
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id'),
-              page: page
+              page: page,
+              per_page : this.form.nombre
             }
           }).then(response =>{console.log(response);
             this.categories = response.data.data.data
@@ -93,7 +175,11 @@ export default {
         
         voirCategorie(id){
             this.showModal = true;
-            this.$axios.get('/categories/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/categories/'+ id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              if(response.data.data[0].parent != null){
                 this.identifiant2 = response.data.data[0].parent.name  
@@ -115,10 +201,23 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.page{
+    display: flex;    
+}
+
+.nombre{
+  margin: 0 ;
+}
+
+.title{
+  margin: 0.5% 2% 0 10%;
+  font-weight: bold;
+}
+
+.app-main__outer{
   overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;

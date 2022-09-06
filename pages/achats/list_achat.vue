@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Achats </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Liste des achats éffectués</h4>
       <NuxtLink  to="/achats/achat"><button class="custom-btn btn-3"><span>Nouvel achat</span></button></NuxtLink>
         <table class="table table-hover">
@@ -73,7 +73,8 @@ export default {
         
         refresh(page=1){
           this.$axios.get('/buys',{params: {
-            page: page}
+            page: page,
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')}
           }).then(response => 
           {
             console.log(response);
@@ -113,11 +114,10 @@ export default {
 
 <style scoped>
 
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
-
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;

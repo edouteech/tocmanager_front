@@ -11,7 +11,7 @@
       <div class="error" v-if="errors['client_id'] != null">{{errors['client_id']}}</div>
     </div>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Enregistrer un encaissement</h4>
         <form action="">
             <div class="form-group col-md-6">
@@ -27,7 +27,7 @@
             <!-- </div> -->
             <div class="form-group col-md-6">
                 <label class="title">Entrer la date de l'encaissement </label>
-                <input type="date" class="form-control" v-model="form.date" autocomplete="off" required placeholder="18-05-1989">
+                <input type="date" class="form-control" v-model="form.date" autocomplete="off" required >
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group ">
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import Sidebar from '../sidebar.vue'
 export default {
     auth:true,
@@ -62,7 +63,7 @@ export default {
             form: {
                 montant: '',
                 facture: '',
-                date: '',
+                date:  moment().format("YYYY-MM-DD"),
                 client_id:'',
                 compagnie_id: ''
             },
@@ -126,10 +127,11 @@ form{
 .btn{
     margin-top: 5%;
 }
-.contenu{
-  margin: 5%;
 
+.app-main__outer{
+  overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;

@@ -10,7 +10,7 @@
       <div class="error" v-if="errors['parent_id'] != null">{{errors['parent_id']}}</div>
     </div>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
          <h4>Informations sur le décaissement</h4><hr><br><br><br>
          <table class="table table-hover">
             <thead>
@@ -64,7 +64,11 @@ export default {
     },
      mounted() {
         // this.refresh()
-        this.$axios.get('/clients/'+ this.$route.params.id)
+        this.$axios.get('/clients/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
           .then(response => {console.log(response.data.data[0] ) ,console.log(response.data.data[0].created_at )
             this.name = response.data.data[0].name,
             this.email = response.data.data[0].email,

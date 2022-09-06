@@ -10,7 +10,7 @@
       <div class="error" v-if="errors['parent_id'] != null">{{errors['parent_id']}}</div>
     </div>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
          <h4>Enregistrer une nouvelle catégorie de produit</h4>
        <form action="">
             <div class="form-group ">
@@ -113,10 +113,11 @@ form{
 .btn{
     margin-top: 5%;
 }
-.contenu{
-  margin: 5%;
 
+.app-main__outer{
+  overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;

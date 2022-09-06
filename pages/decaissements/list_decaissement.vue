@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Décaissements </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Liste des décaissements</h4>
       <NuxtLink  to="/decaissements/decaissement"><button class="custom-btn btn-3"><span>Remplir décaissement</span></button></NuxtLink>
         <table class="table table-hover">
@@ -86,7 +86,7 @@ export default {
           this.$axios.get('/decaissements',
             {
                 params: {
-                    // compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                    compagnie_id: this.$auth.$storage.getUniversal('company_id'),
                     page: page
                 }
             }
@@ -102,7 +102,11 @@ export default {
 
         voirDecaissement(id){
             this.showModal = true;
-            this.$axios.get('/decaissements/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('/decaissements/'+ id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => {console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].montant
              this.identifiant2 = moment(response.data.data[0].date).format("D-MM-YYYY")
              this.identifiant3 = response.data.data[0].supplier.name
@@ -116,8 +120,7 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
 .fa{

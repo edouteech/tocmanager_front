@@ -4,7 +4,8 @@
       <Sidebar /><h3 class="name">Ordres </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
+        <!-- <button @click="generatePdf()" >Print !</button> -->
         <NuxtLink to="/achats/achat">  
             <div class="case1">
                 <i class="fa fa-cart-arrow-down" aria-hidden="true"></i><br><br>        
@@ -23,28 +24,36 @@
 </template>
 
 <script>
+import {jsPDF} from 'jspdf'
 import Sidebar from './sidebar.vue'
 export default {
   layout: "empty",
   components: {
     Sidebar,    
   },
-
+//   data() {
+//         return {
+//              margins : {  top: 80,   bottom: 60, left: 40,  width: 522  }  }
+//     },
+//     methods: {
+//         generatePdf() {
+//             window.print();
+//         }
+//     }
 
 }
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
-
+.app-main__outer{
+  overflow: auto;
 }
 .fa{
-    font-size: 55px;
+    font-size: 35px;
 }
 .case1{
-    margin: 5%;
-    padding: 6% 5%;
+    margin: 5% 25%;
+    padding: 4% 3%;
     border: 2px solid rgb(3, 161, 3);
     cursor: pointer;
     font-size: 14px;
@@ -61,8 +70,8 @@ export default {
     position: absolute;
 }
 .case2{
-    margin: 5%;
-    padding: 6% 5%;
+    margin: 5% 25%;
+    padding: 4% 3%;
     border: 2px solid rgb(240, 54, 41);
     cursor: pointer;
     font-size: 14px;

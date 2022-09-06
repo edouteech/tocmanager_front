@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Produits </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Modifier les informations de ce produit</h4>
         <form action="">
             <div class="form-group col-md-6">
@@ -81,9 +81,11 @@ export default {
 
     mounted() {
         this.refresh()
-        this.$axios
-        .get('/products/'+ this.$route.params.id)
-        .then(response => 
+        this.$axios.get('/products/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => 
         {console.log(response.data.data[0] )
         let produit = response.data.data[0];
         // this.produits = response.data.data        
@@ -96,6 +98,8 @@ export default {
         this.form.stock_max = produit.stock_max
         }
         )
+        
+        
             
     },
 
@@ -144,8 +148,9 @@ form{
 .btn{
     margin-top: 5%;
 }
-.contenu{
-  margin: 5%;
+
+.app-main__outer{
+  overflow: auto;
 }
 
 input {

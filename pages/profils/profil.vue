@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Utilisateurs </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Liste des utilisateurs enregistrés</h4>
       <NuxtLink  to="/profils/add_profil"><button class="custom-btn btn-3"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
         <table class="table table-hover">
@@ -118,10 +118,10 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;

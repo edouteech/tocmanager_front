@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Encaissements </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Encaissements supprimés</h4>
        <table class="table table-hover">
           <thead>
@@ -27,7 +27,7 @@
             <tr  v-for="(encaissement, i) in encaissements" :key="i">
                 <td>{{encaissement.date}}</td>
                 <td>{{encaissement.montant}}</td>
-                <td>{{encaissement.client_id}}</td>
+                <td>{{encaissement.client.name}}</td>
                 <td><div class="action">
                     <div class="sup" @click="supEncaissement(encaissement.id)">Supprimer définitivement</div>
                     <div class="restore" @click="restaurerEncaissement(encaissement.id)">Restaurer cet encaissement</div></div>
@@ -74,7 +74,8 @@ export default {
     },   
 
     mounted () {
-        this.$axios.get('/get/encaissements')        
+        this.$axios.get('/get/encaissements',{ params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')} })          
         .then(response => {console.log(response);
             this.encaissements = response.data.data.data
             this.res_data= response.data.data
@@ -108,10 +109,10 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .action{
     display: flex;
     margin: 0 15%;

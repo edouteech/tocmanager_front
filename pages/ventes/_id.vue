@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Ventes </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Modifier les infomations de cette vente</h4><hr>
         <form action="" method="POST">
             
@@ -119,7 +119,7 @@ export default {
           .then(response => {console.log(response.data.data[0] )
             let vente = response.data.data[0];
             // this.categories = response.data.data
-            this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-DThh:mm"),
+            this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-DDThh:mm"),
             this.form.client_id = vente.client_id,
             this.form.sell_lines = vente.sell_lines,   
             this.form.tax = vente.tax,
@@ -230,9 +230,9 @@ export default {
     border-bottom: 2px solid #605050;
 }
 
-.contenu{
-  margin: 5%;
-  overflow: auto;
+.app-main__outer{
+  overflow: auto; 
+  margin: 0 5%;
 }
 
 .commande{

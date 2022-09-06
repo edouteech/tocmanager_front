@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Ventes </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Ventes supprimées</h4>
        <table class="table table-hover">
           <thead>
@@ -27,7 +27,7 @@
             <tr  v-for="(vente, i) in ventes" :key="i"
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td>{{vente.date_sell}}</td>
-                <td>{{vente.client_id}}</td>
+                <td>{{vente.client.name}}</td>
                 <td>{{vente.amount}}</td>
                 <td><div class="action">
                     <div class="sup" @click="supVente(vente.id)">Supprimer définitivement</div>
@@ -108,10 +108,10 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .action{
     display: flex;
     margin: 0 15%;

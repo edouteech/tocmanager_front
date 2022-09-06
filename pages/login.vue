@@ -113,19 +113,50 @@ export default {
       },
 
       async login() {
-        try {
-          let response = await this.$auth.loginWith('local', { data: this.form })
-          console.log(response);
-          this.error = response.data.message
-          console.log(this.error)
-          this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
-          this.$auth.setUserToken(response.data.data.original.access_token)
-          .then(response =>{this.$router.push( '/dashboard',)
-          })
-          console.log(this.$auth);
-        } catch (err) {
-          console.log(err);
-          // this.refresh();
+        if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
+          try {
+            let response = await this.$auth.loginWith('local', { data: this.form })
+            console.log(response);
+            this.error = response.data.message
+            console.log(this.error)
+            this.$auth.setUserToken(response.data.data.original.access_token)     
+            .then(response =>{this.$router.push( '/admin/admin',)
+            })
+            console.log(this.$auth);
+          } catch (err) {
+            console.log(err);
+            // this.refresh();
+          }       
+          //   .then(response =>{ console.log(response);
+          //     if(response.data.status == "success"){
+          //         this.$router.push({path:'/admin/admin'});
+          //     }
+          //     else{
+          //       this.error = response.data.message
+          //       this.$router.push({path:'/login'});
+          //     } 
+            
+            
+          //   })
+          //   console.log(this.$auth);
+          // } catch (err) {
+          //   console.log(err);
+          // }
+        } else {
+          try {
+            let response = await this.$auth.loginWith('local', { data: this.form })
+            console.log(response);
+            this.error = response.data.message
+            console.log(this.error)
+            this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
+            this.$auth.setUserToken(response.data.data.original.access_token)
+            .then(response =>{this.$router.push( '/dashboard',)
+            })
+            console.log(this.$auth);
+          } catch (err) {
+            console.log(err);
+            // this.refresh();
+          }
         }
     }   
   }

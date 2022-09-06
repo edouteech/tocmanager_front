@@ -1,17 +1,18 @@
 <template>
 <div>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Achats </h3>
     </nav>
 
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
       {{error}} <br>
-      <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
+      <!-- <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
       <div class="error" v-if="errors['supplier_id'] != null">{{errors['supplier_id']}}</div>
-      <div class="error" v-if="errors['date_buy'] != null">{{errors['date_buy']}}</div>
+      <div class="error" v-if="errors['date_buy'] != null">{{errors['date_buy']}}</div> -->
     </div>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Enregistrer un achat</h4><hr>
         <form action="" method="POST">
             <div class="cadre-haut">             
@@ -51,7 +52,8 @@
                     <tbody>
                         <tr v-for="(line, index) in form.buy_lines" :key="index">
                             <td>
-                                <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
+                                <select class="form-control " v-model="line.product_id" id="" @change="productChange">
+                                    <option disabled value="">Choisissez...</option> 
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
                                 </select>
                             </td>
@@ -60,11 +62,11 @@
                             <!-- <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
                             <td><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required></td>
+                            <td @click="deleteLine(line.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                         </tr>
                     </tbody>
                 </table>     
             </div><br>
-            
             <div class="form-group1 col-md-6"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
             <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                 {{amount_error}} 
@@ -92,6 +94,16 @@ import ajoutModal from './ajoutModal.vue'
 import produitModal from './produitModal.vue'
 import Sidebar from '../sidebar.vue'
 export default {
+    // head() {
+    //   return {
+    //     script: [
+    //       {
+    //         src: "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"
+    //       },
+    //     ],
+
+    //   }
+    // },
     layout: "empty",
     auth:true,
     components: {
@@ -114,7 +126,7 @@ export default {
             produits: [],
             form:{
                     user_id: '',
-                    date_buy: moment().format("YYYY-MM-DThh:mm"),
+                    date_buy: moment().format("YYYY-MM-DDThh:mm"),
                     supplier_id: '',
                     amount: '',
                     tax: '0',
@@ -134,7 +146,7 @@ export default {
     
     methods: {
         addLine(){
-            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
+            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});
             
         },
 
@@ -148,6 +160,14 @@ export default {
             this.recupProduct()
         },
 
+        deleteLine(id){
+          console.log(id);
+          this.$axios.delete('/suppliers/' +id)
+          .then(response => {console.log(response.data.data);
+            // this.refresh()
+        })                 
+        },
+
         async submit(){
                 await  this.$axios.post('/buys',{
                     date_buy: this.form.date_buy,
@@ -157,7 +177,8 @@ export default {
                     amount_sent: this.form.amount_sent,
                     user_id: this.$auth.user.id,
                     supplier_id: this.form.supplier_id,  
-                    buy_lines: this.form.buy_lines  
+                    buy_lines: this.form.buy_lines,
+                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
                     }).then(response =>{ 
                         console.log( response ) 
                         this.error = response.data.message
@@ -182,16 +203,17 @@ export default {
                 params: {
                     compagnie_id: this.$auth.$storage.getUniversal('company_id')
                 }
-          }).then(response => {console.log(response);
+          }).then(response => {console.log(response.data.data);
             this.fournisseurs = response.data.data.data})
         },
 
         recupProduct(){
             this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            is_paginated: 0
           }
-          }).then(response => {console.log(response.data.data.data);
-            this.produits = response.data.data.data}) 
+          }).then(response => {console.log(response.data.data);
+            this.produits = response.data.data}) 
         },
 
         quantityChange(index){
@@ -232,14 +254,17 @@ export default {
 </script>
 
 <style scoped>
+/* .list_produit{
+    overflow: scroll;
+} */
 .received {
     border: none; outline: none;
     border-bottom: 2px solid #605050;
 }
 
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
+  margin: 0 5%;
 }
 
 .commande{

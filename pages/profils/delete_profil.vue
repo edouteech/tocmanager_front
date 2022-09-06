@@ -97,7 +97,11 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/profil')        
+         this.$axios.get('/get/profil',{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
         .then(response => {console.log(response.data.data);
             this.users = response.data.data })        
     },
@@ -105,12 +109,16 @@ export default {
     methods: {
         restaurerUser(id){
             console.log(id);
-            this.$axios.get('/restore/profil/' +id)         
-            .then(response => {console.log(response);
+            this.$axios.get('/restore/profil/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => {console.log(response);
                 this.user = response.data.data
                 this.$router.push({path:'/profils/profil',})
                 })         
-        },
+        },         
+            
 
         supClient(id){
             console.log(id); 

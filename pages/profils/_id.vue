@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Utilisateurs </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Modifier les informations de cet utilisateur</h4>
         <form action="">
             <div class="form-group col-md-6">
@@ -58,8 +58,11 @@ export default {
         }
         },
     mounted() {
-        this.$axios.get('/users/'+ this.$route.params.id)
-         .then(response => {console.log(response.data.data[0],console.log(response.data.data[0].password ) )
+        this.$axios.get('/users/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }) .then(response => {console.log(response.data.data[0],console.log(response.data.data[0].password ) )
             let user = response.data.data[0];
             // this.clients = response.data.data
             this.form.name = user.name,
@@ -72,6 +75,7 @@ export default {
         )
             
     },
+        
 
     methods: {
 
@@ -114,8 +118,9 @@ form{
 .btn{
     margin-top: 5%;
 }
-.contenu{
-  margin: 5%;
+
+.app-main__outer{
+  overflow: auto;
 }
 
 input {

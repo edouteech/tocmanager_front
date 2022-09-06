@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Clients </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Clients supprimés</h4>
        <table class="table table-hover">
           <thead>
@@ -76,7 +76,8 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/clients')        
+         this.$axios.get('/get/clients',{ params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')} })       
         .then(response => {console.log(response);
             this.clients = response.data.data.data
             this.res_data= response.data.data
@@ -110,10 +111,10 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .action{
     display: flex;
     margin: 0 15%;

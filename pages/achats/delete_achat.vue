@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Achats </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Factures supprimées</h4>
         <table class="table table-hover">
           <thead>
@@ -27,7 +27,7 @@
             <tbody>
                 <tr  v-for="(achat, i) in achats" :key="i">
                     <td>{{achat.date_buy}}</td>
-                    <td>{{achat.supplier_id}}</td>
+                    <td>{{achat.supplier.name}}</td>
                     <td>{{achat.amount}}</td>
                     <td><div class="action">
                         <div class="sup" @click="supAchat(achat.id)">Supprimer définitivement</div>
@@ -76,7 +76,8 @@ export default {
     },   
 
     mounted () {
-         this.$axios.get('/get/buys')        
+         this.$axios.get('/get/buys',{ params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')} })  
         .then(response => {console.log(response.data.data);
             this.achats = response.data.data.data
             this.res_data= response.data.data 
@@ -105,10 +106,10 @@ export default {
 </script>
 
 <style scoped>
-.contenu{
-  margin: 5%;
+.app-main__outer{
   overflow: auto;
 }
+
 .action{
     display: flex;
     margin: 0 15%;

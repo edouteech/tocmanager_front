@@ -61,8 +61,10 @@ export default {
     },
      mounted() {
         // this.refresh()
-        this.$axios.get('/categories/'+ this.$route.params.id)
-          .then(response => {console.log(response.data.data[0] ) ,console.log(response.data.data[0].created_at )
+        this.$axios.get('/categories/'+ this.$route.params.id,{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+            }).then(response => {console.log(response.data.data[0] ) ,console.log(response.data.data[0].created_at )
             this.name = response.data.data[0].name,
             this.parent = response.data.data[0].parent.name,
             this.created_at = moment(response.data.data[0].created_at).format("YYYY-MM-D")
@@ -70,6 +72,7 @@ export default {
           }        
         )          
     },
+          
 
 }                       
 

@@ -15,7 +15,7 @@
       <div class="error" v-if="errors['stock_max'] != null">{{errors['stock_max']}}</div>
     </div>
   
-    <div class="contenu">
+    <div class="app-main__outer p-5">
       <h4>Enregistrer un nouveau produit </h4>
         <form action="">
             <div class="form-group col-md-6">
@@ -152,10 +152,11 @@ form{
 .btn{
     margin-top: 5%;
 }
-.contenu{
-  margin: 5%;
 
+.app-main__outer{
+  overflow: auto;
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;

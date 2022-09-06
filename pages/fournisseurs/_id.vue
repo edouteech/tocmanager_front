@@ -4,7 +4,7 @@
       <Sidebar /><h3 class="name">Fournisseurs </h3>
     </nav>
 
-    <div class="contenu">
+    <div class="app-main__outer p-5">
         <h4>Modifier les informations de ce fournisseur</h4>
         <form action="">
             <div class="form-group col-md-6">
@@ -63,7 +63,11 @@ export default {
     },
     mounted() {
         this.$axios
-            .get('/suppliers/'+ this.$route.params.id)
+            .get('/suppliers/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
             .then(response => 
         {console.log(response.data.data )
         // this.fournisseurs = response.data.data
@@ -116,8 +120,9 @@ form{
 .btn{
     margin-top: 5%;
 }
-.contenu{
-  margin: 5%;
+
+.app-main__outer{
+  overflow: auto;
 }
 
 input {
