@@ -675,15 +675,15 @@ export default {
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response => {console.log(response.data);
 
-                this.volume_vente  = response.data.data[0][0].volume_vente
-                this.chiffre_affaire = response.data.data[1][0].chiffre_d_affaire
-                this.encaissement = response.data.data[2][0].encaissement
-                this.decaissement = response.data.data[3][0].decaissement
-                this.produits_vendus = response.data.data[4]
-                this.produits_achetes = response.data.data[5]
-                this.dernieres_ventes  = response.data.data[6]
-                this.courbe_vente = response.data.data[7]
-                this.courbe_achat = response.data.data[8]
+           this.volume_vente  = response.data.data.volume_vente
+           this.chiffre_affaire = response.data.data.chiffre_affaire
+           this.encaissement = response.data.data.encaissement
+           this.decaissement = response.data.data.decaissement
+           this.produits_vendus = response.data.data.produts_most_sell
+           this.produits_achetes = response.data.data.produts_most_buy
+           this.dernieres_ventes  = response.data.data.ventes
+           this.courbe_vente = response.data.data.sell_10_last_days
+           this.courbe_achat = response.data.data.buys_10_last_days
 
 
                 var VV = this.volume_vente
