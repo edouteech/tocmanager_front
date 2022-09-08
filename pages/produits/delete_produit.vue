@@ -41,15 +41,29 @@
                     </tr>
                     
                 </tbody>
-            </table><br><br> 
-            <nav aria-label="Page navigation example " v-if="res_data != null">
+            </table>
+    <p class="text-center"><strong>{{total}} produits au total </strong></p><hr class="text-primary">
+        <br><br> 
+            <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
                 <ul class="pagination">
                     <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
                     <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
                     
                     <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
                 </ul>
+                <form action="">
+                    <div class="nombre d-flex">
+                        <label class="title mx-5 my-2"><strong> Affichage:</strong></label> 
+                        <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+                            <option disabled value>10</option>
+                            <option value="25" >25</option>
+                            <option value="50">50</option>
+                            <option value="10">100</option>
+                        </select>
+                    </div>
+                </form>
             </nav>
+
     </div><br>
 <deleteModal :infos= 'identifiant' v-show="showModal" @close-modal="showModal = false"/>
 
@@ -76,17 +90,23 @@ export default {
             produit: "",
             identifiant : "0",
             produits: [],
+            total: '',
+            form: {
+                nombre: '',
+            }
         }
     },   
 
     mounted () {
          this.$axios.get('/get/products',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
-            // page: page
-          }})                
+            // page: page,
+            per_page : this.form.nombre }   
+          })        
         .then(response => {console.log(response.data.data);
             this.produits = response.data.data.data
             this.res_data= response.data.data 
+            this.total = response.data.data.total
             let firstE = response.data.data.links.shift()
             let lastE = response.data.data.links.splice(-1,1);})        
     },

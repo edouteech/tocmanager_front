@@ -63,6 +63,7 @@
                             <!-- <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
                             <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                         </tr>
                     </tbody>
                 </table>     
@@ -71,7 +72,7 @@
             <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                 {{amount_error}} 
             </div> <br><br><br><br>
-            <button class="custom-btn btn-9" v-on:click.prevent="submit()">Enregistrer la facture pour {{this.form.amount}}</button>
+            <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
             
             
             <!-- <div class="submit">
@@ -123,7 +124,7 @@ export default {
                     amount: '',
                     tax: '0',
                     discount: '0',
-                    amount_received: '',
+                    amount_received: '0',
                     sell_lines: []          
                 },
             errors: [],
@@ -146,6 +147,11 @@ export default {
     methods: {
         addLine(){
             this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});           
+        },
+
+        deleteLine(index){
+          console.log(index);
+          this.form.sell_lines.splice(index, 1)
         },
 
         setMessage(payload) {
@@ -445,42 +451,47 @@ button {
   outline: none;
 }
 
-/* 9 */
-.btn-9 {
+/* 5 */
+.btn-5 {
+  /* width: 130px;
+  height: 40px; */
+  line-height: 42px;
+  padding: 20px ;
   border: none;
-  transition: all 0.3s ease;
-  overflow: hidden;
+  background: rgb(121, 161, 255);
+background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%);
 }
-.btn-9:after {
-  position: absolute;
-  content: " ";
-  z-index: -1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-   background-color: #1fd1f9;
-background-image: linear-gradient(315deg, #1fd1f9 0%, #b621fe 74%);
-  transition: all 0.3s ease;
-}
-.btn-9:hover {
+.btn-5:hover {
+  color: #0909f0;
   background: transparent;
-  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
-              -4px -4px 6px 0 rgba(116, 125, 136, .2), 
-    inset -4px -4px 6px 0 rgba(255,255,255,.5),
-    inset 4px 4px 6px 0 rgba(116, 125, 136, .3);
-  color: #fff;
+   box-shadow:none;
 }
-.btn-9:hover:after {
-  -webkit-transform: scale(2) rotate(180deg);
-  transform: scale(2) rotate(180deg);
-  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
-              -4px -4px 6px 0 rgba(116, 125, 136, .2), 
-    inset -4px -4px 6px 0 rgba(255,255,255,.5),
-    inset 4px 4px 6px 0 rgba(116, 125, 136, .3);
+.btn-5:before,
+.btn-5:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: rgb(121, 161, 255);
+  box-shadow:
+   -1px -1px 5px 0px #fff,
+   7px 7px 20px 0px #0003,
+   4px 4px 5px 0px #0002;
+  transition:400ms ease all;
 }
-
-
+.btn-5:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.btn-5:hover:before,
+.btn-5:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
 @media screen and (max-width: 900px) {
     .cadre-haut{
         display: inline;

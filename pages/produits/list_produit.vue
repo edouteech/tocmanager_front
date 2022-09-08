@@ -29,11 +29,11 @@
                 </tr>
             </thead>
           <tbody>
-           <tr  v-for="(result, j) in results" :key="j" @click="voirProduit(result.id)">
+           <tr  v-for="(result, j) in results" :key="j">
               <td>{{result.name}}</td>
               <td>{{result.category.name}}</td>
               <td>{{result.quantity}}</td>
-              <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="---" autocomplete="off" required><img src="/images/ok.png" alt="logo" srcset="" @click="replaceQuantity(produit.id)"></div></td>
+              <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(produit.id)"></i></div></td>
                 <td>{{result.price_sell}}</td>
                 <td>{{result.price_buy}}</td>
                 <!-- <td>{{result.stock_min}}</td>
@@ -72,7 +72,7 @@
                 <td>{{produit.name}}</td>
                 <td>{{produit.category.name}}</td>
                 <td>{{produit.quantity}}</td>
-                <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="---" autocomplete="off" required><img src="/images/ok.png" alt="logo" srcset="" @click="replaceQuantity(produit.id)"></div></td>
+                <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(produit.id)"></i></div></td>
                 <td>{{produit.price_sell}}</td>
                 <td>{{produit.price_buy}}</td>
                 <!-- <td>{{produit.stock_min}}</td>
@@ -87,6 +87,7 @@
               </tr>
             </tbody>
         </table>
+        <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
    <br><br>
     <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br>
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
@@ -128,6 +129,7 @@ export default {
 
   data () {
     return {
+      total: '',
       file: '',
       element_search: '',
       results: '',
@@ -227,6 +229,7 @@ export default {
               console.log(response.data);
               this.produits = response.data.data.data
               this.res_data= response.data.data
+              this.total = response.data.data.total;
               let firstE = response.data.data.links.shift()
               let lastE = response.data.data.links.splice(-1,1);
             }
@@ -302,7 +305,7 @@ export default {
   overflow: auto;
 }
 .fa{
-  margin: 0 5px;
+  margin: 5px 10px;
   font-size: 22px;
   cursor: pointer;
 }
@@ -315,20 +318,9 @@ export default {
   display: flex;
 }
 
-.replace img{
-  width: 30%;
-  cursor: pointer;
-}
-
 .controler{
   width: 15%;
 }
-.replace input{
-  margin-left: 2%;
-}
-/* .replace_button{
-  width: 20%;
-} */
 
 thead tr{
     background-color: transparent;
@@ -343,8 +335,8 @@ tbody tr:last-of-type{
 }
 
 .custom-btn {
-  width: 180px;
-  height: 40px;
+  /* width: 180px;
+  height: 40px; */
   color: #fff;
   border-radius: 5px;
   padding: 10px 25px;
@@ -432,12 +424,11 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 
 
 @media screen and (max-width: 600px) {
-  .replace img{
-  width: 40%;;
-}
-.replace input{
-  margin-left: 0;
-}
+
+  .replace i{
+    margin: 5px 2px;
+    font-size: 20px;
+  }
 
 }
 </style>

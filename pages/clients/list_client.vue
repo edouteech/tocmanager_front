@@ -57,7 +57,7 @@
             </tr>
           </thead>
           <tbody>
-           <tr  v-for="(client, i) in clients" :key="i">
+           <tr  v-for="(client, i) in clients" :key="i" @click="voirClient(client.id)">
               <td>{{client.name}}</td>
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
@@ -72,6 +72,7 @@
             </tr>
           </tbody>
         </table>
+        <p class="text-center"><strong>{{total}} client(s) au total </strong></p><hr class="text-primary">
     <br><br>
     <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br>
     <nav class="page" aria-label="Page navigation example px-8 " v-if="res_data != null">
@@ -113,6 +114,7 @@ export default {
   },
    data () {
       return {
+        total: '',
         file: '',
         res_data: null,
         element_search: '',
@@ -190,6 +192,7 @@ export default {
           })
           .then(response => {console.log(response.data);
           this.clients = response.data.data.data 
+          this.total = response.data.data.total;
           this.res_data= response.data.data
           // this.links = response.data.data.links
           let firstE = response.data.data.links.shift()
@@ -274,8 +277,8 @@ tbody tr:last-of-type{
 }
 
 .custom-btn {
-  width: 180px;
-  height: 40px;
+  /* width: 180px;
+  height: 40px; */
   color: #fff;
   border-radius: 5px;
   padding: 10px 25px;

@@ -4,6 +4,12 @@
       <Sidebar /><h3 class="name">Achats </h3>
     </nav>
 
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+      <!-- <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
+      <div class="error" v-if="errors['supplier_id'] != null">{{errors['supplier_id']}}</div>
+      <div class="error" v-if="errors['date_buy'] != null">{{errors['date_buy']}}</div> -->
+    </div>
     <div class="app-main__outer p-5">
         <h4>Modifier les informations de cet achat</h4><hr>
         <form action="" method="POST">
@@ -51,14 +57,20 @@
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
                             <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                    
                             <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                         </tr>
                     </tbody>
                 </table>     
             </div><br>
-            <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="num" v-model="form.amount_sent"  autocomplete="off"  required></div>
-            <div class="submit">
-                <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer la facture" name="submit">		          
-            </div>  
+            <div class="form-group1 col-md-6"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+            <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
+                {{amount_error}} 
+            </div>  -->
+            <br><br><br><br><br>
+            <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+            <!-- <div class="submit">
+                <input type="submit" id='submit'  value="Enregistrer la facture " name="submit">{{this.form.amount}}		          
+            </div>   -->
     
         </form>
     </div>
@@ -101,11 +113,11 @@ export default {
                 amount: '',
                 tax: '0',
                 discount: '0',
-                amount_sent: '',
+                amount_sent: '0',
                 buy_lines: []          
                 },
-            error_message: "",
-            error_champ: [],
+            errors: [],
+            error: null,
         }
     },
 
@@ -131,6 +143,11 @@ export default {
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
             
         },
+
+        deleteLine(index){
+          console.log(index);
+          this.form.buy_lines.splice(index, 1)
+        },
         
         submit(){
            this.$axios.put('/buys/' +this.$route.params.id,{
@@ -139,32 +156,20 @@ export default {
               tax: this.form.tax,
               discount: this.form.discount,
               amount: this.form.amount,
-              amount_received: this.form.amount_received,
+              amount_sent: this.form.amount_sent,
               user_id: this.$auth.user.id,
-              fournisseur_id: this.form.fournisseur_id,  
+              supplier_id: this.form.supplier_id,  
               buy_lines: this.form.buy_lines,  
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
-                if(this.form.amount_sent != 0){
-                    this.$axios.put('/decaissements',{
-                        montant: this.form.amount_sent,
-                        date: this.form.date_buy,
-                        supplier_id: this.form.supplier_id,
-                        user_id: this.$auth.user.id,
-                        compagnie_id: this.$auth.$storage.getUniversal('company_id')
-                        }) .then(response => {console.log(response);
-                        
-                        this.$router.push({path:'/encaissements/list_encaissement', })
-                    })
-                    
+                if(response.data.status == 'success'){
+                    this.$router.push({path:'/ventes/list_vente'})
                 }
                 else{
-                    
-                    this.$router.push({path:'/encaissements/list_encaissement', })
-                    // this.$router.push({path:'/categorie/add_client'});
+                    this.error = response.data.message
                 }
              }).catch( err => console.log( err ) )
                       
@@ -181,10 +186,12 @@ export default {
 
         recupProduct(){
             this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            is_paginated: 0
             }
-            }).then(response => {console.log(response.data.data.data);
-            this.produits = response.data.data.data}) 
+            }).then(response => {
+                // console.log(response.data.data.data);
+            this.produits = response.data.data}) 
         },
 
         quantityChange(index){
@@ -204,7 +211,7 @@ export default {
                 let index = e.target.options[e.target.options.selectedIndex].dataset.index;
                 let product = this.produits[i];
                 let line = this.form.buy_lines[index]
-                line.price = product.price_sell;
+                line.price = product.price_buy;
                 line.amount = Number(line.price) * Number(line.quantity);
                     
                 
@@ -389,6 +396,87 @@ tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
 }
 
+button {
+  margin: 25px;
+  
+}
 
+.custom-btn {
+  /* width: 130px;
+  height: 40px; */
+  color: #fff;
+  border-radius: 5px;
+  padding: 20px 35px;
+  font-weight: bold;
+  font-size: 20px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+
+/* 5 */
+.btn-5 {
+  /* width: 130px;
+  height: 40px; */
+  line-height: 42px;
+  padding: 20px ;
+  border: none;
+  background: rgb(121, 161, 255);
+background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%);
+}
+.btn-5:hover {
+  color: #0909f0;
+  background: transparent;
+   box-shadow:none;
+}
+.btn-5:before,
+.btn-5:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: rgb(121, 161, 255);
+  box-shadow:
+   -1px -1px 5px 0px #fff,
+   7px 7px 20px 0px #0003,
+   4px 4px 5px 0px #0002;
+  transition:400ms ease all;
+}
+.btn-5:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.btn-5:hover:before,
+.btn-5:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+
+@media screen and (max-width: 900px) {
+    .cadre-haut{
+        display: inline;
+    }
+
+    .ajout-client{
+        margin-right: 0;
+        margin: 10px 5px;
+        border: 1px solid darkblue;
+        padding: 50px ;
+    }
+
+    .table{
+        overflow: auto;
+    }
+}
 </style>
 

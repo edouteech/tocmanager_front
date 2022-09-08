@@ -28,12 +28,12 @@
                         <option value="1">Entreprise</option>
                     </select>
                 </div>
-                <div v-if="error != null" class="submit-form" @click="$emit('close-modal')">
+                <div class="submit-form" @click="$emit('close-modal')">
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
                 </div>
-                <div v-else class="submit-form">
+                <!-- <div v-else class="submit-form">
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
-                </div>
+                </div> -->
             </form>
     </div>
     <div class="close" @click="$emit('close-modal')">
@@ -80,12 +80,15 @@
                 console.log(this.error)
                 this.errors = response.data.data
                   if(this.status == 'success'){
+                    alert('Nouveau client ajouté avec succès');
                       this.form.name = '',
                       this.form.phone = '',
                       this.form.email = '',
+                      this.form.nature = '',
                       this.status = response.data.status
                   }
                   else{
+                    alert("Echec lors de l'ajout du client ! Veuillez réessayer.");
                     this.status = response.data.status
                       this.errors = response.data.data
                       // this.$router.push({path:'/categorie/add_client'});

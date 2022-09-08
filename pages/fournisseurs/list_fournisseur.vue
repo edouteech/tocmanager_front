@@ -54,7 +54,7 @@
             </thead>
           
             <tbody>
-              <tr  v-for="(fournisseur, i) in fournisseurs" :key="i">
+              <tr  v-for="(fournisseur, i) in fournisseurs" :key="i" @click="voirFournisseur(fournisseur.id)">
                 <td>{{fournisseur.name}}</td>
                 <td>{{fournisseur.phone}}</td>
                 <td>{{fournisseur.email}}</td>
@@ -69,6 +69,8 @@
               </tr>
             </tbody>
         </table>
+        <p class="text-center"><strong>{{total}} fournisseur(s) au total </strong></p><hr class="text-primary">
+    
         <br><br>
     <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br>
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
@@ -110,6 +112,7 @@ export default {
 
   data () {
     return {
+      total: '',
       file: '',
       element_search: '',
       results: '',
@@ -189,7 +192,9 @@ export default {
           .then(response => 
             {
               console.log(response);
+              this.total = response.data.data.total;
               this.fournisseurs = response.data.data.data
+
               this.res_data= response.data.data
               let firstE = response.data.data.links.shift()
               let lastE = response.data.data.links.splice(-1,1);
@@ -202,7 +207,8 @@ export default {
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
-          }).then(response => {console.log(response.data.data[0]);
+          }).then(response => {
+            console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email
@@ -258,8 +264,8 @@ tbody tr:last-of-type{
 }
 
 .custom-btn {
-  width: 220px;
-  height: 40px;
+  /* width: 220px;
+  height: 40px; */
   color: #fff;
   border-radius: 5px;
   padding: 10px 25px;

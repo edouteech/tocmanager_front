@@ -44,7 +44,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr  v-for="(categorie, i) in categories" :key="i">
+            <tr  v-for="(categorie, i) in categories" :key="i" @click="voirCategorie(categorie.id)">
               <td>{{categorie.name}}</td>
               <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
               <td v-else>---</td>
@@ -56,9 +56,11 @@
               </td>
             </tr>
           </tbody>
-        </table><br><br> 
+        </table>
+        <p class="text-center"><strong>{{total}} catégorie(s) au total </strong></p><hr class="text-primary">
+        <br><br> 
         <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br>
-        <nav class="page" aria-label="Page navigation example " v-if="res_data != null ">
+        <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
             <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
@@ -97,6 +99,7 @@ export default {
 
     data () {
       return {
+        total: '',
         file: '',
         element_search: '',
         results: '',
@@ -175,6 +178,7 @@ export default {
           }).then(response =>{console.log(response);
             this.categories = response.data.data.data
             this.res_data= response.data.data
+            this.total = response.data.data.total;
             let firstE = response.data.data.links.shift()
             let lastE = response.data.data.links.splice(-1,1);
             })     
@@ -209,10 +213,6 @@ export default {
 </script>
 
 <style scoped>
-
-.page{
-    display: flex;    
-}
 
 .nombre{
   margin: 0 ;
@@ -251,8 +251,8 @@ tbody tr:last-of-type{
 }
 
 .custom-btn {
-  width: 200px;
-  height: 40px;
+  /* width: 200px;
+  height: 40px; */
   color: #fff;
   border-radius: 5px;
   padding: 10px 25px;

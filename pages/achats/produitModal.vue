@@ -38,12 +38,12 @@
             <div class="input-form"> 
                 <input type="number" placeholder="Entrer le stock maximal " v-model="form.stock_max" autocomplete="off" id="max" required>
             </div>
-            <div v-if="error != null" class="submit-form" @click="$emit('close-modal')">
+            <div class="submit-form" @click="$emit('close-modal')">
                 <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
             </div>
-            <div v-else class="submit-form">
+            <!-- <div v-else class="submit-form">
                 <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
-            </div>
+            </div> -->
 
         </form>
     </div>
@@ -100,6 +100,7 @@
                 this.status = response.data.status
                 this.errors = response.data.data
                 if(this.status == 'success'){
+                  alert('Nouveau produit ajouté avec succès');
                     this.form.category_id = '',
                     this.form.name = '',
                     this.form.quantity = '',
@@ -109,6 +110,7 @@
                     this.form.stock_max = ''
                 }
                 else{
+                  alert("Echec lors de l'ajout du produit ! Veuillez réessayer.");
                   this.status = response.data.status
                     this.errors = response.data.data
                     // this.$router.push({path:'/categorie/add_client'});
