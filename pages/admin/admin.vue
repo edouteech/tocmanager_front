@@ -155,7 +155,7 @@
                                             <div class="widget-subheading">Nombre d'utilisateurs connectés</div>
                                         </div>
                                         <div class="widget-content-right">
-                                            <div class="widget-numbers text-danger">{{buys}}</div>
+                                            <div class="widget-numbers text-danger">{{users}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -351,8 +351,8 @@
           montant_encaissements: '',
           montant_decaissements: '',
           form:{
-            date_debut: moment().format("yyyy-MM-D"),
-            date_fin: moment().format("yyyy-MM-D")
+            date_debut: "",
+            date_fin: ""
           }
         }
           
