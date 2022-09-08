@@ -24,7 +24,7 @@
                 </li>
               </div>
               <li>
-                  <NuxtLink to="/admin" data-bs-dismiss="offcanvas">
+                  <NuxtLink to="/admin/admin" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-th-large" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
                           <span class="links_name" data-bs-dismiss="offcanvas">Tableau de bord</span>
@@ -117,10 +117,10 @@
                   </NuxtLink>
               </li>
               <li>
-                  <NuxtLink to="/admin/compagnies/list_compagnie">
-                      <div class="rubrique">
-                          <i class="fa fa-briefcase" aria-hidden="true"></i>
-                          <span class="links_name">Compagnies</span>
+                  <NuxtLink to="/admin/compagnies/list_compagnie" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-briefcase" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Compagnies</span>
                       </div>
                   </NuxtLink>
               </li>

@@ -24,6 +24,25 @@
               <td>{{rest}}</td>
             </tr>
           </tbody>
+        </table>  <br><br> 
+        <h5><p class="text-center">Listes des produits de la facture</p></h5>
+        <table class="facture table table-hover ">
+          <thead>
+            <tr class="table-success">
+              <th>Nom du produit</th>
+              <th>Quantité </th>
+              <th>Prix unitaire </th>
+              <th>Total (Quantité * Prix unitaire)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(facture, j) in factures" :key="j">
+              <td>{{facture.product.name}}</td>
+              <td>{{facture.quantity}}</td>
+              <td>{{facture.price}}</td>
+              <td>{{facture.amount}}</td>
+            </tr>
+          </tbody>
         </table>  <br><br> <hr>
         <div class="caisse" v-if="rest > 0">
           <h4>Ajouter des décaissements pour cette facture</h4><br><br>
@@ -42,7 +61,7 @@
                     <button type="submit" class="btn btn-success" @click.prevent="submit()">Ajouter ...</button>          
                 </form>  <br><br><hr>
         </div>
-        <div>
+        <div class="decaissement">
           <h4>Liste des décaissements pour cette facture</h4>
           <table class="table table-hover">
             <thead>
@@ -94,6 +113,7 @@ export default {
         rest: '',
         number : 0,
         decaissements: [],
+        factures: [],
         form: {
             date:  moment().format("YYYY-MM-DD"),
             montant: '',
@@ -111,6 +131,7 @@ export default {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
         }).then(response => {console.log(response.data.data);
+        this.factures = response.data.data[0].buy_lines,
         this.date_buy = response.data.data[0].date_buy,
         this.supplier = response.data.data[0].supplier,
         this.montant = response.data.data[0].amount,
@@ -227,7 +248,7 @@ export default {
   /* .navbar {
     display: none !important;
   } */
-  .print, .caisse {
+  .print, .caisse, .decaissement {
     display: none !important;
   }
   nav, footer{
@@ -254,6 +275,10 @@ thead tr{
 
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
+}
+
+.facture tbody tr:last-of-type{
+  border-bottom: 2px solid rgb(140, 250, 149);
 }
 .action{
    display: flex;
