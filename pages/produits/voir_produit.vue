@@ -6,7 +6,7 @@
                 <thead>
                   <tr class="table-success">
                         <th>A savoir</th>
-                        <th>Client</th>
+                        <th>Produit</th>
                         
                   </tr>
                 </thead>

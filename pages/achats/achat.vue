@@ -202,10 +202,11 @@ export default {
             this.$axios.get('/suppliers',
             {
                 params: {
-                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                    compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+                    is_paginated: 0
                 }
           }).then(response => {console.log(response.data.data);
-            this.fournisseurs = response.data.data.data})
+            this.fournisseurs = response.data.data})
         },
 
         recupProduct(){

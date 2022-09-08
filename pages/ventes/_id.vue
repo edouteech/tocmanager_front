@@ -141,8 +141,7 @@ export default {
     
     methods: {
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
-            
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});   
         },
 
         deleteLine(index){

@@ -4,55 +4,10 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     
-    <nav class="navbar navbar-expand-lg bg-white shadow p-3">
-        <div class="container">
-                <img src="/images/logo.png" class="logo-img" alt="">
-            
-            <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon "></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- <ul class="navbar-nav ms-auto mb-2 mb-lg-0"></ul> -->
-            <ul class="navbar-nav m-auto mb-2 mb-lg-0">
-                <li class="nav-item mx-4">
-                    <NuxtLink to="/login" class="nav-link fsize-2">Tableau de Bord</NuxtLink>
-                </li>
-                <li class="nav-item mx-4">
-                    <NuxtLink to="/" class="nav-link fsize-2 ">Produits</NuxtLink>
-                </li>
-                <li class="nav-item mx-4">
-                    <NuxtLink to="/" class="nav-link fsize-2">Nos Services</NuxtLink>
-                </li>
-                <div class="bas-page mx-5">
-                    <div class="custom-btn btn-5" @click="logout" data-bs-dismiss="offcanvas">
-                    <!-- <i class='bx bx-log-out'></i> -->
-                    Déconnexion</div>    
-                </div>
-                <!-- <li class="nav-item">
-                    <NuxtLink to="/contact" class="nav-link">Contact Us</NuxtLink>
-                </li> -->
-                <!-- <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Autres
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Contactez nous</a></li>
-                    <li><a class="dropdown-item" href="#">A propos de nous</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Aide</a></li>
-                </ul>
-                </li> -->
-                <!-- <li class="nav-item">
-                <a class="nav-link disabled">Disabled</a>
-                </li> -->
-            </ul>
-            <!-- <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form> -->
-            </div>
-        </div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+      <Sidebar /><h3 class="name">Achats </h3>
     </nav>
+
         <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">  
             <div class="app-main__outer p-5">
                 <div class="app-main__inner">
@@ -314,6 +269,7 @@
     
     <script>
     import moment from "moment";
+    import Sidebar from './sidebar.vue'
     import Chart from 'chart.js/auto';
     export default {
         // head() {
@@ -334,6 +290,9 @@
         // },
         layout: "empty",
         auth:true,
+        components:{
+            Sidebar,
+        },
         data (){
         return{
           users: '',
