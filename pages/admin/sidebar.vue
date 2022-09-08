@@ -117,7 +117,7 @@
                   </NuxtLink>
               </li>
               <li>
-                  <NuxtLink to="/compagnies/list_compagnie">
+                  <NuxtLink to="/admin/compagnies/list_compagnie">
                       <div class="rubrique">
                           <i class="fa fa-briefcase" aria-hidden="true"></i>
                           <span class="links_name">Compagnies</span>
