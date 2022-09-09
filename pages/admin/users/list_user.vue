@@ -14,22 +14,22 @@
                       <th>Numéros de téléphone</th>
                       <th>Emails</th>
                       <th>Pays</th>
-                      <th>Actions</th>
+                      <!-- <th>Actions</th> -->
                   </tr>
               </thead>
             
               <tbody>
-                <tr  v-for="(profil, i) in profils" :key="i">
+                <tr  v-for="(profil, i) in profils" :key="i"  @click="voirProfil(profil.id)">
                   <td>{{profil.name}}</td>
                   <td>{{profil.phone}}</td>
                   <td>{{profil.email}}</td>
                   <td>{{profil.country}}</td>
-                  <td><div class="action">
+                  <!-- <td><div class="action">
                         <div @click="voirProfil(profil.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                        <!-- <NuxtLink :to="'/profils/'+profil.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink> -->
-                        <!-- <div @click="deleteProfil(profil.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div> -->
+                        <NuxtLink :to="'/profils/'+profil.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                        <div @click="deleteProfil(profil.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                       </div>
-                  </td>
+                  </td> -->
                 </tr>
               </tbody>
           </table>

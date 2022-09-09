@@ -154,12 +154,11 @@
             // },
     
             search(){
-              this.$axios.get('/categories',{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+              this.$axios.get('/admin/categories',{params: {
                 search: this.element_search
               }
               })
-              .then(response => {console.log(response.data);
+              .then(response => {console.log(response.data.data.data);
               this.results = response.data.data.data 
               
               })

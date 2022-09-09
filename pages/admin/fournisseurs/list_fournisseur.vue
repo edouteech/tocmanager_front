@@ -167,8 +167,7 @@
             },
     
             search(){
-              this.$axios.get('/suppliers',{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+              this.$axios.get('/admin/suppliers',{params: {
                 search: this.element_search
               }
               })

@@ -198,7 +198,6 @@
             
             search(){
               this.$axios.get('/admin/products',{params: {
-                // compagnie_id: this.$auth.$storage.getUniversal('company_id'),
                 search: this.element_search
               }
               })
