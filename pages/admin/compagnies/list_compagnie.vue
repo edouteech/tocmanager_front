@@ -42,6 +42,7 @@
                         <th>Noms</th>
                         <th>Numéros de téléphone</th>
                         <th>Emails</th>
+                        <th>Actions</th>
                   </tr>
                 </thead>
               
@@ -50,6 +51,9 @@
                     <td>{{compagnie.name}}</td>
                     <td>{{compagnie.phone}}</td>
                     <td>{{compagnie.email}}</td>
+                    <td class="text-center"><NuxtLink :to="'/admin/compagnies/'+compagnie.id">
+                        <button type="button" id="PopoverCustomT-1" class="btn btn-success btn-sm">Details</button></NuxtLink>
+                    </td>
                     <!-- <td><div class="action">
                       <div @click="voirFournisseur(fournisseur.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                       <NuxtLink :to="'/fournisseurs/'+fournisseur.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
