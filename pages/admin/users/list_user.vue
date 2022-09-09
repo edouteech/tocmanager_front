@@ -6,8 +6,33 @@
     
         <div class="app-main__outer p-5">
           <h4>Liste des utilisateurs enregistrés sur la plateforme</h4><br><br>
-          <!-- <NuxtLink  to="/profils/add_profil"><button class="custom-btn btn-3"><span>Ajouter nouvel utilisateur</span></button></NuxtLink> -->
+          <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+              <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
+          </form>
+          <div class="search_result" v-if="this.element_search != ''">
+            <!-- <div >{{result.name}}</div> -->
             <table class="table table-hover">
+              <thead>
+                <tr class="table-primary">
+                      <th>Noms</th>
+                      <th>Numéros de téléphone</th>
+                      <th>Emails</th>
+                      <th>Pays</th>
+                      <!-- <th>Actions</th> -->
+                  </tr>
+              </thead>
+              <tbody>
+                <tr  v-for="(result, i) in results" :key="i"  @click="voirProfil(result.id)">
+                  <td>{{result.name}}</td>
+                  <td>{{result.phone}}</td>
+                  <td>{{result.email}}</td>
+                  <td>{{result.country}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div><br>
+            <table class="table table-hover" v-if="this.element_search == ''">
               <thead>
                 <tr class="table-primary">
                       <th>Noms</th>
@@ -24,12 +49,6 @@
                   <td>{{profil.phone}}</td>
                   <td>{{profil.email}}</td>
                   <td>{{profil.country}}</td>
-                  <!-- <td><div class="action">
-                        <div @click="voirProfil(profil.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                        <NuxtLink :to="'/profils/'+profil.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                        <div @click="deleteProfil(profil.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                      </div>
-                  </td> -->
                 </tr>
               </tbody>
           </table>
@@ -74,6 +93,8 @@
     
         data () {
             return {
+              element_search: '',
+              results: [],
               links: [],
               res_data: null,
               showModal: false,
@@ -117,6 +138,16 @@
                   let lastE = response.data.data.links.splice(-1,1);
                 }
               )
+            },
+            search(){
+              this.$axios.get('/admin/users',{params: {
+                search: this.element_search
+              }
+              })
+              .then(response => {console.log(response.data);
+              this.results = response.data.data.data 
+              
+              })
             },
     
             voirProfil(id){

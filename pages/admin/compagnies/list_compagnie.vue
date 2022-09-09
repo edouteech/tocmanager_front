@@ -25,12 +25,6 @@
                   <td>{{result.name}}</td>
                   <td>{{result.phone}}</td>
                   <td>{{result.email}}</td>
-                  <!-- <td><div class="action">
-                      <div @click="voirFournisseur(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                      <NuxtLink :to="'/fournisseurs/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                      <div @click="deleteFournisseur(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                      </div>
-                    </td> -->
                 </tr>
               </tbody>
             </table>
@@ -54,12 +48,6 @@
                     <td class="text-center"><NuxtLink :to="'/admin/compagnies/'+compagnie.id">
                         <button type="button" id="PopoverCustomT-1" class="btn btn-success btn-sm">Details</button></NuxtLink>
                     </td>
-                    <!-- <td><div class="action">
-                      <div @click="voirFournisseur(fournisseur.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                      <NuxtLink :to="'/fournisseurs/'+fournisseur.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                      <div @click="deleteFournisseur(fournisseur.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                      </div>
-                    </td> -->
                   </tr>
                 </tbody>
             </table>
@@ -156,8 +144,7 @@
             },
     
             search(){
-              this.$axios.get('/suppliers',{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+              this.$axios.get('/admin/compagnies',{params: {
                 search: this.element_search
               }
               })
@@ -176,7 +163,6 @@
              
             refresh(page=1){
               this.$axios.get('/admin/compagnies',{params: {
-                // compagnie_id: this.$auth.$storage.getUniversal('company_id'),
                 page: page,
                 per_page : this.form.nombre
               }
@@ -195,7 +181,7 @@
     
             voirCompagnie(id){
                 this.showModal = true;
-                this.$axios.get('/suppliers/'+ id,{
+                this.$axios.get('/admin/compagnies/'+ id,{
                 params: {
                   compagnie_id: this.$auth.$storage.getUniversal('company_id')
                 }
@@ -203,10 +189,7 @@
                 console.log(response.data.data[0]);
                  this.identifiant1 = response.data.data[0].name
                  this.identifiant2 = response.data.data[0].phone
-                 this.identifiant3 = response.data.data[0].email
-                 this.identifiant4 = response.data.data[0].nature
-                 this.identifiant5 = response.data.data[0].balance 
-                 this.identifiant6 = response.data.data[0].compagny.name      
+                 this.identifiant3 = response.data.data[0].email     
                  }) 
                    
             },

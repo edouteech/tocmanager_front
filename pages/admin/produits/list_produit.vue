@@ -23,10 +23,6 @@
                         <th>Prix de vente</th>
                         <th>Prix d'achat</th>
                         <th>Compagnie associée</th>
-                        <!-- <th>Stock minimal</th>
-                        <th>Stock maximal</th> -->
-                        <!-- <th>Valorisation du produit</th> -->
-                        <th>Actions</th>
                     </tr>
                 </thead>
               <tbody>
@@ -34,24 +30,13 @@
                   <td>{{result.name}}</td>
                   <td>{{result.category.name}}</td>
                   <td>{{result.quantity}}</td>
-                  <!-- <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(produit.id)"></i></div></td> -->
-                    <td>{{result.price_sell}}</td>
-                    <td>{{result.price_buy}}</td>
-                    <td>{{result.compagny.name}}</td>
-                    <!-- <td>{{result.stock_min}}</td>
-                    <td>{{result.stock_max}}</td> -->
-                    <!-- <td>{{result.quantity * result.price_sell}}</td> -->
-                    <!-- <td><div class="action">
-                      <div @click="voirProduit(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                      <NuxtLink :to="'/produits/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                      <div @click="deleteProduit(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                      </div>
-                    </td> -->
+                  <td>{{result.price_sell}}</td>
+                  <td>{{result.price_buy}}</td>
+                  <td>{{result.compagny.name}}</td>
                   </tr>
                 </tbody>
             </table>
           </div><br>
-          <!-- <NuxtLink  to="/produits/add_produit"><button class="custom-btn btn-3"><span>Ajouter nouveau produit</span></button></NuxtLink> -->
             <table class="table table-hover" v-if="this.element_search == ''">
               <thead>
                 <tr class="table-primary">
@@ -79,15 +64,6 @@
                     <td>{{produit.price_sell}}</td>
                     <td>{{produit.price_buy}}</td>
                     <td>{{produit.compagny.name}}</td>
-                    <!-- <td>{{produit.stock_min}}</td>
-                    <td>{{produit.stock_max}}</td> -->
-                    <!-- <td>{{produit.quantity * produit.price_sell}}</td> -->
-                    <!-- <td><div class="action">
-                      <div @click="voirProduit(produit.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                      <NuxtLink :to="'/produits/'+produit.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                      <div @click="deleteProduit(produit.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                      </div>
-                    </td> -->
                   </tr>
                 </tbody>
             </table>

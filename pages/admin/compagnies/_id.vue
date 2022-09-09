@@ -15,11 +15,32 @@
               <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
           </form> -->
         <br><br>
-        <div class="ligne"></div><br>
+        <div class="lignes"></div><br>
             <p class="text-center fsize-3">Nom de la compagnie :<strong class="text-uppercase"> {{compagny}}</strong></p>
             <p class="text-center fsize-2">Email de la compagnie :<strong> {{email}}</strong></p>
             <p class="text-center fsize-2">Numéro de téléphone de la compagnie :<strong class="text-uppercase"> {{phone}}</strong></p>
-        <div class="ligne"></div><br><br>
+        <div class="lignes"></div><br><br><br><br>
+
+        <p class="text-center fsize-2">Liste des utilisateurs de la compagnie</p>
+        <table class="table table-hover" v-if="this.element_search == ''">
+              <thead>
+                <tr class="table-primary" >
+                        <th>Noms</th>
+                        <th>Numéros de téléphone</th>
+                        <th>Emails</th>
+                        <th>Pays</th>
+                  </tr>
+                </thead>
+              
+                <tbody>
+                  <tr  v-for="(user, i) in users" :key="i">
+                    <td>{{user.user.name}}</td>
+                    <td>{{user.user.phone}}</td>
+                    <td>{{user.user.email}}</td>
+                    <td>{{user.user.country}}</td>
+                  </tr>
+                </tbody>
+            </table><br><br><br><br>
             <div class="card-body">
                 <div class="tab-content row">
                     <div class="tab-pane fade show active col-md-12 col-lg-6" id="tabs-eg-77">
@@ -192,7 +213,8 @@ export default {
         clients: [],
         compagnie_users: [],
         products: [],
-        suppliers: []
+        suppliers: [],
+        users: []
     }
     },
     
@@ -206,6 +228,7 @@ export default {
             this.clients = response.data.data[0].clients
             this.suppliers = response.data.data[0].suppliers
             this.products = response.data.data[0].products
+            this.users = response.data.data[0].compagnie_users
             
         }) 
     },
@@ -226,6 +249,11 @@ li:hover{
 .ligne{
     border-bottom: 2px solid blue;
 }
+
+.lignes{
+    border-bottom: 2px solid rgb(0, 0, 5);
+}
+
 .page{
     display: flex;    
 }
@@ -260,7 +288,7 @@ thead tr{
 
 
 tbody tr:last-of-type{
-    border-bottom: 2px solid rgb(140, 140, 250);
+    border-bottom: 2px solid rgb(140, 250, 217);
 }
 .action{
    display: flex;
