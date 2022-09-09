@@ -37,16 +37,16 @@
                   <!-- <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(produit.id)"></i></div></td> -->
                     <td>{{result.price_sell}}</td>
                     <td>{{result.price_buy}}</td>
-                    <td>{{produit.compagny.name}}</td>
+                    <td>{{result.compagny.name}}</td>
                     <!-- <td>{{result.stock_min}}</td>
                     <td>{{result.stock_max}}</td> -->
                     <!-- <td>{{result.quantity * result.price_sell}}</td> -->
-                    <td><div class="action">
+                    <!-- <td><div class="action">
                       <div @click="voirProduit(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                      <!-- <NuxtLink :to="'/produits/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                      <div @click="deleteProduit(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div> -->
+                      <NuxtLink :to="'/produits/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                      <div @click="deleteProduit(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                       </div>
-                    </td>
+                    </td> -->
                   </tr>
                 </tbody>
             </table>

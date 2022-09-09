@@ -10,10 +10,10 @@
     
         <div class="app-main__outer p-5">
           <h4>Informations de la compagnie</h4><br>
-          <form class="d-flex" role="search">
+          <!-- <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
               <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
-          </form>
+          </form> -->
         <br><br>
         <div class="ligne"></div><br>
             <p class="text-center fsize-3">Nom de la compagnie :<strong class="text-uppercase"> {{compagny}}</strong></p>
