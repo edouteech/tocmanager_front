@@ -3,12 +3,12 @@
   <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
   <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
     {{error}} <br>
-      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
+      <!-- <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
       <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
       <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
       <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div>
       <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-      <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div>
+      <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div> -->
   </div>
   <br><br>
 

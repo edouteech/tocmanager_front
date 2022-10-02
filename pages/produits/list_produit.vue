@@ -235,6 +235,7 @@ export default {
             }
           )
         },
+        
         voirProduit(id){
             this.showModal = true;
             this.$axios.get('products/'+ id,{

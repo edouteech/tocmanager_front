@@ -20,7 +20,7 @@
             <div class="form-group ">
                 <label class="title">Catégorie parente</label>
                 <select class="form-control" v-model="form.parent_id" required>
-                    <option disabled value="">Choisissez...</option>
+                    <option  value="">Choisissez...</option>
                     <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
                 </select>
             </div>

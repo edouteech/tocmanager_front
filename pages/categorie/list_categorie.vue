@@ -20,7 +20,7 @@
             </tr>
           </thead>
           <tbody>
-           <tr  v-for="(result, j) in results" :key="j" @click="voirCategorie(result.id)">
+           <tr  v-for="(result, j) in results" :key="j" >
               <td>{{result.name}}</td>
               <td v-if="result.parent != null">{{result.parent.name}}</td>
               <td v-else>---</td>
@@ -44,7 +44,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr  v-for="(categorie, i) in categories" :key="i" @click="voirCategorie(categorie.id)">
+            <tr  v-for="(categorie, i) in categories" :key="i" >
               <td>{{categorie.name}}</td>
               <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
               <td v-else>---</td>
@@ -128,7 +128,9 @@ export default {
                   'Content-Type': 'multipart/form-data'
               }
             }
-          ).then(response => {console.log(response);
+          ).then(response => {
+            console.log(response);
+            console.log(formData);
             if(response.data.status == "success"){
               this.refresh()
               alert("L'importation s'est bien effectuée ...");
