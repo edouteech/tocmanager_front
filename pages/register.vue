@@ -120,32 +120,26 @@ export default {
     },
       
     changer(){
-      var e = true
-        if (e){
-          document.getElementById("password").setAttribute("type","text"); 
-          document.getElementById("eye").class="fa fa-eye px-2";
-          e = false;
-        }
-
-        else{
-          document.getElementById("password").setAttribute("type","password"); 
-          document.getElementById("eye").class="fa fa-eye-slash px-2";
-          e = true;
+      var pwd = document.getElementById("password");
+        var fa =  document.getElementById("eye")
+        if(pwd.getAttribute("type")=="password"){
+            pwd.setAttribute("type","text");
+            fa.class="fa fa-eye px-2";
+        } else {
+            pwd.setAttribute("type","password");
+          
         }
     },
 
     change(){
-      var e = true
-        if (e){
-          document.getElementById("password1").setAttribute("type","text"); 
-          document.getElementById("eyes").class="fa fa-eye px-2";
-          e = false;
-        }
-
-        else{
-          document.getElementById("password1").setAttribute("type","password"); 
-          document.getElementById("eyes").class="fa fa-eye-slash px-2";
-          e = true;
+      var pwd = document.getElementById("password1");
+        var fa =  document.getElementById("eye")
+        if(pwd.getAttribute("type")=="password"){
+            pwd.setAttribute("type","text");
+            fa.class="fa fa-eye px-2";
+        } else {
+            pwd.setAttribute("type","password");
+          
         }
     },
 

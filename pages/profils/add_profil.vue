@@ -9,8 +9,8 @@
       <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
       <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
       <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-      <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
-      <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div>
+      <!-- <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
+      <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div> -->
       <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div>
     </div>
 
@@ -29,7 +29,7 @@
                 <label class="title">Entrer l'email de l'utilsateur</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="title">Mot de passe</label>
               <input type="password" id="password" class="form-control " v-model="form.password"
                 placeholder="Entrer un mot de passe"/>
@@ -38,7 +38,7 @@
               <label class="title">Confirmer le Mot de passe</label>
               <input type="password" id="password1" class="form-control" v-model="form.password_confirmation"
                 placeholder="Entrer un mot de passe"/>
-            </div>
+            </div> -->
             <div class="form-group">
                  <label class="title">Entrer le pays de l'utilsateur</label>
                 <input type="text" class="form-control" v-model="form.country" autocomplete="off" required  placeholder="Benin" >
@@ -82,8 +82,8 @@ export default {
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
-              password: this.form.password,
-              password_confirmation: this.form.password_confirmation,
+            //   password: this.form.password,
+            //   password_confirmation: this.form.password_confirmation,
               country: this.form.country,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 

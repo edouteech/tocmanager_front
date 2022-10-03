@@ -97,68 +97,81 @@
       // },
   
         changer(){
-        var e = true
-  
-            if (e){
-              document.getElementById("password").setAttribute("type","text"); 
-              document.getElementById("eye").class="fa fa-eye px-2";
-              e = false;
-            }
-  
-            else{
-              document.getElementById("password").setAttribute("type","password"); 
-              document.getElementById("eye").class="fa fa-eye-slash px-2";
-              e = true;
-            }
+          var pwd = document.getElementById("password");
+          var fa =  document.getElementById("eye")
+          if(pwd.getAttribute("type")=="password"){
+              pwd.setAttribute("type","text");
+              fa.class="fa fa-eye px-2";
+          } else {
+              pwd.setAttribute("type","password");
+              fa.class="fa fa-eye-slash px-2"
+          }
         },
   
         async login() {
-          if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
+          
+          if(this.form.password == "00000000"){
             try {
-              let response = await this.$auth.loginWith('local', { data: this.form })
-              console.log(response);
-              this.error = response.data.message
-              console.log(this.error)
-              this.$auth.setUserToken(response.data.data.original.access_token)     
-              .then(response =>{this.$router.push( '/admin/admin',)
-              })
-              console.log(this.$auth);
-            } catch (err) {
-              console.log(err);
-              // this.refresh();
-            }       
-            //   .then(response =>{ console.log(response);
-            //     if(response.data.status == "success"){
-            //         this.$router.push({path:'/admin/admin'});
-            //     }
-            //     else{
-            //       this.error = response.data.message
-            //       this.$router.push({path:'/login'});
-            //     } 
-              
-              
-            //   })
-            //   console.log(this.$auth);
-            // } catch (err) {
-            //   console.log(err);
-            // }
-          } else {
-            try {
-              let response = await this.$auth.loginWith('local', { data: this.form })
-              console.log(response);
-              this.error = response.data.message
-              console.log(this.error)
-              this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
-              this.$auth.setUserToken(response.data.data.original.access_token)
-              .then(response =>{this.$router.push( '/dashboard',)
-              })
-              console.log(this.$auth);
-            } catch (err) {
-              console.log(err);
-              // this.refresh();
-            }
+                let response = await this.$auth.loginWith('local', { data: this.form })
+                console.log(response);
+                this.error = response.data.message
+                console.log(this.error)
+                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
+                this.$auth.setUserToken(response.data.data.original.access_token)
+                .then(response =>{this.$router.push( '/change_pswd',)
+                })
+                
+              } catch (err) {
+                console.log(err);
+              }
+          }else{
+            if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
+                try {
+                  let response = await this.$auth.loginWith('local', { data: this.form })
+                  console.log(response);
+                  this.error = response.data.message
+                  console.log(this.error)
+                  this.$auth.setUserToken(response.data.data.original.access_token)     
+                  .then(response =>{this.$router.push( '/admin/admin',)
+                  })
+                  console.log(this.$auth);
+                } catch (err) {
+                  console.log(err);
+                  // this.refresh();
+                }       
+                //   .then(response =>{ console.log(response);
+                //     if(response.data.status == "success"){
+                //         this.$router.push({path:'/admin/admin'});
+                //     }
+                //     else{
+                //       this.error = response.data.message
+                //       this.$router.push({path:'/login'});
+                //     } 
+                  
+                  
+                //   })
+                //   console.log(this.$auth);
+                // } catch (err) {
+                //   console.log(err);
+                // }
+              } else {
+                try {
+                  let response = await this.$auth.loginWith('local', { data: this.form })
+                  console.log(response);
+                  this.error = response.data.message
+                  console.log(this.error)
+                  this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
+                  this.$auth.setUserToken(response.data.data.original.access_token)
+                  .then(response =>{this.$router.push( '/dashboard',)
+                  })
+                  console.log(this.$auth);
+                } catch (err) {
+                  console.log(err);
+                  // this.refresh();
+                }
+              }
           }
-      }   
+        }   
     }
   
   }
