@@ -24,7 +24,7 @@
 
           <!-- Email input -->
           <div class="form-outline mb-4">
-            <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
+            <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email (admin@admin.com)</label>
             <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
               placeholder="Entrer votre addresse email " /></div>
             
@@ -32,7 +32,7 @@
 
           <!-- Password input -->
           <div class="form-outline mb-3">
-            <span class="fas fa-lock px-2"></span><label class="form-label">Mot de passe</label>
+            <span class="fas fa-lock px-2"></span><label class="form-label">Mot de passe (123456789)</label>
             <div class="input-field">
             <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
               placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click.prevent="changer()"></i></span></div>
@@ -55,9 +55,7 @@
           <div class="text-center text-lg-start mt-4 pt-2">
             <button type="button"  @click.prevent="login()" class="btn btn-primary btn-lg"
               style="padding-left: 1rem; padding-right: 1rem;">Se connecter</button>
-            <p class="small fw-bold mt-2 pt-1 mb-0">Vous n'avez pas de compte ? <NuxtLink to="/register"  class="link-primary px-2">               
-                Inscription
-            </NuxtLink></p>
+            
           </div><br><br><br>
         </form>
       </div>
