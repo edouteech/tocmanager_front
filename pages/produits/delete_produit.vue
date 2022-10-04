@@ -21,7 +21,6 @@
                         <th>
                             Prix d'achat
                         </th>
-
                         <th>
                             Actions
                         </th>

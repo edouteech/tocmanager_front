@@ -136,6 +136,7 @@ export default {
 
     mounted () {
       this.refresh()
+      console.log(this.$auth.$storage)
     },
 
     methods: {

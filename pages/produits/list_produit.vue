@@ -68,7 +68,6 @@
           
             <tbody>
               <tr  v-for="(produit, i) in produits" :key="i">
-                
                 <td>{{produit.name}}</td>
                 <td>{{produit.category.name}}</td>
                 <td>{{produit.quantity}}</td>
@@ -253,7 +252,6 @@ export default {
             }) 
                
         },
-
         replaceQuantity(id){  
           let input_btn = "real_quantity_"+id;
           let quantity0 = document.getElementById(input_btn).value

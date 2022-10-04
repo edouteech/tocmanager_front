@@ -281,7 +281,7 @@ export default {
 }
 
 .ajout-client{
-    margin: 30px 10px;
+    margin: 2% 1%;
     border: 1px solid darkblue;
     padding: 50px ;
     margin-right: 50%;

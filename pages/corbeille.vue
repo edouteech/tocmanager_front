@@ -185,6 +185,10 @@ export default {
   overflow: auto;
 }
 
+.contenu{
+  margin: 5%;
+
+}
 .cases{
     display: flex;
 }

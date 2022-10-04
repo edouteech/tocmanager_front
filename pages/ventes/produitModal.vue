@@ -19,14 +19,14 @@
                     <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
                 </select>
             </div>  
-            <div class="input-form">					
+            <div class="input-form">
                 <input type="text" placeholder="Entrer le nom du produit " v-model="form.name" autocomplete="off" id="name_prod" required>
             </div>    
             <div class="input-form">        
                 <input type="number" placeholder="Entrer la quantité " v-model="form.quantity" id="quantite" required>
             </div>
           
-            <div class="input-form">    
+            <div class="input-form">   
                 <input type="number" placeholder="Entrer le prix de vente " v-model="form.price_sell" autocomplete="off" id="vente" required>
             </div>
             <div class="input-form"> 
