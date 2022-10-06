@@ -15,17 +15,17 @@
   <h2 class="text px-4">Inscrivez vous</h2>
   <div class="container-fluid h-custom">
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-md-9 col-lg-6 col-xl-5">
+        <div class="img col-md-9 col-lg-6 col-xl-5">
           <img src="/images/sign.jpg"
             class="img-fluid" alt="Sample image">
         </div>
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
           <form>
             <div class="divider d-flex align-items-center my-4">
-              <p class="text-center fw-bold mx-3 mb-0">Inscription</p>
+              <p class="text-center fw-bold mx-3 mb-0">Informations personnelles</p>
             </div>
             <div class="form-outline mb-4">
-              <span class="fa fa-address-book px-2"></span><label class="form-label">Nom</label>
+              <span class="fa fa-address-book px-2"></span><label class="form-label">Nom Complet</label>
               <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.name" required
                 placeholder="Entrer votre nom" /></div>      
             </div>
@@ -62,6 +62,12 @@
                 placeholder="Entrer le nom de votre pays" /></div>      
             </div>
 
+            <div class="form-outline mb-4">
+            <span class="fa fa-briefcase px-2"></span><label class="form-label">Nom de l'entreprise</label>
+            <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.compagnie.name" required
+              placeholder="Entrer le nom de votre entreprise" /></div>      
+          </div>
+
             <div class="text-center text-lg-start mt-6 pt-2">
               <button type="button"  @click.prevent="register()" class="btn btn-primary btn-lg"
                 style="padding-left: 1rem; padding-right: 1rem;">S'inscrire</button><br><br>
@@ -93,9 +99,16 @@ export default {
         password_confirmation: '',
         phone: '',
         country: '',
+        compagnie: {
+          name: '',
+        }
 
       }
     }
+  },
+
+  mounted(){
+      console.log(this.form.compagnie)
   },
 
   methods:{
@@ -106,15 +119,18 @@ export default {
         password: this.form.password,
         password_confirmation: this.form.password_confirmation,
         phone: this.form.phone,
-        country: this.form.country
+        country: this.form.country,
+        compagnie: this.form.compagnie
       }).then(response =>{console.log(response);
           this.error = response.data.message
+          console.log(this.form.compagnie)
            this.errors = response.data.data
           console.log(this.error)
           this.user = response.data.data.original.user_id;
-          this.$router.push({
-            name: 'compagnie', params: { id: this.user  }
-          })   
+          this.$router.push({path:'/login'});
+          // this.$router.push({
+          //   name: 'compagnie', params: { id: this.user  }
+          // })   
       }).catch( err => console.log( err ) )
               // console.log('user login')
     },
@@ -175,5 +191,11 @@ height: calc(100% - 73px);
 .h-custom {
 height: 100%;
 }
+}
+
+@media screen and (max-width: 700px) {
+  .img{
+    display: none;
+  }
 }
 </style>

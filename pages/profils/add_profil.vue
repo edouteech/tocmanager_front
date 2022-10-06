@@ -29,16 +29,15 @@
                 <label class="title">Entrer l'email de l'utilsateur</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
-            <!-- <div class="form-group">
-              <label class="title">Mot de passe</label>
-              <input type="password" id="password" class="form-control " v-model="form.password"
-                placeholder="Entrer un mot de passe"/>
+            <div class="form-group ">
+                <label class="title">Fonction de l'utilisateur</label>
+                <select class="form-control" v-model="form.role" required>
+                    <option  value="">Choisissez...</option>
+                    <option value="admin">Administrateur</option>
+                    <option value="comptable">Comptable</option>
+                    <option value="cashier">Caissier</option>
+                </select>
             </div>
-            <div class="form-group">
-              <label class="title">Confirmer le Mot de passe</label>
-              <input type="password" id="password1" class="form-control" v-model="form.password_confirmation"
-                placeholder="Entrer un mot de passe"/>
-            </div> -->
             <div class="form-group">
                  <label class="title">Entrer le pays de l'utilsateur</label>
                 <input type="text" class="form-control" v-model="form.country" autocomplete="off" required  placeholder="Benin" >
@@ -66,10 +65,9 @@ export default {
                 name: '',
                 email: '',
                 phone: '',
-                password: '',
-                password_confirmation: '',
                 country: '',
-                compagnie_id: ''
+                compagnie_id: '',
+                role: ''
             },
             errors: [],
             error: null,
@@ -82,8 +80,7 @@ export default {
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
-            //   password: this.form.password,
-            //   password_confirmation: this.form.password_confirmation,
+              role: this.form.role,
               country: this.form.country,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
