@@ -128,6 +128,7 @@ export default {
                 this.error = response.data.message
                 console.log(this.error)
                 this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
+                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles)
                 this.$auth.setUserToken(response.data.data.original.access_token)
                 .then(response =>{this.$router.push( '/change_pswd',)
                 })
@@ -142,7 +143,8 @@ export default {
                 console.log(response);
                 this.error = response.data.message
                 console.log(this.error)
-                this.$auth.setUserToken(response.data.data.original.access_token)     
+                this.$auth.setUserToken(response.data.data.original.access_token)    
+                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles) 
                 .then(response =>{this.$router.push( '/admin/admin',)
                 })
                 console.log(this.$auth);
@@ -150,20 +152,6 @@ export default {
                 console.log(err);
                 // this.refresh();
               }       
-              //   .then(response =>{ console.log(response);
-              //     if(response.data.status == "success"){
-              //         this.$router.push({path:'/admin/admin'});
-              //     }
-              //     else{
-              //       this.error = response.data.message
-              //       this.$router.push({path:'/login'});
-              //     } 
-                
-                
-              //   })
-              //   console.log(this.$auth);
-              // } catch (err) {
-              //   console.log(err);
               // }
             } else {
               try {
@@ -174,7 +162,13 @@ export default {
                 this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
                 this.$auth.$storage.setUniversal('roles', response.data.data.original.roles)
                 this.$auth.setUserToken(response.data.data.original.access_token)
-                .then(response =>{this.$router.push( '/dashboard',)
+                .then(response =>{
+                  if(this.$auth.$state.roles[0].pivot.role_id != 2){
+                    this.$router.push( '/ventes/vente',)
+                  }
+                  else{
+                    this.$router.push( 'dashboard',)
+                  }
                 })
                 console.log(this.$auth);
               } catch (err) {

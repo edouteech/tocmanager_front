@@ -38,10 +38,37 @@
                     <option value="cashier">Caissier</option>
                 </select>
             </div>
+            <div class="form-group d-flex">
+                <div class="form-check mx-3">
+                    <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1" checked>
+                    <label class="form-check-label" for="defaultCheck1">
+                        Droit d'ajouter
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1" checked>
+                    <label class="form-check-label" for="defaultCheck1">
+                        Droit de voir
+                    </label>
+                </div>
+                <div class="form-check mx-3">
+                    <input class="form-check-input " type="checkbox" value="1" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Droit de modifier
+                    </label>
+                </div>
+                <div class="form-check mx-3">
+                    <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Droit de supprimer
+                    </label>
+                </div>
+                
+            </div><br>
             <div class="form-group">
                  <label class="title">Entrer le pays de l'utilsateur</label>
                 <input type="text" class="form-control" v-model="form.country" autocomplete="off" required  placeholder="Benin" >
-            </div>
+            </div><br><br>
 
             <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer cet utilisateur</button>
         </form>

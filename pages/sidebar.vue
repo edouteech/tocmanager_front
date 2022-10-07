@@ -23,7 +23,7 @@
                   </NuxtLink>
               </li>
             </div>
-            <li>
+            <li v-if="this.$auth.$state.roles[0].pivot.role_id == 2">
                 <NuxtLink to="/dashboard" data-bs-dismiss="offcanvas">
                     <div class="rubrique" data-bs-dismiss="offcanvas">
                         <i class="fa fa-th-large" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -31,7 +31,7 @@
                     </div>
                 </NuxtLink>
             </li>
-            <li>
+            <li v-if="this.$auth.$state.roles[0].pivot.role_id == 2 || this.$auth.$state.roles[0].pivot.role_id == 3">
                 <NuxtLink to="/achats/achat" data-bs-dismiss="offcanvas">
                     <div class="rubrique" data-bs-dismiss="offcanvas">
                         <i class="fa fa-shopping-cart" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -55,7 +55,7 @@
                     </div>
                 </NuxtLink>
             </li>
-            <li>
+            <li v-if="this.$auth.$state.roles[0].pivot.role_id == 2 || this.$auth.$state.roles[0].pivot.role_id == 3">
                 <NuxtLink to="/achats/list_achat" data-bs-dismiss="offcanvas">
                     <div class="rubrique" data-bs-dismiss="offcanvas">
                         <i class="fa fa-floppy-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -100,7 +100,7 @@
                     </div>
                 </NuxtLink>
             </li>
-            <li>
+            <li v-if="this.$auth.$state.roles[0].pivot.role_id == 2 || this.$auth.$state.roles[0].pivot.role_id == 3">
                 <NuxtLink to="/decaissements/list_decaissement" data-bs-dismiss="offcanvas">
                     <div class="rubrique" data-bs-dismiss="offcanvas">
                         <i class="fa fa-credit-card-alt" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -132,7 +132,7 @@
                     </div>
                 </NuxtLink>
             </li> -->
-            <li>
+            <li v-if="this.$auth.$state.roles[0].pivot.role_id == 2 || this.$auth.$state.roles[0].pivot.role_id == 3">
                 <NuxtLink to="/profils/profil" data-bs-dismiss="offcanvas">
                     <div class="rubrique" data-bs-dismiss="offcanvas">
                         <i class="fa fa-address-card-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -140,7 +140,7 @@
                     </div>
                 </NuxtLink>
             </li> 
-            <li>
+            <li v-if="this.$auth.$state.roles[0].pivot.role_id == 2 || this.$auth.$state.roles[0].pivot.role_id == 3">
                 <NuxtLink to="/corbeille" data-bs-dismiss="offcanvas">
                     <div class="rubrique" data-bs-dismiss="offcanvas">
                         <i class="fa fa-trash" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -170,7 +170,7 @@ export default {
     auth: true,
 
     mounted(){
-        // console.log(this.$auth)
+        console.log(this.$auth.$state.roles[0].pivot)
     },
 
     methods:{

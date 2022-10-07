@@ -95,7 +95,12 @@ export default {
                 console.log( response ) 
                 this.error = response.data.message
                 if(response.data.status == "success"){
-                    this.$router.push({path:'/dashboard', })
+                    if(this.$auth.$state.roles[0].pivot.role_id != 2){
+                    this.$router.push( '/ventes/vente',)
+                    }
+                    else{
+                      this.$router.push( 'dashboard',)
+                    }
                 }
                 else{
                     this.error = response.data.data
