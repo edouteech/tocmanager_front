@@ -32,10 +32,18 @@
                 </NuxtLink>
             </li>
             <li>
-                <NuxtLink to="/achatVente" data-bs-dismiss="offcanvas">
+                <NuxtLink to="/achats/achat" data-bs-dismiss="offcanvas">
                     <div class="rubrique" data-bs-dismiss="offcanvas">
                         <i class="fa fa-shopping-cart" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
-                        <span class="links_name" data-bs-dismiss="offcanvas">Achats & Ventes</span>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Lancer un achat</span>
+                    </div>
+                </NuxtLink>
+            </li>
+            <li>
+                <NuxtLink to="/ventes/vente" data-bs-dismiss="offcanvas">
+                    <div class="rubrique" data-bs-dismiss="offcanvas">
+                        <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                        <span class="links_name" data-bs-dismiss="offcanvas">Lancer une vente</span>
                     </div>
                 </NuxtLink>
             </li>
@@ -160,6 +168,11 @@
 export default {
     name: 'Sidebar',
     auth: true,
+
+    mounted(){
+        // console.log(this.$auth)
+    },
+
     methods:{
         async logout(){
             this.$auth.logout();
@@ -167,6 +180,7 @@ export default {
         }
             
     }
+
 }
 </script>
 

@@ -10,13 +10,10 @@
       <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
       <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div> -->
   </div>
-  <br><br>
-
-  <h2 class="text px-4">Inscrivez vous</h2>
   <div class="container-fluid h-custom">
-      <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="row d-flex  h-100">
         <div class="img col-md-9 col-lg-6 col-xl-5">
-          <img src="/images/sign.jpg"
+          <img src="/images/1.png"
             class="img-fluid" alt="Sample image">
         </div>
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
@@ -74,7 +71,7 @@
               <p class="small fw-bold mt-2 pt-1 mb-0">Vous avez déjà un compte ? <NuxtLink to="/login"  class="link-primary px-2">               
                  Connexion
               </NuxtLink></p>
-            </div><br><br><br>
+            </div><br>
 
           </form>
         </div>
@@ -165,8 +162,12 @@ export default {
 </script>
 
 <style scoped>
+*{
+  font-size: 12px;
+}
 .img-fluid{
-    width: 400px;
+    /* width: 400px; */
+    height: 100vh;
 }
 .input-field {
     border-radius: 5px;

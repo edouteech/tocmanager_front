@@ -172,6 +172,7 @@ export default {
                 this.error = response.data.message
                 console.log(this.error)
                 this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
+                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles)
                 this.$auth.setUserToken(response.data.data.original.access_token)
                 .then(response =>{this.$router.push( '/dashboard',)
                 })
