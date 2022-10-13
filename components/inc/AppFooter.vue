@@ -14,10 +14,10 @@
 
     <!-- Right -->
     <div>
-      <a href="" class="me-4 text-reset">
+      <a href="https://www.facebook.com/Tocmanager" class="me-4 text-reset">
         <i class="fab fa-facebook-f"></i>
       </a>
-      <a href="" class="me-4 text-reset">
+      <!-- <a href="" class="me-4 text-reset">
         <i class="fab fa-twitter"></i>
       </a>
       <a href="" class="me-4 text-reset">
@@ -25,13 +25,13 @@
       </a>
       <a href="" class="me-4 text-reset">
         <i class="fab fa-instagram"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
+      </a> -->
+      <a href="https://www.linkedin.com/showcase/tocmanager" class="me-4 text-reset">
         <i class="fab fa-linkedin"></i>
       </a>
-      <a href="" class="me-4 text-reset">
+      <!-- <a href="" class="me-4 text-reset">
         <i class="fab fa-github"></i>
-      </a>
+      </a> -->
     </div>
     <!-- Right -->
   </section>
@@ -48,7 +48,7 @@
           <h6 class="text-uppercase fw-bold mb-2">
             <i class="fas fa-gem me-3"></i>Edoutech
           </h6>
-          <p><i class="fas fa-home me-3"></i> Localisation</p>
+          <p><i class="fas fa-home me-3"></i> Abomey - Calavi</p>
 
         </div>
 
@@ -56,9 +56,9 @@
         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-2">
           <p>
             <i class="fas fa-envelope me-3"></i>
-            info@example.com
+            contact@tocmanager.com
           </p>
-          <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+          <p><i class="fas fa-phone me-3"></i>+229 97 98 47 22</p>
         </div>
         <!-- Grid column -->
       </div>
@@ -69,7 +69,7 @@
 
   <!-- Copyright -->
   <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
-    Copyright © 2022 - Tous droits réservés DS
+    Copyright © 2022 - Tous droits réservés dS
   </div>
   <!-- Copyright -->
 </footer>
@@ -82,6 +82,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+*{
+  font-size: 12px;
+}
 
 </style>

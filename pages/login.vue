@@ -80,18 +80,6 @@ export default {
     }
   },
   methods: {
-    // refresh(){
-    //   var that = this;    
-    //    this.$axios
-    //       .post('/login',{ data: this.form })
-    //       .then(response => 
-    //     {console.log(response.data.message)
-    //        if (response.data.status == "error") {
-    //                 that.error = response.data.message
-    //             } 
-    //     });
-        
-    // },
 
       changer(){
         var pwd = document.getElementById("password");
@@ -103,20 +91,6 @@ export default {
             pwd.setAttribute("type","password");
             fa.class="fa fa-eye-slash px-2"
         }
-      //   console.log('click')
-      // let e = true
-
-      //     if (e == true){
-      //       document.getElementById("password").setAttribute("type","text"); 
-      //       document.getElementById("eye").class="fa fa-eye px-2";
-      //       e == false;
-      //     }
-
-      //     else{
-      //       document.getElementById("text").setAttribute("type","password"); 
-      //       document.getElementById("eye").class="fa fa-eye-slash px-2";
-      //       e == true;
-      //     }
       },
       
 
@@ -128,6 +102,7 @@ export default {
                 this.error = response.data.message
                 console.log(this.error)
                 this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
+                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name) 
                 this.$auth.$storage.setUniversal('roles', response.data.data.original.roles)
                 this.$auth.setUserToken(response.data.data.original.access_token)
                 .then(response =>{this.$router.push( '/change_pswd',)
@@ -143,11 +118,10 @@ export default {
                 console.log(response);
                 this.error = response.data.message
                 console.log(this.error)
+                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name) 
                 this.$auth.setUserToken(response.data.data.original.access_token)    
-                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles) 
                 .then(response =>{this.$router.push( '/admin/admin',)
                 })
-                console.log(this.$auth);
               } catch (err) {
                 console.log(err);
                 // this.refresh();
@@ -160,17 +134,17 @@ export default {
                 this.error = response.data.message
                 console.log(this.error)
                 this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
-                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles)
+                this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
+                let role = response.data.data.original.roles[0].name
                 this.$auth.setUserToken(response.data.data.original.access_token)
                 .then(response =>{
-                  if(this.$auth.$state.roles[0].pivot.role_id != 2){
+                  if(role != 'admin'){
                     this.$router.push( '/ventes/vente',)
                   }
                   else{
                     this.$router.push( 'dashboard',)
                   }
                 })
-                console.log(this.$auth);
               } catch (err) {
                 console.log(err);
                 // this.refresh();

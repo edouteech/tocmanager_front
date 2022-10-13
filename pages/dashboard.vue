@@ -6,6 +6,7 @@
 
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Tableau De Bord </h3>
+      <Userinfo />
     </nav>
 
     <div class="app-main__outer ">
@@ -27,13 +28,15 @@
                             <i class="fa fa-star"></i>
                         </button>
                         <div class="d-inline-block dropdown">
-                            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
-                                <span class="btn-icon-wrapper pr-2 opacity-7">
-                                    <i class="fa fa-business-time fa-w-20"></i>
-                                </span>
-                                Raccourcis
-                            </button>
-                            <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                            <NuxtLink to="/ventes/vente"> 
+                                <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                        <i class="fa fa-business-time fa-w-20"></i>
+                                    </span>
+                                    Vente
+                                </button>
+                            </NuxtLink>
+                            <!-- <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
                                         <a href="javascript:void(0);" class="nav-link">
@@ -68,7 +71,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
                     </div>    
                 </div>
@@ -454,6 +457,7 @@
 
 <script>
 import Sidebar from './sidebar.vue';
+import Userinfo from './user_info.vue';
 import moment from "moment";
 import Chart from 'chart.js/auto';
 export default {
@@ -477,6 +481,7 @@ export default {
     auth:true,
     components:{
         Sidebar,
+        Userinfo,
     },
     data (){
     return{
@@ -502,14 +507,13 @@ export default {
   },
 //   moment().format("YYYY-MM-DDThh:mm")
     middleware:'auth',
-    mounted(){   
-        console.log(this.form.date_debut)   
+    mounted(){    
         this.$axios.post('/tableau/de/bord',{
               date_debut: this.form.date_debut,
               date_fin: this.form.date_fin,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
-        }).then(response => {console.log(response.data.data.produts_most_sell
-);
+        }).then(response => {
+            // console.log(response.data.data.produts_most_sell);
 
            this.volume_vente  = response.data.data.volume_vente
            this.chiffre_affaire = response.data.data.chiffre_affaire
@@ -673,7 +677,8 @@ export default {
                 date_debut: this.form.date_debut,
                 date_fin: this.form.date_fin,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }).then(response => {console.log(response.data);
+            }).then(response => {
+                // console.log(response.data);
 
            this.volume_vente  = response.data.data.volume_vente
            this.chiffre_affaire = response.data.data.chiffre_affaire
@@ -687,7 +692,7 @@ export default {
 
 
                 var VV = this.volume_vente
-                console.log(VV)
+                // console.log(VV)
                 var dd = 'Intervalle de dates'
                 const cty = document.getElementById('myChart');
                 const myChart = new Chart(cty, {

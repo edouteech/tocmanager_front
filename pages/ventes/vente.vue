@@ -54,8 +54,10 @@
                             <td>
                                 <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                     <option disabled value="">Choisissez...</option>
-                                    <!-- <option :value= prod_id>{{nom_prod}}</option> -->
-                                    <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
+                                    <template v-for="(product, i) in produits" >
+                                    
+                                        <option  :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
+                                    </template>
                                 </select>
                             </td>
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 

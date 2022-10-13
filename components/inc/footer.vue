@@ -14,7 +14,7 @@
 
     <!-- Right -->
     <div>
-      <a href="" class="me-4 text-reset">
+      <a href="https://www.facebook.com/Tocmanager" class="me-4 text-reset">
         <i class="fab fa-facebook-f"></i>
       </a>
       <a href="" class="me-4 text-reset">
@@ -44,8 +44,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .logo-img{
     width: 170px;
+}
+
+*{
+  font-size: 12px;
 }
 </style>

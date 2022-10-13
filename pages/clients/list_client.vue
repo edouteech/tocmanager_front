@@ -2,10 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Clients </h3>
-            <div class="bas-page " data-bs-dismiss="offcanvas">
-                    <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
-                    <span class="user_name" data-bs-dismiss="offcanvas">{{$auth.user.name}}</span>                        
-            </div>
+      <Userinfo />
     </nav>
     
     <div class="app-main__outer p-5">
@@ -105,12 +102,14 @@
 <script>
 import voirClient from './voir_client.vue'
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
   layout: "empty",
   auth: true,
   components: {
     Sidebar,  
     voirClient,
+    Userinfo
   },
    data () {
       return {
@@ -150,7 +149,8 @@ export default {
                   'Content-Type': 'multipart/form-data'
               }
             }
-          ).then(response => {console.log(response);
+          ).then(response => {
+            // console.log(response);
             if(response.data.status == "success"){
               this.refresh()
               alert("L'importation s'est bien effectuée ...");
@@ -170,15 +170,18 @@ export default {
             search: this.element_search
           }
           })
-          .then(response => {console.log(response.data);
+          .then(response => {
+            // console.log(response.data);
           this.results = response.data.data.data 
           
           })
         },
         
-        deleteClient(id){ console.log(id);
+        deleteClient(id){ 
+          // console.log(id);
           this.$axios.delete('/clients/' +id)
-          .then(response =>  {console.log(response);
+          .then(response =>  {
+            // console.log(response);
           this.refresh()})
          },
           
@@ -190,7 +193,8 @@ export default {
             per_page : this.form.nombre
           }
           })
-          .then(response => {console.log(response.data);
+          .then(response => {
+            // console.log(response.data);
           this.clients = response.data.data.data 
           this.total = response.data.data.total;
           this.res_data= response.data.data
@@ -206,7 +210,8 @@ export default {
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
-          }).then(response => {console.log(response.data.data[0]);
+          }).then(response => {
+            // console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email
