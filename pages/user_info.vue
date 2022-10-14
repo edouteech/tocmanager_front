@@ -2,7 +2,7 @@
 <div class="bas-page " data-bs-dismiss="offcanvas">
     <nav>
         <ul>
-            <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas"><li class="item"><a href="#"><span class="user_name" data-bs-dismiss="offcanvas">{{$auth.user.name}}</span><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
+            <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas"><li class="item"><a href="#"><span class="user_name" data-bs-dismiss="offcanvas">{{$auth.$state.user[0].name}}</span><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
             <!-- First Tier Drop Down -->
             <ul>
                 <li><a href="#">Mon profil</a></li>
@@ -18,7 +18,10 @@
 <script>
 export default {
     auth: true,
-    name: "Userinfo"
+    name: "Userinfo",
+	mounted(){
+		// console.log(this.$auth.$state.user[0].name)
+	}
 
 }
 </script>
