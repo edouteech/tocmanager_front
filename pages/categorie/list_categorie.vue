@@ -220,6 +220,7 @@ export default {
 
     mounted () {
       this.refresh()
+      console.log(this.$auth.$storage.getUniversal('company_id'))
       this.ajout = localStorage.getItem('auth.ajout');
       this.modifier = localStorage.getItem('auth.modifier');
       this.supprimer = localStorage.getItem('auth.supprimer');
