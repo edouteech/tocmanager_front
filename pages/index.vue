@@ -35,7 +35,7 @@
               <span class="fas fa-lock px-2"></span><label class="form-label">Mot de passe</label>
               <div class="input-field">
               <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
-                placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click.prevent="changer()"></i></span></div>
+                placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click="changer()"></i></span></div>
               
             </div>
   
@@ -63,9 +63,6 @@
         </div>
       </div>
     </div>
-                  <!-- <div class="error-message">
-                      {{error}}
-                  </div> -->
   </div>
   </template>
   
@@ -83,18 +80,6 @@
       }
     },
     methods: {
-      // refresh(){
-      //   var that = this;    
-      //    this.$axios
-      //       .post('/login',{ data: this.form })
-      //       .then(response => 
-      //     {console.log(response.data.message)
-      //        if (response.data.status == "error") {
-      //                 that.error = response.data.message
-      //             } 
-      //     });
-          
-      // },
   
         changer(){
           var pwd = document.getElementById("password");
@@ -107,54 +92,43 @@
               fa.class="fa fa-eye-slash px-2"
           }
         },
+        
   
         async login() {
-          
           if(this.form.password == "00000000"){
             try {
-                let response = await this.$auth.loginWith('local', { data: this.form })
-                console.log(response);
-                this.error = response.data.message
-                console.log(this.error)
-                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
-                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles)
-                this.$auth.setUserToken(response.data.data.original.access_token)
-                .then(response =>{this.$router.push( '/change_pswd',)
-                })
-                
-              } catch (err) {
-                console.log(err);
-              }
+                  let response = await this.$auth.loginWith('local', { data: this.form })
+                  // console.log(response);
+                  this.error = response.data.message
+                  console.log(this.error)
+                  this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name)
+                  this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                  this.$auth.$storage.setUniversal('email', this.form.email)
+                  this.$auth.$storage.setUniversal ('ajout', response.data.data.original.roles[0].pivot.droits_add)
+                  this.$auth.$storage.setUniversal ('modifier', response.data.data.original.roles[0].pivot.droits_edition)
+                  this.$auth.$storage.setUniversal ('supprimer', response.data.data.original.roles[0].pivot.droits_delete)
+                  this.$auth.setUserToken(response.data.data.original.access_token)
+                  .then(response =>{this.$router.push( '/change_pswd',)
+                  })
+                  // console.log(this.$state.user.email);
+                } catch (err) {
+                  console.log(err);
+                }
           }else{
-            if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
+              if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
                 try {
                   let response = await this.$auth.loginWith('local', { data: this.form })
                   console.log(response);
                   this.error = response.data.message
                   console.log(this.error)
-                  this.$auth.setUserToken(response.data.data.original.access_token)  
-                  this.$auth.$storage.setUniversal('roles', response.data.data.original.roles)   
+                  this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name) 
+                  this.$auth.setUserToken(response.data.data.original.access_token)    
                   .then(response =>{this.$router.push( '/admin/admin',)
                   })
-                  console.log(this.$auth);
                 } catch (err) {
                   console.log(err);
                   // this.refresh();
                 }       
-                //   .then(response =>{ console.log(response);
-                //     if(response.data.status == "success"){
-                //         this.$router.push({path:'/admin/admin'});
-                //     }
-                //     else{
-                //       this.error = response.data.message
-                //       this.$router.push({path:'/login'});
-                //     } 
-                  
-                  
-                //   })
-                //   console.log(this.$auth);
-                // } catch (err) {
-                //   console.log(err);
                 // }
               } else {
                 try {
@@ -162,25 +136,28 @@
                   console.log(response);
                   this.error = response.data.message
                   console.log(this.error)
-                  this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
-                  this.$auth.$storage.setUniversal('roles', response.data.data.original.roles)
+                  this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                  this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
+                  let role = response.data.data.original.roles[0].name
+                  this.$auth.$storage.setUniversal ('ajout', response.data.data.original.roles[0].pivot.droits_add)
+                  this.$auth.$storage.setUniversal ('modifier', response.data.data.original.roles[0].pivot.droits_edition)
+                  this.$auth.$storage.setUniversal ('supprimer', response.data.data.original.roles[0].pivot.droits_delete)
                   this.$auth.setUserToken(response.data.data.original.access_token)
                   .then(response =>{
-                    if(this.$auth.$state.roles[0].pivot.role_id != 2){
-                    this.$router.push( '/ventes/vente',)
+                    if(role != 'admin'){
+                      this.$router.push( '/ventes/vente',)
                     }
                     else{
                       this.$router.push( 'dashboard',)
                     }
                   })
-                  console.log(this.$auth);
                 } catch (err) {
                   console.log(err);
                   // this.refresh();
                 }
               }
           }
-        }   
+      }   
     }
   
   }
