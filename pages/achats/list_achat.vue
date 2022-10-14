@@ -6,7 +6,7 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des achats éffectués</h4>
-      <NuxtLink  to="/achats/achat"><button class="custom-btn btn-3"><span>Nouvel achat</span></button></NuxtLink>
+      <NuxtLink  to="/achats/achat"><button class="custom-btn btn-3" v-if="ajout==1"><span>Nouvel achat</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -25,8 +25,8 @@
               <td>{{achat.rest}}</td>
               <td><div class="action">
                 <NuxtLink :to="'/achats/voir/'+achat.id"><i class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
-                <NuxtLink :to="'/achats/'+achat.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteAchat(achat.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/achats/'+achat.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteAchat(achat.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
@@ -80,6 +80,9 @@ export default {
         achats: [],
         achat: "",
         total: '',
+        ajout: '',
+        modifier: '',
+        supprimer: '',
         form: {
             nombre: '',
         }
@@ -127,9 +130,13 @@ export default {
                
         },
     },
+    
     mounted () {
       this.refresh()
       this.recupFournisseur()
+      this.ajout = localStorage.getItem('auth.ajout');
+      this.modifier = localStorage.getItem('auth.modifier');
+      this.supprimer = localStorage.getItem('auth.supprimer');
     }
 }
 </script>

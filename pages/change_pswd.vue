@@ -47,6 +47,8 @@ export default {
    data () {
       return {
         error: null,
+        email:'',
+        role:'',
         form: {   
             password: '',
             password_confirmation: '',
@@ -56,7 +58,9 @@ export default {
 
     
     mounted () {
-        console.log(this.$auth.$state.user.email);
+        // console.log(this.$auth.$state.user.email);
+        this.email = localStorage.getItem('auth.email');
+        this.role = localStorage.getItem('auth.roles');
     },
 
     methods: {
@@ -89,13 +93,16 @@ export default {
                 password: "00000000",
                 newPassword: this.form.password,
                 newPassword_confirmation: this.form.password_confirmation,
-                email: this.$auth.$state.user.email
+                email: this.email
             })   
             .then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
+                localStorage.removeItem('auth.email');
+                // this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
+                // let role = response.data.data.original.roles[0].name
                 if(response.data.status == "success"){
-                    if(this.$auth.$state.roles[0].pivot.role_id != 2){
+                    if(this.role != 'admin'){
                     this.$router.push( '/ventes/vente',)
                     }
                     else{

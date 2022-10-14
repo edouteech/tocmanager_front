@@ -98,12 +98,15 @@ export default {
         if(this.form.password == "00000000"){
           try {
                 let response = await this.$auth.loginWith('local', { data: this.form })
-                console.log(response);
+                // console.log(response);
                 this.error = response.data.message
                 console.log(this.error)
+                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name)
                 this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
-                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name) 
-                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles)
+                this.$auth.$storage.setUniversal('email', this.form.email)
+                this.$auth.$storage.setUniversal ('ajout', response.data.data.original.roles[0].pivot.droits_add)
+                this.$auth.$storage.setUniversal ('modifier', response.data.data.original.roles[0].pivot.droits_edition)
+                this.$auth.$storage.setUniversal ('supprimer', response.data.data.original.roles[0].pivot.droits_delete)
                 this.$auth.setUserToken(response.data.data.original.access_token)
                 .then(response =>{this.$router.push( '/change_pswd',)
                 })
@@ -136,6 +139,9 @@ export default {
                 this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
                 this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
                 let role = response.data.data.original.roles[0].name
+                this.$auth.$storage.setUniversal ('ajout', response.data.data.original.roles[0].pivot.droits_add)
+                this.$auth.$storage.setUniversal ('modifier', response.data.data.original.roles[0].pivot.droits_edition)
+                this.$auth.$storage.setUniversal ('supprimer', response.data.data.original.roles[0].pivot.droits_delete)
                 this.$auth.setUserToken(response.data.data.original.access_token)
                 .then(response =>{
                   if(role != 'admin'){

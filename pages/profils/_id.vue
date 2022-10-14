@@ -9,19 +9,49 @@
         <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le nom de l'utilisateur</label>
-                <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
+                <input type="text" class="form-control" v-model="form.name" autocomplete="off" disabled placeholder="Jean Doe">
             </div>
             <div class="form-group col-md-6">
                 <label class="title">Entrer le numero de téléphone de l'utilisateur</label>
-                <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
+                <input type="tel" class="form-control" v-model="form.phone" disabled  placeholder="+525485335622">
             </div>
             <div class="form-group col-md-6">
                 <label class="title">Entrer l'email de l'utilisateur</label>
-                <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
+                <input type="email" class="form-control" v-model="form.email" autocomplete="off" disabled  placeholder="azerty@azert.com" >
             </div>
             <div class="form-group col-md-6">
+                <label class="title">Fonction de l'utilisateur</label>
+                <select class="form-control" v-model="form.role" required>
+                    <option  value="">Choisissez...</option>
+                    <option value="admin">Administrateur</option>
+                    <option value="comptable">Comptable</option>
+                    <option value="cashier">Caissier</option>
+                </select>
+            </div>
+            <div class="form-group d-flex">
+                <div class="form-check mx-3">
+                    <input class="form-check-input" type="checkbox" v-model="form.ajout" true-value="1" false-value="0" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Droit d'ajouter
+                    </label>
+                </div>
+                <div class="form-check mx-3">
+                    <input class="form-check-input " type="checkbox" v-model="form.modifier" true-value="1" false-value="0" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Droit de modifier
+                    </label>
+                </div>
+                <div class="form-check mx-3">
+                    <input class="form-check-input" type="checkbox" v-model="form.supprmier" true-value="1" false-value="0" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Droit de supprimer
+                    </label>
+                </div>
+                
+            </div><br>
+            <div class="form-group col-md-6">
                 <label class="title">Entrer le pays de l'utilsateur</label>
-                <input type="text" class="form-control" v-model="form.country" autocomplete="off" required  placeholder="Benin" >
+                <input type="text" class="form-control" v-model="form.country" autocomplete="off" disabled  placeholder="Benin" >
             </div>
 
             <button type="submit" class="btn btn-success" v-on:click.prevent="submit()">Modifier</button>
@@ -51,6 +81,10 @@ export default {
                 phone: '',
                 password: '',
                 nature:'',
+                role:'',
+                ajout: '',
+                modifier: '',
+                supprmier: '',
                 compagnie_id: '',
             },
             error_message: "",
@@ -70,6 +104,10 @@ export default {
             this.form.email = user.email,
             this.form.password = user.password
             this.form.country = user.country
+            this.form.role = user.role_name
+            this.form.ajout = user.droits_add
+            this.form.modifier = user.droits_edition
+            this.form.supprimer = user.droits_delete
             
           }      
         )
@@ -87,6 +125,10 @@ export default {
             phone: this.form.phone,
             password: this.form.password,
             country: this.form.country,
+            role: this.form.role,
+            droits_add: this.form.ajout,
+            droits_edit: this.form.modifier,
+            droits_delete: this.form.delete,
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
 
             })

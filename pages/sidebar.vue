@@ -181,7 +181,12 @@
   
       methods:{
           async logout(){
+              localStorage.removeItem('auth.ajout');
+              localStorage.removeItem('auth.modifier');
+              localStorage.removeItem('auth.supprimer');
+              localStorage.removeItem('auth.company_id');
               localStorage.removeItem('auth.roles');
+              localStorage.removeItem('auth.role');
               this.$auth.logout();
               this.$router.push('/login');
           }

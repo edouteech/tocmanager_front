@@ -26,15 +26,15 @@
               <td v-else>---</td>
               <td><div class="action">
                 <div @click="voirCategorie(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/categorie/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteCategorie(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/categorie/'+result.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteCategorie(result.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div><br>
-      <NuxtLink  to="/categorie/add_categorie"><button class="custom-btn btn-3"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
+      <NuxtLink  to="/categorie/add_categorie"><button class="custom-btn btn-3" v-if="ajout==1"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
         <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
@@ -50,8 +50,8 @@
               <td v-else>---</td>
               <td><div class="action">
                 <div @click="voirCategorie(categorie.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/categorie/'+categorie.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteCategorie(categorie.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/categorie/'+categorie.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteCategorie(categorie.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
@@ -111,6 +111,9 @@ export default {
         compagnie_id: ''  ,
         categories: [],
         categorie: "",
+        ajout: '',
+        modifier: '',
+        supprimer: '',
         form: {
           nombre: '',
         }
@@ -126,11 +129,14 @@ export default {
             {
               headers: {
                   'Content-Type': 'multipart/form-data'
+              },
+              params: {
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
               }
             }
           ).then(response => {
-            console.log(response);
-            console.log(formData);
+            // console.log(response);
+            // console.log(formData);
             if(response.data.status == "success"){
               this.refresh()
               alert("L'importation s'est bien effectuée ...");
@@ -147,17 +153,14 @@ export default {
         },
     
 
-        // importe(){
-        //     alert('Le fichier "' + file + '" a été sélectionné.');
-        // },
-
         search(){
           this.$axios.get('/categories',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             search: this.element_search
           }
           })
-          .then(response => {console.log(response.data);
+          .then(response => {
+            // console.log(response.data);
           this.results = response.data.data.data 
           
           })
@@ -165,8 +168,13 @@ export default {
 
        deleteCategorie(id){
           console.log(id);
-          this.$axios.delete('/categories/' +id)
-          .then(response => {console.log(response.data.data);
+          this.$axios.delete('/categories/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
+          .then(response => {
+            // console.log(response.data.data);
             this.refresh()})                 
         },      
         
@@ -177,7 +185,8 @@ export default {
               page: page,
               per_page : this.form.nombre
             }
-          }).then(response =>{console.log(response);
+          }).then(response =>{
+            // console.log(response);
             this.categories = response.data.data.data
             this.res_data= response.data.data
             this.total = response.data.data.total;
@@ -193,7 +202,8 @@ export default {
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
-          }).then(response => {console.log(response.data.data[0]);
+          }).then(response => {
+            // console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              if(response.data.data[0].parent != null){
                 this.identifiant2 = response.data.data[0].parent.name  
@@ -210,6 +220,9 @@ export default {
 
     mounted () {
       this.refresh()
+      this.ajout = localStorage.getItem('auth.ajout');
+      this.modifier = localStorage.getItem('auth.modifier');
+      this.supprimer = localStorage.getItem('auth.supprimer');
     }
 }
 </script>

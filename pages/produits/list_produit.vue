@@ -41,15 +41,15 @@
                 <td>{{result.quantity * result.price_sell}}</td>
                 <td><div class="action">
                   <div @click="voirProduit(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                  <NuxtLink :to="'/produits/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteProduit(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/produits/'+result.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteProduit(result.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>
             </tbody>
         </table>
       </div><br>
-      <NuxtLink  to="/produits/add_produit"><button class="custom-btn btn-3"><span>Ajouter nouveau produit</span></button></NuxtLink>
+      <NuxtLink  to="/produits/add_produit" v-if="ajout==1"><button class="custom-btn btn-3"><span>Ajouter nouveau produit</span></button></NuxtLink>
         <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
@@ -80,8 +80,8 @@
                 <td>{{produit.quantity * produit.price_sell}}</td>
                 <td><div class="action">
                   <div @click="voirProduit(produit.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                  <NuxtLink :to="'/produits/'+produit.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteProduit(produit.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/produits/'+produit.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteProduit(produit.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>
@@ -153,6 +153,9 @@ export default {
       price_buy0: '',
       stock_min0: '',
       stock_max0: '',
+      ajout: '',
+      modifier: '',
+      supprimer: '',
       form: {
           nombre: '',
       }
@@ -162,6 +165,9 @@ export default {
 
   mounted () {
       this.refresh()
+      this.ajout = localStorage.getItem('auth.ajout');
+      this.modifier = localStorage.getItem('auth.modifier');
+      this.supprimer = localStorage.getItem('auth.supprimer');
   },
 
   methods: {
@@ -174,9 +180,13 @@ export default {
             {
               headers: {
                   'Content-Type': 'multipart/form-data'
+              },
+              params: {
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
               }
             }
-          ).then(response => {console.log(response);
+          ).then(response => {
+            // console.log(response);
             if(response.data.status == "success"){
               this.refresh()
               alert("L'importation s'est bien effectuée ...");
@@ -197,7 +207,8 @@ export default {
             search: this.element_search
           }
           })
-          .then(response => {console.log(response.data);
+          .then(response => {
+            // console.log(response.data);
           this.results = response.data.data.data 
           
           })
@@ -210,7 +221,7 @@ export default {
             }
           }).then(response => 
             {
-              console.log(response.data.data);
+              // console.log(response.data.data);
               this.refresh()
             }
           )         
@@ -226,7 +237,7 @@ export default {
           })
           .then(response => 
             {
-              console.log(response.data);
+              // console.log(response.data);
               this.produits = response.data.data.data
               this.res_data= response.data.data
               this.total = response.data.data.total;
@@ -242,7 +253,8 @@ export default {
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
-          }).then(response => {console.log(response.data.data[0]);
+          }).then(response => {
+            // console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].category.name
              this.identifiant2 = response.data.data[0].name
              this.identifiant3 = response.data.data[0].quantity
@@ -257,15 +269,16 @@ export default {
         replaceQuantity(id){  
           let input_btn = "real_quantity_"+id;
           let quantity0 = document.getElementById(input_btn).value
-          console.log(document.getElementById(input_btn).value); 
+          // console.log(document.getElementById(input_btn).value); 
           this.$axios.get('/products/'+id,{
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
           })               
-          .then(response => { console.log(response.data.data[0] )        
+          .then(response => {
+            //  console.log(response.data.data[0] )        
             let produit = response.data.data[0];            
-              console.log(this.name0)             
+              // console.log(this.name0)             
             this.$axios.put('products/' +id,{
                 id: this.produit.id,
                 category_id: produit.category_id ,
@@ -277,7 +290,7 @@ export default {
                 stock_max: produit.stock_max,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{console.log(response)
-              console.log(this.name0)
+              // console.log(this.name0)
             this.refresh()
             document.getElementById(input_btn).value = ''
             })  

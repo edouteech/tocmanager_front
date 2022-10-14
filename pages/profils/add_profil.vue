@@ -40,25 +40,19 @@
             </div>
             <div class="form-group d-flex">
                 <div class="form-check mx-3">
-                    <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1" checked>
+                    <input class="form-check-input" type="checkbox" v-model="form.ajout" true-value="1" false-value="0" id="defaultCheck1">
                     <label class="form-check-label" for="defaultCheck1">
                         Droit d'ajouter
                     </label>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1" checked>
-                    <label class="form-check-label" for="defaultCheck1">
-                        Droit de voir
-                    </label>
-                </div>
                 <div class="form-check mx-3">
-                    <input class="form-check-input " type="checkbox" value="1" id="defaultCheck1">
+                    <input class="form-check-input " type="checkbox" v-model="form.modifier" true-value="1" false-value="0" id="defaultCheck1">
                     <label class="form-check-label" for="defaultCheck1">
                         Droit de modifier
                     </label>
                 </div>
                 <div class="form-check mx-3">
-                    <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1">
+                    <input class="form-check-input" type="checkbox" v-model="form.supprmier" true-value="1" false-value="0" id="defaultCheck1">
                     <label class="form-check-label" for="defaultCheck1">
                         Droit de supprimer
                     </label>
@@ -94,7 +88,10 @@ export default {
                 phone: '',
                 country: '',
                 compagnie_id: '',
-                role: ''
+                role: '',
+                ajout: 0,
+                modifier: 0,
+                supprmier: 0
             },
             errors: [],
             error: null,
@@ -109,11 +106,16 @@ export default {
               phone: this.form.phone,
               role: this.form.role,
               country: this.form.country,
+              droits_add: this.form.ajout,
+              droits_edit: this.form.modifier,
+              droits_delete: this.form.supprmier,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
-                console.log( response ) 
+                // console.log( this.form.ajout ) 
+                // console.log( this.form.modifier ) 
+                // console.log( this.form.supprimer ) 
                 this.error = response.data.message
-                console.log(this.error)
+                // console.log(this.error)
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/profils/profil'});

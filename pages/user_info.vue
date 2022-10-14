@@ -83,7 +83,7 @@ ul .item a:hover{
 }
 nav ul {
 	padding: 0;
-  margin: 0;
+  	margin: 0;
 	list-style: none;
 	position: relative;
 	}
@@ -91,7 +91,7 @@ nav ul {
 nav ul li {
 	display:inline-block;
 	background-color: #040404;
-	}
+}
 
 nav a {
 	display:block;

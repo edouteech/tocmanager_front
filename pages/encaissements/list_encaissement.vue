@@ -6,7 +6,7 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des encaissements</h4>
-       <NuxtLink to="/encaissements/encaissement"><button class="custom-btn btn-3"><span>Remplir encaissement</span></button></NuxtLink>
+       <NuxtLink to="/encaissements/encaissement" v-if="ajout==1"><button class="custom-btn btn-3"><span>Remplir encaissement</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -24,8 +24,8 @@
               <td>{{encaissement.client.name}}</td>
               <td><div class="action">
                 <div @click="voirEncaissement(encaissement.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/encaissements/'+encaissement.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteEncaissement(encaissement.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/encaissements/'+encaissement.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteEncaissement(encaissement.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
@@ -82,6 +82,9 @@ export default {
         encaissements: [],
         encaissement: "",
         total: '',
+        ajout: '',
+        modifier: '',
+        supprimer: '',
         form: {
             nombre: '',
         }
@@ -90,16 +93,21 @@ export default {
 
     mounted () {
       this.refresh()
+      this.ajout = localStorage.getItem('auth.ajout');
+      this.modifier = localStorage.getItem('auth.modifier');
+      this.supprimer = localStorage.getItem('auth.supprimer');
     },
 
     methods: {
-        deleteEncaissement(id){ console.log(id);
+        deleteEncaissement(id){ 
+          // console.log(id);
           this.$axios.delete('/encaissements/' +id,{
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
           })
-          .then(response =>  {console.log(response.data.data);
+          .then(response =>  {
+            // console.log(response.data.data);
           this.refresh()})
          },
 
@@ -112,7 +120,7 @@ export default {
                   per_page : this.form.nombre }   
           }).then(response => 
           {
-            console.log(response);
+            // console.log(response);
             this.encaissements = response.data.data.data
             this.res_data= response.data.data
             this.total = response.data.data.total
@@ -127,7 +135,8 @@ export default {
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
-          }).then(response => {console.log(response.data.data[0]);
+          }).then(response => {
+            // console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].montant
              this.identifiant2 = moment(response.data.data[0].date).format("YYYY-MM-D")
              this.identifiant3 = response.data.data[0].client.name 

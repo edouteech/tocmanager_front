@@ -33,15 +33,15 @@
               <td>{{result.nature}}</td>
               <td><div class="action">
                 <div @click="voirClient(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/clients/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteClient(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/clients/'+result.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteClient(result.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div><br>
-      <NuxtLink  to="/clients/add_client"><button class="custom-btn btn-3"><span>Ajouter nouveau client</span></button></NuxtLink>
+      <NuxtLink  to="/clients/add_client"><button class="custom-btn btn-3" v-if="ajout==1"><span>Ajouter nouveau client</span></button></NuxtLink>
         <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
@@ -62,8 +62,8 @@
               <td>{{client.nature}}</td>
               <td><div class="action">
                 <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/clients/'+client.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteClient(client.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
@@ -127,6 +127,9 @@ export default {
         compagnie_id: '',
         clients: [],
         client: "",
+        ajout: '',
+        modifier: '',
+        supprimer: '',
         form: {
           nombre: '',
         }
@@ -135,6 +138,9 @@ export default {
 
     mounted () {
       this.refresh()
+      this.ajout = localStorage.getItem('auth.ajout');
+      this.modifier = localStorage.getItem('auth.modifier');
+      this.supprimer = localStorage.getItem('auth.supprimer');
     },
 
     methods: {
@@ -147,6 +153,9 @@ export default {
             {
               headers: {
                   'Content-Type': 'multipart/form-data'
+              },
+              params: {
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
               }
             }
           ).then(response => {
@@ -179,7 +188,11 @@ export default {
         
         deleteClient(id){ 
           // console.log(id);
-          this.$axios.delete('/clients/' +id)
+          this.$axios.delete('/clients/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
           .then(response =>  {
             // console.log(response);
           this.refresh()})

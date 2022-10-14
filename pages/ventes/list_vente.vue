@@ -6,7 +6,7 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des ventes effectuées</h4>
-      <NuxtLink  to="/ventes/vente"><button class="custom-btn btn-3"><span>Nouvelle vente</span></button></NuxtLink>
+      <NuxtLink  to="/ventes/vente" v-if="ajout==1"><button class="custom-btn btn-3"><span>Nouvelle vente</span></button></NuxtLink>
       <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -25,8 +25,8 @@
               <td>{{vente.rest}}</td>
               <td><div class="action">
                 <NuxtLink :to="'/ventes/voir/'+vente.id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
-                <NuxtLink :to="'/ventes/'+vente.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div class="cursor-pointer" @click="deleteVente(vente.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/ventes/'+vente.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div class="cursor-pointer" @click="deleteVente(vente.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
@@ -80,6 +80,9 @@ export default {
         ventes: [],
         vente: "",
         total: '',
+        ajout: '',
+        modifier: '',
+        supprimer: '',
         form: {
             nombre: '',
         }
@@ -88,7 +91,12 @@ export default {
     methods: {
         deleteVente(id){
           console.log(id)
-          this.$axios.delete('/sells/'+id).then(response =>{console.log(response);
+          this.$axios.delete('/sells/'+id,{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          })
+          .then(response =>{
+            // console.log(response);
             this.refresh()})                
         },
         
@@ -100,7 +108,7 @@ export default {
           })        
           .then(response => 
           {
-            console.log(response);
+            // console.log(response);
             this.ventes = response.data.data.data
             this.res_data= response.data.data
             this.total = response.data.data.total
@@ -133,6 +141,9 @@ export default {
     mounted () {
       this.refresh()
       this.recupClient()
+      this.ajout = localStorage.getItem('auth.ajout');
+      this.modifier = localStorage.getItem('auth.modifier');
+      this.supprimer = localStorage.getItem('auth.supprimer');
     }
 }
 </script>
