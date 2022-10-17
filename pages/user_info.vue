@@ -2,12 +2,16 @@
 <div class="bas-page " data-bs-dismiss="offcanvas">
     <nav>
         <ul>
-            <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas"><li class="item"><a href="#"><span class="user_name" data-bs-dismiss="offcanvas">{{$auth.$state.user[0].name}}</span><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
+            <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
+			<li class="item"><a href="#">
+				<span class="user_name" data-bs-dismiss="offcanvas">{{$auth.$state.user[0].name}}</span>
+				<i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
             <!-- First Tier Drop Down -->
             <ul>
-                <li><a href="#">Mon profil</a></li>
-                <li><a href="#">Modifier mot de passe</a></li>
-                <li><a href="#">Déconnexion</a></li>
+                <li><a href="/mon_profil">Mon profil</a></li>
+                <li><a href="/update_password">Modifier mot de passe</a></li>
+				<li><a href="#">Changer de compagnie</a></li>
+                <li @click="logout()"><a href="" @click="logout()"><i class='bx bx-log-out'></i>Déconnexion</a></li>
             </ul>        
             </li>
         </ul>
@@ -20,8 +24,21 @@ export default {
     auth: true,
     name: "Userinfo",
 	mounted(){
-		// console.log(this.$auth.$state.user[0].name)
-	}
+		console.log(this.$auth.$state.user[0].name)
+	},
+	methods:{
+          async logout(){
+              localStorage.removeItem('auth.ajout');
+              localStorage.removeItem('auth.modifier');
+              localStorage.removeItem('auth.supprimer');
+              localStorage.removeItem('auth.company_id');
+              localStorage.removeItem('auth.roles');
+              localStorage.removeItem('auth.role');
+              this.$auth.logout();
+              this.$router.push('/login');
+          }
+              
+      }
 
 }
 </script>
@@ -89,6 +106,7 @@ nav ul {
   	margin: 0;
 	list-style: none;
 	position: relative;
+	z-index: 999;
 	}
 	
 nav ul li {

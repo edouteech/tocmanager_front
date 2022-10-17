@@ -98,7 +98,7 @@ export default {
             .then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
-                localStorage.removeItem('auth.email');
+                // localStorage.removeItem('auth.email');
                 // this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
                 // let role = response.data.data.original.roles[0].name
                 if(response.data.status == "success"){

@@ -41,12 +41,12 @@
   
             <div class="d-flex justify-content-between align-items-center">
               <!-- Checkbox -->
-              <div class="form-check mb-0">
+              <!-- <div class="form-check mb-0">
                 <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
                 <label class="form-check-label" for="form2Example3">
                   Se rappeler de moi
                 </label>
-              </div>
+              </div> -->
               <NuxtLink to="/password1"  class="link-primary px-2">               
                   Mot de passe oublié ?
               </NuxtLink>
@@ -139,6 +139,7 @@
                   this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
                   this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
                   let role = response.data.data.original.roles[0].name
+                  this.$auth.$storage.setUniversal ('email', response.data.data.original.user.email)
                   this.$auth.$storage.setUniversal ('ajout', response.data.data.original.roles[0].pivot.droits_add)
                   this.$auth.$storage.setUniversal ('modifier', response.data.data.original.roles[0].pivot.droits_edition)
                   this.$auth.$storage.setUniversal ('supprimer', response.data.data.original.roles[0].pivot.droits_delete)

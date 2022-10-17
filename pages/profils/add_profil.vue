@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Utilisateurs </h3>
+      <Userinfo />
     </nav>
 
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
@@ -52,7 +53,7 @@
                     </label>
                 </div>
                 <div class="form-check mx-3">
-                    <input class="form-check-input" type="checkbox" v-model="form.supprmier" true-value="1" false-value="0" id="defaultCheck1">
+                    <input class="form-check-input" type="checkbox" v-model="form.supprimer" true-value="1" false-value="0" id="defaultCheck1">
                     <label class="form-check-label" for="defaultCheck1">
                         Droit de supprimer
                     </label>
@@ -73,11 +74,13 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     layout: "empty",
     auth:true,
     components: {
         Sidebar,
+        Userinfo
         
     },
     data () {
@@ -91,7 +94,7 @@ export default {
                 role: '',
                 ajout: 0,
                 modifier: 0,
-                supprmier: 0
+                supprimer: 0
             },
             errors: [],
             error: null,
@@ -108,7 +111,7 @@ export default {
               country: this.form.country,
               droits_add: this.form.ajout,
               droits_edit: this.form.modifier,
-              droits_delete: this.form.supprmier,
+              droits_delete: this.form.supprimer,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
                 // console.log( this.form.ajout ) 

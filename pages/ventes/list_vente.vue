@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Ventes </h3>
+      <Userinfo />
     </nav>
 
     <div class="app-main__outer p-5">
@@ -62,10 +63,13 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
+  auth: true,
   layout: "empty",
   components: {
-    Sidebar,  
+    Sidebar,
+    Userinfo  
   },
    data () {
       return {

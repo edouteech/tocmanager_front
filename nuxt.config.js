@@ -60,6 +60,9 @@ export default {
   router:{
     middleware:['auth']
   },
+  // env: {
+  //   maxAge: 60 * 1
+  // },
 
   auth: {
     strategies: {
@@ -67,8 +70,12 @@ export default {
         token: {
           property: 'access_token',
           global: true,
-          type: 'Bearer'
+          type: 'Bearer',
+          maxAge: 3600,
+
         },
+        autoLogout:false,
+
         user: {
           property: false,
           autoFetch: true

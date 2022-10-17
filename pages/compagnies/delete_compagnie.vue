@@ -3,6 +3,7 @@
     <div class="zone">
           <div class="titre">
            <Sidebar /> <p class="name"> Compagnies supprimées</p>
+           <Userinfo />
           </div>
          <!-- début du new table -->
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -76,12 +77,14 @@
 <script>
 import deleteModal from './modal_delete.vue'
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     layout: "empty",
     components: {
-        Sidebar,   
-        deleteModal, 
-    },
+    Sidebar,
+    deleteModal,
+    Userinfo
+},
 
     data () {
         return {

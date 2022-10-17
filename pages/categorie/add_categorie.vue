@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Catégories de produits </h3>
+      <Userinfo />
     </nav>
 
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
@@ -38,11 +39,13 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     layout: "empty",
     auth: true,
     components: {
         Sidebar,
+        Userinfo,
         
     },
     data () {
@@ -62,7 +65,8 @@ export default {
         this.$axios.get('/categories',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
-          }).then(response =>{console.log(response.data.data.data);
+          }).then(response =>{
+            // console.log(response.data.data.data);
             this.categories = response.data.data.data
             })     
     },
@@ -75,9 +79,9 @@ export default {
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })   
             .then(response =>{ 
-                console.log( response ) 
+                // console.log( response ) 
                 this.error = response.data.message
-                console.log(this.error)
+                // console.log(this.error)
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/categorie/list_categorie', })

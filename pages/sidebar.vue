@@ -150,13 +150,13 @@
               </li> 
               
   
-              <div class="bas-page" data-bs-dismiss="offcanvas">
+              <!-- <div class="bas-page" data-bs-dismiss="offcanvas">
                       <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
                       <span class="user_name" data-bs-dismiss="offcanvas">{{$auth.user.name}}</span> 
                       <div class="custom-btn btn-5" @click="logout" data-bs-dismiss="offcanvas">
-                      <!-- <i class='bx bx-log-out'></i> -->
+                      
                       Déconnexion</div>    
-              </div>
+              </div> -->
   
           </ul>
     </div>

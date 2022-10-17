@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Ventes </h3>
+      <User_info />
     </nav>
 
     <div class="app-main__outer p-5">
@@ -161,11 +162,13 @@
 <script>
 import moment from "moment";
 import Sidebar from '../../sidebar.vue'
+import User_info from "~/pages/user_info.vue";
 export default {
     layout: "voir",
     components: {
-        Sidebar,  
-    },
+    Sidebar,
+    User_info
+},
 
     data () {
       return {

@@ -2,6 +2,7 @@
 <div>
       <div class="titre">
         <Sidebar /> <p class="name"> Compagnies</p>
+        <Userinfo /> 
       </div>
       <div class="container">
       <p>Liste des compagnies</p>
@@ -36,10 +37,13 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
+  auth: true,
   layout: "empty",
   components: {
-    Sidebar,  
+    Sidebar,
+    Userinfo  
   },
    data () {
       return {

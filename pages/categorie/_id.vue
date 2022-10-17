@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Catégories de produits </h3>
+      <Userinfo />
     </nav>
 
     <div class="app-main__outer p-5">
@@ -30,11 +31,13 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     layout: "empty",
     auth: true,
     components: {
-      Sidebar,  
+      Sidebar, 
+      Userinfo 
     },
 
     data () {
@@ -54,8 +57,11 @@ export default {
 
     mounted() {
         this.refresh()
-        this.$axios.get('/categories/'+ this.$route.params.id)
-          .then(response => {console.log(response.data.data[0] )
+        this.$axios.get('/categories/'+ this.$route.params.id,{params: {
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                }})
+          .then(response => {
+            // console.log(response.data.data[0] )
             let categorie = response.data.data[0];
             // this.categories = response.data.data
             this.form.name = categorie.name,

@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Ventes </h3>
+      <User_info />
     </nav>
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
       {{error}} <br>
@@ -87,15 +88,17 @@ import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
 import produitModal from './produitModal.vue'
 import Sidebar from '../sidebar.vue'
+import User_info from "../user_info.vue";
 export default {
     layout: "empty",
     auth:true,
     components: {
-        Sidebar, 
-        ajoutModal, 
-        SavedModal,
-        produitModal,
-    },
+    Sidebar,
+    ajoutModal,
+    SavedModal,
+    produitModal,
+    User_info
+},
 
     data () {
         return{
