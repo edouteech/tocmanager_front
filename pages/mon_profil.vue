@@ -7,6 +7,9 @@
 
     <div class="app-main__outer py-5 px-2">
       <h4 class="mx-4">Mon profil</h4><hr><br>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+                {{error}} 
+            </div>
         <div class="row">
             <div class="col-lg-5 col-md-12 img">
               <div class="contact-info">
@@ -14,18 +17,7 @@
               </div>
             </div>
   
-            <div class="col-lg-6 col-md-12 mt-5">
-                <div class="form-outline mb-4">
-                    <span class="fa fa-address-book px-2"></span><label class="form-label">Nom Complet</label>
-                    <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.name" required
-                        placeholder="Entrer votre nom" /></div>      
-                </div>
-                <!-- Email input -->
-                <div class="form-outline mb-4">
-                    <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
-                    <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
-                        placeholder="Entrer une addresse email valide" /></div>      
-                </div>
+            <div class="col-lg-6 col-md-12 mt-2">
                 <div class="form-outline mb-4">
                     <span class="fa fa-desktop px-2"></span><label class="form-label">Fonction</label>
                     <select class="form-control form-control-lg" v-model="form.role" disabled>
@@ -37,6 +29,18 @@
                 </div>
 
                 <div class="form-outline mb-4">
+                    <span class="fa fa-address-book px-2"></span><label class="form-label">Nom Complet</label>
+                    <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.name" required
+                        placeholder="Entrer votre nom" /></div>      
+                </div>
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                    <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
+                    <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
+                        placeholder="Entrer une addresse email valide" /></div>      
+                </div>
+
+                <div class="form-outline mb-4">
                     <span class="fa fa-mobile px-2"></span> <label class="form-label">Téléphone</label>
                     <div class="input-field"><input type="tel" class="form-control form-control-lg" v-model="form.phone" required
                         placeholder="Entrer votre numéro de téléphone" /></div>      
@@ -45,6 +49,16 @@
                     <span class="fa fa-globe px-2"></span><label class="form-label">Pays</label>
                     <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.country" required
                         placeholder="Entrer le nom de votre pays" /></div>      
+                </div>
+                <div class="form-outline mb-4">
+                  <span class="fa fa-university px-2"></span><label class="form-label">Ville</label>
+                  <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.city" required
+                    placeholder="Entrer le nom de votre pays" /></div>      
+                </div>
+                <div class="form-outline mb-4">
+                  <span class="fa fa-address-card px-2"></span><label class="form-label">Addresse</label>
+                  <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.address" required
+                    placeholder="Entrer le nom de votre pays" /></div>      
                 </div>
 
                 <!-- <div class="form-outline mb-4">
@@ -82,12 +96,15 @@ export default {
       return {
         showModal: false,
         liste: '',
+        error: null,
         form:{
             name: '',
             email: '',
             phone: '',
             country: '',
             role: '',
+            city:'',
+            address:''
             // compagnie: {
             //     name: '',
             // }
@@ -103,9 +120,11 @@ export default {
           }).then(response => {
             console.log(response.data.data[0]);
              this.form.name = response.data.data[0].name
-             this.form.email = response.data.data[0].phone
-             this.form.phone = response.data.data[0].email
+             this.form.email = response.data.data[0].email
+             this.form.phone = response.data.data[0].phone
              this.form.country = response.data.data[0].country 
+             this.form.city = response.data.data[0].city
+             this.form.address = response.data.data[0].address  
              this.form.role = response.data.data[0].role_id    
             //  this.identifiant6 = response.data.data[0].droits_add
             //  this.identifiant7 = response.data.data[0].droits_edition
@@ -121,12 +140,22 @@ export default {
             email: this.form.email,
             phone: this.form.phone,
             country: this.form.country,
+            city: this.form.city,
+            address: this.form.address,
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
 
             })
             .then(response =>{console.log(response)
                 this.$router.push({
                   path:'/mon_profil'})
+                  this.error="Modifi"
+                  if(response.data.status == "success"){
+                    this.error="Modifications éffectuées avec succès !!!"
+                  }
+                  else{
+                      this.error = "Echec!!! Veuillez réessayer..."
+                      
+                  }
 
             })      
         },
