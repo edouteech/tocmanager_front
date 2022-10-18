@@ -138,7 +138,7 @@ nav a {
 	display:block;
 	padding:0 5px;	
 	color:#FFF;
-	font-size:9px;
+	font-size:13px;
 	line-height: 30px;
 	text-decoration:none;
 }
@@ -161,10 +161,11 @@ nav ul li:hover > ul {
 	
 /* Fisrt Tier Dropdown */
 nav ul ul li {
-	width:170px;
 	float:none;
 	display:list-item;
 	position: relative;
+	margin-left: -25%;
+	width: 270px;
 }
 
 nav ul ul li:hover {

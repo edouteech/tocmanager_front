@@ -23,7 +23,7 @@
                     </NuxtLink>
                 </li>
               </div>
-              <li v-if="this.role == 'admin'">
+              <li v-if="this.admin == 1">
                   <NuxtLink to="/dashboard" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-th-large" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -31,7 +31,7 @@
                       </div>
                   </NuxtLink>
               </li>
-              <li v-if="this.role == 'admin' || this.role == 'comptable'">
+              <li v-if="this.stock == 1">
                   <NuxtLink to="/achats/achat" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-shopping-cart" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -39,7 +39,7 @@
                       </div>
                   </NuxtLink>
               </li>
-              <li>
+              <li v-if="this.ventes == 1">
                   <NuxtLink to="/ventes/vente" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-share-square-o" aria-hidden="true"></i>
@@ -47,7 +47,7 @@
                       </div>
                   </NuxtLink>
               </li>
-              <li>
+              <li v-if="this.ventes == 1">
                   <NuxtLink to="/ventes/list_vente" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-floppy-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -55,7 +55,7 @@
                       </div>
                   </NuxtLink>
               </li>
-              <li v-if="this.role == 'admin' || this.role == 'comptable'">
+              <li v-if="this.stock == 1">
                   <NuxtLink to="/achats/list_achat" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-floppy-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -63,7 +63,7 @@
                       </div>
                   </NuxtLink>
               </li>
-              <li>
+              <li v-if="this.ventes == 1">
                   <NuxtLink to="/clients/list_client" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-list-ul" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -71,7 +71,7 @@
                       </div>
                   </NuxtLink>
               </li>
-              <li>
+              <li v-if="this.stock == 1">
                   <NuxtLink to="/fournisseurs/list_fournisseur" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-list-ul" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -92,7 +92,7 @@
                   </div>
               </li> -->
   
-              <li>
+              <li v-if="this.tresorerie == 1">
                   <NuxtLink to="/encaissements/list_encaissement" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-credit-card-alt" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -100,7 +100,7 @@
                       </div>
                   </NuxtLink>
               </li>
-              <li v-if="this.role == 'admin' || this.role == 'comptable'">
+              <li v-if="this.stock == 1">
                   <NuxtLink to="/decaissements/list_decaissement" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-credit-card-alt" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -108,7 +108,7 @@
                       </div>
                   </NuxtLink>
               </li>
-              <li>
+              <li v-if="this.ventes == 1 || this.stock == 1">
                   <NuxtLink to="/produits/list_produit" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                          <i class="fa fa-cubes" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -116,7 +116,7 @@
                       </div>
                   </NuxtLink>
               </li>
-              <li>
+              <li v-if="this.ventes == 1 || this.stock == 1">
                   <NuxtLink to="/categorie/list_categorie" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-database" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -125,7 +125,7 @@
                   </NuxtLink>
               </li>
               
-              <li v-if="this.role == 'admin'">
+              <li v-if="this.admin == 1">
                   <NuxtLink to="/update_compagnie">
                       <div class="rubrique">
                           <i class="fa fa-briefcase" aria-hidden="true"></i>
@@ -141,7 +141,7 @@
                       </div>
                   </NuxtLink>
               </li> -->
-              <li v-if="this.role == 'admin' || this.role == 'comptable'">
+              <li v-if="this.utilisateurs == 1">
                   <NuxtLink to="/profils/profil" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-address-card-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -149,7 +149,7 @@
                       </div>
                   </NuxtLink>
               </li> 
-              <li v-if="this.role == 'admin' || this.role == 'comptable'">
+              <li v-if="this.supprimer == 1">
                   <NuxtLink to="/corbeille" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-trash" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
@@ -180,13 +180,30 @@
       data(){
         return{
             role:'',
-            compagnie:''
+            compagnie:'',
+            admin: '',
+            utilisateurs: '',
+            tresorerie: '',
+            stock: '',
+            ventes: '',
+            modifier: '',
+            supprimer: '',
+            ajout: '',
+            ventes:'',
+
         }
       },
   
       mounted(){
          this.role = localStorage.getItem('auth.roles');
          this.compagnie = localStorage.getItem('auth.company_id')
+         this.admin = localStorage.getItem('auth.admin')
+         this.utilisateurs = localStorage.getItem('auth.utilisateurs')
+         this.tresorerie = localStorage.getItem('auth.tresorerie')
+         this.stock = localStorage.getItem('auth.stock')
+         this.ventes = localStorage.getItem('auth.ventes')
+         this.supprimer = localStorage.getItem('auth.supprimer')
+
         // console.log(this.role)
       },
   
