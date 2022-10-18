@@ -10,6 +10,9 @@
             <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
                 {{error}} 
             </div>
+            <div class="alert alert-success justify-content-center" role="alert" v-if="error != null">
+                {{errors}} 
+            </div>
         <div class="row">
             <div class="col-lg-5 col-md-12 img">
               <div class="contact-info">
@@ -97,6 +100,7 @@ export default {
         showModal: false,
         liste: '',
         error: null,
+        errors: null,
         form:{
             name: '',
             email: '',
@@ -150,7 +154,7 @@ export default {
                   path:'/mon_profil'})
                   this.error="Modifi"
                   if(response.data.status == "success"){
-                    this.error="Modifications éffectuées avec succès !!!"
+                    this.errors="Modifications éffectuées avec succès !!!"
                   }
                   else{
                       this.error = "Echec!!! Veuillez réessayer..."
