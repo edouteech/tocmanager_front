@@ -4,6 +4,7 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Corbeille</h3>
+      <User_info />
     </nav>
 
     <section class="app-main__outer p-5">
@@ -170,11 +171,13 @@
 
 <script>
 import Sidebar from './sidebar.vue'
+import User_info from './user_info.vue';
 export default {
   layout: "empty",
   components: {
-    Sidebar,    
-  },
+    Sidebar,
+    User_info
+},
 
 
 }

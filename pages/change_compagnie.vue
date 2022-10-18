@@ -5,9 +5,9 @@
               <form action="" method="POST"> 
                 <h4>Changer de compagnie </h4>
                   <div class="input-form"> 
-                     <select v-model="form.nature" class="form-control"  v-for="(compagnie, i) in compagnies" :key="i">
-                          <option disabled value="">Choisissez une compagnie</option>
-                          <option value="" >{{compagnie.name}}</option>
+                     <select v-model="form.compagny_id" class="form-control">
+                          <option value="">Choisissez une compagnie</option>
+                          <option  v-for="(compagnie, i) in compagnies" :key="i" :value="compagnie.id">{{compagnie.name}}</option>
                       </select>
                   </div>
                   <div class="submit-form" @click="$emit('close-modal')">
@@ -31,54 +31,21 @@
       name: 'changeCompagnie',
       props: ['compagnies'],
       data () {
-      return{
-          form: {
-              name: '',
-              email: '',
-              phone: '',
-              nature: 0, 
-              compagnie_id: ''
-          },
-          errors: [],
-          error: null,
-          status: '',
-      }
+        return{
+            form: {
+              compagny_id: '',
+            },
+            error: null,
+            status: '',
+        }
       },
   
       methods: {
           async submit(){
-              await  this.$axios.post('/clients',{
-                name: this.form.name,
-                email: this.form.email,
-                phone: this.form.phone,
-                nature: this.form.nature,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
-              })
-              .then(response =>{console.log(response.data.data) 
-               this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })
-               console.log( response ) 
-                  this.error = response.data.message
-                  console.log(this.error)
-                  this.status = response.data.status
-                  console.log(this.error)
-                  this.errors = response.data.data
-                    if(this.status == 'success'){
-                      alert('Nouveau client ajouté avec succès');
-                        this.form.name = '',
-                        this.form.phone = '',
-                        this.form.email = '',
-                        this.form.nature = '',
-                        this.status = response.data.status
-                    }
-                    else{
-                      alert("Echec lors de l'ajout du client ! Veuillez réessayer.");
-                      this.status = response.data.status
-                        this.errors = response.data.data
-                        // this.$router.push({path:'/categorie/add_client'});
-                    }
-               }).catch( err => console.log( err ) )
-              
-              },
+            console.log(this.form.compagny_id)
+            this.$auth.$storage.setUniversal('company_id', this.form.compagny_id)
+            this.$router.push({path:'/mon_profil'})
+          },
   
       }
   }
@@ -122,6 +89,7 @@
     justify-content: center;
     background-color: #949292da;
     overflow: auto;
+    
   }
   
   .modaler {

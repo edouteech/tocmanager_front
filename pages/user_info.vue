@@ -10,33 +10,53 @@
             <ul>
                 <li><a href="/mon_profil">Mon profil</a></li>
                 <li><a href="/update_password">Modifier mot de passe</a></li>
-				<li><a href="#">Changer de compagnie</a></li>
+				<!-- <li v-on:click.prevent="change()"><a href="#">Changer de compagnie</a></li> -->
                 <li @click="logout()"><a href="" @click="logout()"><i class='bx bx-log-out'></i>Déconnexion</a></li>
             </ul>        
             </li>
         </ul>
     </nav>
+<changeCompagnie :compagnies= 'liste'  v-show="showModal" @close-modal="showModal = false"/>
 </div>
 </template>
 
 <script>
+import changeCompagnie from './change_compagnie.vue'
 export default {
     auth: true,
     name: "Userinfo",
-	mounted(){
-		console.log(this.$auth.$state.user[0].name)
+	components: {
+		changeCompagnie  
 	},
+	data () {
+      return {
+        showModal: false,
+        liste: '',
+	  }
+	},
+	// mounted(){
+	// 	console.log(this.$auth.$state.user[0].name)
+	// },
 	methods:{
-          async logout(){
-              localStorage.removeItem('auth.ajout');
-              localStorage.removeItem('auth.modifier');
-              localStorage.removeItem('auth.supprimer');
-              localStorage.removeItem('auth.company_id');
-              localStorage.removeItem('auth.roles');
-              localStorage.removeItem('auth.role');
-              this.$auth.logout();
-              this.$router.push('/login');
-          }
+			async logout(){
+				localStorage.removeItem('auth.ajout');
+				localStorage.removeItem('auth.modifier');
+				localStorage.removeItem('auth.supprimer');
+				localStorage.removeItem('auth.company_id');
+				localStorage.removeItem('auth.roles');
+				localStorage.removeItem('auth.role');
+				this.$auth.logout();
+				this.$router.push('/login');
+			},
+
+			change(){
+				this.showModal = true;
+				this.$axios.get('/user/compagnies')
+				.then(response => {
+					console.log(response)        
+				this.liste = response.data 
+			})
+			}
               
       }
 

@@ -124,6 +124,15 @@
                       </div>
                   </NuxtLink>
               </li>
+              
+              <li v-if="this.role == 'admin'">
+                  <NuxtLink to="/update_compagnie">
+                      <div class="rubrique">
+                          <i class="fa fa-briefcase" aria-hidden="true"></i>
+                          <span class="links_name">Ma compagnie</span>
+                      </div>
+                  </NuxtLink>
+              </li>
               <!-- <li>
                   <NuxtLink to="/compagnies/list_compagnie">
                       <div class="rubrique">
@@ -171,11 +180,13 @@
       data(){
         return{
             role:'',
+            compagnie:''
         }
       },
   
       mounted(){
          this.role = localStorage.getItem('auth.roles');
+         this.compagnie = localStorage.getItem('auth.company_id')
         // console.log(this.role)
       },
   

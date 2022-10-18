@@ -10,7 +10,7 @@
             <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
                 {{error}} 
             </div>
-            <div class="alert alert-success justify-content-center" role="alert" v-if="error != null">
+            <div class="alert alert-success justify-content-center" role="alert" v-if="errors != null">
                 {{errors}} 
             </div>
         <div class="row">
@@ -152,7 +152,6 @@ export default {
             .then(response =>{console.log(response)
                 this.$router.push({
                   path:'/mon_profil'})
-                  this.error="Modifi"
                   if(response.data.status == "success"){
                     this.errors="Modifications éffectuées avec succès !!!"
                   }

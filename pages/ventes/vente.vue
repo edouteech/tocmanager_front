@@ -180,7 +180,7 @@ export default {
               discount: this.form.discount,
               amount: this.form.amount,
               amount_received: this.form.amount_received,
-              user_id: this.$auth.user.id,
+              user_id: this.$auth.$state.user[0].id,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')  
@@ -206,7 +206,8 @@ export default {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             is_paginated: 0
           }
-          }).then(response => {console.log(response.data.data);
+          }).then(response => {
+            // console.log(response.data.data);
             this.clients = response.data.data
             })
         },
@@ -216,7 +217,8 @@ export default {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             is_paginated: 0
           }
-          }).then(response => {console.log(response.data.data);
+          }).then(response => {
+            // console.log(response.data.data);
             this.produits = response.data.data}) 
         },
 
@@ -246,7 +248,7 @@ export default {
                     sum += this.form.sell_lines[j].amount;
                 }
                 this.form.amount = sum;
-                console.log(sum); 
+                // console.log(sum); 
             }    
         }
    

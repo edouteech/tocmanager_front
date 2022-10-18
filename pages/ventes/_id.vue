@@ -160,7 +160,7 @@ export default {
               discount: this.form.discount,
               amount: this.form.amount,
               amount_received: this.form.amount_received,
-              user_id: this.$auth.user.id,
+              user_id: this.$auth.$state.user[0].id,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
@@ -183,7 +183,8 @@ export default {
             this.$axios.get('/clients',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
-          }).then(response => {console.log(response);
+          }).then(response => {
+            // console.log(response);
             this.clients = response.data.data.data})
         },
 
@@ -223,7 +224,7 @@ export default {
                     sum += this.form.sell_lines[j].amount;
                 }
                 this.form.amount = sum;
-                console.log(sum); 
+                // console.log(sum); 
             }
 
                 

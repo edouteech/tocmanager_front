@@ -143,6 +143,7 @@ export default {
     },
 
     mounted () {
+        // console.log(this.$auth.$state.user)
       this.refresh()
       this.recupProduct()
     },
@@ -179,7 +180,7 @@ export default {
                     discount: this.form.discount,
                     amount: this.form.amount,
                     amount_sent: this.form.amount_sent,
-                    user_id: this.$auth.user.id,
+                    user_id: this.$auth.$state.user[0].id,
                     supplier_id: this.form.supplier_id,  
                     buy_lines: this.form.buy_lines,
                     compagnie_id: this.$auth.$storage.getUniversal('company_id')
@@ -187,14 +188,13 @@ export default {
                         console.log( response ) 
                         this.error = response.data.message
                         this.errors = response.data.data
-                        console.log(this.error)
+                        // console.log(this.error)
                         if(response.data.status == "success"){
                             this.$router.push({path:'/achats/SavedModal',})
                         }
                     
-                        else{ console.log(response)
+                        else{ 
                             this.errors = response.data.data
-                            // this.$router.push({path:'/clients/add_client'});
                         }
                 }).catch( err => console.log( err ) )
                     //  console.log(this.form.name)                                        
@@ -208,7 +208,8 @@ export default {
                     compagnie_id: this.$auth.$storage.getUniversal('company_id'),
                     is_paginated: 0
                 }
-          }).then(response => {console.log(response.data.data);
+          }).then(response => {
+            // console.log(response.data.data);
             this.fournisseurs = response.data.data})
         },
 
@@ -217,7 +218,8 @@ export default {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             is_paginated: 0
           }
-          }).then(response => {console.log(response.data.data);
+          }).then(response => {
+            // console.log(response.data.data);
             this.produits = response.data.data}) 
         },
 
@@ -247,7 +249,7 @@ export default {
                     sum += this.form.buy_lines[j].amount;
                 }
                 this.form.amount = sum;
-                console.log(sum); 
+                // console.log(sum); 
             }
 
                 
