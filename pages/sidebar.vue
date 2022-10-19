@@ -126,10 +126,10 @@
               </li>
               
               <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
-                  <NuxtLink to="/update_compagnie">
-                      <div class="rubrique">
-                          <i class="fa fa-briefcase" aria-hidden="true"></i>
-                          <span class="links_name">Ma compagnie</span>
+                  <NuxtLink to="/update_compagnie" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-briefcase" aria-hidden="true " data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Ma compagnie</span>
                       </div>
                   </NuxtLink>
               </li>

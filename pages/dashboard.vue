@@ -337,6 +337,7 @@ export default {
 //   moment().format("YYYY-MM-DDThh:mm")
     middleware:'auth',
     mounted(){    
+        console.log(this.$auth)
         this.$axios.post('/tableau/de/bord',{
               date_debut: this.form.date_debut,
               date_fin: this.form.date_fin,

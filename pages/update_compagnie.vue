@@ -16,28 +16,52 @@
             <div class="row">
                 <div class="col-lg-5 col-md-12 img">
                   <div class="contact-info">
-                    <img src="./../static/images/enter11.png" alt="profil" class="profil mt-2" />
+                    <img src="./../static/images/enter11.png" alt="profil" class="profil mt-5" />
                   </div>
                 </div>
       
-                <div class="col-lg-6 col-md-12 mt-5">
-                    <form action="" method="POST">
-                        <p>Modifier les informations de la compagnie</p>	
-                        <div class="input-form">			
-                            <input type="text" placeholder='Entrer le nom de la compagnie' v-model="form.name" autocomplete="off" required>
-                            
-                        </div>     
-                        <div class="input-form">        
-                            <input type="text" placeholder="Entrer le numero de téléphone de la compagnie " v-model="form.phone" required>
-                            
+                <div class="col-lg-6 col-md-12 mt-2 ml-5">
+                    <form action="" method="POST" class="px-5">
+                        <span class="text-center"><strong>Modifier les informations de la compagnie</strong></span>	<br><br>
+                        <div class="form-outline mb-4">
+                            <span class="fa fa-briefcase px-2"></span><label class="form-label">Nom de la compagnie</label>
+                            <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.name" required
+                                placeholder="Entrer votre nom" /></div>      
                         </div>
-                        
-                        <div class="input-form">    
-                            <input type="email" placeholder="Entrer l'email de la compagnie " v-model="form.email" autocomplete="off" required>
-                            
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
+                            <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
+                                placeholder="Entrer une addresse email valide" /></div>      
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <span class="fa fa-mobile px-2"></span> <label class="form-label">Téléphone</label>
+                            <div class="input-field"><input type="tel" class="form-control form-control-lg" v-model="form.phone" required
+                                placeholder="Entrer votre numéro de téléphone" /></div>      
+                        </div>
+                        <div class="form-outline mb-4">
+                            <span class="fa fa-address-card px-2"></span><label class="form-label">Addresse</label>
+                            <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.address" required
+                                placeholder="Entrer l'addresse" /></div>      
+                        </div>
+                        <div class="form-outline mb-4">
+                        <span class="fa fa-sort-numeric-desc px-2"></span><label class="form-label">Numéro d'Identification Fiscale  Unique</label>
+                        <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.ifu" required
+                            placeholder="Entrer le numéro IFU" /></div>      
+                        </div>
+                        <div class="form-outline mb-4">
+                        <span class="fa fa-exchange px-2"></span><label class="form-label">Régistre de commerce</label>
+                        <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.registre" required
+                            placeholder="Entrer le régistre" /></div>      
+                        </div>
+                        <div class="form-outline mb-4">
+                        <span class="fa fa-key px-2"></span><label class="form-label">Token de génération de facture</label>
+                        <div class="input-field"><textarea type="textarea" class="form-control form-control-lg" v-model="form.token" cols="30" rows="4" required
+                            placeholder="Entrer le token"></textarea></div>      
                         </div>
                         <div class="submit-form">
-                            <input type="submit" id='submit' v-on:click.prevent="submit()" value="Modifier" name="submit">				          
+                            <button type="submit" class="btn btn-success" v-on:click.prevent="submit()" >Modifier	</button>  		          
                         </div>
                     </form> 
                 </div>
@@ -65,7 +89,12 @@ export default {
                 id: '',
                 name: '',
                 email: '',
-                phone: ''
+                phone: '',
+                ifu: '',
+                registre: '',
+                address: '',
+                token: ''
+
             },
             error_message: "",
             error: null,
@@ -84,10 +113,16 @@ export default {
             this.$axios.put('/compagnies/'+this.compagny, {
             id: this.compagny,
             name: this.form.name,
+            phone: this.form.phone,
             email: this.form.email,
+            register_number: this.form.ifu,
+            rccm : this.form.registre,
+            address:this.form.address,
+            mecef_token: this.form.token,
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
             .then(response =>{
+                console.log(response)
                 this.$router.push({
                   path:'/update_compagnie',})
                   if(response.data.status == "success"){
@@ -105,12 +140,16 @@ export default {
           }
           })
             .then(response => {
-                // console.log(response.data.data[0] )
+                // console.log(response.data.data )
             let compagnie = response.data.data[0];
             // this.clients = response.data.data
             this.form.name = compagnie.name,
             this.form.phone = compagnie.phone,
-            this.form.email = compagnie.email
+            this.form.email = compagnie.email,
+            this.form.ifu = compagnie.register_number,
+            this.form.address = compagnie.address,
+            this.form.rccm = compagnie.registre,
+            this.form.mecef_token = compagnie.token
           }      
         )
         }
@@ -120,50 +159,6 @@ export default {
 </script>
 
 <style scoped>
-form {
-    padding-top: 50px;
-    padding-left: 50px;
-}
-.input-form {
-    display: flex;
-    flex-direction: column-reverse;
-    margin: 1.2em 0;
-    height: 50px;
-}
-
-input {
-    padding: 8px;
-    border: none; outline: none;
-    border-bottom: 2px solid #605050;
-}
-       
-input::placeholder {
-    font-size: 15px;
-    opacity: 0.5;
-}
-
-.submit-form {
-    margin-top: 10%;
-    text-align: right;       
-}
-
-input[type=submit] {
-    background-color: white;
-    color: black;
-    padding: 10px 15px;
-    margin: 8px 0;
-    border: 1px solid #53af57;
-    cursor: pointer;
-    width: 100%;
-    font-size: 15px;
-}
-
-input[type=submit]:hover{
-    background-color: #53af57;
-    color: white;
-    border: 1px solid #53af57;
-    font-size: 16px;
-}
 
 @media screen and (max-width: 800px) {
     .img{
