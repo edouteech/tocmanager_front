@@ -81,11 +81,11 @@
         
             </form>
         </div>
-        
+
         <div v-else class="text-center">
                 <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
-            <p>Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token de génération de facture</strong>
-            Dans le caas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
+            <p>Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
+            Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
             la mise à jour des informations. </p>
 
         </div>
@@ -158,6 +158,7 @@ export default {
     mounted () {
       this.compagny = localStorage.getItem('auth.company_id');   
       this.user == localStorage.getItem('auth.user_id')
+      this.compagnie()
       this.refresh()
       this.recupProduct()
     },

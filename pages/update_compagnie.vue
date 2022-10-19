@@ -14,8 +14,8 @@
                 {{errors}} 
             </div>
             <div class="row">
-                <div class="col-lg-5 col-md-12 img">
-                  <div class="contact-info">
+                <div class="col-lg-5 col-md-12 img mt-5">
+                  <div class="contact-info mt-5">
                     <img src="./../static/images/enter11.png" alt="profil" class="profil mt-5" />
                   </div>
                 </div>

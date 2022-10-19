@@ -1,6 +1,8 @@
 <template>
 <div>
-    <Nuxt />
+    <div class="contenu">
+        <Nuxt />
+    </div>
     <Footer/>
 </div>
 </template>
@@ -15,4 +17,10 @@ export default{
         Footer,
     }
 } 
+
 </script>
+<style>
+.contenu{
+    height: 100%;
+}
+</style>
