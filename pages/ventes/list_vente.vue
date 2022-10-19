@@ -7,7 +7,7 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des ventes effectuées</h4>
-      <NuxtLink  to="/ventes/vente" v-if="ajout==1"><button class="custom-btn btn-3"><span>Nouvelle vente</span></button></NuxtLink>
+      <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
       <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -24,10 +24,10 @@
               <td>{{vente.client.name}}</td>
               <td>{{vente.amount}}</td>
               <td>{{vente.rest}}</td>
-              <td><div class="action">
-                <NuxtLink :to="'/ventes/voir/'+vente.id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
-                <NuxtLink :to="'/ventes/'+vente.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div class="cursor-pointer" @click="deleteVente(vente.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              <td><div class="action" v-for="(user, i) in users" :key="i">
+                <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
+                <NuxtLink :to="'/ventes/'+vente.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div class="cursor-pointer" @click="deleteVente(vente.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
@@ -84,9 +84,8 @@ export default {
         ventes: [],
         vente: "",
         total: '',
-        ajout: '',
-        modifier: '',
-        supprimer: '',
+        users: '',
+        compagny:'',
         form: {
             nombre: '',
         }
@@ -145,9 +144,9 @@ export default {
     mounted () {
       this.refresh()
       this.recupClient()
-      this.ajout = localStorage.getItem('auth.ajout');
-      this.modifier = localStorage.getItem('auth.modifier');
-      this.supprimer = localStorage.getItem('auth.supprimer');
+      this.users = this.$auth.$state.user;
+    this.compagny = localStorage.getItem('auth.company_id');
+      // console.log(this.$auth)
     }
 }
 </script>

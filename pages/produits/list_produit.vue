@@ -40,17 +40,17 @@
                 <!-- <td>{{result.stock_min}}</td>
                 <td>{{result.stock_max}}</td> -->
                 <td>{{result.quantity * result.price_sell}}</td>
-                <td><div class="action">
-                  <div @click="voirProduit(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                  <NuxtLink :to="'/produits/'+result.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteProduit(result.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <td><div class="action"  v-for="(user, i) in users" :key="i">
+                  <div @click="voirProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/produits/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>
             </tbody>
         </table>
       </div><br>
-      <NuxtLink  to="/produits/add_produit" v-if="ajout==1"><button class="custom-btn btn-3"><span>Ajouter nouveau produit</span></button></NuxtLink>
+      <NuxtLink  to="/produits/add_produit" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau produit</span></button></NuxtLink>
         <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
@@ -79,10 +79,10 @@
                 <!-- <td>{{produit.stock_min}}</td>
                 <td>{{produit.stock_max}}</td> -->
                 <td>{{produit.quantity * produit.price_sell}}</td>
-                <td><div class="action">
-                  <div @click="voirProduit(produit.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                  <NuxtLink :to="'/produits/'+produit.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteProduit(produit.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <td><div class="action"  v-for="(user, i) in users" :key="i">
+                  <div @click="voirProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/produits/'+produit.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>
@@ -156,9 +156,8 @@ export default {
       price_buy0: '',
       stock_min0: '',
       stock_max0: '',
-      ajout: '',
-      modifier: '',
-      supprimer: '',
+      users: '',
+      compagny: '',
       form: {
           nombre: '',
       }
@@ -168,9 +167,8 @@ export default {
 
   mounted () {
       this.refresh()
-      this.ajout = localStorage.getItem('auth.ajout');
-      this.modifier = localStorage.getItem('auth.modifier');
-      this.supprimer = localStorage.getItem('auth.supprimer');
+      this.users = this.$auth.$state.user;
+    this.compagny = localStorage.getItem('auth.company_id');
   },
 
   methods: {

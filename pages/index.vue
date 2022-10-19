@@ -104,9 +104,6 @@
                   this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name)
                   this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
                   this.$auth.$storage.setUniversal('email', this.form.email)
-                  this.$auth.$storage.setUniversal ('ajout', response.data.data.original.roles[0].pivot.droits_add)
-                  this.$auth.$storage.setUniversal ('modifier', response.data.data.original.roles[0].pivot.droits_edition)
-                  this.$auth.$storage.setUniversal ('supprimer', response.data.data.original.roles[0].pivot.droits_delete)
                   this.$auth.setUserToken(response.data.data.original.access_token)
                   .then(response =>{this.$router.push( '/change_pswd',)
                   })
@@ -139,17 +136,15 @@
                   this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
                   this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
                   let role = response.data.data.original.roles[0].name
-                  this.$auth.$storage.setUniversal ('email', response.data.data.original.user.email)
-                  this.$auth.$storage.setUniversal ('ajout', response.data.data.original.roles[0].pivot.droits_add)
-                  this.$auth.$storage.setUniversal ('modifier', response.data.data.original.roles[0].pivot.droits_edition)
-                  this.$auth.$storage.setUniversal ('supprimer', response.data.data.original.roles[0].pivot.droits_delete)
                   this.$auth.setUserToken(response.data.data.original.access_token)
+                 
                   .then(response =>{
                     if(role != 'admin'){
                       this.$router.push( '/ventes/vente',)
                     }
                     else{
                       this.$router.push( 'dashboard',)
+                      console.log(this.$auth)
                     }
                   })
                 } catch (err) {

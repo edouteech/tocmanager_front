@@ -7,9 +7,9 @@
       <User_info />
     </nav>
 
-    <section class="app-main__outer p-5">
+    <section class="app-main__outer p-5" v-for="(user, i) in users" :key="i">
         <div class="row mt-5">       
-            <div class="col-md-6 col-xl-3" v-if="this.stock == 1">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
                 <NuxtLink to="/achats/delete_achat" >
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -24,7 +24,7 @@
             </div>
             
             
-            <div class="col-md-6 col-xl-3" v-if="this.ventes == 1">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
                 <NuxtLink to="/ventes/delete_vente"> 
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -38,7 +38,7 @@
                 </NuxtLink>
             </div>
              
-            <div class="col-md-6 col-xl-3" v-if="this.ventes == 1">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
                 <NuxtLink to="/clients/delete_client">
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -52,7 +52,7 @@
                 </NuxtLink>
             </div>            
             
-            <div class="col-md-6 col-xl-3" v-if="this.stock == 1">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
                 <NuxtLink to="/fournisseurs/delete_fournisseur">
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -70,7 +70,7 @@
 
         <div class="row mt-5">
             
-            <div class="col-md-6 col-xl-3" v-if="this.stock == 1 || this.ventes == 1">
+            <div class="col-md-6 col-xl-3" v-if="(compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1) || (compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1)">
                 <NuxtLink to="/produits/delete_produit" >
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -85,7 +85,7 @@
             </div>
             
             
-            <div class="col-md-6 col-xl-3" v-if="this.stock == 1 || this.ventes == 1">
+            <div class="col-md-6 col-xl-3" v-if="(compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1) || (compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1)">
                 <NuxtLink to="/categorie/delete_categorie">
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -99,7 +99,7 @@
                 </NuxtLink>
             </div>
               
-            <div class="col-md-6 col-xl-3" v-if="this.tresorerie == 1 ">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_tresorerie == 1">
                 <NuxtLink to="/encaissements/delete_encaissement">
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -113,7 +113,7 @@
                 </NuxtLink>
             </div>
             
-            <div class="col-md-6 col-xl-3" v-if="this.stock == 1 ">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
                 <NuxtLink to="/decaissements/delete_decaissement" > 
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -181,17 +181,15 @@ export default {
 
   data(){
     return{
-        tresorerie: '',
-        stock: '',
-        ventes:'',
+        users:'',
+        compagny: ''
 
     }
 },
 
 mounted(){
-    this.tresorerie = localStorage.getItem('auth.tresorerie')
-    this.stock = localStorage.getItem('auth.stock')
-    this.ventes = localStorage.getItem('auth.ventes')
+    this.users = this.$auth.$state.user;
+    this.compagny = localStorage.getItem('auth.company_id');
 },
 
 

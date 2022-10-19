@@ -7,7 +7,7 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des décaissements</h4>
-      <NuxtLink  to="/decaissements/decaissement" v-if="ajout==1"><button class="custom-btn btn-3"><span>Remplir décaissement</span></button></NuxtLink>
+      <NuxtLink  to="/decaissements/decaissement" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Remplir décaissement</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -23,10 +23,10 @@
               <td>{{decaissement.date}}</td>
               <td>{{decaissement.montant}}</td>
               <td>{{decaissement.supplier.name}}</td>
-              <td><div class="action">
-                <div @click="voirDecaissement(decaissement.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/decaissements/'+decaissement.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteDecaissement(decaissement.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              <td><div class="action"  v-for="(user, i) in users" :key="i">
+                <div @click="voirDecaissement(decaissement.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/decaissements/'+decaissement.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteDecaissement(decaissement.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
@@ -85,9 +85,8 @@ export default {
         decaissements: [],
         decaissement: "",
         total: '',
-        ajout: '',
-        modifier: '',
-        supprimer: '',
+        users: '',
+        compagny: '',
         form: {
           nombre: '',
         }
@@ -96,9 +95,8 @@ export default {
 
     mounted () {
       this.refresh()
-      this.ajout = localStorage.getItem('auth.ajout');
-      this.modifier = localStorage.getItem('auth.modifier');
-      this.supprimer = localStorage.getItem('auth.supprimer');
+      this.users = this.$auth.$state.user;
+    this.compagny = localStorage.getItem('auth.company_id');
     },
 
     methods: {

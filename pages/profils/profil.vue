@@ -7,7 +7,7 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des utilisateurs enregistrés</h4>
-      <NuxtLink  to="/profils/add_profil" v-if="ajout==1"><button class="custom-btn btn-3"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
+      <NuxtLink  to="/profils/add_profil" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -29,10 +29,10 @@
               <td v-else-if="profil.role_name =='comptable'">Comptable</td>
               <td v-else-if="profil.role_name =='cashier'">Caissier</td>
               <td>{{profil.country}}</td>
-              <td><div class="action">
-                    <div @click="voirProfil(profil.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                    <NuxtLink :to="'/profils/'+profil.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                    <div @click="deleteProfil(profil.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              <td><div class="action"  v-for="(user, i) in users" :key="i">
+                    <div @click="voirProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    <NuxtLink :to="'/profils/'+profil.id"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                    <div @click="deleteProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
               </td>
             </tr>
@@ -95,9 +95,8 @@ export default {
           identifiant7 : "",
           identifiant8 : "",
           total: '',
-          ajout: '',
-          modifier: '',
-          supprimer: '',
+          users: '',
+          compagny:'',
           form: {
               nombre: '',
           }
@@ -106,9 +105,8 @@ export default {
 
     mounted () {
       this.refresh()
-      this.ajout = localStorage.getItem('auth.ajout');
-      this.modifier = localStorage.getItem('auth.modifier');
-      this.supprimer = localStorage.getItem('auth.supprimer');
+      this.users = this.$auth.$state.user;
+    this.compagny = localStorage.getItem('auth.company_id');
     },
     methods: {
 
