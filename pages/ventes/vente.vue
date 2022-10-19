@@ -13,7 +13,7 @@
     </div>
   
     <div class="app-main__outer p-5">
-        <div v-if="token != ''">
+        <div v-if="token != null" >
             <h4>Enregistrer une vente </h4><hr>
             <form action="" method="POST">
                 <div class="cadre-haut">             
@@ -84,16 +84,18 @@
                 </div>   -->
         
             </form>
+               
+
+        </div>
+        <div v-else>
+             <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
+            <p  class="text-center">Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
+            Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
+            la mise à jour des informations. </p>
         </div>
 
         
-        <div v-else class="text-center">
-                <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
-            <p>Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
-            Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
-            la mise à jour des informations. </p>
-
-        </div>
+        
 
     </div>
     
@@ -147,7 +149,7 @@ export default {
             errors: [],
             error: null,
             user: '',
-            token: '',
+            token: null,
             compagny: ''
         }
     },
@@ -281,6 +283,7 @@ export default {
             let compagnie = response.data.data[0];
             // this.clients = response.data.data
             this.token = compagnie.mecef_token
+            // console.log(this.token)
           }      
         )
         }

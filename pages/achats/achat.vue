@@ -14,7 +14,7 @@
     </div>
 
     <div class="app-main__outer p-5">
-        <div v-if="token != ''">
+        <div v-if="token != null">
             <h4>Enregistrer un achat</h4><hr>
             <form action="" method="POST">
                 <div class="cadre-haut">             
@@ -80,15 +80,16 @@
                 </div>   -->
         
             </form>
-        </div>
 
-        <div v-else class="text-center">
-                <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
-            <p>Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
+        </div>
+        <div v-else>
+            <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
+            <p class="text-center">Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
             Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
             la mise à jour des informations. </p>
-
         </div>
+
+        
     </div>
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/>
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />

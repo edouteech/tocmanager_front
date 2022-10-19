@@ -148,8 +148,8 @@ export default {
             this.form.email = compagnie.email,
             this.form.ifu = compagnie.register_number,
             this.form.address = compagnie.address,
-            this.form.rccm = compagnie.registre,
-            this.form.mecef_token = compagnie.token
+            this.form.registre = compagnie.rccm,
+            this.form.token = compagnie.mecef_token
           }      
         )
         }
