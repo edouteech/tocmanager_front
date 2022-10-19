@@ -45,6 +45,7 @@
             console.log(this.form.compagny_id)
             this.$auth.$storage.setUniversal('company_id', this.form.compagny_id)
             this.$router.push({path:'/mon_profil'})
+            // this.error = " Compagnie changée !!!"
           },
   
       }

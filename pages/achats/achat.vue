@@ -139,11 +139,12 @@ export default {
                 },
             errors: [],
             error: null,
+            user: ''
         }
     },
 
     mounted () {
-        // console.log(this.$auth.$state.user)
+      this.user == localStorage.getItem('auth.user_id')
       this.refresh()
       this.recupProduct()
     },
@@ -180,7 +181,7 @@ export default {
                     discount: this.form.discount,
                     amount: this.form.amount,
                     amount_sent: this.form.amount_sent,
-                    user_id: this.$auth.$state.user[0].id,
+                    user_id: this.user,
                     supplier_id: this.form.supplier_id,  
                     buy_lines: this.form.buy_lines,
                     compagnie_id: this.$auth.$storage.getUniversal('company_id')

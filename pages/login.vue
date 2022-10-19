@@ -103,6 +103,7 @@ export default {
                 console.log(this.error)
                 this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name)
                 this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                this.$auth.$storage.setUniversal('user_id', response.data.data.original.compagnies[0].id)
                 this.$auth.$storage.setUniversal('email', this.form.email)
                 this.$auth.setUserToken(response.data.data.original.access_token)
                 .then(response =>{this.$router.push( '/change_pswd',)
@@ -133,7 +134,8 @@ export default {
                 console.log(response);
                 this.error = response.data.message
                 console.log(this.error)
-                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                this.$auth.$storage.setUniversal('company_id', response.data.data.original.user.id)
+                this.$auth.$storage.setUniversal('user_id', response.data.data.original.compagnies[0].id)
                 this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
                 let role = response.data.data.original.roles[0].name
                 this.$auth.setUserToken(response.data.data.original.access_token)

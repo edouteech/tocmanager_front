@@ -121,10 +121,12 @@ export default {
                 },
             errors: [],
             error: null,
+            user: ''
         }
     },
 
     mounted () {
+      this.user == localStorage.getItem('auth.user_id')
       this.refresh()
       this.recupProduct()
       this.$axios.get('/sells/'+ this.$route.params.id)
@@ -160,7 +162,7 @@ export default {
               discount: this.form.discount,
               amount: this.form.amount,
               amount_received: this.form.amount_received,
-              user_id: this.$auth.$state.user[0].id,
+              user_id: this.user,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')

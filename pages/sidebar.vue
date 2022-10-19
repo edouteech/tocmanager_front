@@ -195,6 +195,7 @@
   
       methods:{
           async logout(){
+              localStorage.removeItem('auth.user_id');
               localStorage.removeItem('auth.company_id');
               localStorage.removeItem('auth.roles');
               localStorage.removeItem('auth.role');
