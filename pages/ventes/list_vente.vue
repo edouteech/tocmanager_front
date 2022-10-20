@@ -15,6 +15,7 @@
               <th>Client concerné</th>
               <th>Montant facture </th>
               <th>Montant du</th>
+              <th>Moyen de paiement</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -24,6 +25,7 @@
               <td>{{vente.client.name}}</td>
               <td>{{vente.amount}}</td>
               <td>{{vente.rest}}</td>
+              <td>{{vente.payment}}</td>
               <td><div class="action" v-for="(user, i) in users" :key="i">
                 <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
                 <NuxtLink :to="'/ventes/'+vente.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>

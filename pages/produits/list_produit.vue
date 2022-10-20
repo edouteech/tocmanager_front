@@ -112,7 +112,7 @@
           </form>
         </nav>
   </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
-<voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
+<voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
@@ -146,6 +146,7 @@ export default {
       identifiant5 : "",
       identifiant6 : "",
       identifiant7 : "",
+      identifiant8: '',
       produits: [],
       produit: "",
       compagnie_id: "",
@@ -262,7 +263,8 @@ export default {
              this.identifiant4 = response.data.data[0].price_sell      
              this.identifiant5 = response.data.data[0].price_buy
              this.identifiant6 = response.data.data[0].stock_min
-             this.identifiant7 = response.data.data[0].stock_max      
+             this.identifiant7 = response.data.data[0].stock_max 
+             this.identifiant8 = response.data.data[0].tax_group     
             }) 
                
         },

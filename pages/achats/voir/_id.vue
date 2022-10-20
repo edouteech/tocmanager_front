@@ -1,12 +1,14 @@
 <template >
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Ventes </h3>
+      <Sidebar /><h3 class="name">Achats </h3>
       <User_info />
     </nav>
 
     <div class="app-main__outer p-5">
-      <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Imprimer</span></div><br>
+        <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Imprimer</span></div>
+        
+      <br>
       
       <div class="d-flex align-items-end flex-column">
           <p><strong> M/Mme {{supplier.name}}</strong> </p>
@@ -56,22 +58,24 @@
             </tr>
           </tbody>
         </table>  <br><br> 
-        <table  class="total d-flex align-items-end flex-column">
-          <tbody>
-            <tr>
-              <td class="p-2">Taxe</td>
-              <td class="py-2 px-5">{{tax}} F CFA</td>
-            </tr>
-            <tr>
-              <td class="p-2"><strong>TOTAL</strong></td>
-              <td class="py-2 px-5"><strong>{{montant}} F CFA</strong></td>
-            </tr>
-            <tr>
-              <td class="p-2">Montant restant à décaisser</td>
-              <td class="py-2 px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
-            </tr>
-          </tbody>
-        </table>  <br><br> 
+        
+            <table  class="total d-flex align-items-end flex-column">
+              <tbody>
+                <tr>
+                  <td class="p-2">Taxe</td>
+                  <td class="py-2 px-5">{{tax}} F CFA</td>
+                </tr>
+                <tr>
+                  <td class="p-2"><strong>TOTAL</strong></td>
+                  <td class="py-2 px-5"><strong>{{montant}} F CFA</strong></td>
+                </tr>
+                <tr>
+                  <td class="p-2">Montant restant à décaisser</td>
+                  <td class="py-2 px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
+                </tr>
+              </tbody>
+            </table>  
+        <br><br> 
         <hr>
         <div class="caisse" v-if="rest > 0">
           <h4>Ajouter des décaissements pour cette facture</h4><br><br>
@@ -289,6 +293,8 @@ export default {
             let lastE = response.data.data.links.splice(-1,1);
           })
         },
+
+
     },
 }
 </script>

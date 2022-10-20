@@ -13,7 +13,6 @@
     </div>
   
     <div class="app-main__outer p-5">
-        <div v-if="token != null" >
             <h4>Enregistrer une vente </h4><hr>
             <form action="" method="POST">
                 <div class="cadre-haut">             
@@ -72,7 +71,18 @@
                         </tbody>
                     </table>     
                 </div><br>
-                <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
+                <div class="d-flex">
+                    <div class="form-group1 col-md-5"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
+                    <div class="form-group col-md-6 mx-5">
+                        <div class="form-group ">
+                            Méthode de paiement
+                        <select class="form-control" v-model="form.payment">
+                            <option value="">Choississez</option>
+                            <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
+                        </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                     {{amount_error}} 
                 </div> <br><br><br><br>
@@ -84,15 +94,12 @@
                 </div>   -->
         
             </form>
-               
-
-        </div>
-        <div v-else>
+        <!-- <div v-else  class="text-center">
              <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
-            <p  class="text-center">Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
+            <p>Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
             Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
             la mise à jour des informations. </p>
-        </div>
+        </div> -->
 
         
         
@@ -144,13 +151,15 @@ export default {
                     tax: '0',
                     discount: '0',
                     amount_received: '0',
-                    sell_lines: []          
+                    sell_lines: [],
+                    payment: "ESPECES"   
                 },
             errors: [],
             error: null,
             user: '',
             token: null,
-            compagny: ''
+            compagny: '',
+            methodes: ''
         }
     },
     // watch: {
@@ -167,10 +176,21 @@ export default {
       this.compagnie()
       this.refresh()
       this.recupProduct()
+      this.payment()
     //   console.log(this.$auth)
     },
     
     methods: {
+        payment(){
+            this.$axios.get('/invoice/payments',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response =>
+            {
+                console.log(response); 
+                this.methodes = response.data.data })
+        },
+
         addLine(){
             this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});           
         },
@@ -204,6 +224,7 @@ export default {
               user_id: this.user,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines,
+              payment: this.form.payment,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')  
             }).then(response =>{ 
                 console.log( response ) 
