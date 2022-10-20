@@ -183,10 +183,6 @@ export default {
 </script>
 
 <style scoped>
-/* .app-main__outer{
-  overflow: auto;
-} */
-
 .fa{
   /* margin: 0 5px; */
   font-size: 15px;

@@ -130,9 +130,6 @@
     </script>
     
     <style scoped>
-    /* .app-main__outer{
-      overflow: auto;
-    } */
     img{
         width: 80%;
     }

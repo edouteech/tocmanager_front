@@ -17,11 +17,11 @@
       <a href="https://www.facebook.com/Tocmanager" class="me-4 text-reset">
         <i class="fab fa-facebook-f"></i>
       </a>
-      <a href="" class="me-4 text-reset">
+      <!-- <a href="" class="me-4 text-reset">
         <i class="fab fa-google"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-github"></i>
+      </a> -->
+      <a href="https://www.linkedin.com/showcase/tocmanager" class="me-4 text-reset">
+        <i class="fab fa-linkedin"></i>
       </a>
     </div>
     <!-- Right -->

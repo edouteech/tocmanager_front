@@ -54,7 +54,7 @@
             </tr>
           </thead>
           <tbody>
-           <tr  v-for="(client, i) in clients" :key="i" @click="voirClient(client.id)">
+           <tr  v-for="(client, i) in clients" :key="i">
               <td>{{client.name}}</td>
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
