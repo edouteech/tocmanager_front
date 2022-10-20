@@ -291,6 +291,7 @@ export default {
                 price_buy: produit.price_buy,
                 stock_min: produit.stock_min,
                 stock_max: produit.stock_max,
+                tax_group: produit.tax_group,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{console.log(response)
               // console.log(this.name0)
