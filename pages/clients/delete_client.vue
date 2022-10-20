@@ -111,7 +111,10 @@ export default {
     methods: {
         restaurerClient(id){
             console.log(id);
-            this.$axios.get('/restore/client/' +id)         
+            this.$axios.get('/restore/client/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})               
             .then(response => {console.log(response);
                 this.client = response.data.data
                 this.$router.push({path:'/clients/list_client',})

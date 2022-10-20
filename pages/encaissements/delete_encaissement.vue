@@ -109,7 +109,10 @@ export default {
     methods: {
         restaurerEncaissement(id){
             console.log(id);
-            this.$axios.get('/restore/encaissement/' +id)         
+            this.$axios.get('/restore/encaissement/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})                
             .then(response => {console.log(response);
                 this.encaissement = response.data.data
                 this.$router.push({path:'/encaissements/list_encaissement',})

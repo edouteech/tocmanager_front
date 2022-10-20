@@ -102,7 +102,10 @@ export default {
     methods: {
         restaurerCategorie(id){
             console.log(id);
-            this.$axios.get('/restore/categorie/' +id)         
+            this.$axios.get('/restore/categorie/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})             
             .then(response => {console.log(response);
                 this.categorie = response.data.data
                 this.$router.push({path:'/categorie/list_categorie',})

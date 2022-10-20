@@ -117,7 +117,10 @@ export default {
     methods: {
         restaurerProduit(id){
             console.log(id);
-            this.$axios.get('/restore/product/' +id)         
+            this.$axios.get('/restore/product/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})              
             .then(response => {console.log(response);
                 this.produit = response.data.data
                 this.$router.push({path:'/produits/list_produit',})
