@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Clients </h3>
+      <Userinfo />
     </nav>
 
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
@@ -47,11 +48,13 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     layout: "empty",
     auth:true,
     components: {
         Sidebar,
+        Userinfo
         
     },
     data () {

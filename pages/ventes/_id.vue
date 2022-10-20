@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Ventes </h3>
+      <User_info />
     </nav>
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
       {{error}} <br>
@@ -87,15 +88,17 @@ import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
 import produitModal from './produitModal.vue'
 import Sidebar from '../sidebar.vue'
+import User_info from "../user_info.vue";
 export default {
     layout: "empty",
     auth:true,
     components: {
-        Sidebar, 
-        ajoutModal, 
-        SavedModal,
-        produitModal,
-    },
+    Sidebar,
+    ajoutModal,
+    SavedModal,
+    produitModal,
+    User_info
+},
 
     data () {
         return{
@@ -118,10 +121,12 @@ export default {
                 },
             errors: [],
             error: null,
+            user: ''
         }
     },
 
     mounted () {
+      this.user == localStorage.getItem('auth.user_id')
       this.refresh()
       this.recupProduct()
       this.$axios.get('/sells/'+ this.$route.params.id)
@@ -157,7 +162,7 @@ export default {
               discount: this.form.discount,
               amount: this.form.amount,
               amount_received: this.form.amount_received,
-              user_id: this.$auth.user.id,
+              user_id: this.user,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
@@ -180,7 +185,8 @@ export default {
             this.$axios.get('/clients',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
-          }).then(response => {console.log(response);
+          }).then(response => {
+            // console.log(response);
             this.clients = response.data.data.data})
         },
 
@@ -220,7 +226,7 @@ export default {
                     sum += this.form.sell_lines[j].amount;
                 }
                 this.form.amount = sum;
-                console.log(sum); 
+                // console.log(sum); 
             }
 
                 

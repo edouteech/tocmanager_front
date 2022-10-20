@@ -4,12 +4,13 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Corbeille</h3>
+      <User_info />
     </nav>
 
-    <section class="app-main__outer p-5">
+    <section class="app-main__outer p-5" v-for="(user, i) in users" :key="i">
         <div class="row mt-5">       
-            <div class="col-md-6 col-xl-3">
-                <NuxtLink to="/achats/delete_achat">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
+                <NuxtLink to="/achats/delete_achat" >
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
                         <div class="widget-content-wrapper p-5">
@@ -23,7 +24,7 @@
             </div>
             
             
-            <div class="col-md-6 col-xl-3">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
                 <NuxtLink to="/ventes/delete_vente"> 
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -37,7 +38,7 @@
                 </NuxtLink>
             </div>
              
-            <div class="col-md-6 col-xl-3">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
                 <NuxtLink to="/clients/delete_client">
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -51,7 +52,7 @@
                 </NuxtLink>
             </div>            
             
-            <div class="col-md-6 col-xl-3">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
                 <NuxtLink to="/fournisseurs/delete_fournisseur">
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -69,7 +70,7 @@
 
         <div class="row mt-5">
             
-            <div class="col-md-6 col-xl-3">
+            <div class="col-md-6 col-xl-3" v-if="(compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1) || (compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1)">
                 <NuxtLink to="/produits/delete_produit" >
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -84,7 +85,7 @@
             </div>
             
             
-            <div class="col-md-6 col-xl-3">
+            <div class="col-md-6 col-xl-3" v-if="(compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1) || (compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1)">
                 <NuxtLink to="/categorie/delete_categorie">
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -98,7 +99,7 @@
                 </NuxtLink>
             </div>
               
-            <div class="col-md-6 col-xl-3">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_tresorerie == 1">
                 <NuxtLink to="/encaissements/delete_encaissement">
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -112,7 +113,7 @@
                 </NuxtLink>
             </div>
             
-            <div class="col-md-6 col-xl-3">
+            <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
                 <NuxtLink to="/decaissements/delete_decaissement" > 
                 <div class="card mb-3 widget-content bg-secondary text-white">
                     <div class="widget-content-outer">
@@ -170,11 +171,26 @@
 
 <script>
 import Sidebar from './sidebar.vue'
+import User_info from './user_info.vue';
 export default {
   layout: "empty",
   components: {
-    Sidebar,    
+    Sidebar,
+    User_info
   },
+
+  data(){
+    return{
+        users:'',
+        compagny: ''
+
+    }
+},
+
+mounted(){
+    this.users = this.$auth.$state.user;
+    this.compagny = localStorage.getItem('auth.company_id');
+},
 
 
 }

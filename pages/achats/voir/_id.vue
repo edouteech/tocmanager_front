@@ -2,12 +2,24 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Ventes </h3>
+      <User_info />
     </nav>
 
     <div class="app-main__outer p-5">
-      <h4>Informations sur la facture</h4>  <br>
       <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Imprimer</span></div><br>
-      <table class="table table-hover">
+      
+      <div class="d-flex align-items-end flex-column">
+          <p><strong> M/Mme {{supplier.name}}</strong> </p>
+          <p><strong> Fournisseur {{compagny.name}}</strong> </p>
+          <p><strong> {{supplier.phone}}</strong> </p>
+      </div><br>
+      <div class="p-2 mb-2 bg-secondary text-white text-center"><h4>Informations sur la facture</h4></div><br>
+      <div class="">
+        <p><strong>Numéro de la facture : {{id}}</strong> </p>
+        <p><strong> Date de la facture : {{date_buy}}</strong> </p>
+        <p><strong> N° Fournisseur : {{supplier.id}}</strong> </p>
+      </div>
+      <!-- <table class="table table-hover">
           <thead>
             <tr class="table-primary">
               <th>Date de l'achat</th>
@@ -25,14 +37,14 @@
             </tr>
           </tbody>
         </table>  <br><br> 
-        <h5><p class="text-center">Listes des produits de la facture</p></h5>
+        <h5><p class="text-center">Listes des produits de la facture</p></h5> -->
         <table class="facture table table-hover ">
           <thead>
             <tr class="table-success">
               <th>Nom du produit</th>
               <th>Quantité </th>
               <th>Prix unitaire </th>
-              <th>Total (Quantité * Prix unitaire)</th>
+              <th>Total HT</th>
             </tr>
           </thead>
           <tbody>
@@ -40,10 +52,27 @@
               <td>{{facture.product.name}}</td>
               <td>{{facture.quantity}}</td>
               <td>{{facture.price}}</td>
-              <td>{{facture.amount}}</td>
+              <td>{{facture.amount}} F CFA</td>
             </tr>
           </tbody>
-        </table>  <br><br> <hr>
+        </table>  <br><br> 
+        <table  class="total d-flex align-items-end flex-column">
+          <tbody>
+            <tr>
+              <td class="p-2">Taxe</td>
+              <td class="py-2 px-5">{{tax}} F CFA</td>
+            </tr>
+            <tr>
+              <td class="p-2"><strong>TOTAL</strong></td>
+              <td class="py-2 px-5"><strong>{{montant}} F CFA</strong></td>
+            </tr>
+            <tr>
+              <td class="p-2">Montant restant à décaisser</td>
+              <td class="py-2 px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
+            </tr>
+          </tbody>
+        </table>  <br><br> 
+        <hr>
         <div class="caisse" v-if="rest > 0">
           <h4>Ajouter des décaissements pour cette facture</h4><br><br>
                 <div  v-if="number == 0">
@@ -88,6 +117,43 @@
         </div><br><br> 
 
     </div>
+     <!-- Footer -->
+  <footer class="text-center text-lg-start bg-dark text-white">
+      <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
+    <!-- Section: Social media -->
+    <section
+      class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
+    >
+      <!-- Left -->
+      <div class="me-5 d-none d-lg-block">
+        <img src="../../../static/images/logo.png" class="logo-img" alt="">
+      </div>
+      <!-- Left -->
+
+      <!-- Right -->
+      <div>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-google"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <!-- Right -->
+    </section>
+    <!-- Section: Social media -->
+
+
+    <!-- Copyright -->
+    <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
+      Copyright © 2022 - Tous droits réservés TocManager-dS
+    </div>
+    <!-- Copyright -->
+  </footer>
+<!-- Footer -->
 </div>
 </template>
 
@@ -95,11 +161,13 @@
 <script>
 import moment from "moment";
 import Sidebar from '../../sidebar.vue'
+import User_info from "~/pages/user_info.vue";
 export default {
-    layout: "empty",
+    layout: "voir",
     components: {
-        Sidebar,  
-    },
+    Sidebar,
+    User_info
+},
 
     data () {
       return {
@@ -109,10 +177,13 @@ export default {
         montant_decaissement: '',
         date_buy: '',
         montant: '',
-        supplier: '',
+        supplier: [],
         rest: '',
         number : 0,
         decaissements: [],
+        tax: '',
+        id: '',
+        compagny:[],
         factures: [],
         form: {
             date:  moment().format("YYYY-MM-DD"),
@@ -131,11 +202,14 @@ export default {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
         }).then(response => {console.log(response.data.data);
+        this.id = response.data.data[0].id,
         this.factures = response.data.data[0].buy_lines,
-        this.date_buy = response.data.data[0].date_buy,
+        this.date_buy = moment(response.data.data[0].date_buy).format("D MMM YYYY, h:mm:ss a"),
         this.supplier = response.data.data[0].supplier,
         this.montant = response.data.data[0].amount,
         this.rest = response.data.data[0].rest
+        this.tax = response.data.data[0].tax
+        this.compagny = response.data.data[0].supplier.compagny
       }) 
       this.recupFacture()
     },
@@ -248,14 +322,18 @@ export default {
   /* .navbar {
     display: none !important;
   } */
-  .print, .caisse, .decaissement {
+  .print, .caisse , .decaissement{
     display: none !important;
   }
-  nav, footer{
+  nav{
+    display: none !important;
+  }
+  footer{
     display: none !important;
   }
   
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;
@@ -275,6 +353,10 @@ thead tr{
 
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
+}
+
+.total td{
+    border: 1px solid black;
 }
 
 .facture tbody tr:last-of-type{

@@ -2,7 +2,7 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>                     
                 <br><br>
-            <h4 class="titre">Informations de l'utilisateur</h4><br><br><br>
+            <h4 class="titre">Informations de l'utilisateur</h4><br>
               <table class="table table-hover">
                 <thead>
                   <tr class="table-success">
@@ -28,27 +28,21 @@
                     <td>Pays de l'utilisateur</td>
                     <td>{{pays}}</td>
                   </tr>
+                  <tr>
+                    <td>Fonction de l'utilisateur</td>
+                    <td>{{role}}</td>
+                  </tr>
                   
                 </tbody>
-              </table>
-                <!-- <div class="input-form">					
-                   <span class="mode">Nom du client : </span> <span class="resp">{{nom}}</span>
-                </div>     <br>
-                <div class="input-form">        
-                   <span class="mode">Numéro de téléphone : </span><span class="resp"> {{phone}}</span>
-                </div><br>
-            
-                <div class="input-form">    
-                    <span class="mode">Email du client : </span><span class="resp">{{email}}</span>
-                </div><br>
-
-                <div class="input-form">    
-                    <span class="mode">Balance du client : </span><span class="resp">{{balance}}</span>
-                </div><br>
-
-                <div class="input-form"> 
-                   <span class="mode">Nature du client : </span> <span class="resp">{{nature}}</span>
-                </div> -->
+              </table><br><hr><br>
+              <div class="droits mx-5">
+                <p v-if="ajout == 1"  v-b-tooltip.hover title="OUI"><strong>Droit d'ajout </strong> <i class="fa fa-toggle-on text-success mx-3" aria-hidden="true"></i></p>
+                <p v-else v-b-tooltip.hover title="NON" ><strong>Droit d'ajout </strong> <i class="fa fa-toggle-off text-danger mx-3"  aria-hidden="true"></i></p>
+                <p v-if="modifier == 1" v-b-tooltip.hover title="OUI" ><strong>Droit de modifier </strong><i class="fa fa-toggle-on text-success mx-3" aria-hidden="true"></i></p>
+                <p v-else v-b-tooltip.hover title="NON"><strong>Droit de modifier </strong> <i class="fa fa-toggle-off text-danger mx-3"  aria-hidden="true"></i></p>
+                <p v-if="supprimer == 1" v-b-tooltip.hover title="OUI"><strong>Droit de supprimer</strong> <i class="fa fa-toggle-on text-success mx-3"  aria-hidden="true"></i></p>
+                <p v-else v-b-tooltip.hover title="NON" ><strong>Droit de supprimer</strong><i class="fa fa-toggle-off text-danger mx-3" aria-hidden="true"></i></p>
+              </div>
 
     </div>
     <div class="close" @click="$emit('close-modal')">
@@ -60,7 +54,7 @@
 <script>
   export default {
     auth:true,
-    props: ['nom', 'phone', 'email', 'pays'],
+    props: ['nom', 'phone', 'email', 'pays', 'role', 'ajout', 'modifier', 'supprimer'],
     name: 'voirProfil',
     data () {
     return{
@@ -74,6 +68,8 @@
 
 <style scoped>
 
+
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -86,8 +82,9 @@
 }
 
 .modaler {
+  overflow: auto;
   background-color: white;
-  height: 600px;
+  height: auto;
   width: 600px;
   margin-top: 5%;
   padding: 1%;

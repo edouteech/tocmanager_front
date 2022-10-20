@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Fournisseurs </h3>
+      <Userinfo />
     </nav>
 
     <div class="app-main__outer p-5">
@@ -30,17 +31,17 @@
               <td>{{result.email}}</td>
               <td>{{result.balance}}</td>
               <td>{{result.nature}}</td>
-              <td><div class="action">
-                  <div @click="voirFournisseur(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                  <NuxtLink :to="'/fournisseurs/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteFournisseur(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              <td><div class="action"  v-for="(user, i) in users" :key="i">
+                  <div @click="voirFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/fournisseurs/'+result.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
                 </td>
             </tr>
           </tbody>
         </table>
       </div><br>
-      <NuxtLink  to="/fournisseurs/add_fournisseur"><button class="custom-btn btn-3"><span>Ajouter nouveau fournisseur</span></button></NuxtLink>
+      <NuxtLink  to="/fournisseurs/add_fournisseur" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau fournisseur</span></button></NuxtLink>
         <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary" >
@@ -60,10 +61,10 @@
                 <td>{{fournisseur.email}}</td>
                 <td>{{fournisseur.balance}}</td>
                 <td>{{fournisseur.nature}}</td>
-                <td><div class="action">
-                  <div @click="voirFournisseur(fournisseur.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                  <NuxtLink :to="'/fournisseurs/'+fournisseur.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteFournisseur(fournisseur.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <td><div class="action"  v-for="(user, i) in users" :key="i">
+                  <div @click="voirFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/fournisseurs/'+fournisseur.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>
@@ -102,12 +103,14 @@
 <script>
 import voirFournisseur from './voir_fournisseur.vue'
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
   auth: true,
   layout: "empty",
   components: {
     Sidebar,  
-    voirFournisseur
+    voirFournisseur,
+    Userinfo
   },
 
   data () {
@@ -127,6 +130,8 @@ export default {
       fournisseurs: [],
       fournisseur: "",
       compagnie_id: '',
+      users: '',
+      compagny: '',
       form: {
           nombre: '',
       }
@@ -134,6 +139,8 @@ export default {
   },
   mounted () {
       this.refresh()
+      this.users = this.$auth.$state.user;
+    this.compagny = localStorage.getItem('auth.company_id');
   },
 
   methods: {
@@ -146,6 +153,9 @@ export default {
             {
               headers: {
                   'Content-Type': 'multipart/form-data'
+              },
+              params: {
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
               }
             }
           ).then(response => {console.log(response);
@@ -169,7 +179,8 @@ export default {
             search: this.element_search
           }
           })
-          .then(response => {console.log(response.data);
+          .then(response => {
+            // console.log(response.data);
           this.results = response.data.data.data 
           
           })
@@ -177,8 +188,13 @@ export default {
     
        deleteFournisseur(id){
           console.log(id);
-          this.$axios.delete('/suppliers/' +id)
-          .then(response => {console.log(response.data.data);
+          this.$axios.delete('/suppliers/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
+          .then(response => {
+            // console.log(response.data.data);
             this.refresh()})                 
         },
          
@@ -191,7 +207,7 @@ export default {
           })
           .then(response => 
             {
-              console.log(response);
+              // console.log(response);
               this.total = response.data.data.total;
               this.fournisseurs = response.data.data.data
 
@@ -208,7 +224,7 @@ export default {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
           }).then(response => {
-            console.log(response.data.data[0]);
+            // console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email

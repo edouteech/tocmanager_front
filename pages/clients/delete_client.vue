@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Clients </h3>
+      <Userinfo />
     </nav>
 
     <div class="app-main__outer p-5">
@@ -71,12 +72,14 @@
 <script>
 import deleteModal from './modal_delete.vue'
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     layout: "empty",
     components: {
-        Sidebar,   
-        deleteModal, 
-    },
+    Sidebar,
+    deleteModal,
+    Userinfo
+},
 
     data () {
         return {

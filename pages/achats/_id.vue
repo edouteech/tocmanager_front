@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Achats </h3>
+      <Userinfo />
     </nav>
 
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
@@ -88,6 +89,7 @@ import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
 import produitModal from './produitModal.vue'
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     layout: "empty",
     auth:true,
@@ -96,6 +98,7 @@ export default {
         ajoutModal, 
         SavedModal,
         produitModal,
+        Userinfo
     },
 
     data () {
@@ -118,10 +121,12 @@ export default {
                 },
             errors: [],
             error: null,
+            user: ''
         }
     },
 
     mounted () {
+      this.user == localStorage.getItem('auth.user_id')
       this.refresh()
       this.recupProduct()
       this.$axios.get('buys/'+ this.$route.params.id)
@@ -157,7 +162,7 @@ export default {
               discount: this.form.discount,
               amount: this.form.amount,
               amount_sent: this.form.amount_sent,
-              user_id: this.$auth.user.id,
+              user_id: this.user,
               supplier_id: this.form.supplier_id,  
               buy_lines: this.form.buy_lines,  
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
@@ -180,7 +185,8 @@ export default {
             this.$axios.get('/suppliers',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
-            }).then(response => {console.log(response);
+            }).then(response => {
+                // console.log(response);
             this.fournisseurs = response.data.data.data})
         },
 
@@ -220,7 +226,7 @@ export default {
                     sum += this.form.buy_lines[j].amount;
                 }
                 this.form.amount = sum;
-                console.log(sum); 
+                // console.log(sum); 
             }
 
                 

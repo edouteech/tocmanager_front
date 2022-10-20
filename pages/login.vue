@@ -35,18 +35,18 @@
             <span class="fas fa-lock px-2"></span><label class="form-label">Mot de passe (123456789)</label>
             <div class="input-field">
             <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
-              placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click.prevent="changer()"></i></span></div>
+              placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click="changer()"></i></span></div>
             
           </div>
 
           <div class="d-flex justify-content-between align-items-center">
             <!-- Checkbox -->
-            <div class="form-check mb-0">
+            <!-- <div class="form-check mb-0">
               <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
               <label class="form-check-label" for="form2Example3">
                 Se rappeler de moi
               </label>
-            </div>
+            </div> -->
             <NuxtLink to="/password1"  class="link-primary px-2">               
                 Mot de passe oublié ?
             </NuxtLink>
@@ -61,9 +61,6 @@
       </div>
     </div>
   </div>
-                <!-- <div class="error-message">
-                    {{error}}
-                </div> -->
 </div>
 </template>
 
@@ -81,80 +78,80 @@ export default {
     }
   },
   methods: {
-    // refresh(){
-    //   var that = this;    
-    //    this.$axios
-    //       .post('/login',{ data: this.form })
-    //       .then(response => 
-    //     {console.log(response.data.message)
-    //        if (response.data.status == "error") {
-    //                 that.error = response.data.message
-    //             } 
-    //     });
-        
-    // },
 
       changer(){
-      var e = true
-
-          if (e){
-            document.getElementById("password").setAttribute("type","text"); 
-            document.getElementById("eye").class="fa fa-eye px-2";
-            e = false;
-          }
-
-          else{
-            document.getElementById("password").setAttribute("type","password"); 
-            document.getElementById("eye").class="fa fa-eye-slash px-2";
-            e = true;
-          }
+        var pwd = document.getElementById("password");
+        var fa =  document.getElementById("eye")
+        if(pwd.getAttribute("type")=="password"){
+            pwd.setAttribute("type","text");
+            fa.class="fa fa-eye px-2";
+        } else {
+            pwd.setAttribute("type","password");
+            fa.class="fa fa-eye-slash px-2"
+        }
       },
+      
 
       async login() {
-        if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
+        if(this.form.password == "00000000"){
           try {
-            let response = await this.$auth.loginWith('local', { data: this.form })
-            console.log(response);
-            this.error = response.data.message
-            console.log(this.error)
-            this.$auth.setUserToken(response.data.data.original.access_token)     
-            .then(response =>{this.$router.push( '/admin/admin',)
-            })
-            console.log(this.$auth);
-          } catch (err) {
-            console.log(err);
-            // this.refresh();
-          }       
-          //   .then(response =>{ console.log(response);
-          //     if(response.data.status == "success"){
-          //         this.$router.push({path:'/admin/admin'});
-          //     }
-          //     else{
-          //       this.error = response.data.message
-          //       this.$router.push({path:'/login'});
-          //     } 
-            
-            
-          //   })
-          //   console.log(this.$auth);
-          // } catch (err) {
-          //   console.log(err);
-          // }
-        } else {
-          try {
-            let response = await this.$auth.loginWith('local', { data: this.form })
-            console.log(response);
-            this.error = response.data.message
-            console.log(this.error)
-            this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnie[0].compagnie_id)
-            this.$auth.setUserToken(response.data.data.original.access_token)
-            .then(response =>{this.$router.push( '/dashboard',)
-            })
-            console.log(this.$auth);
-          } catch (err) {
-            console.log(err);
-            // this.refresh();
-          }
+                let response = await this.$auth.loginWith('local', { data: this.form })
+                // console.log(response);
+                this.error = response.data.message
+                console.log(this.error)
+                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name)
+                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                this.$auth.$storage.setUniversal('user_id', response.data.data.original.compagnies[0].id)
+                this.$auth.$storage.setUniversal('email', this.form.email)
+                this.$auth.setUserToken(response.data.data.original.access_token)
+                .then(response =>{this.$router.push( '/change_pswd',)
+                })
+                // console.log(this.$state.user.email);
+              } catch (err) {
+                console.log(err);
+              }
+        }else{
+            if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
+              try {
+                let response = await this.$auth.loginWith('local', { data: this.form })
+                console.log(response);
+                this.error = response.data.message
+                console.log(this.error)
+                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name) 
+                this.$auth.setUserToken(response.data.data.original.access_token)    
+                .then(response =>{this.$router.push( '/admin/admin',)
+                })
+              } catch (err) {
+                console.log(err);
+                // this.refresh();
+              }       
+              // }
+            } else {
+              try {
+                let response = await this.$auth.loginWith('local', { data: this.form })
+                console.log(response);
+                this.error = response.data.message
+                console.log(this.error)
+                this.$auth.$storage.setUniversal('user_id', response.data.data.original.user.id)
+                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
+                let role = response.data.data.original.roles[0].name
+                this.$auth.setUserToken(response.data.data.original.access_token)
+               
+                .then(response =>{
+                  if(role != 'admin'){
+                    this.$router.push( '/ventes/vente',)
+                  }
+                  else{
+                    this.$router.push( 'dashboard',)
+                    // console.log(this.$auth)
+                  }
+                })
+              } catch (err) {
+                console.log(err);
+                // this.refresh();
+              }
+            }
         }
     }   
   }

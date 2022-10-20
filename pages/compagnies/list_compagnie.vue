@@ -2,10 +2,11 @@
 <div>
       <div class="titre">
         <Sidebar /> <p class="name"> Compagnies</p>
+        <Userinfo /> 
       </div>
       <div class="container">
       <p>Liste des compagnies</p>
-      <NuxtLink class="custom-btn btn-10" to="/compagnies/add_compagnie">Ajouter compagnie</NuxtLink>
+      <NuxtLink class="custom-btn btn-10" to="/compagnies/add_compagnie" v-if="ajout==1">Ajouter compagnie</NuxtLink>
        <table class="table table-striped">
           <thead>
             <tr class="table-primary">
@@ -22,8 +23,8 @@
               <td>{{compagnie.phone}}</td>
               <td>{{compagnie.email}}</td>
               <td class="action">
-                <NuxtLink :to="'/compagnies/'+compagnie.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteCompagnie(compagnie.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/compagnies/'+compagnie.id" v-if="modifier==1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteCompagnie(compagnie.id)" v-if="supprimer==1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
               </td>
             </tr>
           </tbody>
@@ -36,32 +37,43 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
+  auth: true,
   layout: "empty",
   components: {
-    Sidebar,  
+    Sidebar,
+    Userinfo  
   },
    data () {
       return {
         compagnies: [],
         compagnie: "",
+        ajout: '',
+        modifier: '',
+        supprimer: '',
       }
     },
 
     mounted () {
       this.refresh()
+      this.ajout = localStorage.getItem('auth.ajout');
+      this.modifier = localStorage.getItem('auth.modifier');
+      this.supprimer = localStorage.getItem('auth.supprimer');
     },
 
     methods: {
 
         deleteCompagnie(id){ console.log(id);
           this.$axios.delete('/delete/compagnie/' +id)
-          .then(response =>  {console.log(response.data.data);
+          .then(response =>  {
+            // console.log(response.data.data);
           this.refresh()})
          },
         
         refresh(){
-          this.$axios.get('/index/compagnie').then(response => {console.log(response.data.data);
+          this.$axios.get('/index/compagnie').then(response => {
+            // console.log(response.data.data);
           this.compagnies = response.data.data})
         }
     },       

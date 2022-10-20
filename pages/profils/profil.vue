@@ -2,17 +2,19 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Utilisateurs </h3>
+      <Userinfo />
     </nav>
 
     <div class="app-main__outer p-5">
       <h4>Liste des utilisateurs enregistrés</h4>
-      <NuxtLink  to="/profils/add_profil"><button class="custom-btn btn-3"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
+      <NuxtLink  to="/profils/add_profil" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
                   <th>Noms</th>
                   <th>Numéros de téléphone</th>
                   <th>Emails</th>
+                  <th>Fonction de l'utilisateur</th>
                   <th>Pays</th>
                   <th>Actions</th>
               </tr>
@@ -23,11 +25,14 @@
               <td>{{profil.name}}</td>
               <td>{{profil.phone}}</td>
               <td>{{profil.email}}</td>
+              <td v-if="profil.role_name =='admin'">Administrateur</td>
+              <td v-else-if="profil.role_name =='comptable'">Comptable</td>
+              <td v-else-if="profil.role_name =='cashier'">Caissier</td>
               <td>{{profil.country}}</td>
-              <td><div class="action">
-                    <div @click="voirProfil(profil.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                    <!-- <NuxtLink :to="'/profils/'+profil.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink> -->
-                    <div @click="deleteProfil(profil.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              <td><div class="action"  v-for="(user, i) in users" :key="i">
+                    <div @click="voirProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    <NuxtLink :to="'/profils/'+profil.id"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                    <div @click="deleteProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
               </td>
             </tr>
@@ -56,7 +61,7 @@
         </nav>
     </div><br><br><br>
 
-<voirProfil :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :pays= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+<voirProfil :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :pays= 'identifiant4' :role= 'identifiant5' :ajout= 'identifiant6' :modifier= 'identifiant7' :supprimer= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
 </div>
 
 </template>
@@ -64,12 +69,14 @@
 <script>
 import voirProfil from './voir_profil.vue'
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     layout: "empty",
     auth: true,
     components: {
       Sidebar,  
-      voirProfil
+      voirProfil,
+      Userinfo
     },
 
     data () {
@@ -83,7 +90,13 @@ export default {
           identifiant2 : "",
           identifiant3 : "",
           identifiant4 : "",
+          identifiant5 : "",
+          identifiant6 : "",
+          identifiant7 : "",
+          identifiant8 : "",
           total: '',
+          users: '',
+          compagny:'',
           form: {
               nombre: '',
           }
@@ -92,13 +105,18 @@ export default {
 
     mounted () {
       this.refresh()
+      this.users = this.$auth.$state.user;
+    this.compagny = localStorage.getItem('auth.company_id');
     },
     methods: {
 
         deleteProfil(id){
-          console.log(id);
-          this.$axios.delete('/users/' +id)         
-          .then(response => {console.log(response.data.data);
+          // console.log(id);
+          this.$axios.delete('/users/' +id,{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')}   
+          })         
+          .then(response => {
+            // console.log(response.data.data);
             this.refresh()})                            
         },
         
@@ -110,7 +128,7 @@ export default {
           })        
           .then(response => 
             {
-              console.log(response.data.data.data);
+              // console.log(response.data.data.data);
               this.profils = response.data.data.data
               this.res_data= response.data.data
               this.total = response.data.data.total
@@ -122,11 +140,18 @@ export default {
 
         voirProfil(id){
             this.showModal = true;
-            this.$axios.get('users/'+ id).then(response => {console.log(response.data.data[0]);
+            this.$axios.get('users/'+ id,{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')}   
+          }).then(response => {
+            // console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email
-             this.identifiant4 = response.data.data[0].country      
+             this.identifiant4 = response.data.data[0].country 
+             this.identifiant5 = response.data.data[0].role_name      
+             this.identifiant6 = response.data.data[0].droits_add
+             this.identifiant7 = response.data.data[0].droits_edition
+             this.identifiant8 = response.data.data[0].droits_delete   
     
             }) 
                

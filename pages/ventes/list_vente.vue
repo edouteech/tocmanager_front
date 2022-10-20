@@ -2,11 +2,12 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Ventes </h3>
+      <Userinfo />
     </nav>
 
     <div class="app-main__outer p-5">
       <h4>Liste des ventes effectuées</h4>
-      <NuxtLink  to="/ventes/vente"><button class="custom-btn btn-3"><span>Nouvelle vente</span></button></NuxtLink>
+      <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
       <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -23,10 +24,10 @@
               <td>{{vente.client.name}}</td>
               <td>{{vente.amount}}</td>
               <td>{{vente.rest}}</td>
-              <td><div class="action">
-                <NuxtLink :to="'/ventes/voir/'+vente.id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
-                <NuxtLink :to="'/ventes/'+vente.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div class="cursor-pointer" @click="deleteVente(vente.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              <td><div class="action" v-for="(user, i) in users" :key="i">
+                <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
+                <NuxtLink :to="'/ventes/'+vente.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div class="cursor-pointer" @click="deleteVente(vente.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
@@ -62,10 +63,13 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
+  auth: true,
   layout: "empty",
   components: {
-    Sidebar,  
+    Sidebar,
+    Userinfo  
   },
    data () {
       return {
@@ -80,6 +84,8 @@ export default {
         ventes: [],
         vente: "",
         total: '',
+        users: '',
+        compagny:'',
         form: {
             nombre: '',
         }
@@ -88,7 +94,12 @@ export default {
     methods: {
         deleteVente(id){
           console.log(id)
-          this.$axios.delete('/sells/'+id).then(response =>{console.log(response);
+          this.$axios.delete('/sells/'+id,{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          })
+          .then(response =>{
+            // console.log(response);
             this.refresh()})                
         },
         
@@ -100,7 +111,7 @@ export default {
           })        
           .then(response => 
           {
-            console.log(response);
+            // console.log(response);
             this.ventes = response.data.data.data
             this.res_data= response.data.data
             this.total = response.data.data.total
@@ -133,6 +144,9 @@ export default {
     mounted () {
       this.refresh()
       this.recupClient()
+      this.users = this.$auth.$state.user;
+    this.compagny = localStorage.getItem('auth.company_id');
+      // console.log(this.$auth)
     }
 }
 </script>

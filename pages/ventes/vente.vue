@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Ventes </h3>
+      <Userinfo />
     </nav>
 
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
@@ -12,74 +13,90 @@
     </div>
   
     <div class="app-main__outer p-5">
-        <h4>Enregistrer une vente </h4><hr>
-        <form action="" method="POST">
-            <div class="cadre-haut">             
-                <div class="ajout-client">                                   
-                    <select class="form-control" v-model="form.client_id">
-                        <option disabled value="">Choisir le client</option>
-                        <!-- <option :value= cli_id>{{message}}</option> -->
-                        <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
-                            {{client.name}}
-                        </option>                           
-                    </select>          
-                    <div class="save-btn" @click="showModal = true">
-                        <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
-                    </div>                   
-                </div>
-                <div class="facture-date">
-                   <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
-                </div>
-            </div> <hr>
-            
-            <div class="ajout-article" @click="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</div>
-            
-              <div class="btn-ajout" @click="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</div>
-             
-            <div class="commande">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">Désignation</th>
-                            <th scope="col">Quantité voulue</th>
-                            <th scope="col">Prix unitaire</th>
-                            <!-- <th scope="col">Taux de réduction (%)</th>
-                            <th scope="col">Taxe appliquée (%)</th> -->
-                            <th scope="col">Total</th>                     
-                        </tr>
-                    </thead>
-                    
-                    <tbody>
-                        <tr v-for="(line, index) in form.sell_lines" :key="index">
-                            <td>
-                                <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
-                                    <option disabled value="">Choisissez...</option>
-                                    <!-- <option :value= prod_id>{{nom_prod}}</option> -->
-                                    <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
-                                </select>
-                            </td>
-                            <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
-                            <!-- <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
-                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
-                            <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
-                        </tr>
-                    </tbody>
-                </table>     
-            </div><br>
-            <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
-            <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
-                {{amount_error}} 
-            </div> <br><br><br><br>
-            <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
-            
-            
-            <!-- <div class="submit">
-                <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture pour " name="submit">		          
-            </div>   -->
-    
-        </form>
+        <div v-if="token != null" >
+            <h4>Enregistrer une vente </h4><hr>
+            <form action="" method="POST">
+                <div class="cadre-haut">             
+                    <div class="ajout-client">                                   
+                        <select class="form-control" v-model="form.client_id">
+                            <option disabled value="">Choisir le client</option>
+                            <!-- <option :value= cli_id>{{message}}</option> -->
+                            <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
+                                {{client.name}}
+                            </option>                           
+                        </select>          
+                        <div class="save-btn" @click="showModal = true">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
+                        </div>                   
+                    </div>
+                    <div class="facture-date">
+                    <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
+                    </div>
+                </div> <hr>
+                
+                <div class="ajout-article" @click="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</div>
+                
+                <div class="btn-ajout" @click="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</div>
+                
+                <div class="commande">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Désignation</th>
+                                <th scope="col">Quantité voulue</th>
+                                <th scope="col">Prix unitaire</th>
+                                <!-- <th scope="col">Taux de réduction (%)</th>
+                                <th scope="col">Taxe appliquée (%)</th> -->
+                                <th scope="col">Total</th>                     
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr v-for="(line, index) in form.sell_lines" :key="index">
+                                <td>
+                                    <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
+                                        <option disabled value="">Choisissez...</option>
+                                        <!-- <template > -->
+                                        
+                                            <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
+                                        <!-- </template> -->
+                                    </select>
+                                </td>
+                                <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
+                                <!-- <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
+                                <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
+                                <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
+                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>     
+                </div><br>
+                <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
+                    {{amount_error}} 
+                </div> <br><br><br><br>
+                <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+                
+                
+                <!-- <div class="submit">
+                    <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture pour " name="submit">		          
+                </div>   -->
+        
+            </form>
+               
+
+        </div>
+        <div v-else>
+             <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
+            <p  class="text-center">Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
+            Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
+            la mise à jour des informations. </p>
+        </div>
+
+        
+        
+
     </div>
     
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
@@ -96,6 +113,7 @@ import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
 import produitModal from './produitModal.vue'
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     layout : 'empty',
     auth:true,
@@ -104,6 +122,7 @@ export default {
         ajoutModal, 
         SavedModal,
         produitModal,
+        Userinfo
     },
 
     data () {
@@ -129,6 +148,9 @@ export default {
                 },
             errors: [],
             error: null,
+            user: '',
+            token: null,
+            compagny: ''
         }
     },
     // watch: {
@@ -140,8 +162,12 @@ export default {
     // },
 
     mounted () {
+      this.compagny = localStorage.getItem('auth.company_id');   
+      this.user = localStorage.getItem('auth.user_id')
+      this.compagnie()
       this.refresh()
       this.recupProduct()
+    //   console.log(this.$auth)
     },
     
     methods: {
@@ -175,7 +201,7 @@ export default {
               discount: this.form.discount,
               amount: this.form.amount,
               amount_received: this.form.amount_received,
-              user_id: this.$auth.user.id,
+              user_id: this.user,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')  
@@ -201,7 +227,8 @@ export default {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             is_paginated: 0
           }
-          }).then(response => {console.log(response.data.data);
+          }).then(response => {
+            // console.log(response.data.data);
             this.clients = response.data.data
             })
         },
@@ -211,7 +238,8 @@ export default {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             is_paginated: 0
           }
-          }).then(response => {console.log(response.data.data);
+          }).then(response => {
+            // console.log(response.data.data);
             this.produits = response.data.data}) 
         },
 
@@ -241,8 +269,23 @@ export default {
                     sum += this.form.sell_lines[j].amount;
                 }
                 this.form.amount = sum;
-                console.log(sum); 
+                // console.log(sum); 
             }    
+        },
+
+        compagnie(){
+            this.$axios.get('/compagnies/'+ this.compagny,{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          })
+            .then(response => {
+                console.log(response.data.data )
+            let compagnie = response.data.data[0];
+            // this.clients = response.data.data
+            this.token = compagnie.mecef_token
+            // console.log(this.token)
+          }      
+        )
         }
    
     },

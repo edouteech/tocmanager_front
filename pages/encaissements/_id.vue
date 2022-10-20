@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Encaissements </h3>
+      <User_info />
     </nav>
 
     <div class="app-main__outer p-5">
@@ -40,12 +41,14 @@
 <script>
 import moment from "moment";
 import Sidebar from '../sidebar.vue'
+import User_info from "../user_info.vue";
 export default {
     layout: "empty",
     auth:true,
     components: {
-        Sidebar,  
-    },
+    Sidebar,
+    User_info
+},
     data () {
         return{
             encaissement: "",

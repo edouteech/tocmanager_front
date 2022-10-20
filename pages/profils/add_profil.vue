@@ -2,6 +2,7 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Utilisateurs </h3>
+      <Userinfo />
     </nav>
 
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
@@ -9,8 +10,8 @@
       <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
       <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
       <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-      <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
-      <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div>
+      <!-- <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
+      <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div> -->
       <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div>
     </div>
 
@@ -29,20 +30,40 @@
                 <label class="title">Entrer l'email de l'utilsateur</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
-            <div class="form-group">
-              <label class="title">Mot de passe</label>
-              <input type="password" id="password" class="form-control " v-model="form.password"
-                placeholder="Entrer un mot de passe"/>
+            <div class="form-group ">
+                <label class="title">Fonction de l'utilisateur</label>
+                <select class="form-control" v-model="form.role" required>
+                    <option  value="">Choisissez...</option>
+                    <option value="admin">Administrateur</option>
+                    <option value="comptable">Comptable</option>
+                    <option value="cashier">Caissier</option>
+                </select>
             </div>
-            <div class="form-group">
-              <label class="title">Confirmer le Mot de passe</label>
-              <input type="password" id="password1" class="form-control" v-model="form.password_confirmation"
-                placeholder="Entrer un mot de passe"/>
-            </div>
+            <div class="form-group d-flex">
+                <div class="form-check mx-3">
+                    <input class="form-check-input" type="checkbox" v-model="form.ajout" true-value="1" false-value="0" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Droit d'ajouter
+                    </label>
+                </div>
+                <div class="form-check mx-3">
+                    <input class="form-check-input " type="checkbox" v-model="form.modifier" true-value="1" false-value="0" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Droit de modifier
+                    </label>
+                </div>
+                <div class="form-check mx-3">
+                    <input class="form-check-input" type="checkbox" v-model="form.supprimer" true-value="1" false-value="0" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Droit de supprimer
+                    </label>
+                </div>
+                
+            </div><br>
             <div class="form-group">
                  <label class="title">Entrer le pays de l'utilsateur</label>
                 <input type="text" class="form-control" v-model="form.country" autocomplete="off" required  placeholder="Benin" >
-            </div>
+            </div><br><br>
 
             <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer cet utilisateur</button>
         </form>
@@ -53,11 +74,13 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     layout: "empty",
     auth:true,
     components: {
         Sidebar,
+        Userinfo
         
     },
     data () {
@@ -66,10 +89,12 @@ export default {
                 name: '',
                 email: '',
                 phone: '',
-                password: '',
-                password_confirmation: '',
                 country: '',
-                compagnie_id: ''
+                compagnie_id: '',
+                role: '',
+                ajout: 0,
+                modifier: 0,
+                supprimer: 0
             },
             errors: [],
             error: null,
@@ -82,14 +107,18 @@ export default {
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
-              password: this.form.password,
-              password_confirmation: this.form.password_confirmation,
+              role: this.form.role,
               country: this.form.country,
+              droits_add: this.form.ajout,
+              droits_edit: this.form.modifier,
+              droits_delete: this.form.supprimer,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
-                console.log( response ) 
+                // console.log( this.form.ajout ) 
+                // console.log( this.form.modifier ) 
+                // console.log( this.form.supprimer ) 
                 this.error = response.data.message
-                console.log(this.error)
+                // console.log(this.error)
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/profils/profil'});

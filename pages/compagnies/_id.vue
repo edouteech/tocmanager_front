@@ -3,6 +3,7 @@
     <div class="zone">
           <div class="titre">
            <Sidebar /> <p class="name"> Compagnies </p>
+           <Userinfo />
           </div>
           <form action="" method="POST">
               <p>Modifier les informations de la compagnie</p>	
@@ -30,10 +31,12 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
     components: {
-        Sidebar,  
-    },
+    Sidebar,
+    Userinfo
+},
     data () {
         return{
             compagnie: "",

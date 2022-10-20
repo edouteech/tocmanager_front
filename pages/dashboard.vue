@@ -6,6 +6,7 @@
 
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Tableau De Bord </h3>
+      <Userinfo />
     </nav>
 
     <div class="app-main__outer ">
@@ -14,8 +15,7 @@
                 <div class="page-title-wrapper">
                     <div class="page-title-heading">
                         <div class="page-title-icon">
-                            <i class="pe-7s-car icon-gradient bg-mean-fruit">
-                            </i>
+                            <i class="fa fa-thermometer-three-quarters text-danger" aria-hidden="true"></i>
                         </div>
                         <div>Tableau de Bord Analytique
                             <div class="page-title-subheading">Vue résumée des divers composants
@@ -23,52 +23,23 @@
                         </div>
                     </div>
                     <div class="page-title-actions">
-                        <button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
-                            <i class="fa fa-star"></i>
-                        </button>
-                        <div class="d-inline-block dropdown">
-                            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                        <NuxtLink to="/achats/achat">
+                            <button type="button" data-toggle="tooltip" title="Lancer un achat" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">                               
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
-                                    <i class="fa fa-business-time fa-w-20"></i>
+                                    <i class="fa fa-shopping-cart" aria-hidden="true" data-bs-dismiss="offcanvas"></i> 
                                 </span>
-                                Raccourcis
+                                    Achat
                             </button>
-                            <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0);" class="nav-link">
-                                                <NuxtLink to="/achats/achat"> 
-                                                    <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
-                                                    <span class="raccourci mx-4 text-decoration-none">Achats</span>
-                                                </NuxtLink>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0);" class="nav-link">
-                                            <NuxtLink to="/ventes/vente"> 
-                                                <i class="fa fa-share-square" aria-hidden="true"></i>
-                                                <span class="raccourci mx-4 ">Ventes</span>
-                                            </NuxtLink>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0);" class="nav-link">
-                                            <NuxtLink to="/encaissements/encaissement"> 
-                                                <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
-                                                <span class="raccourci mx-4 ">Encaissements</span>
-                                            </NuxtLink>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0);" class="nav-link">
-                                            <NuxtLink to="/decaissements/decaissement"> 
-                                                <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
-                                                <span class="raccourci mx-4 ">Décaissements</span>
-                                            </NuxtLink>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                        </NuxtLink>
+                        <div class="d-inline-block dropdown">
+                            <NuxtLink to="/ventes/vente"> 
+                                <button type="button" data-toggle="tooltip" aria-haspopup="true" title="Lancer une vente" class="btn-shadow btn btn-info">
+                                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                        <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                                    </span>
+                                    Vente
+                                </button>
+                            </NuxtLink>
                         </div>
                     </div>    
                 </div>
@@ -120,15 +91,17 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
-                    <div class="card mb-3 widget-content bg-premium-dark">
-                        <div class="widget-content-wrapper text-white">
-                            <div class="widget-content-left">
-                                <div class="widget-heading">Products Sold</div>
-                                <div class="widget-subheading">Revenue streams</div>
-                            </div>
-                            <div class="widget-content-right">
-                                <div class="widget-numbers text-warning"><span>$14M</span></div>
+                <!-- <div class="col-md-6 col-xl-4">
+                    <div class="card mb-3 widget-content">
+                        <div class="widget-content-outer">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="widget-heading">Volume des ventes</div>
+                                    <div class="widget-subheading">Somme des quantités de vente</div>
+                                </div>
+                                <div class="widget-content-right">
+                                    <div class="widget-numbers text-warning">{{volume_vente}}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -250,8 +223,7 @@
                 
 
             </div>
-            <div class="row">
-                <div class="col-md-6 col-xl-4">
+                <!-- <div class="col-md-6 col-xl-4">
                     <div class="card mb-3 widget-content">
                         <div class="widget-content-outer">
                             <div class="widget-content-wrapper">
@@ -265,23 +237,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-xl-4">
-                    <div class="card mb-3 widget-content">
-                        <div class="widget-content-outer">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left">
-                                    <div class="widget-heading">Volume des ventes</div>
-                                    <div class="widget-subheading">Somme des quantités de vente</div>
-                                </div>
-                                <div class="widget-content-right">
-                                    <div class="widget-numbers text-warning">{{volume_vente}}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xl-4">
+                </div> -->
+                
+                <!-- <div class="col-md-6 col-xl-4">
                     <div class="card mb-3 widget-content">
                         <div class="widget-content-outer">
                             <div class="widget-content-wrapper">
@@ -295,32 +253,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
-                    <div class="card mb-3 widget-content">
-                        <div class="widget-content-outer">
-                            <div class="widget-content-wrapper">
-                                <div class="widget-content-left">
-                                    <div class="widget-heading">Income</div>
-                                    <div class="widget-subheading">Expected totals</div>
-                                </div>
-                                <div class="widget-content-right">
-                                    <div class="widget-numbers text-focus">$147</div>
-                                </div>
-                            </div>
-                            <div class="widget-progress-wrapper">
-                                <div class="progress-bar-sm progress-bar-animated-alt progress">
-                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100" style="width: 54%;"></div>
-                                </div>
-                                <div class="progress-sub-label">
-                                    <div class="sub-label-left">Expenses</div>
-                                    <div class="sub-label-right">100%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div> -->
-            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="main-card mb-3 card">
@@ -359,92 +292,7 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-md-6 col-lg-3">
-                    <div class="card-shadow-danger mb-3 widget-chart widget-chart2 text-left card">
-                        <div class="widget-content">
-                            <div class="widget-content-outer">
-                                <div class="widget-content-wrapper">
-                                    <div class="widget-content-left pr-2 fsize-1">
-                                        <div class="widget-numbers mt-0 fsize-3 text-danger">71%</div>
-                                    </div>
-                                    <div class="widget-content-right w-100">
-                                        <div class="progress-bar-xs progress">
-                                            <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="71" aria-valuemin="0" aria-valuemax="100" style="width: 71%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="widget-content-left fsize-1">
-                                    <div class="text-muted opacity-6">Ventes</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card-shadow-success mb-3 widget-chart widget-chart2 text-left card">
-                        <div class="widget-content">
-                            <div class="widget-content-outer">
-                                <div class="widget-content-wrapper">
-                                    <div class="widget-content-left pr-2 fsize-1">
-                                        <div class="widget-numbers mt-0 fsize-3 text-success">54%</div>
-                                    </div>
-                                    <div class="widget-content-right w-100">
-                                        <div class="progress-bar-xs progress">
-                                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100" style="width: 54%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="widget-content-left fsize-1">
-                                    <div class="text-muted opacity-6">Achats</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card-shadow-warning mb-3 widget-chart widget-chart2 text-left card">
-                        <div class="widget-content">
-                            <div class="widget-content-outer">
-                                <div class="widget-content-wrapper">
-                                    <div class="widget-content-left pr-2 fsize-1">
-                                        <div class="widget-numbers mt-0 fsize-3 text-warning">32%</div>
-                                    </div>
-                                    <div class="widget-content-right w-100">
-                                        <div class="progress-bar-xs progress">
-                                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100" style="width: 32%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="widget-content-left fsize-1">
-                                    <div class="text-muted opacity-6">Encaissements</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card-shadow-info mb-3 widget-chart widget-chart2 text-left card">
-                        <div class="widget-content">
-                            <div class="widget-content-outer">
-                                <div class="widget-content-wrapper">
-                                    <div class="widget-content-left pr-2 fsize-1">
-                                        <div class="widget-numbers mt-0 fsize-3 text-info">89%</div>
-                                    </div>
-                                    <div class="widget-content-right w-100">
-                                        <div class="progress-bar-xs progress">
-                                            <div class="progress-bar bg-info" role="progressbar" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100" style="width: 89%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="widget-content-left fsize-1">
-                                    <div class="text-muted opacity-6">Décaissements</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+           
         </div>               
     </div>
 
@@ -454,29 +302,15 @@
 
 <script>
 import Sidebar from './sidebar.vue';
+import Userinfo from './user_info.vue';
 import moment from "moment";
 import Chart from 'chart.js/auto';
 export default {
-    // head() {
-    //   return {
-    //     script: [
-    //       {
-    //         src: "https://demo.dashboardpack.com/architectui-html-free/assets/scripts/main.js"
-    //       },
-    //       {
-    //         src: "http://maps.google.com/maps/api/js?sensor=true"
-    //       },
-    //       {
-    //         src: "https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
-    //       }
-    //     ],
-
-    //   }
-    // },
     layout: "empty",
     auth:true,
     components:{
         Sidebar,
+        Userinfo,
     },
     data (){
     return{
@@ -502,14 +336,14 @@ export default {
   },
 //   moment().format("YYYY-MM-DDThh:mm")
     middleware:'auth',
-    mounted(){   
-        console.log(this.form.date_debut)   
+    mounted(){    
+        console.log(this.$auth)
         this.$axios.post('/tableau/de/bord',{
               date_debut: this.form.date_debut,
               date_fin: this.form.date_fin,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
-        }).then(response => {console.log(response.data.data.produts_most_sell
-);
+        }).then(response => {
+            // console.log(response.data.data.produts_most_sell);
 
            this.volume_vente  = response.data.data.volume_vente
            this.chiffre_affaire = response.data.data.chiffre_affaire
@@ -673,7 +507,8 @@ export default {
                 date_debut: this.form.date_debut,
                 date_fin: this.form.date_fin,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }).then(response => {console.log(response.data);
+            }).then(response => {
+                // console.log(response.data);
 
            this.volume_vente  = response.data.data.volume_vente
            this.chiffre_affaire = response.data.data.chiffre_affaire
@@ -687,7 +522,7 @@ export default {
 
 
                 var VV = this.volume_vente
-                console.log(VV)
+                // console.log(VV)
                 var dd = 'Intervalle de dates'
                 const cty = document.getElementById('myChart');
                 const myChart = new Chart(cty, {

@@ -2,11 +2,12 @@
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
       <Sidebar /><h3 class="name">Décaissements </h3>
+      <Userinfo />
     </nav>
 
     <div class="app-main__outer p-5">
       <h4>Liste des décaissements</h4>
-      <NuxtLink  to="/decaissements/decaissement"><button class="custom-btn btn-3"><span>Remplir décaissement</span></button></NuxtLink>
+      <NuxtLink  to="/decaissements/decaissement" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Remplir décaissement</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -22,10 +23,10 @@
               <td>{{decaissement.date}}</td>
               <td>{{decaissement.montant}}</td>
               <td>{{decaissement.supplier.name}}</td>
-              <td><div class="action">
-                <div @click="voirDecaissement(decaissement.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/decaissements/'+decaissement.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteDecaissement(decaissement.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+              <td><div class="action"  v-for="(user, i) in users" :key="i">
+                <div @click="voirDecaissement(decaissement.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/decaissements/'+decaissement.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div @click="deleteDecaissement(decaissement.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
@@ -63,12 +64,14 @@
 import moment from "moment";
 import voirDecaissement from './voir_decaissement.vue'
 import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
   layout: "empty",
   auth:true,
   components: {
     Sidebar,  
     voirDecaissement,
+    Userinfo
   },
    data () {
       return {
@@ -82,6 +85,8 @@ export default {
         decaissements: [],
         decaissement: "",
         total: '',
+        users: '',
+        compagny: '',
         form: {
           nombre: '',
         }
@@ -90,12 +95,20 @@ export default {
 
     mounted () {
       this.refresh()
+      this.users = this.$auth.$state.user;
+    this.compagny = localStorage.getItem('auth.company_id');
     },
 
     methods: {
-        deleteDecaissement(id){ console.log(id);
-          this.$axios.delete('/decaissements/' +id)
-          .then(response =>  {console.log(response.data.data);
+        deleteDecaissement(id){ 
+          // console.log(id);
+          this.$axios.delete('/decaissements/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
+          .then(response =>  {
+            // console.log(response.data.data);
           this.refresh()})
          },
 
@@ -110,7 +123,7 @@ export default {
             }
           ).then(response => 
           {
-              console.log(response.data.data);
+              // console.log(response.data.data);
               this.decaissements = response.data.data.data
               this.res_data= response.data.data
               this.total = response.data.data.total;
@@ -125,11 +138,12 @@ export default {
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
-          }).then(response => {console.log(response.data.data[0]);
+          }).then(response => {
+            // console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].montant
              this.identifiant2 = moment(response.data.data[0].date).format("D-MM-YYYY")
              this.identifiant3 = response.data.data[0].supplier.name
-             }) 
+          }) 
                
         },
 
