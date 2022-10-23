@@ -112,7 +112,10 @@ export default {
     methods: {
         restaurerVente(id){
             console.log(id);
-            this.$axios.get('/restore/sell/' +id)         
+            this.$axios.get('/restore/sell/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})              
             .then(response => {console.log(response);
                 this.vente = response.data.data
                 this.$router.push({path:'/ventes/list_vente',})

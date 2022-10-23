@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-lg-5 col-md-12 img">
               <div class="contact-info">
-                <img src="./../static/images/profil.png" alt="profil" class="profil mr-2" />
+                <img src="./../static/images/profil.png" alt="profil" class="profil" />
               </div>
             </div>
   
@@ -183,10 +183,6 @@ export default {
 </script>
 
 <style scoped>
-/* .app-main__outer{
-  overflow: auto;
-} */
-
 .fa{
   /* margin: 0 5px; */
   font-size: 15px;

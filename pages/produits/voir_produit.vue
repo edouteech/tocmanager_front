@@ -39,6 +39,10 @@
                     <td>Stock maximal</td>
                     <td>{{max}}</td>
                   </tr>
+                  <tr>
+                    <td>Groupe de taxation</td>
+                    <td>{{group}}</td>
+                  </tr>
                   
                 </tbody>
               </table>
@@ -77,7 +81,7 @@
 <script>
   export default {
     auth:true,
-    props: ['id','nom', 'quantite', 'vente', 'achat', 'min', 'max'],
+    props: ['id','nom', 'quantite', 'vente', 'achat', 'min', 'max', 'group'],
     name: 'voirProduit',
     
 }

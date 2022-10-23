@@ -29,8 +29,12 @@
     methods: {
         supDecaissement(infos){
             console.log(infos);
-            this.$axios.delete('/decaissements/' +infos)      
-            .then(response => {console.log(response.data.data);
+            this.$axios.delete('/decaissements/' +infos,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})           
+            .then(response => {
+              // console.log(response.data.data);
                   this.decaissement = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               
         },

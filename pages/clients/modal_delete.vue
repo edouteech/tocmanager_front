@@ -29,8 +29,12 @@
     methods: {
         supClient(infos){
             console.log(infos);
-            this.$axios.delete('/clients/' +infos)      
-            .then(response => {console.log(response.data);
+            this.$axios.delete('/clients/' +infos,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})           
+            .then(response => {
+              // console.log(response.data);
                   this.client = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               
         },

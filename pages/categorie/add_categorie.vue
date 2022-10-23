@@ -90,7 +90,7 @@ export default {
                     this.errors = response.data.data
                     // this.$router.push({path:'/categorie/add_client'});
                 }
-             }).catch( err => console.log( err ) )
+             })
             
             },
 

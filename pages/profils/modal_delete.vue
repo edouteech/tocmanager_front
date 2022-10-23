@@ -29,7 +29,10 @@
     methods: {
         supProfil(infos){
             console.log(infos);
-            this.$axios.delete('/destroy/profil/' +infos)      
+            this.$axios.delete('/destroy/profil/' +infos,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})            
             .then(response => {console.log(response.data.data);
                   this.profil = response.data.data;
                    this.$router.push({path:'/corbeille',})})    

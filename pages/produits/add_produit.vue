@@ -32,6 +32,15 @@
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Paracetamol">
             </div>
             <div class="form-group col-md-6">
+                <div class="form-group ">
+                <label class="title">Choisissez le groupe de taxation du produit</label>
+                <select class="form-control" v-model="form.tax_group">
+                    <option value="">Choisissez...</option>
+                    <option v-for="(groupe, j) in groupes" :key="j" :value="groupe">{{groupe}}</option>
+                </select>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
                 <label class="title">Entrer la quantité</label>
                 <input  type="number" class="form-control" placeholder="1200" v-model="form.quantity">
             </div>
@@ -83,19 +92,23 @@ export default {
                 price_buy:'',
                 stock_min:'',
                 stock_max:'',
-                compagnie_id:''
+                compagnie_id:'',
+                tax_group: ''
             },
             errors: [],
             error: null,
+            groupes: '',
         }
     },
 
     mounted () {
       this.refresh()
+      this.group()
     },
 
     methods: {
         async submit(){
+            console.log(this.form.tax_group)
             await  this.$axios.post('/products',{
               category_id: this.form.category_id,
               name: this.form.name,
@@ -103,6 +116,7 @@ export default {
               price_sell: this.form.price_sell,
               price_buy: this.form.price_buy,
               stock_min: this.form.stock_min,
+              tax_group: this.form.tax_group,
               stock_max: this.form.stock_max,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{
@@ -127,8 +141,20 @@ export default {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response =>
-            {console.log(response); this.categories = response.data.data.data })
+            {
+                // console.log(response); 
+                this.categories = response.data.data.data })
         },
+
+        group(){
+            this.$axios.get('/invoice/taxGroups',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response =>
+            {
+                // console.log(response); 
+                this.groupes = response.data.data })
+        }
 
     },
   

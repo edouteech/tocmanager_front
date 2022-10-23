@@ -29,7 +29,10 @@
     methods: {
         supVente(infos){
             console.log(infos);
-            this.$axios.delete('/sells/' +infos)      
+            this.$axios.delete('/sells/' +infos,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})              
             .then(response => {console.log(response.data.data);
                   this.vente = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               

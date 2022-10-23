@@ -104,7 +104,10 @@ export default {
     methods: {
         restaurerCompagnie(id){
             console.log(id);
-            this.$axios.get('/restore/compagnie/' +id)         
+            this.$axios.get('/restore/compagnie/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})               
             .then(response => {console.log(response);
                 this.compagnie = response.data.data
                 this.$router.push({path:'/compagnies/list_compagnie',})

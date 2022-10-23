@@ -29,8 +29,12 @@
     methods: {
         supAchat(infos){
             console.log(infos);
-            this.$axios.delete('/buys/' +infos)      
-            .then(response => {console.log(response.data.data);
+            this.$axios.delete('/buys/' +infos,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})             
+            .then(response => {
+              // console.log(response.data.data);
                   this.achat = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               
         },

@@ -5,9 +5,19 @@
       <User_info />
     </nav>
 
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}} <br>
+    </div>
+
+
     <div class="app-main__outer p-5">
-      
-      <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Imprimer</span></div><br>
+      <div class="d-flex">
+        <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Impression A4</span></div>
+        <div class="other_print mx-5" @click="generateOtherPdf()"><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Autre impression</span></div>
+        <button type="submit" class="btn btn-primary mx-5" @click.prevent="genererFactureNormalise()">Générer la facture normalisée</button>
+      </div>
+        <br>
+
       <div class="d-flex align-items-end flex-column">
           <p><strong> M/Mme {{client.name}}</strong> </p>
           <p><strong> Client {{compagny.name}}</strong> </p>
@@ -57,6 +67,16 @@
             </tr>
           </tbody>
         </table>  <br><br> 
+        
+            <div class="d-flex align-items-end flex-column mb-4" v-if="qrcode != null">
+              <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+qrcode" alt="QRcode" />
+              <div class="d-flex align-items-start flex-column mb-4">
+                <p> <strong>Mecef_counteurs :</strong>{{qr_info.mecef_counteurs}}</p>
+                <p> <strong>Mecef_nim: </strong>{{qr_info.mecef_nim}}</p>
+                <p><strong>Mecef_date :</strong> {{qr_info.mecef_date}}</p>
+                <p><strong>CodeMECeFDGI : </strong>{{qr_info.codeMECeFDGI}}</p>
+              </div>
+            </div>
         <table  class="total d-flex align-items-end flex-column">
           <tbody>
             <tr>
@@ -74,7 +94,7 @@
           </tbody>
         </table>  <br><br> 
         
-        <hr>
+        <hr class="trait">
           <div class="caisse" v-if="rest > 0">
           <h4>Ajouter des encaissements pour cette facture</h4><br><br>
                 <div  v-if="number == 0">
@@ -90,7 +110,7 @@
                     </div> <br><br>
                         
                     <button type="submit" class="btn btn-success" @click.prevent="submit()">Ajouter ...</button>          
-                </form>  <br><br><hr>
+                </form>  <br><br><hr class="trait">
           </div>
         <div class="encaissement">
           <h4>Liste des encaissements pour cette facture</h4>
@@ -118,6 +138,8 @@
           </nav>
         </div><br><br> 
    </div>
+
+   <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
    <!-- Footer -->
   <footer class="text-center text-lg-start bg-dark text-white">
       <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
@@ -163,15 +185,18 @@
 import moment from "moment";
 import Sidebar from '../../sidebar.vue'
 import User_info from "~/pages/user_info.vue";
+import Impression from './impression.vue';
 export default {
     layout: "voir",
     components: {
-    Sidebar,
-    User_info
+        Sidebar,
+        User_info,
+        Impression
 },
 
     data () {
       return {
+        showModal : false,
         error_rest: null,
         res_data: null,
         date_encaissement: '',
@@ -193,24 +218,21 @@ export default {
             nature:'',
             compagnie_id: ''
         },
+        qrcode: null,
+        error: null,
+        qr_info: null, 
+        identifiant1: '',
+        identifiant2: '',
+        identifiant3: '',
+        identifiant4: '',
+        identifiant5: '',
+        identifiant6: '',
+        identifiant7: '',
       }
     },
 
     mounted(){
-      this.$axios.get('/sells/'+ this.$route.params.id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-      }).then(response => {console.log(response.data.data[0]);
-        this.id = response.data.data[0].id,
-        this.factures = response.data.data[0].sell_lines,
-        this.date_sell = moment(response.data.data[0].date_sell).format("D MMM YYYY, h:mm:ss a"),
-        this.client = response.data.data[0].client,
-        this.montant = response.data.data[0].amount,
-        this.rest = response.data.data[0].rest
-        this.tax = response.data.data[0].tax
-        this.compagny = response.data.data[0].client.compagny
-      }) 
+      this.refresh()
       this.recupFacture()
     },
       
@@ -221,6 +243,36 @@ export default {
         },
         generatePdf() {
             window.print();
+        },
+        generateOtherPdf() {
+          this.showModal = true;
+          
+             this.identifiant1 = this.date_sell
+             this.identifiant2 = this.client
+             this.identifiant3 = this.factures
+             this.identifiant4 = this.montant 
+             this.identifiant5 = this.rest 
+             this.identifiant6 = this.tax 
+             this.identifiant7 = this.qr_info 
+        },
+
+        refresh(){
+          this.$axios.get('/sells/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          }).then(response => {console.log(response.data.data[0]);
+            this.id = response.data.data[0].id,
+            this.factures = response.data.data[0].sell_lines,
+            this.date_sell = moment(response.data.data[0].date_sell).format("D MMM YYYY, h:mm:ss a"),
+            this.client = response.data.data[0].client,
+            this.montant = response.data.data[0].amount,
+            this.rest = response.data.data[0].rest
+            this.tax = response.data.data[0].tax
+            this.compagny = response.data.data[0].client.compagny
+            this.qrcode = response.data.data[0].facture.qrcode
+            this.qr_info = response.data.data[0].facture
+          }) 
         },
 
         async submit(){
@@ -300,6 +352,22 @@ export default {
             let lastE = response.data.data.links.splice(-1,1);
           })
         },
+
+        
+        genererFactureNormalise(){
+          this.$axios.get('/sells/valid/'+this.$route.params.id,{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          })
+            .then(response =>{ 
+                console.log( response ) 
+                  this.refresh()
+                  this.error = response.data.message
+                
+            }).catch( err => console.log( err ) )
+
+        }
+   
     },
 }
 </script>
@@ -312,34 +380,49 @@ export default {
   font-size: 13px;
 }
 
-.print i{
+.other_page{
+  display: none;
+}
+
+.print i, .other_print i{
   font-size: 25px;
 }
 
-.print{
+.print, .other_print{
   border: 1px solid black;
-  width: 150px;
+  /* width: 200px; */
   border-radius: 5px;
   padding: 15px;
   cursor: pointer;
 }
 
-.print:hover{
+.print:hover, .other_print:hover{
   background-color: rgb(236, 244, 251);
 }
+
 
 .app-main__outer{
   overflow: auto;
 }
 
+/* @media print {
+  .app-main__outer{
+    display: none !important;
+  }
+  footer{
+    display: none !important;
+  }
+  
+} */
+
 @media print {
   /* .navbar {
     display: none !important;
   } */
-  .print, .caisse , .encaissement{
+  .print, .caisse , .encaissement, .btn{
     display: none !important;
   }
-  nav{
+  nav, .trait, .other_page{
     display: none !important;
   }
   footer{
@@ -347,13 +430,14 @@ export default {
   }
   
 }
+
 .fa{
   margin: 0 5px;
   font-size: 22px;
   cursor: pointer;
 }
 .table{
-	margin-top: 5%;
+	margin-top: 3%;
   text-align: center;
   justify-content: center;
 

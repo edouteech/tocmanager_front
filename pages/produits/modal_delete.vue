@@ -29,7 +29,10 @@
     methods: {
         supProduit(infos){
             console.log(infos);
-            this.$axios.delete('/products/' +infos)      
+            this.$axios.delete('/products/' +infos,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})              
             .then(response => {console.log(response.data.data);
                   this.produit = response.data.data;
                    this.$router.push({path:'/corbeille',})})                   

@@ -22,6 +22,15 @@
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Paracetamol">
             </div>
             <div class="form-group col-md-6">
+                <div class="form-group ">
+                <label class="title">Choisissez le groupe de taxation du produit</label>
+                <select class="form-control" v-model="form.tax_group">
+                    <option value="">Choisissez...</option>
+                    <option v-for="(groupe, j) in groupes" :key="j" :value="groupe">{{groupe}}</option>
+                </select>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
                 <label class="title">Entrer la quantité</label>
                 <input  type="number" class="form-control" placeholder="1200" v-model="form.quantity">
             </div>
@@ -75,14 +84,17 @@ export default {
                 price_buy:'',
                 stock_min:'',
                 stock_max:'',
-                compagnie_id: ''
+                compagnie_id: '',
+                tax_group: ''
             },
             error_message: "",
             error_champ: [],
+            groupes: ''
         }
     },
 
     mounted() {
+        this.group()
         this.refresh()
         this.$axios.get('/products/'+ this.$route.params.id,{
             params: {
@@ -99,6 +111,7 @@ export default {
         this.form.price_buy = produit.price_buy,
         this.form.stock_min = produit.stock_min,
         this.form.stock_max = produit.stock_max
+        this.form.tax_group = produit.tax_group
         }
         )
         
@@ -125,8 +138,17 @@ export default {
                 price_buy: this.form.price_buy,
                 stock_min: this.form.stock_min,
                 stock_max: this.form.stock_max,
+                tax_group: this.form.tax_group,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{this.$router.push({path:'/produits/list_produit',})   })                     
+        },
+
+        group(){
+            this.$axios.get('/invoice/taxGroups',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response =>
+            {console.log(response); this.groupes = response.data.data })
         }
     }
 

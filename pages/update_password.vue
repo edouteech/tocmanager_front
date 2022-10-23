@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-lg-5 col-md-12 img">
                   <div class="contact-info">
-                    <img src="./../static/images/rmdpa.png" alt="profil" class="profil mr-2" />
+                    <img src="./../static/images/rmdpa.png" alt="profil" class="profil " />
                   </div>
                 </div>
       
@@ -130,9 +130,6 @@
     </script>
     
     <style scoped>
-    /* .app-main__outer{
-      overflow: auto;
-    } */
     img{
         width: 80%;
     }

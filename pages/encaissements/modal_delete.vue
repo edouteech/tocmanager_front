@@ -29,7 +29,10 @@
     methods: {
         supEncaissement(infos){
             console.log(infos);
-            this.$axios.delete('/encaissements/' +infos)      
+            this.$axios.delete('/encaissements/' +infos,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})             
             .then(response => {console.log(response.data.data);
                   this.encaissement = response.data.data;
                    this.$router.push({path:'/corbeille',})})                               

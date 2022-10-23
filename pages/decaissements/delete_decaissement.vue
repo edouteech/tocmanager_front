@@ -112,7 +112,10 @@ export default {
     methods: {
         restaurerDecaissement(id){
             console.log(id);
-            this.$axios.get('/restore/decaissement/' +id)         
+            this.$axios.get('/restore/decaissement/' +id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }})                 
             .then(response => {console.log(response);
                 this.decaissement = response.data.data
                 this.$router.push({path:'/decaissements/list_decaissement',})
