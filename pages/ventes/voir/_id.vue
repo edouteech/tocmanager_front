@@ -5,8 +5,16 @@
       <User_info />
     </nav>
 
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
+    <div class="alert alert-danger d-flex" role="alert" v-if="error != null" >
+      <div>{{error}} </div>
+      
+      <div  v-for="(user, i) in users" :key="i">
+        <NuxtLink to="/update_compagnie" v-if="compagn == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+          <button type="submit" class="btn btn-warning mx-5">Compléter les informations</button>
+        </NuxtLink>
+
+        <NuxtLink to="" class="text-danger" v-else>Veuillez contacter l'administrateur pour résoudre le problème !!!</NuxtLink>
+      </div>
     </div>
 
 
@@ -14,7 +22,8 @@
       <div class="d-flex">
         <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Impression A4</span></div>
         <div class="other_print mx-5" @click="generateOtherPdf()"><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Autre impression</span></div>
-        <button type="submit" class="btn btn-primary mx-5" @click.prevent="genererFactureNormalise()">Générer la facture normalisée</button>
+        <button type="submit" class="btn btn-success mx-5" @click.prevent="validerFactureNormalise()" v-if="qrcode != null">Valider la facture normalisée</button>
+        <button type="submit" class="btn btn-primary mx-5" @click.prevent="genererFactureNormalise()" v-else>Générer la facture normalisée</button>
       </div>
         <br>
 
@@ -234,8 +243,9 @@ export default {
     mounted(){
       this.refresh()
       this.recupFacture()
+      this.compagn = localStorage.getItem('auth.company_id');
+      this.users = this.$auth.$state.user;
     },
-      
 
     methods: {
         moment: function () {
@@ -261,7 +271,8 @@ export default {
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
-          }).then(response => {console.log(response.data.data[0]);
+          }).then(response => {
+            // console.log(response.data.data[0]);
             this.id = response.data.data[0].id,
             this.factures = response.data.data[0].sell_lines,
             this.date_sell = moment(response.data.data[0].date_sell).format("D MMM YYYY, h:mm:ss a"),
@@ -290,7 +301,7 @@ export default {
                 sell_id: this.$route.params.id,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
               }).then(response =>{ 
-                  console.log( response ) 
+                  // console.log( response ) 
                   // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
 
                   if(response.data.status == "success"){
@@ -344,7 +355,7 @@ export default {
             }
           ).then(response => 
           {
-            console.log(response);
+            // console.log(response);
             this.encaissements = response.data.data.data
             this.res_data= response.data.data
             // this.links = response.data.data.links
@@ -354,7 +365,7 @@ export default {
         },
 
         
-        genererFactureNormalise(){
+        validerFactureNormalise(){
           this.$axios.get('/sells/valid/'+this.$route.params.id,{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
@@ -366,7 +377,21 @@ export default {
                 
             }).catch( err => console.log( err ) )
 
-        }
+        },
+
+        genererFactureNormalise(){
+          this.$axios.get('/sells/invoice/'+this.$route.params.id,{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          })
+            .then(response =>{ 
+                console.log( response ) 
+                  this.refresh()
+                  this.error = response.data.message
+                
+            }).catch( err => console.log( err ) )
+
+        },
    
     },
 }
@@ -425,7 +450,7 @@ export default {
   nav, .trait, .other_page{
     display: none !important;
   }
-  footer{
+  footer, .other_print{
     display: none !important;
   }
   

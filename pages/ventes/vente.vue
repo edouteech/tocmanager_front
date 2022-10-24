@@ -44,8 +44,8 @@
                                 <th scope="col">Désignation</th>
                                 <th scope="col">Quantité voulue</th>
                                 <th scope="col">Prix unitaire</th>
-                                <!-- <th scope="col">Taux de réduction (%)</th>
-                                <th scope="col">Taxe appliquée (%)</th> -->
+                                <th scope="col">Taux de réduction (%)</th>
+                                <!-- <th scope="col">Taxe appliquée (%)</th> -->
                                 <th scope="col">Total</th>                     
                             </tr>
                         </thead>
@@ -62,9 +62,9 @@
                                     </select>
                                 </td>
                                 <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
-                                <!-- <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                                <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
+                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required ></td>
+                                <td><input class="form-control" type="number" v-model="line.discount" min="0" max="0" autocomplete="off" required @change="reduceChange(index)" ></td>
+                                <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
                                 <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                             </tr>
@@ -274,6 +274,21 @@ export default {
             this.form.amount = sum;
                 
         },
+
+        reduceChange(index){
+            let line = this.form.sell_lines[index]
+            let calculQ = Number(line.price) * Number(line.quantity)
+            let calculR = calculQ * Number(line.discount);
+            let Rprix = calculR / 100
+            line.amount = calculQ - Rprix;
+            let sum = 0;
+            for (let j = 0; j < this.form.sell_lines.length; j++) {
+                sum += this.form.sell_lines[j].amount;
+            }
+            this.form.amount = sum;
+                
+        },
+
 
         productChange(e){
             if(e.target.options.selectedIndex > -1) {
