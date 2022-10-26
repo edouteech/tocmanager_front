@@ -10,7 +10,7 @@
       
       <div  v-for="(user, i) in users" :key="i">
         <NuxtLink to="/update_compagnie" v-if="compagn == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
-          <button type="submit" class="btn btn-warning mx-5">Compléter les informations</button>
+          <button type="submit" class="btn btn-warning mx-5">Compléter les informations de la compagnie</button>
         </NuxtLink>
 
         <NuxtLink to="" class="text-danger" v-else>Veuillez contacter l'administrateur pour résoudre le problème !!!</NuxtLink>

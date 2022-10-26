@@ -269,7 +269,7 @@ export default {
       this.refresh()
       this.recupClient()
       this.users = this.$auth.$state.user;
-    this.compagny = localStorage.getItem('auth.company_id');
+      this.compagny = localStorage.getItem('auth.company_id');
       // console.log(this.$auth)
     }
 }

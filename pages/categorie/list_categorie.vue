@@ -1,16 +1,23 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Catégories de produits </h3>
+      <Sidebar /><h3 class="name">Catégories</h3>
       <Userinfo />
     </nav>
 
     <div class="app-main__outer p-5">
-      <h4>Liste des catégories</h4><br>
-      <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
-          <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
-      </form>
+      <h4>Liste des catégories</h4><hr><br>
+      <div class="d-flex">
+        <div class="col-md-10">
+          <form class="d-flex col-md-7" role="search">
+            <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+            <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+          </form>
+        </div>
+               
+        <NuxtLink  to="/categorie/add_categorie" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
+      </div>
+      
       <div class="search_result" v-if="this.element_search != ''">
         <table class="table table-hover">
           <thead>
@@ -35,8 +42,11 @@
           </tbody>
         </table>
       </div><br>
-      <NuxtLink  to="/categorie/add_categorie" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
-        <table class="table table-hover" v-if="this.element_search == ''">
+      
+      
+      
+      
+      <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
                 <th>Noms de Catégorie</th>
@@ -352,6 +362,13 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 }
 .btn-3 span:hover:after {
   width: 100%;
+}
+
+
+@media screen and (max-width: 700px) {
+  .btn_recherche{
+    display:none;
+  }
 }
 
 </style>

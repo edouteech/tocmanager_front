@@ -159,14 +159,14 @@ input[type=submit]:hover{
 .modaler {
   text-align: center;
   background-color: white;
-  height: 700px;
+  height: auto;
   width: 600px;
-  margin-top: 5%;
+  margin-top: 10%;
   padding: 30px 0;
   border-radius: 20px;
 }
 .close {
-  margin: 5% 0 0 0;
+  margin: 10% 0 0 0;
   cursor: pointer;
 }
 
