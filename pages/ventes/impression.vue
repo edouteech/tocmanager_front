@@ -1,13 +1,14 @@
 <template>
     <div class="modal-overlay" @click="$emit('close-modal')">
-      <div class="modaler" @click.stop>  
-          <div class="quiz">
+        
+      <div class="quiz">
            <p class="text-center">Voulez vous imprimer en <strong> format ticket de caisse</strong> ???</p><br>
            <div class="d-flex text-center response">
               <div class="resp mx-5" @click="generatePdf()" >Oui</div>
               <div class="resp mx-5" @click="$emit('close-modal')">Non</div>
             </div>
-          </div>
+      </div>
+      <div class="modaler" @click.stop>
             <div class="other_page">
                 <p><strong> Date de la facture : {{date_sell}}</strong> </p>
                 <p><strong> M/Mme {{client.name}}</strong> </p>
@@ -73,7 +74,12 @@
   
 <style scoped>
 .quiz{
-  margin: 40% 10%;
+  background-color: white;
+  height: 200px;
+  width: 500px;
+  margin-top: 15%;
+  padding: 30px ;
+  border-radius: 3px;
 }
 
 .response {
@@ -90,7 +96,7 @@
   background-color: aliceblue;
 }
 
-  .other_page{
+  .modaler{
     display: none;
   }
   .modal-overlay {
@@ -115,7 +121,7 @@
     overflow: auto;
   }
   .close {
-    margin: 18% 0 0 0;
+    margin: 13% 0 0 0;
     cursor: pointer;
   }
   
@@ -151,7 +157,7 @@
       width: 800px;
     } */
 
-    .other_page{
+    .modaler{
       display: block !important;
     }
     /* nav{

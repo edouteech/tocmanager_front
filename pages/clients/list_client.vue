@@ -77,7 +77,7 @@
         </table>
         <p class="text-center"><strong>{{total}} client(s) au total </strong></p><hr class="text-primary">
     <br><br>
-    <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button><button class="btn btn-outline-info" type="submit" @click.prevent="Export()">Exporter</button></form><br><br>
+    <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button><button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button></form><br><br>
     <nav class="page" aria-label="Page navigation example px-8 " v-if="res_data != null">
       <ul class="pagination">
         <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>

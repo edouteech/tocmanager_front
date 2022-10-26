@@ -28,10 +28,10 @@
                 <td>{{vente.payment}}</td>
                 <td><div class="action" v-for="(user, i) in users" :key="i">
                       <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
-                      <div class="cursor-pointer" @click.prevent="generateOtherpdf(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-warning" aria-hidden="true"></i></div>
+                      <div class="cursor-pointer" @click.prevent="print(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
                       <NuxtLink :to="'/ventes/'+vente.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
                       <div class="cursor-pointer" @click.prevent="deleteVente(vente.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                      <div class="cursor-pointer" @click.prevent="print(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
+                      <div class="cursor-pointer" @click.prevent="generateOtherpdf(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-warning" aria-hidden="true"></i></div>
                     </div>
                 </td>
               </tr>

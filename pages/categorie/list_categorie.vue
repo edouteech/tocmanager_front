@@ -70,7 +70,7 @@
         </table>
         <p class="text-center"><strong>{{total}} catégorie(s) au total </strong></p><hr class="text-primary">
         <br><br> 
-        <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br>
+        <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button><button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button></form><br><br>
         <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -206,7 +206,19 @@ export default {
             let lastE = response.data.data.links.splice(-1,1);
             })     
         },
-  
+
+        Export(){
+          this.$axios.get('/clients',{
+              params: {
+                export: true,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              }
+            })
+            .then(response =>  {
+              console.log(response);
+            // this.refresh()
+          })
+         },
         
         voirCategorie(id){
             this.showModal = true;

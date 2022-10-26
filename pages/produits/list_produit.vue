@@ -95,7 +95,11 @@
         </table>
         <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
    <br><br>
-    <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br>
+    <form class="d-flex justify-content-end" role="search">
+      <input type="file" id="file" ref="file" @change="handleFileUpload()" />
+       <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
+       <button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button>
+    </form><br><br>
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -174,7 +178,7 @@ export default {
   mounted () {
       this.refresh()
       this.users = this.$auth.$state.user;
-    this.compagny = localStorage.getItem('auth.company_id');
+      this.compagny = localStorage.getItem('auth.company_id');
   },
 
   methods: {
@@ -201,6 +205,19 @@ export default {
              }else{
               alert("Echec de l'importation. Veuillez réessayer !!!");
              }
+          })
+        },
+
+        Export(){
+          this.$axios.get('/clients',{
+              params: {
+                export: true,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              }
+            })
+            .then(response =>  {
+              console.log(response);
+            // this.refresh()
           })
         },
 
