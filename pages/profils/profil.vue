@@ -6,7 +6,7 @@
     </nav>
 
     <div class="app-main__outer p-5">
-      <h4>Liste des utilisateurs enregistrés</h4>
+      <h4>Liste des utilisateurs enregistrés</h4><hr><br><br>
       <NuxtLink  to="/profils/add_profil" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
@@ -171,7 +171,7 @@ export default {
   cursor: pointer;
 }
 .table{
-	margin-top: 5%;
+	margin-top: 2%;
   text-align: center;
 }          
 

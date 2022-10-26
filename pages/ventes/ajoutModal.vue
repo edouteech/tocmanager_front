@@ -80,7 +80,7 @@
                 console.log(this.error)
                 this.errors = response.data.data
                   if(this.status == 'success'){
-                    alert('Nouveau client ajouté avec succès');
+                    // alert('Nouveau client ajouté avec succès');
                       this.form.name = '',
                       this.form.phone = '',
                       this.form.email = '',
@@ -88,7 +88,7 @@
                       this.status = response.data.status
                   }
                   else{
-                    alert("Echec lors de l'ajout du client ! Veuillez réessayer.");
+                    // alert("Echec lors de l'ajout du client ! Veuillez réessayer.");
                     this.status = response.data.status
                       this.errors = response.data.data
                       // this.$router.push({path:'/categorie/add_client'});

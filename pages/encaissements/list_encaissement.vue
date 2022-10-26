@@ -6,7 +6,7 @@
     </nav>
 
     <div class="app-main__outer p-5">
-      <h4>Liste des encaissements</h4>
+      <h4>Liste des encaissements</h4><hr><br><br>
        <NuxtLink to="/encaissements/encaissement" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Remplir encaissement</span></button></NuxtLink>
         <table class="table table-hover">
           <thead>
@@ -162,7 +162,7 @@ export default {
 }
 
 .table{
-	margin-top: 5%;
+	margin-top: 2%;
   text-align: center;
 }      
 

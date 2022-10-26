@@ -111,7 +111,7 @@
                 this.status = response.data.status
                 this.errors = response.data.data
                 if(this.status == 'success'){
-                  alert('Nouveau produit ajouté avec succès');
+                  // alert('Nouveau produit ajouté avec succès');
                     this.form.category_id = '',
                     this.form.name = '',
                     this.form.quantity = '',
@@ -122,7 +122,7 @@
                     this.form.tax_group = ''
                 }
                 else{
-                  alert("Echec lors de l'ajout du produit ! Veuillez réessayer.");
+                  // alert("Echec lors de l'ajout du produit ! Veuillez réessayer.");
                   this.status = response.data.status
                     this.errors = response.data.data
                     // this.$router.push({path:'/categorie/add_client'});

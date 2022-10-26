@@ -14,7 +14,7 @@
             <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
           </form>
         </div>
-               
+
         <NuxtLink  to="/categorie/add_categorie" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
       </div>
       
@@ -259,7 +259,7 @@ export default {
   cursor: pointer;
 }
 .table{
-	margin-top: 5%;
+	margin-top: 2%;
   text-align: center;
 }      
 
