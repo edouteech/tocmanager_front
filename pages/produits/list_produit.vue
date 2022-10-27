@@ -16,6 +16,11 @@
           </div>
           <NuxtLink  to="/produits/add_produit" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau produit</span></button></NuxtLink>
       </div>
+
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        {{error}} 
+      </div>
+      
       <div class="search_result" v-if="this.element_search != ''">
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
@@ -98,8 +103,19 @@
     <form class="d-flex justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
        <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-       <button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button>
+       <button class="btn btn-outline-info mx-5" type="submit"  @click.prevent="Export()">Exporter</button>
     </form><br><br>
+
+    <!-- <downloadexcel
+      class="btn"
+      :fetch="fetchData"
+      :fields="json_fields"
+      :before-generate="startDownload"
+      :before-finish="finishDownload"
+    >
+      Download Excel
+    </downloadexcel> -->
+
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -146,6 +162,7 @@ export default {
       element_search: '',
       results: '',
       links: [],
+      error: null,
       res_data: null,
       showModal: false,
       identifiant1 : "",
@@ -170,7 +187,7 @@ export default {
       compagny: '',
       form: {
           nombre: '',
-      }
+      },
 
     }
   },
@@ -200,25 +217,44 @@ export default {
             // console.log(response);
             if(response.data.status == "success"){
               this.refresh()
-              alert("L'importation s'est bien effectuée ...");
+              // alert("L'importation s'est bien effectuée ...");
                 
              }else{
-              alert("Echec de l'importation. Veuillez réessayer !!!");
+              // alert("Echec de l'importation. Veuillez réessayer !!!");
+              this.error= "Echec de l'importation. Veuillez réessayer !!!"
              }
           })
         },
 
         Export(){
-          this.$axios.get('/clients',{
+           this.$axios.get('/products',{
               params: {
                 export: true,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
-              }
-            })
-            .then(response =>  {
-              console.log(response);
+              },
+              responseType: 'blob'
+          }).then((response) => {
+              // Let's create a link in the document that we'll
+              // programmatically 'click'.
+              const link = document.createElement('a');
+      
+              // Tell the browser to associate the response data to
+              // the URL of the link we created above.
+              link.href = window.URL.createObjectURL(
+                  new Blob([response.data])
+              );
+      
+              // Tell the browser to download, not render, the file.
+              link.setAttribute('download', 'report.xlsx');
+      
+              // Place the link in the DOM.
+              document.body.appendChild(link);
+      
+              // Make the magic happen!
+              link.click();
+          }); // Please catch me!
+
             // this.refresh()
-          })
         },
 
         handleFileUpload(){

@@ -17,7 +17,9 @@
 
         <NuxtLink  to="/categorie/add_categorie" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
       </div>
-      
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        {{error}} 
+      </div>
       <div class="search_result" v-if="this.element_search != ''">
         <table class="table table-hover">
           <thead>
@@ -112,6 +114,7 @@ export default {
 
     data () {
       return {
+        error: null,
         total: '',
         file: '',
         element_search: '',
@@ -147,14 +150,15 @@ export default {
               }
             }
           ).then(response => {
-            // console.log(response);
+            console.log(response);
             // console.log(formData);
             if(response.data.status == "success"){
               this.refresh()
-              alert("L'importation s'est bien effectuée ...");
+              // alert("L'importation s'est bien effectuée ...")
                 
              }else{
-              alert("Echec de l'importation. Veuillez réessayer !!!");
+              // alert("Echec de l'importation. Veuillez réessayer !!!");
+              this.error= "Echec de l'importation. Veuillez réessayer !!!"
              }
             })
               
@@ -208,18 +212,21 @@ export default {
         },
 
         Export(){
-          this.$axios.get('/clients',{
+           this.$axios.get('/export/categories',{
               params: {
                 export: true,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              },
+              headers: {
+                "Access-Control-Allow-Origin": "http://127.0.0.1",
+                // "Access-Control-Allow-Methods": "GET",
+                // "Access-Control-Allow-Headers": "Content-Type"
               }
-            })
-            .then(response =>  {
-              console.log(response);
-            // this.refresh()
+              // responseType: 'blob'
           })
-         },
-        
+        },
+
+
         voirCategorie(id){
             this.showModal = true;
             this.$axios.get('/categories/'+ id,{

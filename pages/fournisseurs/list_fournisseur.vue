@@ -16,6 +16,11 @@
           </div>
           <NuxtLink  to="/fournisseurs/add_fournisseur" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau fournisseur</span></button></NuxtLink>
       </div>
+
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        {{error}} 
+      </div>
+
       <div class="search_result" v-if="this.element_search != ''">
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
@@ -120,6 +125,7 @@ export default {
 
   data () {
     return {
+      error:null,
       total: '',
       file: '',
       element_search: '',
@@ -166,10 +172,11 @@ export default {
           ).then(response => {console.log(response);
             if(response.data.status == "success"){
               this.refresh()
-              alert("L'importation s'est bien effectuée ...");
+              // alert("L'importation s'est bien effectuée ...");
                 
              }else{
-              alert("Echec de l'importation. Veuillez réessayer !!!");
+              // alert("Echec de l'importation. Veuillez réessayer !!!");
+              this.error= "Echec de l'importation. Veuillez réessayer !!!"
              }
           })
         },

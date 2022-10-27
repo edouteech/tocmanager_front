@@ -14,11 +14,11 @@
     <div class="app-main__outer p-5">
          <h4>Enregistrer une nouvelle catégorie de produit</h4>
        <form action="">
-            <div class="form-group ">
+            <div class="form-group col-md-6">
                 <label class="title">Entrer le nom de la catégorie </label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Pillules">
             </div>
-            <div class="form-group ">
+            <div class="form-group col-md-6">
                 <label class="title">Catégorie parente</label>
                 <select class="form-control" v-model="form.parent_id" required>
                     <option  value="">Choisissez...</option>
