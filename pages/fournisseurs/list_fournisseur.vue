@@ -6,11 +6,21 @@
     </nav>
 
     <div class="app-main__outer p-5">
-      <h4>Liste des fournisseurs</h4><br>
-      <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
-          <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
-      </form>
+      <h4>Liste des fournisseurs</h4><hr><br><br>
+      <div class="d-flex">
+          <div class="col-md-10">
+            <form class="d-flex col-md-7" role="search">
+              <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+            </form>
+          </div>
+          <NuxtLink  to="/fournisseurs/add_fournisseur" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau fournisseur</span></button></NuxtLink>
+      </div>
+
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        {{error}} 
+      </div>
+
       <div class="search_result" v-if="this.element_search != ''">
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
@@ -40,9 +50,9 @@
             </tr>
           </tbody>
         </table>
-      </div><br>
-      <NuxtLink  to="/fournisseurs/add_fournisseur" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau fournisseur</span></button></NuxtLink>
-        <table class="table table-hover" v-if="this.element_search == ''">
+      </div>
+      
+      <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary" >
                     <th>Noms</th>
@@ -73,7 +83,7 @@
         <p class="text-center"><strong>{{total}} fournisseur(s) au total </strong></p><hr class="text-primary">
     
         <br><br>
-    <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br>
+    <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button><button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button></form><br><br>
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -115,6 +125,7 @@ export default {
 
   data () {
     return {
+      error:null,
       total: '',
       file: '',
       element_search: '',
@@ -161,10 +172,11 @@ export default {
           ).then(response => {console.log(response);
             if(response.data.status == "success"){
               this.refresh()
-              alert("L'importation s'est bien effectuée ...");
+              // alert("L'importation s'est bien effectuée ...");
                 
              }else{
-              alert("Echec de l'importation. Veuillez réessayer !!!");
+              // alert("Echec de l'importation. Veuillez réessayer !!!");
+              this.error= "Echec de l'importation. Veuillez réessayer !!!"
              }
           })
         },
@@ -186,6 +198,19 @@ export default {
           })
         },
     
+        Export(){
+          this.$axios.get('/clients',{
+              params: {
+                export: true,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              }
+            })
+            .then(response =>  {
+              console.log(response);
+            // this.refresh()
+          })
+        },
+
        deleteFournisseur(id){
           console.log(id);
           this.$axios.delete('/suppliers/' +id,{
@@ -365,5 +390,12 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 }
 .btn-3 span:hover:after {
   width: 100%;
+}
+
+
+@media screen and (max-width: 700px) {
+  .btn_recherche{
+    display:none;
+  }
 }
 </style>

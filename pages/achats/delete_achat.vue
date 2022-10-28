@@ -15,7 +15,7 @@
                         Dates factures
                     </th>
                     <th >
-                        Clients
+                        Fournisseurs
                     </th>
                     <th>
                         Montants
@@ -100,7 +100,8 @@ export default {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             per_page : this.form.nombre }   
           })
-        .then(response => {console.log(response.data.data);
+        .then(response => {
+            // console.log(response);
             this.achats = response.data.data.data
             this.res_data= response.data.data 
             this.total = response.data.data.total

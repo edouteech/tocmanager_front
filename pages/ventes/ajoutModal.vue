@@ -80,7 +80,7 @@
                 console.log(this.error)
                 this.errors = response.data.data
                   if(this.status == 'success'){
-                    alert('Nouveau client ajouté avec succès');
+                    // alert('Nouveau client ajouté avec succès');
                       this.form.name = '',
                       this.form.phone = '',
                       this.form.email = '',
@@ -88,7 +88,7 @@
                       this.status = response.data.status
                   }
                   else{
-                    alert("Echec lors de l'ajout du client ! Veuillez réessayer.");
+                    // alert("Echec lors de l'ajout du client ! Veuillez réessayer.");
                     this.status = response.data.status
                       this.errors = response.data.data
                       // this.$router.push({path:'/categorie/add_client'});
@@ -161,14 +161,14 @@ input[type=submit]:hover{
 .modaler {
   text-align: center;
   background-color: white;
-  height: 700px;
+  height: auto;
   width: 600px;
-  margin-top: 5%;
+  margin-top: 10%;
   padding: 30px 0;
   border-radius: 20px;
 }
 .close {
-  margin: 5% 0 0 0;
+  margin: 10% 0 0 0;
   cursor: pointer;
 }
 

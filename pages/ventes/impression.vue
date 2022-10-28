@@ -1,11 +1,14 @@
 <template>
     <div class="modal-overlay" @click="$emit('close-modal')">
-      <div class="modaler" @click.stop>  
-           <p class="text-center">Voulez vous imprimer en format ticket de caisse ???</p>
-           <div class="d-flex">
-              <div class="print" @click="generatePdf()" >Oui</div>
-              <div class="print mx-5" @click="$emit('close-modal')">Non</div>
+        
+      <div class="quiz">
+           <p class="text-center">Voulez vous imprimer en <strong> format ticket de caisse</strong> ???</p><br>
+           <div class="d-flex text-center response">
+              <div class="resp mx-5" @click="generatePdf()" >Oui</div>
+              <div class="resp mx-5" @click="$emit('close-modal')">Non</div>
             </div>
+      </div>
+      <div class="modaler" @click.stop>
             <div class="other_page">
                 <p><strong> Date de la facture : {{date_sell}}</strong> </p>
                 <p><strong> M/Mme {{client.name}}</strong> </p>
@@ -61,41 +64,39 @@
       },
       methods:{
         generatePdf() {
-            window.print();
+          var fac = document.getElementById('other_page')
+              window.print(fac) ;
         },
       }
   
     }
   </script>
   
-  <style scoped>
-
-    @media print {
-    .d-flex, .close{
-        display: none !important;
-    }
-
-    .other_page{
-      display: block;
-    }
-    /* nav{
-        display: none !important;
-    }
-    footer{
-        display: none !important;
-    } */
-    }
-
-.print{
-  border: 1px solid black;
-  padding: 3%;
+<style scoped>
+.quiz{
+  background-color: white;
+  height: 200px;
+  width: 500px;
+  margin-top: 15%;
+  padding: 30px ;
+  border-radius: 3px;
 }
 
-.print:hover{
+.response {
+  margin: 0 20%;
+}
+.resp{
+  border: 1px solid black;
+  padding: 2%;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.resp:hover{
   background-color: aliceblue;
 }
 
-  .other_page{
+  .modaler{
     display: none;
   }
   .modal-overlay {
@@ -114,14 +115,13 @@
     background-color: white;
     height: auto;
     width: 800px;
-    margin-top: 15%;
+    /* margin-top: 20%; */
     padding: 30px ;
-    /* border-radius: 20px; */
-    
+    border-radius: 3px;
     overflow: auto;
   }
   .close {
-    margin: 15% 0 0 0;
+    margin: 13% 0 0 0;
     cursor: pointer;
   }
   
@@ -129,7 +129,7 @@
     width: 25px;
   }
   
-  
+/*   
 .print i{
   font-size: 25px;
 }
@@ -144,8 +144,29 @@
 
 .print:hover{
   background-color: rgb(236, 244, 251);
-}
+} */
 
+
+@media print {
+    .quiz, .close{
+        display: none !important;
+    }
+
+    /* .modaler{
+      height: auto;
+      width: 800px;
+    } */
+
+    .modaler{
+      display: block !important;
+    }
+    /* nav{
+        display: none !important;
+    }
+    footer{
+        display: none !important;
+    } */
+}
 
   
   /* p {

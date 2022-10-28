@@ -15,23 +15,28 @@
         <h4>Modifier les informations de cet achat</h4><hr>
         <form action="" method="POST">
             <div class="cadre-haut">             
-                <div class="ajout-client">                   
+                <div class="ajout-client">                                   
                     <select class="form-control" v-model="form.supplier_id">
                         <option disabled value="">Choisir le fournisseur</option>
+                        <!-- <option :value= four_id>{{message}}</option> -->
                         <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                             {{fournisseur.name}}
                         </option>                           
-                    </select>  
-                    <div class="save-btn">
-                        <div @click="showModal = true"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur</div>
-                    </div>                  
+                    </select>          
+                    <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
+                    </button>                
                 </div>
-                <div class="facture-date">
-                   <span class="creation"> Date de création :</span> <input  type="datetime-local" class="form-control"  v-model="form.date_buy"/>                  
+                <div class="facture-date position-absolute end-0">
+                    <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_buy"/>                  
                 </div>
             </div> <hr>
             
-            <div class="ajout-article" @click="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un article</div>
+            <div class="add_buttons d-flex"> 
+                <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
+            </div>
+
             
             <div class="commande">
                 <table class="table table-bordered">
@@ -63,10 +68,18 @@
                     </tbody>
                 </table>     
             </div><br>
-            <div class="form-group1 col-md-6"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
-            <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
-                {{amount_error}} 
-            </div>  -->
+            <div class="d-flex">
+                    <div class="form-group1 col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+                    <!-- <div class="form-group col-md-6 mx-5">
+                        <div class="form-group ">
+                            Méthode de paiement
+                        <select class="form-control" v-model="form.payment">
+                            <option value="">Choississez</option>
+                            <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
+                        </select>
+                        </div>
+                    </div> -->
+                </div>
             <br><br><br><br><br>
             <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
             <!-- <div class="submit">
@@ -121,7 +134,9 @@ export default {
                 },
             errors: [],
             error: null,
-            user: ''
+            user: '',
+            compagny: '',
+            methodes: ''
         }
     },
 
@@ -129,6 +144,7 @@ export default {
       this.user == localStorage.getItem('auth.user_id')
       this.refresh()
       this.recupProduct()
+    //   this.payment()
       this.$axios.get('buys/'+ this.$route.params.id)
           .then(response => {console.log(response.data.data[0] )
             let achat = response.data.data[0];
@@ -144,6 +160,18 @@ export default {
         )          
     },
     methods: {
+        payment(){
+            this.$axios.get('/invoice/payments',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response =>
+            {
+                // console.log(response); 
+                this.methodes = response.data.data })
+        },
+        addLine(){
+            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});
+        },
         addLine(){
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
             
@@ -211,6 +239,33 @@ export default {
                 
         },
 
+        reduceChange(index){
+            let line = this.form.sell_lines[index]
+            let calculQ = Number(line.price) * Number(line.quantity)
+            var str = line.discount;
+            var percent = str.indexOf("%"); 
+
+                if(percent !== -1){
+                    var newStr = str.substring(0, str.length - 1);
+                    let calculR = calculQ * Number(newStr);
+                    let Rprix = calculR / 100
+                    line.amount = calculQ - Rprix;
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount;
+                    }
+                    this.form.amount = sum;
+                } 
+                else{
+                    line.amount = calculQ - str;
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount;
+                    }
+                    this.form.amount = sum;
+                }   
+        },
+
         productChange(e){
             if(e.target.options.selectedIndex > -1) {
                 let i = e.target.options[e.target.options.selectedIndex].dataset.i;
@@ -250,47 +305,42 @@ export default {
 .cadre-haut{
     display: flex;
 }
-
 .ajout-client{
     margin: 30px 10px;
     border: 1px solid darkblue;
-    padding: 50px ;
-    margin-right: 50%;
-  
+    padding: 30px 20px;
+    /* margin-right: 50%; */
 }
 
 .btn-ajout{
-    border: 2px solid #53af57;
-    padding: 5px;
-    width: 100px;
+    margin-top: 9%;
+    border: 1px solid #53af57;
+    padding: 10px;
+    /* width: 100px; */
     font-size: 10px;
-    border-radius: 20%;
+    border-radius: 15px;
     text-align: center;
-    cursor: pointer;
-    margin: 0 50px;
-}
-
-.btn-ajout:hover{
     background-color: #53af57;
     color: #fff;
-}
-.btn-ajout i{
-    font-size: 18px;
-}
-
-.save-btn {
-    background-color: rgb(121, 161, 255);    
-    font-size: 10px;
-    text-align: center;
-    padding: 5px;
-    border-radius: 5px;
     cursor: pointer;
 }
+
+.btn-ajout i{
+    font-size: 14px;
+}
+
 
 .facture-date{
     margin-top: 5%;
     font-size: 18px;
+    margin-right: 10%;
 }
+
+.btn-ajout:hover{
+    background-color: #fefefe;
+    color: rgb(0, 0, 0);
+}
+
 .facture-date .creation{
     text-decoration: underline;
     font-weight: bold;
@@ -469,8 +519,12 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
 }
 
 @media screen and (max-width: 900px) {
+    .add_buttons{
+        margin: 30% 0;
+    }
     .cadre-haut{
         display: inline;
+        margin: 0;
     }
 
     .ajout-client{
@@ -480,8 +534,19 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
         padding: 50px ;
     }
 
+    .facture-date{
+        position: fixed;
+    }
+
     .table{
         overflow: auto;
+    }
+
+    .commande{
+        margin: 15% 0;
+    }
+    .ajout-article{
+        margin: 0;
     }
 }
 </style>

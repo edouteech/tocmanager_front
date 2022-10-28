@@ -5,16 +5,25 @@
       <User_info />
     </nav>
 
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
+    <div class="alert alert-danger d-flex" role="alert" v-if="error != null" >
+      <div>{{error}} </div>
+      
+      <div  v-for="(user, i) in users" :key="i">
+        <NuxtLink to="/update_compagnie" v-if="compagn == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+          <button type="submit" class="btn btn-warning mx-5">Compléter les informations de la compagnie</button>
+        </NuxtLink>
+
+        <NuxtLink to="" class="text-danger" v-else>Veuillez contacter l'administrateur pour résoudre le problème !!!</NuxtLink>
+      </div>
     </div>
 
 
     <div class="app-main__outer p-5">
       <div class="d-flex">
-        <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Impression A4</span></div>
-        <div class="other_print mx-5" @click="generateOtherPdf()"><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Autre impression</span></div>
-        <button type="submit" class="btn btn-primary mx-5" @click.prevent="genererFactureNormalise()">Générer la facture normalisée</button>
+        <!-- <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Impression A4</span></div> -->
+        <!-- <div class="other_print mx-5" @click="generatePdf()"><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Autre format d'impression</span></div> -->
+        <button type="submit" class="btn btn-success mx-5" @click.prevent="validerFactureNormalise()" v-if="qrcode != null">Valider la facture normalisée</button>
+        <button type="submit" class="btn btn-primary mx-5" @click.prevent="genererFactureNormalise()" v-else>Générer la facture normalisée</button>
       </div>
         <br>
 
@@ -137,7 +146,43 @@
             </ul>
           </nav>
         </div><br><br> 
-   </div>
+    </div>
+
+    <div class="hidden_page">
+      <p><strong> Date de la facture : {{date_sell}}</strong> </p>
+      <p><strong> M/Mme {{client.name}}</strong> </p>
+      <p><strong>Téléphone : {{client.phone}}</strong> </p>
+      <br><hr>
+      <div class="d-flex">
+          <div class="py-4 px-2 w-25">Nom du produit</div>
+          <div class="py-4 px-2 w-25">Quantité </div>
+          <div class="py-4 px-2 w-25">Prix unitaire </div>
+          <div class="py-4 px-2 w-25">Total HT</div>
+      </div>
+      <div class="d-flex" v-for="(facture, j) in factures" :key="j">
+          <div class="px-2 w-25">{{facture.product.name}}</div>
+          <div class="px-2 w-25">{{facture.quantity}}</div>
+          <div class="px-2 w-25">{{facture.price}}</div>
+          <div class="px-2 w-25">{{facture.amount}} F CFA</div>
+      </div><br><br>
+      <hr><br>
+      <div >
+          <p><strong> Total : {{montant}} F CFA</strong> </p>
+          <p><strong> Taxe : {{tax}} F CFA</strong> </p>
+          <p><strong> Montant restant à encaisser : {{rest}} F CFA</strong> </p>
+      </div>
+
+      <div class="text-center" v-if="qr_info != null">
+          <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+qr_info.qrcode" alt="QRcode" />
+          <div class="">
+              <p> <strong>Mecef_counteurs :</strong>{{qr_info.mecef_counteurs}}</p>
+              <p> <strong>Mecef_nim: </strong>{{qr_info.mecef_nim}}</p>
+              <p><strong>Mecef_date :</strong> {{qr_info.mecef_date}}</p>
+              <p><strong>CodeMECeFDGI : </strong>{{qr_info.codeMECeFDGI}}</p>
+          </div>
+      </div>
+    </div>
+
 
    <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
    <!-- Footer -->
@@ -234,8 +279,9 @@ export default {
     mounted(){
       this.refresh()
       this.recupFacture()
+      this.compagn = localStorage.getItem('auth.company_id');
+      this.users = this.$auth.$state.user;
     },
-      
 
     methods: {
         moment: function () {
@@ -244,24 +290,25 @@ export default {
         generatePdf() {
             window.print();
         },
-        generateOtherPdf() {
-          this.showModal = true;
+        // generateOtherPdf() {
+        //   this.showModal = true;
           
-             this.identifiant1 = this.date_sell
-             this.identifiant2 = this.client
-             this.identifiant3 = this.factures
-             this.identifiant4 = this.montant 
-             this.identifiant5 = this.rest 
-             this.identifiant6 = this.tax 
-             this.identifiant7 = this.qr_info 
-        },
+        //      this.identifiant1 = this.date_sell
+        //      this.identifiant2 = this.client
+        //      this.identifiant3 = this.factures
+        //      this.identifiant4 = this.montant 
+        //      this.identifiant5 = this.rest 
+        //      this.identifiant6 = this.tax 
+        //      this.identifiant7 = this.qr_info 
+        // },
 
         refresh(){
           this.$axios.get('/sells/'+ this.$route.params.id,{
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
-          }).then(response => {console.log(response.data.data[0]);
+          }).then(response => {
+            // console.log(response.data.data[0]);
             this.id = response.data.data[0].id,
             this.factures = response.data.data[0].sell_lines,
             this.date_sell = moment(response.data.data[0].date_sell).format("D MMM YYYY, h:mm:ss a"),
@@ -290,7 +337,7 @@ export default {
                 sell_id: this.$route.params.id,
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
               }).then(response =>{ 
-                  console.log( response ) 
+                  // console.log( response ) 
                   // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
 
                   if(response.data.status == "success"){
@@ -344,7 +391,7 @@ export default {
             }
           ).then(response => 
           {
-            console.log(response);
+            // console.log(response);
             this.encaissements = response.data.data.data
             this.res_data= response.data.data
             // this.links = response.data.data.links
@@ -354,7 +401,7 @@ export default {
         },
 
         
-        genererFactureNormalise(){
+        validerFactureNormalise(){
           this.$axios.get('/sells/valid/'+this.$route.params.id,{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
@@ -366,7 +413,21 @@ export default {
                 
             }).catch( err => console.log( err ) )
 
-        }
+        },
+
+        genererFactureNormalise(){
+          this.$axios.get('/sells/invoice/'+this.$route.params.id,{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          })
+            .then(response =>{ 
+                console.log( response ) 
+                  this.refresh()
+                  this.error = response.data.message
+                
+            }).catch( err => console.log( err ) )
+
+        },
    
     },
 }
@@ -380,7 +441,7 @@ export default {
   font-size: 13px;
 }
 
-.other_page{
+.hidden_page{
   display: none;
 }
 
@@ -416,17 +477,27 @@ export default {
 } */
 
 @media print {
-  /* .navbar {
+  .navbar {
     display: none !important;
-  } */
-  .print, .caisse , .encaissement, .btn{
+  }
+  /* .print, .caisse , .encaissement, .btn{
     display: none !important;
   }
   nav, .trait, .other_page{
     display: none !important;
-  }
-  footer{
+  } */
+  footer, .app-main__outer{
     display: none !important;
+  }
+  .hidden_page{
+    display: block;
+    padding:5% ;
+  }
+  @page {
+        margin-left: 0.5in;
+        margin-right: 0.5in;
+        margin-top: 0;
+        margin-bottom: 0;
   }
   
 }
@@ -485,7 +556,7 @@ thead tr{
 }
 .btn-3 {
   background: rgb(0,172,238);
-background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
+  background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
   width: 180px;
   height: 40px;
   line-height: 42px;

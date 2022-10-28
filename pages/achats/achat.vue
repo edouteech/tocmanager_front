@@ -14,11 +14,10 @@
     </div>
 
     <div class="app-main__outer p-5">
-        <div v-if="token != null">
             <h4>Enregistrer un achat</h4><hr>
             <form action="" method="POST">
                 <div class="cadre-haut">             
-                    <div class="ajout-client">                   
+                    <div class="ajout-client">                                   
                         <select class="form-control" v-model="form.supplier_id">
                             <option disabled value="">Choisir le fournisseur</option>
                             <!-- <option :value= four_id>{{message}}</option> -->
@@ -26,18 +25,20 @@
                                 {{fournisseur.name}}
                             </option>                           
                         </select>          
-                        <div class="save-btn">
-                            <div @click="showModal = true"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur</div>
-                        </div>                   
+                        <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
+                        </button>                
                     </div>
-                    <div class="facture-date ">
-                    <span class="creation"> Date de création :</span> <input  type="datetime-local" class="form-control"  v-model="form.date_buy"/>                  
+                    <div class="facture-date position-absolute end-0">
+                        <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_buy"/>                  
                     </div>
                 </div> <hr>
                 
-                <div class="ajout-article" @click="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un article</div>
-                
-                <div class="btn-ajout" @click="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</div>
+                <div class="add_buttons d-flex"> 
+                    <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                    <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
+                </div>
+
                 <div class="commande">
                     <table class="table table-bordered">
                         <thead>
@@ -45,8 +46,8 @@
                                 <th>Désignation</th>
                                 <th>Quantité voulue</th>
                                 <th>Prix unitaire</th>
-                                <!-- <th>Taux de réduction (%)</th>
-                                <th>Taxe appliquée (%)</th> -->
+                                <!-- <th scope="col">Réduction (Prix ou %)</th> -->
+                                <!-- <th>Taxe appliquée (%)</th>  -->
                                 <th> Total</th>                     
                             </tr>
                         </thead>
@@ -61,15 +62,27 @@
                                 </td>
                                 <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                                 <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
-                                <!-- <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                                <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
+                                <!-- <td><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td> -->
+                                <!-- <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
                                 <td><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required></td>
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger " aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
                     </table>     
                 </div><br>
-                <div class="form-group1 col-md-6"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+                
+                <div class="d-flex">
+                    <div class="form-group1 col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+                    <!-- <div class="form-group col-md-6 mx-5">
+                        <div class="form-group ">
+                            Méthode de paiement
+                        <select class="form-control" v-model="form.payment">
+                            <option value="">Choississez</option>
+                            <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
+                        </select>
+                        </div>
+                    </div> -->
+                </div>
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                     {{amount_error}} 
                 </div> 
@@ -80,14 +93,12 @@
                 </div>   -->
         
             </form>
-
-        </div>
-        <div v-else class="text-center">
+<!-- 
             <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
             <p>Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
             Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
             la mise à jour des informations. </p>
-        </div>
+        </div> -->
 
         
     </div>
@@ -152,7 +163,8 @@ export default {
             error: null,
             user: '',
             token: '',
-            compagny: ''
+            compagny: '',
+            methodes: ''
         }
     },
 
@@ -162,9 +174,19 @@ export default {
       this.compagnie()
       this.refresh()
       this.recupProduct()
+    //   this.payment()
     },
     
     methods: {
+        payment(){
+            this.$axios.get('/invoice/payments',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          }
+          }).then(response =>
+            {
+                // console.log(response); 
+                this.methodes = response.data.data })
+        },
         addLine(){
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});
         },
@@ -199,6 +221,7 @@ export default {
                     user_id: this.user,
                     supplier_id: this.form.supplier_id,  
                     buy_lines: this.form.buy_lines,
+                    // payment: this.form.payment,
                     compagnie_id: this.$auth.$storage.getUniversal('company_id')
                     }).then(response =>{ 
                         console.log( response ) 
@@ -248,6 +271,34 @@ export default {
             }
             this.form.amount = sum;
                 
+        },
+
+        
+        reduceChange(index){
+            let line = this.form.sell_lines[index]
+            let calculQ = Number(line.price) * Number(line.quantity)
+            var str = line.discount;
+            var percent = str.indexOf("%"); 
+
+                if(percent !== -1){
+                    var newStr = str.substring(0, str.length - 1);
+                    let calculR = calculQ * Number(newStr);
+                    let Rprix = calculR / 100
+                    line.amount = calculQ - Rprix;
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount;
+                    }
+                    this.form.amount = sum;
+                } 
+                else{
+                    line.amount = calculQ - str;
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount;
+                    }
+                    this.form.amount = sum;
+                }   
         },
 
         productChange(e){
@@ -309,17 +360,6 @@ export default {
     margin: 5% ;
 }
 
-.titrer{
-  border: 1px solid #202020;
-  padding: 3%;
-  margin-bottom: 3%;
-  margin-left: 1%;
-  background-color: #202020;
-  color: #fff;
-  font-size: 24px;
-  letter-spacing: 2px;
-}
-
 .cadre-haut{
     display: flex;
 }
@@ -327,43 +367,39 @@ export default {
 .ajout-client{
     margin: 30px 10px;
     border: 1px solid darkblue;
-    padding: 50px ;
-    margin-right: 50%;
-  
+    padding: 30px 20px;
+    /* margin-right: 50%; */
 }
 
 .btn-ajout{
-    border: 2px solid #53af57;
-    padding: 5px;
-    width: 100px;
+    margin-top: 9%;
+    border: 1px solid #53af57;
+    padding: 10px;
+    /* width: 100px; */
     font-size: 10px;
-    border-radius: 20%;
+    border-radius: 15px;
     text-align: center;
-    cursor: pointer;
-    margin: 0 50px;
-}
-
-.btn-ajout:hover{
     background-color: #53af57;
     color: #fff;
-}
-.btn-ajout i{
-    font-size: 18px;
-}
-
-.save-btn {
-    background-color: rgb(121, 161, 255);    
-    font-size: 10px;
-    text-align: center;
-    padding: 5px;
-    border-radius: 5px;
     cursor: pointer;
 }
+
+.btn-ajout i{
+    font-size: 14px;
+}
+
 
 .facture-date{
     margin-top: 5%;
     font-size: 18px;
+    margin-right: 10%;
 }
+
+.btn-ajout:hover{
+    background-color: #fefefe;
+    color: rgb(0, 0, 0);
+}
+
 .facture-date .creation{
     text-decoration: underline;
     font-weight: bold;
@@ -381,7 +417,6 @@ export default {
 .ajout-article{
     margin: 4%;
     text-align: center;
-    width: 90%;
     background-color: rgb(8, 231, 97);
     border-radius: 10px;
     padding: 12px;
@@ -534,8 +569,12 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
 }
 
 @media screen and (max-width: 900px) {
+    .add_buttons{
+        margin: 30% 0;
+    }
     .cadre-haut{
         display: inline;
+        margin: 0;
     }
 
     .ajout-client{
@@ -545,8 +584,19 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
         padding: 50px ;
     }
 
+    .facture-date{
+        position: fixed;
+    }
+
     .table{
         overflow: auto;
+    }
+
+    .commande{
+        margin: 15% 0;
+    }
+    .ajout-article{
+        margin: 0;
     }
 }
 </style>

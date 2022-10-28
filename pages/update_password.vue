@@ -27,8 +27,8 @@
                     <div class="form-outline mb-3">
                         <span class="fas fa-lock px-2"></span><label class="form-label">Nouveau Mot de passe</label>
                         <div class="input-field">
-                        <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
-                            placeholder="Entrer un mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click.prevent="changer()"></i></span></div>   
+                        <input type="password" id="password2" class="form-control form-control-lg" v-model="form.password"
+                            placeholder="Entrer un mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click.prevent="chang()"></i></span></div>   
                     </div>
 
                     <div class="form-outline mb-3">
@@ -78,6 +78,17 @@
     },
 
     methods: {
+        chang(){
+        var pwd = document.getElementById("password2");
+            var fa =  document.getElementById("eye")
+            if(pwd.getAttribute("type")=="password"){
+                pwd.setAttribute("type","text");
+                fa.class="fa fa-eye px-2";
+            } else {
+                pwd.setAttribute("type","password");
+            
+            }
+        },
         changer(){
         var pwd = document.getElementById("password");
             var fa =  document.getElementById("eye")

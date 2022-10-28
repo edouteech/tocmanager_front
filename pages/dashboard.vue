@@ -647,7 +647,9 @@ export default {
     padding: 3%;
 }
 
-
+.range input{
+  width: 45%;
+}
 }
 
 </style>

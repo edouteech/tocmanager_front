@@ -21,7 +21,13 @@
             </div>  
             <div class="input-form">
                 <input type="text" placeholder="Entrer le nom du produit " v-model="form.name" autocomplete="off" id="name_prod" required>
-            </div>    
+            </div>  
+            <div class="input-form">
+                <select class="form-control" v-model="form.tax_group">
+                    <option value="">Choisissez le groupe de taxation du produit</option>
+                    <option v-for="(groupe, j) in groupes" :key="j" :value="groupe">{{groupe}}</option>
+                </select>
+            </div>  
             <div class="input-form">        
                 <input type="number" placeholder="Entrer la quantité " v-model="form.quantity" id="quantite" required>
             </div>
@@ -69,16 +75,19 @@
             price_buy:'',
             stock_min:'',
             stock_max:'',
+            tax_group: '',
             compagnie_id:''
         },
         errors: [],
         error: null,
-        status: ''
+        status: '',
+        groupes: '',
     }
     },
 
     mounted () {
       this.refresh()
+      this.group()
     },
 
     methods: {
@@ -86,6 +95,7 @@
             await  this.$axios.post('/products',{
               category_id: this.form.category_id,
               name: this.form.name,
+              tax_group: this.form.tax_group,
               quantity: this.form.quantity,
               price_sell: this.form.price_sell,
               price_buy: this.form.price_buy,
@@ -100,7 +110,7 @@
               this.status = response.data.status
               this.errors = response.data.data
                 if(this.status == 'success'){
-                  alert('Nouveau produit ajouté avec succès');
+                  // alert('Nouveau produit ajouté avec succès');
                     this.form.category_id = '',
                     this.form.name = '',
                     this.form.quantity = '',
@@ -108,9 +118,11 @@
                     this.form.price_buy = '',
                     this.form.stock_min = '',
                     this.form.stock_max = ''
+                    this.form.tax_group = ''
+
                 }
                 else{
-                  alert("Echec lors de l'ajout du produit ! Veuillez réessayer.");
+                  // alert("Echec lors de l'ajout du produit ! Veuillez réessayer.");
                   this.status = response.data.status
                     this.errors = response.data.data
                     // this.$router.push({path:'/categorie/add_client'});
@@ -119,15 +131,25 @@
             
             },
 
-        refresh(){
-          this.$axios.get('/categories',
-          {
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            refresh(){
+              this.$axios.get('/categories',
+              {
+                params: {
+                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                }
+              }).then(response =>
+                {this.categories = response.data.data.data })
+            },
+
+            group(){
+                this.$axios.get('/invoice/taxGroups',{params: {
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              }
+              }).then(response =>
+                {
+                    // console.log(response); 
+                    this.groupes = response.data.data })
             }
-          }).then(response =>
-            {this.categories = response.data.data.data })
-        },
 
     }
 }
@@ -193,7 +215,7 @@ input[type=submit]:hover{
 .modaler {
   text-align: center;
   background-color: white;
-  height: auto;
+  height: max-content;
   width: 600px;
   margin-top: 1%;
   padding: 15px 0;
