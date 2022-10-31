@@ -119,6 +119,7 @@
             </tbody>
           </table>  <br><br> 
       </div>
+      <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 
   <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
          
@@ -165,6 +166,7 @@
   
   
   <script>
+  import deleteModal from './deleteModal.vue';  
   import Impression from './impression.vue';  
   import moment from "moment";
   import Sidebar from '../sidebar.vue'
@@ -175,7 +177,8 @@
     components: {
       Sidebar,
       Userinfo,
-      Impression  
+      Impression,
+      deleteModal
     },
      data () {
         return {
@@ -206,20 +209,22 @@
           compagn:[],
           factures: [],
           qrcode: null,
-          qr_info: null, 
+          qr_info: null,
+          key: '',
+          showModalDelete: false 
         }
       },
       methods: {
           deleteVente(id){
-            console.log(id)
-            this.$axios.delete('/sells/'+id,{params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-            })
-            .then(response =>{
-              // console.log(response);
-              this.refresh()})                
-          },
+            this.showModalDelete = true
+            this.key = id    
+                  
+         },
+
+        setMessage(){
+          this.refresh()
+        },
+        
           
           refresh(page=1){
             this.$axios.get('/sells',{params: {

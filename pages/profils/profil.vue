@@ -62,11 +62,13 @@
     </div><br><br><br>
 
 <voirProfil :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :pays= 'identifiant4' :role= 'identifiant5' :ajout= 'identifiant6' :modifier= 'identifiant7' :supprimer= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
 
 </template>
 
 <script>
+import deleteModal from './deleteModal.vue'
 import voirProfil from './voir_profil.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -76,7 +78,8 @@ export default {
     components: {
       Sidebar,  
       voirProfil,
-      Userinfo
+      Userinfo,
+      deleteModal
     },
 
     data () {
@@ -99,7 +102,9 @@ export default {
           compagny:'',
           form: {
               nombre: '',
-          }
+          },
+          key: "",
+          showModalDelete: false
         }
       },
 
@@ -111,13 +116,13 @@ export default {
     methods: {
 
         deleteProfil(id){
-          // console.log(id);
-          this.$axios.delete('/users/' +id,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')}   
-          })         
-          .then(response => {
-            // console.log(response.data.data);
-            this.refresh()})                            
+          this.showModalDelete = true
+            this.key = id    
+                  
+         },
+
+        setMessage(){
+          this.refresh()
         },
         
         refresh(page=1){

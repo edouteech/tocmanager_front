@@ -69,7 +69,7 @@
 
   <!-- Copyright -->
   <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
-    Copyright © 2022 - Tous droits réservés dS
+    Copyright © 2022 - Tous droits réservés
   </div>
   <!-- Copyright -->
 </footer>

@@ -106,11 +106,13 @@
         </nav>
  </div><br> 
 <voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance= 'identifiant5' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
 
 </template>
 
 <script>
+import deleteModal from './deleteModal.vue'
 import voirFournisseur from './voir_fournisseur.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -120,7 +122,8 @@ export default {
   components: {
     Sidebar,  
     voirFournisseur,
-    Userinfo
+    Userinfo,
+    deleteModal
   },
 
   data () {
@@ -145,7 +148,9 @@ export default {
       compagny: '',
       form: {
           nombre: '',
-      }
+      },
+      key: '',
+      showModalDelete: false,
     }
   },
   mounted () {
@@ -212,15 +217,13 @@ export default {
         },
 
        deleteFournisseur(id){
-          console.log(id);
-          this.$axios.delete('/suppliers/' +id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-          })
-          .then(response => {
-            // console.log(response.data.data);
-            this.refresh()})                 
+        this.showModalDelete = true
+            this.key = id    
+                  
+         },
+
+        setMessage(){
+          this.refresh()
         },
          
         refresh(page=1){

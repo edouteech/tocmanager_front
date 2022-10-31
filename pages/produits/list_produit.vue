@@ -138,11 +138,13 @@
         </nav>
   </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
 
 </template>
 
 <script>
+import deleteModal from './deleteModal.vue'
 import voirProduit from './voir_produit.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -152,7 +154,8 @@ export default {
   components: {
     Sidebar,  
     voirProduit,
-    Userinfo
+    Userinfo,
+    deleteModal
   },
 
   data () {
@@ -188,6 +191,8 @@ export default {
       form: {
           nombre: '',
       },
+      key: "",
+      showModalDelete: false
 
     }
   },
@@ -274,17 +279,13 @@ export default {
           })
         },
         deleteProduit(id){
-          console.log(id);
-          this.$axios.delete('/products/' +id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-          }).then(response => 
-            {
-              // console.log(response.data.data);
-              this.refresh()
-            }
-          )         
+          this.showModalDelete = true
+            this.key = id    
+                  
+         },
+
+        setMessage(){
+          this.refresh()
         },
           
 

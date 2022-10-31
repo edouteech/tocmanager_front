@@ -105,6 +105,8 @@
     <br> 
   </div>
 <voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance="identifiant5" :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
 
 </template>
@@ -113,13 +115,15 @@
 import voirClient from './voir_client.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
+import deleteModal from './deleteModal.vue'
 export default {
   layout: "empty",
   auth: true,
   components: {
     Sidebar,  
     voirClient,
-    Userinfo
+    Userinfo,
+    deleteModal
   },
    data () {
       return {
@@ -142,7 +146,9 @@ export default {
         compagny: '',
         form: {
           nombre: '',
-        }
+        },
+        key: '',
+        showModalDelete: false
       }
     },
 
@@ -197,18 +203,16 @@ export default {
         },
         
         deleteClient(id){ 
-          // console.log(id);
-          this.$axios.delete('/clients/' +id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-          })
-          .then(response =>  {
-            // console.log(response);
-          this.refresh()})
+          this.showModalDelete = true
+            this.key = id    
+                  
          },
 
-         Export(){
+        setMessage(){
+          this.refresh()
+        },
+
+        Export(){
           this.$axios.get('/clients',{
               params: {
                 export: true,

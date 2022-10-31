@@ -52,12 +52,12 @@
                 </div>  
             </form>       
             <div class="row mb-5">
-                <div class="col-md-6 col-xl-4">
+                <div class="col-md-6 col-xl-3">
                     <div class="card mb-3 widget-content bg-midnight-bloom">
                         <div class="widget-content-wrapper text-white p-4">
                             <div class="widget-content-left">
-                                <div class="widget-heading">Chiffre d'affaire</div>
-                                <div class="widget-subheading">Total des transactions</div>
+                                <div class="widget-heading">Chiffre <br> d'affaire</div>
+                                <div class="widget-subheading">Total <br>des <br> transactions</div>
                             </div>
                             <div class="widget-content-right">
                                 <div class="widget-numbers text-white"><span>{{chiffre_affaire}} F</span></div>
@@ -65,12 +65,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xl-4">
+                <div class="col-md-6 col-xl-3">
                     <div class="card mb-3 widget-content bg-arielle-smile">
                         <div class="widget-content-wrapper text-white p-4">
                             <div class="widget-content-left">
                                 <div class="widget-heading">Encaissements</div>
-                                <div class="widget-subheading">Somme totale des encaissements</div>
+                                <div class="widget-subheading">Somme <br> totale des <br> encaissements</div>
                             </div>
                             <div class="widget-content-right">
                                 <div class="widget-numbers text-white"><span>{{encaissement}} F</span></div>
@@ -78,12 +78,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xl-4">
+                <div class="col-md-6 col-xl-3">
                     <div class="card mb-3 widget-content bg-grow-early">
                         <div class="widget-content-wrapper text-white p-4">
                             <div class="widget-content-left">
                                 <div class="widget-heading">Décaissements</div>
-                                <div class="widget-subheading">Somme totale des décaissements</div>
+                                <div class="widget-subheading">Somme <br> totale des <br> décaissements</div>
                             </div>
                             <div class="widget-content-right">
                                 <div class="widget-numbers text-white"><span>{{decaissement}} F</span></div>
@@ -91,13 +91,13 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-6 col-xl-4">
-                    <div class="card mb-3 widget-content">
+                <div class="col-md-6 col-xl-3">
+                    <div class="card mb-3 widget-content bg-dark">
                         <div class="widget-content-outer">
-                            <div class="widget-content-wrapper">
+                            <div class="widget-content-wrapper text-white p-4">
                                 <div class="widget-content-left">
                                     <div class="widget-heading">Volume des ventes</div>
-                                    <div class="widget-subheading">Somme des quantités de vente</div>
+                                    <div class="widget-subheading">Somme <br> des quantités <br> de vente</div>
                                 </div>
                                 <div class="widget-content-right">
                                     <div class="widget-numbers text-warning">{{volume_vente}}</div>
@@ -105,95 +105,99 @@
                             </div>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
-            <div class="row">
-                <div class="col-md-12 col-lg-6">
+            <div class="col-md-12 col-lg-12">
                     <div class="mb-3 card">
                         <div class="card-header-tab card-header-tab-animation card-header">
                             <div class="card-header-title">
                                 <i class="header-icon lnr-apartment icon-gradient bg-love-kiss"> </i>
-                                Volume des ventes
+                                Produits 
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="tab-content">
-                                <div class="tab-pane fade show active" id="tabs-eg-77">
-                                    <div class="card mb-3 widget-chart widget-chart2 text-left w-100">
+                                <div class="tab-pane fade show active d-flex" id="tabs-eg-77">
+                                    <!-- <div class="card mb-3 widget-chart widget-chart2 text-left w-100">
                                         <div class="widget-chat-wrapper-outer">
                                             <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0">
                                                 <canvas id="myChart"></canvas>
                                             </div>
                                         </div>
+                                    </div> -->
+                                    <div class="col-md-12 col-lg-6">
+                                        <h6 class="text-muted text-uppercase  opacity-8 font-weight-normal">Top des 10 produits les plus vendus</h6>
+                                        <div class="scroll-area-sm">
+                                            <div class="scrollbar-container">
+                                                <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
+                                                    <li class="list-group-item">
+                                                        <div class="widget-content p-0">
+                                                            <div class="widget-content-wrapper">
+                                                                Noms des produits
+                                                                <div class="widget-content-right">
+                                                                    <div class=" text-muted">
+                                                                        <span>Quantités vendues</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item" v-for="(produits_vendus1, j) in produits_vendus" :key="j">
+                                                        <div class="widget-content p-0">
+                                                            <div class="widget-content-wrapper fsize-1">
+                                                                {{produits_vendus1.name}}
+                                                                <div class="widget-content-right">
+                                                                    <div class="fsize-2 text-muted">
+                                                                        <span>{{produits_vendus1.quantity}}</span>
+                                                                        <small class="text-danger pl-2">
+                                                                            <i class="fa fa-angle-down"></i>
+                                                                        </small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div> 
+                                        <br><br>
                                     </div>
-                                    <h6 class="text-muted text-uppercase  opacity-8 font-weight-normal">Top des 10 produits les plus vendus</h6>
-                                    <div class="scroll-area-sm">
-                                        <div class="scrollbar-container">
-                                            <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
-                                                <li class="list-group-item">
-                                                    <div class="widget-content p-0">
-                                                        <div class="widget-content-wrapper">
-                                                            Noms des produits
-                                                            <div class="widget-content-right">
-                                                                <div class="font-size-xlg text-muted">
-                                                                    <span>Quantités vendues</span>
+                                    <div class="col-md-12 col-lg-6">
+                                        <h6 class="text-muted text-uppercase  opacity-8 font-weight-normal">Top des 10 produits les plus achetés</h6>
+                                        <div class="scroll-area-sm">
+                                            <div class="scrollbar-container">
+                                                <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
+                                                    <li class="list-group-item">
+                                                        <div class="widget-content p-0">
+                                                            <div class="widget-content-wrapper">
+                                                                Noms des produits
+                                                                <div class="widget-content-right">
+                                                                    <div class="text-muted">
+                                                                        <span>Quantités achetées</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                                <li class="list-group-item" v-for="(produits_vendus1, j) in produits_vendus" :key="j">
-                                                    <div class="widget-content p-0">
-                                                        <div class="widget-content-wrapper fsize-2">
-                                                            {{produits_vendus1.name}}
-                                                            <div class="widget-content-right">
-                                                                <div class="font-size-xlg text-muted">
-                                                                    <span>{{produits_vendus1.quantity}}</span>
-                                                                    <small class="text-danger pl-2">
-                                                                        <i class="fa fa-angle-down"></i>
-                                                                    </small>
+                                                    </li>
+                                                    <li class="list-group-item" v-for="(produits_achetes1, k) in produits_achetes" :key="k">
+                                                        <div class="widget-content p-0">
+                                                            <div class="widget-content-wrapper fsize-1">
+                                                                {{produits_achetes1.name}}
+                                                                <div class="widget-content-right">
+                                                                    <div class="fsize-2 text-muted">
+                                                                        <span>{{produits_achetes1.quantity}}</span>
+                                                                        <small class="text-danger pl-2">
+                                                                            <i class="fa fa-angle-down"></i>
+                                                                        </small>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                                
-                                            </ul>
-                                        </div>
-                                    </div> <br><br>
-                                    <h6 class="text-muted text-uppercase  opacity-8 font-weight-normal">Top des 10 produits les plus achetés</h6>
-                                    <div class="scroll-area-sm">
-                                        <div class="scrollbar-container">
-                                            <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
-                                                <li class="list-group-item">
-                                                    <div class="widget-content p-0">
-                                                        <div class="widget-content-wrapper">
-                                                            Noms des produits
-                                                            <div class="widget-content-right">
-                                                                <div class="font-size-xlg text-muted">
-                                                                    <span>Quantités achetées</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="list-group-item" v-for="(produits_achetes1, k) in produits_achetes" :key="k">
-                                                    <div class="widget-content p-0">
-                                                        <div class="widget-content-wrapper fsize-2">
-                                                            {{produits_achetes1.name}}
-                                                            <div class="widget-content-right">
-                                                                <div class="font-size-xlg text-muted">
-                                                                    <span>{{produits_achetes1.quantity}}</span>
-                                                                    <small class="text-danger pl-2">
-                                                                        <i class="fa fa-angle-down"></i>
-                                                                    </small>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                
-                                            </ul>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -201,7 +205,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 col-lg-6">
+            <div class="row">
+                
+                <div class="col-md-12 col-lg-12">
                     <div class="mb-3 card">
                         <div class="card-header-tab card-header">
                             <div class="card-header-title">
@@ -214,7 +220,7 @@
                                 <div class="widget-chart p-3">
                                     <div style="height: 500px">
                                         <canvas id="myChartVente"></canvas>
-                                    </div><br><br><br><br><br><br>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -274,7 +280,7 @@
                                     <td class="text-center">
                                                 {{dernieres_ventes1.client.name}}
                                     </td>
-                                    <td class="text-center">{{dernieres_ventes1.date_sell}}</td>
+                                    <td class="text-center">{{dernieres_ventes1.date_sell}}</td> 
                                     <td class="text-center">
                                         <div class="badge badge-success fsize-1">{{dernieres_ventes1.amount}}</div>
                                     </td>

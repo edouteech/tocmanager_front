@@ -56,12 +56,15 @@
      </div><br>
 <voirDecaissement :montant= 'identifiant1' :date= 'identifiant2' :supplier_id= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/>
 
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
+
 </div>
 
 </template>
 
 <script>
 import moment from "moment";
+import deleteModal from './deleteModal.vue'
 import voirDecaissement from './voir_decaissement.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -71,7 +74,8 @@ export default {
   components: {
     Sidebar,  
     voirDecaissement,
-    Userinfo
+    Userinfo,
+    deleteModal
   },
    data () {
       return {
@@ -89,7 +93,9 @@ export default {
         compagny: '',
         form: {
           nombre: '',
-        }
+        },
+        key: '',
+        showModalDelete:false
       }
     },
 
@@ -101,16 +107,15 @@ export default {
 
     methods: {
         deleteDecaissement(id){ 
-          // console.log(id);
-          this.$axios.delete('/decaissements/' +id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-          })
-          .then(response =>  {
-            // console.log(response.data.data);
-          this.refresh()})
+          this.showModalDelete = true
+            this.key = id    
+                  
          },
+
+        setMessage(){
+          this.refresh()
+        },
+
 
         refresh(page=1){
           this.$axios.get('/decaissements',

@@ -56,11 +56,15 @@
         </nav>
     </div>           <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirAchat :date= 'identifiant1' :fournisseur= 'identifiant2' :montant= 'identifiant3' :facture='identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
+
 </div>
 
 </template>
 
 <script>
+import deleteModal from './deleteModal.vue'
 import voirAchat from './voir_achat.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -70,7 +74,8 @@ export default {
   components: {
     Sidebar,  
     voirAchat,
-    Userinfo
+    Userinfo,
+    deleteModal
   },
    data () {
       return {
@@ -88,16 +93,16 @@ export default {
         compagny: '',
         form: {
             nombre: '',
-        }
+        },
+        key: '',
+        showModalDelete: false
       }
     },
     methods: {
         deleteAchat(id){
-          this.$axios.delete('/buys/' +id,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
-          }
-          }).then(response =>{console.log(response.data.data);
-            this.refresh()})                
+          this.showModalDelete = true
+            this.key = id    
+                          
         },
         
         refresh(page=1){
@@ -134,6 +139,10 @@ export default {
             //  this.identifiant4 = response.data.data[0].nature      
              }) 
                
+        },
+        
+        setMessage(){
+          this.refresh()
         },
     },
     
