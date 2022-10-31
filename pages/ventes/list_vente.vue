@@ -260,7 +260,7 @@
       },
       methods: {
         search(){
-          this.$axios.get('/suppliers',{params: {
+          this.$axios.get('/sells',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
             search: this.element_search
           }
