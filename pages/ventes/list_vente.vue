@@ -16,37 +16,70 @@
           </div>
           <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
         </div>
-        
-        <table class="table table-hover">
-            <thead>
-              <tr class="table-primary">
-                <th>Date facture</th>
-                <th>Client concerné</th>
-                <th>Montant facture </th>
-                <th>Montant du</th>
-                <th>Moyen de paiement</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr  v-for="(vente, i) in ventes" :key="i">
-                <td>{{vente.date_sell}}</td>
-                <td>{{vente.client.name}}</td>
-                <td>{{vente.amount}}</td>
-                <td>{{vente.rest}}</td>
-                <td>{{vente.payment}}</td>
-                <td><div class="action" v-for="(user, i) in users" :key="i">
-                      <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
-                      <div class="cursor-pointer" @click.prevent="print(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
-                      <NuxtLink :to="'/ventes/'+vente.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
-                      <div class="cursor-pointer" @click.prevent="deleteVente(vente.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                      <div class="cursor-pointer" @click.prevent="generateOtherpdf(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-warning" aria-hidden="true"></i></div>
-                    </div>
-                </td>
-              </tr>
-            </tbody>
+        <div v-if="this.element_search != ''">
+          <table class="table table-hover">
+              <thead>
+                <tr class="table-primary">
+                  <th>Date facture</th>
+                  <th>Client concerné</th>
+                  <th>Montant facture </th>
+                  <th>Montant du</th>
+                  <th>Moyen de paiement</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  v-for="(result, i) in results" :key="i">
+                  <td>{{result.date_sell}}</td>
+                  <td>{{result.client.name}}</td>
+                  <td>{{result.amount}}</td>
+                  <td>{{result.rest}}</td>
+                  <td>{{result.payment}}</td>
+                  <td><div class="action" v-for="(user, i) in users" :key="i">
+                        <NuxtLink :to="'/ventes/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
+                        <div class="cursor-pointer" @click.prevent="print(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
+                        <NuxtLink :to="'/ventes/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
+                        <div class="cursor-pointer" @click.prevent="deleteVente(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                        <div class="cursor-pointer" @click.prevent="generateOtherpdf(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-warning" aria-hidden="true"></i></div>
+                      </div>
+                  </td>
+                </tr>
+              </tbody>
           </table> 
-      <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
+        <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
+        </div>
+        <div v-if="this.element_search == ''">
+          <table class="table table-hover">
+              <thead>
+                <tr class="table-primary">
+                  <th>Date facture</th>
+                  <th>Client concerné</th>
+                  <th>Montant facture </th>
+                  <th>Montant du</th>
+                  <th>Moyen de paiement</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  v-for="(vente, i) in ventes" :key="i">
+                  <td>{{vente.date_sell}}</td>
+                  <td>{{vente.client.name}}</td>
+                  <td>{{vente.amount}}</td>
+                  <td>{{vente.rest}}</td>
+                  <td>{{vente.payment}}</td>
+                  <td><div class="action" v-for="(user, i) in users" :key="i">
+                        <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
+                        <div class="cursor-pointer" @click.prevent="print(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
+                        <NuxtLink :to="'/ventes/'+vente.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
+                        <div class="cursor-pointer" @click.prevent="deleteVente(vente.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                        <div class="cursor-pointer" @click.prevent="generateOtherpdf(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-warning" aria-hidden="true"></i></div>
+                      </div>
+                  </td>
+                </tr>
+              </tbody>
+          </table> 
+        <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
+        </div>
           <br><br> 
           <nav aria-label="Page navigation example "  class="d-flex" v-if="res_data != null">
             <ul class="pagination">
@@ -235,6 +268,7 @@
           .then(response => {
             // console.log(response.data);
           this.results = response.data.data.data 
+          this.total = response.data.data.total
           
           })
         },

@@ -6,20 +6,35 @@
     </nav>
 
     <div class="app-main__outer p-5">
-        <h4>Modifier les informations de ce client</h4>
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+            {{error}}
+        </div>
+        <h4>Modifier les informations de ce client</h4><hr>
         <form action="">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-6 ">
                 <label class="title">Entrer le nom du client</label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
             </div>
-            <div class="form-group col-md-6">
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.name">
+                {{errors.name}}
+            </div>
+
+            <div class="form-group col-md-6 ">
                 <label class="title">Entrer le numero de téléphone du client</label>
                 <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
+                {{errors.phone}}
+            </div>
+
             <div class="form-group col-md-6">
                 <label class="title">Entrer l'email du client</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.email">
+                {{errors.email}}
+            </div>
+
             <div class="form-group col-md-6">
                 <div class="form-group ">
                 <label class="title">Nature du client</label>
@@ -30,8 +45,11 @@
                 </select>
                 </div>
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.nature">
+                {{errors.nature}}
+            </div>
 
-            <button type="submit" class="btn btn-success" v-on:click.prevent="submit()">Modifier</button>
+            <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer le client</button>
         </form>
     </div>
       
@@ -61,8 +79,8 @@ export default {
                 nature:'',
                 compagnie_id: '',
             },
-            error_message: "",
-            error_champ: [],
+            error:null,
+            errors: []
         }
         },
     mounted() {
