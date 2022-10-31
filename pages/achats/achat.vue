@@ -6,14 +6,12 @@
       <Userinfo />
     </nav>
 
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
-      <!-- <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
-      <div class="error" v-if="errors['supplier_id'] != null">{{errors['supplier_id']}}</div>
-      <div class="error" v-if="errors['date_buy'] != null">{{errors['date_buy']}}</div> -->
-    </div>
+    
 
     <div class="app-main__outer p-5">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+            {{error}} <br>
+        </div>
             <h4>Enregistrer un achat</h4><hr>
             <form action="" method="POST">
                 <div class="cadre-haut">             
@@ -24,7 +22,10 @@
                             <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                                 {{fournisseur.name}}
                             </option>                           
-                        </select>          
+                        </select>      
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.supplier_id">
+                        {{errors.supplier_id}}
+                        </div>    
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
                         </button>                
@@ -68,7 +69,10 @@
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger " aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
-                    </table>     
+                    </table>  
+                    <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.amount">
+                        Veuillez ajouter une ligne d'achat
+                    </div>   
                 </div><br>
                 
                 <div class="d-flex">

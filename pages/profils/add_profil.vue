@@ -5,31 +5,37 @@
       <Userinfo />
     </nav>
 
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
-      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
-      <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
-      <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-      <!-- <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
-      <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div> -->
-      <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div>
-    </div>
 
     <div class="app-main__outer p-5">
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}}
+    </div>
         <h4>Enregistrer un nouvel utilsateur</h4>
         <form action="">
             <div class="form-group ">
                 <label class="title">Entrer le nom de l'utilisateur</label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.name">
+                {{errors.name}}
+            </div>
+            
             <div class="form-group ">
                 <label class="title">Entrer le numero de téléphone de l'utilisateur</label>
                 <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
+                {{errors.phone}}
+            </div>
+
             <div class="form-group">
                 <label class="title">Entrer l'email de l'utilsateur</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.email">
+                {{errors.email}}
+            </div>
+
             <div class="form-group ">
                 <label class="title">Fonction de l'utilisateur</label>
                 <select class="form-control" v-model="form.role" required>
@@ -38,6 +44,9 @@
                     <option value="comptable">Comptable</option>
                     <option value="cashier">Caissier</option>
                 </select>
+            </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.role">
+                {{errors.role}}
             </div>
             <div class="form-group d-flex">
                 <div class="form-check mx-3">
@@ -63,6 +72,9 @@
             <div class="form-group">
                  <label class="title">Entrer le pays de l'utilsateur</label>
                 <input type="text" class="form-control" v-model="form.country" autocomplete="off" required  placeholder="Benin" >
+            </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.country">
+                {{errors.country}}
             </div><br><br>
 
             <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer cet utilisateur</button>

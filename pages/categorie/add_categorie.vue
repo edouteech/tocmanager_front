@@ -5,25 +5,30 @@
       <Userinfo />
     </nav>
 
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
-      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
-      <div class="error" v-if="errors['parent_id'] != null">{{errors['parent_id']}}</div>
-    </div>
 
     <div class="app-main__outer p-5">
-         <h4>Enregistrer une nouvelle catégorie de produit</h4>
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      {{error}}
+    </div>
+         <h4>Enregistrer une nouvelle catégorie de produit</h4><hr>
        <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le nom de la catégorie </label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Pillules">
             </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.name">
+                {{errors.name}}
+            </div>
+
             <div class="form-group col-md-6">
                 <label class="title">Catégorie parente</label>
                 <select class="form-control" v-model="form.parent_id" required>
                     <option  value="">Choisissez...</option>
                     <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
                 </select>
+            </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.parent_id">
+                {{errors.parent_id}}
             </div>
 
             <button type="submit" class="btn btn-primary" @click.prevent="submit()">Enregistrer la catégorie</button>

@@ -5,19 +5,20 @@
       <User_info />
     </nav>
 
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
-      <div class="error" v-if="errors['montant'] != null">{{errors['montant']}}</div>
-      <div class="error" v-if="errors['date'] != null">{{errors['date']}}</div>
-      <div class="error" v-if="errors['client_id'] != null">{{errors['client_id']}}</div>
-    </div>
+
 
     <div class="app-main__outer p-5">
-        <h4>Enregistrer un encaissement</h4>
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+             {{error}}
+        </div>
+        <h4>Enregistrer un encaissement</h4><hr>
         <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le montant</label>
                 <input type="number" class="form-control" v-model="form.montant" autocomplete="off" required placeholder="10000">
+            </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.montant">
+                {{errors.montant}}
             </div>
             <!-- <div class="input-form">       
                 <input type="number" placeholder="Entrer le montant " v-model="form.facture" autocomplete="off" required> -->
@@ -38,6 +39,9 @@
                     <option v-for="(client, i) in clients" :key="i" :value="client.id">{{client.name}}</option>
                 </select>
                 </div>
+            </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.client_id">
+                {{errors.client_id}}
             </div>
            <button type="submit" class="btn btn-primary" @click.prevent="submit()">Enregistrer</button>
         </form>

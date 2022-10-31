@@ -5,14 +5,12 @@
       <Userinfo />
     </nav>
 
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
-      <!-- <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div> -->
-      <!-- <div class="error" v-if="errors['client_id'] != null">{{errors['client_id']}}</div>
-      <div class="error" v-if="errors['date_sell'] != null">{{errors['date_sell']}}</div> -->
-    </div>
+    
   
     <div class="app-main__outer p-5">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+            {{error}} 
+        </div>
             <h4>Enregistrer une vente </h4><hr>
             <form action="" method="POST">
                 <div class="cadre-haut">             
@@ -22,7 +20,10 @@
                             <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
                                 {{client.name}}
                             </option>                           
-                        </select>          
+                        </select>   
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+                            {{errors.client_id}} 
+                        </div>       
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
                         </button>                
@@ -69,7 +70,10 @@
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
-                    </table>     
+                    </table>   
+                    <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.amount">
+                        Veuillez ajouter une ligne de vente
+                    </div>  
                 </div><br>
                 <div class="d-flex">
                     <div class="form-group1 col-md-5"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>

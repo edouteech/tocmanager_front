@@ -4,9 +4,7 @@
   <!-- <div class="alert alert-success justify-content-center" role="alert">
       {{this.params.errors}}
   </div> -->
-  <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}}
-  </div>
+
   <br><br>
     
   <h2 class="text px-4">Connectez vous</h2>
@@ -18,6 +16,9 @@
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form>
+          <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+            {{error}}
+        </div>
           <div class="divider d-flex align-items-center my-4">
             <p class="text-center fw-bold mx-3 mb-0">Connexion</p>
           </div>
@@ -76,7 +77,9 @@ export default {
       form: {
         email: '' ,
         password: ''
-      }
+      },
+      errors:[]
+
     }
   },
   methods: {
@@ -133,10 +136,12 @@ export default {
                 let response = await this.$auth.loginWith('local', { data: this.form })
                 console.log(response);
                 this.error = response.data.message
+                this.errors = response.data.data
                 console.log(this.error)
                 this.$auth.$storage.setUniversal('user_id', response.data.data.original.user.id)
                 this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
                 this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
+                this.$auth.$storage.setUniversal('email', this.form.email)
                 let role = response.data.data.original.roles[0].name
                 this.$auth.setUserToken(response.data.data.original.access_token)
                
