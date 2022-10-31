@@ -7,8 +7,17 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des achats éffectués</h4><hr><br>
-      <NuxtLink  to="/achats/achat" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvel achat</span></button></NuxtLink>
-        <table class="table table-hover">
+      <div class="d-flex">
+          <div class="col-md-10">
+            <form class="d-flex col-md-7" role="search">
+              <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+            </form>
+          </div>
+          <NuxtLink  to="/achats/achat" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvel achat</span></button></NuxtLink>
+      </div>
+      
+      <table class="table table-hover">
           <thead>
             <tr class="table-primary">
                   <th>Date facture</th>
@@ -95,7 +104,9 @@ export default {
             nombre: '',
         },
         key: '',
-        showModalDelete: false
+        showModalDelete: false,
+        element_search: "",
+        results: "",
       }
     },
     methods: {

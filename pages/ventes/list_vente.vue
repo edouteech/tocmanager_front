@@ -7,7 +7,16 @@
   
       <div class="app-main__outer p-5">
         <h4>Liste des ventes effectuées</h4><hr><br>
-        <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
+        <div class="d-flex">
+          <div class="col-md-10">
+            <form class="d-flex col-md-7" role="search">
+              <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+            </form>
+          </div>
+          <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
+        </div>
+        
         <table class="table table-hover">
             <thead>
               <tr class="table-primary">
@@ -211,10 +220,24 @@
           qrcode: null,
           qr_info: null,
           key: '',
-          showModalDelete: false 
+          showModalDelete: false,
+          element_search: "",
+          results: "",
         }
       },
       methods: {
+        search(){
+          this.$axios.get('/suppliers',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            search: this.element_search
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+          this.results = response.data.data.data 
+          
+          })
+        },
           deleteVente(id){
             this.showModalDelete = true
             this.key = id    

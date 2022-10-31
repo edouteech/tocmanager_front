@@ -7,8 +7,17 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des utilisateurs enregistrés</h4><hr><br><br>
-      <NuxtLink  to="/profils/add_profil" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
-        <table class="table table-hover">
+      <div class="d-flex">
+          <div class="col-md-10">
+            <form class="d-flex col-md-7" role="search">
+              <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+            </form>
+          </div>
+          <NuxtLink  to="/profils/add_profil" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
+      </div>
+      
+      <table class="table table-hover">
           <thead>
             <tr class="table-primary">
                   <th>Noms</th>
@@ -84,6 +93,7 @@ export default {
 
     data () {
         return {
+          element_search: '',
           links: [],
           res_data: null,
           showModal: false,
@@ -104,7 +114,8 @@ export default {
               nombre: '',
           },
           key: "",
-          showModalDelete: false
+          showModalDelete: false,
+          results: ''
         }
       },
 
@@ -119,10 +130,23 @@ export default {
           this.showModalDelete = true
             this.key = id    
                   
-         },
+        },
 
         setMessage(){
           this.refresh()
+        },
+
+        search(){
+          this.$axios.get('/users',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            search: this.element_search
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+          this.results = response.data.data.data 
+          
+          })
         },
         
         refresh(page=1){

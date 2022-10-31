@@ -35,7 +35,7 @@
             </tr>
           </thead>
           <tbody>
-           <tr  v-for="(result, j) in results" :key="j" @click="voirFournisseur(result.id)">
+           <tr  v-for="(result, j) in results" :key="j">
               <td>{{result.name}}</td>
               <td>{{result.phone}}</td>
               <td>{{result.email}}</td>
@@ -65,7 +65,7 @@
             </thead>
           
             <tbody>
-              <tr  v-for="(fournisseur, i) in fournisseurs" :key="i" @click="voirFournisseur(fournisseur.id)">
+              <tr  v-for="(fournisseur, i) in fournisseurs" :key="i">
                 <td>{{fournisseur.name}}</td>
                 <td>{{fournisseur.phone}}</td>
                 <td>{{fournisseur.email}}</td>
