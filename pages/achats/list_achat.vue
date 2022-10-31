@@ -16,7 +16,38 @@
           </div>
           <NuxtLink  to="/achats/achat" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvel achat</span></button></NuxtLink>
       </div>
-      
+      <div v-if="this.element_search != ''">
+          <table class="table table-hover">
+              <thead>
+                <tr class="table-primary">
+                  <th>Date facture</th>
+                  <th>Fournisseur concerné</th>
+                  <th>Montant facture </th>
+                  <th>Montant restant à payer </th>
+                  <!-- <th>Moyen de paiement</th> -->
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  v-for="(result, i) in results" :key="i">
+                  <td>{{result.date_buy}}</td>
+                  <td>{{result.supplier.name}}</td>
+                  <td>{{result.amount}}</td>
+                  <td>{{result.rest}}</td>
+                  <!-- <td>{{result.payment}}</td> -->
+                  <td><div class="action" v-for="(user, i) in users" :key="i">
+                    <NuxtLink :to="'/achats/voir/'+result.id"  v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
+                    <NuxtLink :to="'/achats/'+result.id"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                    <div @click="deleteAchat(result.id)"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+          </table> 
+        <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
+      </div>
+
+      <div v-if="this.element_search == ''">
       <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -42,7 +73,8 @@
             </tr>
           </tbody>
         </table>
-    <p class="text-center"><strong>{{total}} factures au total </strong></p><hr class="text-primary">
+        <p class="text-center"><strong>{{total}} factures au total </strong></p><hr class="text-primary">
+      </div>
         <br><br>  
         <nav aria-label="Page navigation example "  class="d-flex" v-if="res_data != null">
           <ul class="pagination">
@@ -110,6 +142,20 @@ export default {
       }
     },
     methods: {
+        search(){
+          this.$axios.get('/buys',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            search: this.element_search
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+          this.results = response.data.data.data 
+          this.total = response.data.data.total
+          
+          })
+        },
+
         deleteAchat(id){
           this.showModalDelete = true
             this.key = id    
