@@ -75,10 +75,12 @@ export default {
             },
             errors: [],
             error: null,
+            user:''
         }
     },
 
     mounted(){
+      this.user = localStorage.getItem('auth.user_id')
         this.$axios.get('/clients',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
@@ -93,10 +95,10 @@ export default {
               montant: this.form.montant,
               date: this.form.date,
               client_id: this.form.client_id,
-              user_id: this.$auth.user.id,
+              user_id: this.user,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
-                console.log( response ) 
+                // console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
 

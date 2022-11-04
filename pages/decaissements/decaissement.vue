@@ -75,15 +75,18 @@ export default {
             },
             errors: [],
             error: null,
+            user:''
         }
     },
 
     mounted(){
+      this.user = localStorage.getItem('auth.user_id')
         this.$axios.get('/suppliers',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           })
-        .then(response => {console.log(response.data.data.data);
+        .then(response => {
+            // console.log(response.data.data.data);
         this.fournisseurs = response.data.data.data })
     },
 
@@ -93,10 +96,10 @@ export default {
               montant: this.form.montant,
               date: this.form.date,
               supplier_id: this.form.supplier_id,
-              user_id: this.$auth.user.id,
+              user_id: this.user,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
-               console.log( response ) 
+            //    console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
 

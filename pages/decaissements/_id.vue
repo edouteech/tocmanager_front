@@ -79,7 +79,7 @@ export default {
             }
           })
          .then(response => {
-            console.log(response.data.data[0] )
+            // console.log(response.data.data[0] )
             let decaissement = response.data.data[0];
             // this.clients = response.data.data
             this.form.montant = decaissement.montant,
@@ -101,10 +101,12 @@ export default {
             facture: this.form.facture,
             supplier_id: this.form.supplier_id,
             user_id: this.$auth.user.id,
+            buy_id: this.buy_id,
            compagnie_id: this.$auth.$storage.getUniversal('company_id')
 
             })
-            .then(response =>{console.log(response.data.data);
+            .then(response =>{
+                // console.log(response.data.data);
                 this.$router.push({
                   path:'/decaissements/list_decaissement',})
             })          
@@ -115,7 +117,8 @@ export default {
                 params: {
                     compagnie_id: this.$auth.$storage.getUniversal('company_id')
                 }
-            }).then(response => {console.log(response.data.data.data);
+            }).then(response => {
+                // console.log(response.data.data.data);
             this.fournisseurs = response.data.data.data })
         },
             

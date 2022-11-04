@@ -75,7 +75,8 @@ export default {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
           })
-         .then(response => {console.log(response.data.data[0] )
+         .then(response => {
+            // console.log(response.data.data[0] )
             let encaissement = response.data.data[0];
             // this.clients = response.data.data
             this.form.montant = encaissement.montant,
@@ -100,7 +101,8 @@ export default {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
 
             })
-            .then(response =>{console.log(response)
+            .then(response =>{
+                // console.log(response)
                 this.$router.push({
                   path:'/encaissements/list_encaissement',})
             })          
@@ -111,7 +113,8 @@ export default {
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
             })
-            .then(response => {console.log(response.data.data.data);
+            .then(response => {
+                // console.log(response.data.data.data);
             this.clients = response.data.data.data })
         },
         
