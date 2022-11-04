@@ -48,11 +48,17 @@
                     <div class="input-field"><input type="tel" class="form-control form-control-lg" v-model="form.phone" required
                         placeholder="Entrer votre numéro de téléphone" /></div>      
                 </div>
+
                 <div class="form-outline mb-4">
-                    <span class="fa fa-globe px-2"></span><label class="form-label">Pays</label>
-                    <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.country" required
-                        placeholder="Entrer le nom de votre pays" /></div>      
+                  <span class="fa fa-globe px-2"></span><label class="title">Pays</label>
+                  <div class="input-field">   
+                    <select class="form-control" v-model="form.country" required>
+                        <option  value="">Choisissez...</option>
+                        <option v-for="(countrie, i) in countries" :key="i" :value="countrie.name">{{countrie.name}}</option>
+                    </select>  
+                  </div> 
                 </div>
+
                 <div class="form-outline mb-4">
                   <span class="fa fa-university px-2"></span><label class="form-label">Ville</label>
                   <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.city" required
@@ -108,18 +114,25 @@ export default {
             country: '',
             role: '',
             city:'',
-            address:''
-            // compagnie: {
-            //     name: '',
-            // }
+            address:'',
+        },
+        countries: ''
 
-        }
       }
-  },
+   },
 
-  mounted(){
-    // console.log(this.$auth.$state.user[0].id)
-    this.$axios.get('users/'+ this.$auth.$state.user[0].id,{params: {
+    mounted(){
+        this.recup()
+        this.$axios.get("/countries")
+        .then(response =>{ console.log(response);
+        this.countries = response.data.data
+        })
+    },
+        
+  methods: { 
+
+        recup(){
+          this.$axios.get('users/'+ this.$auth.$state.user[0].id,{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')}   
           }).then(response => {
             console.log(response.data.data[0]);
@@ -135,8 +148,8 @@ export default {
             //  this.identifiant8 = response.data.data[0].droits_delete   
     
             }) 
-  },
-  methods: { 
+        },
+
         submit(){              
             this.$axios.put('/users/' +this.$auth.$state.user[0].id,{
             id: this.$auth.$state.user[0].id,

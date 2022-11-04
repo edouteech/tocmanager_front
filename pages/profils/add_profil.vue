@@ -70,8 +70,13 @@
                 
             </div><br>
             <div class="form-group">
-                 <label class="title">Entrer le pays de l'utilsateur</label>
-                <input type="text" class="form-control" v-model="form.country" autocomplete="off" required  placeholder="Benin" >
+              <label class="title">Pays</label>
+              <!-- <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.country" required
+                placeholder="Entrer le nom de votre pays" /></div>    -->
+                <select class="form-control" v-model="form.country" required>
+                    <option  value="">Choisissez...</option>
+                    <option v-for="(countrie, i) in countries" :key="i" :value="countrie.name">{{countrie.name}}</option>
+                </select>   
             </div>
             <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.country">
                 {{errors.country}}
@@ -110,7 +115,15 @@ export default {
             },
             errors: [],
             error: null,
+            countries: ''
         }
+    },
+
+    mounted(){
+        this.$axios.get("/countries")
+        .then(response =>{ console.log(response);
+        this.countries = response.data.data
+    })
     },
 
     methods: {

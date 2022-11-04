@@ -64,6 +64,9 @@
       </div>
     </div>
   </div>
+  
+<modalEmail :identifiant= 'key' v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/>  
+
 </div>
 </template>
 
@@ -74,6 +77,8 @@ export default {
   data() {
     return {
       error: null,
+      showModal: false,
+      key: '',
       form: {
         email: '' ,
         password: ''
@@ -94,6 +99,10 @@ export default {
             pwd.setAttribute("type","password");
             fa.class="fa fa-eye-slash px-2"
         }
+      },
+
+      emailVerify(){
+          this.showModal = true
       },
       
 

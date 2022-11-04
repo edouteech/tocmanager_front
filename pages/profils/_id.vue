@@ -76,15 +76,27 @@ export default {
                 compagnie_id: '',
             },
             error_message: "",
-            error_champ: [],
+            error_champ: [], 
+            countries: ''
         }
-        },
-    mounted() {
-        this.$axios.get('/users/'+ this.$route.params.id,{
+    },
+
+    mounted(){
+        this.recup()
+        this.$axios.get("/countries")
+        .then(response =>{ console.log(response);
+        this.countries = response.data.data
+        })
+    },
+        
+
+    methods: {
+        recup(){
+            this.$axios.get('/users/'+ this.$route.params.id,{
             params: {
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
-          }) .then(response => {
+            }) .then(response => {
             // console.log(response.data.data[0] )
             let user = response.data.data[0];
             this.form.name = user.name,
@@ -95,11 +107,7 @@ export default {
             
           }      
         )
-            
-    },
-        
-
-    methods: {
+        },
 
         submit(){   
             console.log(this.form.supprimer)       
