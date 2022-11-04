@@ -149,7 +149,7 @@ export default {
           }
           })
           .then(response => {
-            // console.log(response.data);
+            console.log(response);
           this.results = response.data.data.data 
           this.total = response.data.data.total
           

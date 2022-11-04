@@ -54,10 +54,10 @@
             <div class="row mb-5">
                 <div class="col-md-6 col-xl-3">
                     <div class="card mb-3 widget-content bg-midnight-bloom">
-                        <div class="widget-content-wrapper text-white p-4">
+                        <div class="widget-content-wrapper text-white p-2">
                             <div class="widget-content-left">
-                                <div class="widget-heading">Chiffre <br> d'affaire</div>
-                                <div class="widget-subheading">Total <br>des <br> transactions</div>
+                                <div class="widget-heading">Chiffre d'affaire</div>
+                                <div class="widget-subheading">Total des <br> transactions</div>
                             </div>
                             <div class="widget-content-right">
                                 <div class="widget-numbers text-white"><span>{{chiffre_affaire}} F</span></div>
@@ -67,10 +67,10 @@
                 </div>
                 <div class="col-md-6 col-xl-3">
                     <div class="card mb-3 widget-content bg-arielle-smile">
-                        <div class="widget-content-wrapper text-white p-4">
+                        <div class="widget-content-wrapper text-white p-2">
                             <div class="widget-content-left">
                                 <div class="widget-heading">Encaissements</div>
-                                <div class="widget-subheading">Somme <br> totale des <br> encaissements</div>
+                                <div class="widget-subheading">Somme totale<br>  des encaissements</div>
                             </div>
                             <div class="widget-content-right">
                                 <div class="widget-numbers text-white"><span>{{encaissement}} F</span></div>
@@ -80,10 +80,10 @@
                 </div>
                 <div class="col-md-6 col-xl-3">
                     <div class="card mb-3 widget-content bg-grow-early">
-                        <div class="widget-content-wrapper text-white p-4">
+                        <div class="widget-content-wrapper text-white p-2">
                             <div class="widget-content-left">
                                 <div class="widget-heading">Décaissements</div>
-                                <div class="widget-subheading">Somme <br> totale des <br> décaissements</div>
+                                <div class="widget-subheading">Somme totale<br> des décaissements</div>
                             </div>
                             <div class="widget-content-right">
                                 <div class="widget-numbers text-white"><span>{{decaissement}} F</span></div>
@@ -94,10 +94,10 @@
                 <div class="col-md-6 col-xl-3">
                     <div class="card mb-3 widget-content bg-dark">
                         <div class="widget-content-outer">
-                            <div class="widget-content-wrapper text-white p-4">
+                            <div class="widget-content-wrapper text-white p-2">
                                 <div class="widget-content-left">
                                     <div class="widget-heading">Volume des ventes</div>
-                                    <div class="widget-subheading">Somme <br> des quantités <br> de vente</div>
+                                    <div class="widget-subheading">Somme des quantités <br> de vente</div>
                                 </div>
                                 <div class="widget-content-right">
                                     <div class="widget-numbers text-warning">{{volume_vente}}</div>
@@ -218,7 +218,7 @@
                         <div class="tab-content">
                             <div class="tab-pane fade active show" id="tab-eg-55">
                                 <div class="widget-chart p-3">
-                                    <div style="height: 500px">
+                                    <div style="height: 700px">
                                         <canvas id="myChartVente"></canvas>
                                     </div>
                                 </div>

@@ -55,8 +55,12 @@
             </div>
             <div class="form-outline mb-4">
               <span class="fa fa-globe px-2"></span><label class="form-label">Pays</label>
-              <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.country" required
-                placeholder="Entrer le nom de votre pays" /></div>      
+              <!-- <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.country" required
+                placeholder="Entrer le nom de votre pays" /></div>    -->
+                <select class="form-control" v-model="form.country" required>
+                    <option  value="">Choisissez...</option>
+                    <option v-for="(countrie, i) in countries" :key="i" :value="countrie.countrie">{{countrie.countrie}}</option>
+                </select>   
             </div>
 
             <div class="form-outline mb-4">
@@ -98,14 +102,22 @@ export default {
         country: '',
         compagnie: {
           name: '',
-        }
+        },
 
-      }
+      },
+      countries:''
     }
   },
 
   mounted(){
-      console.log(this.form.compagnie)
+      // console.log(this.form.compagnie)
+      
+      fetch("js/countries.json")
+    .then(response => response.json())
+    .then(pays => {
+      console.log(pays)
+      this.countries = pays
+    })
   },
 
   methods:{
