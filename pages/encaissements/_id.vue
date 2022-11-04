@@ -7,7 +7,10 @@
 
     <div class="app-main__outer p-5">
         <h4>Modifier les informations de cet encaissement</h4>
-                     <form action="">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+             {{error}}
+        </div>
+        <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le montant</label>
                 <input type="number" class="form-control" v-model="form.montant" autocomplete="off" required placeholder="10000">
@@ -63,7 +66,7 @@ export default {
                 facture:'',
                 // compagnie_id: '',
             },
-            error_message: "",
+            error: null,
             error_champ: [],
             sell_id: ''
         }
@@ -102,9 +105,15 @@ export default {
 
             })
             .then(response =>{
-                // console.log(response)
+                console.log(response)
+                
+                if(response.data.status ='success'){
                 this.$router.push({
-                  path:'/encaissements/list_encaissement',})
+                  path:'/encaissements/list_encaissement',})   
+                }
+                else{
+                    this.error = response.data.message
+                }
             })          
         },
 

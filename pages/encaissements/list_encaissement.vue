@@ -218,7 +218,7 @@ export default {
                   per_page : this.form.nombre }   
           }).then(response => 
           {
-            console.log(response);
+            // console.log(response);
             this.encaissements = response.data.data.data
             this.res_data= response.data.data
             this.total = response.data.data.total

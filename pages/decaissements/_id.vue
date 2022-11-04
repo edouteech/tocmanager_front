@@ -7,6 +7,9 @@
 
     <div class="app-main__outer p-5">
         <h4>Modifier les informations de ce décaissement</h4>
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+             {{error}}
+        </div>
         <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le montant</label>
@@ -66,8 +69,8 @@ export default {
                 facture:'',
                 // compagnie_id: '',
             },
-            error_message: "",
-            error_champ: [],
+            error: null,
+            errors: [],
             buy_id: ''
         }
         },
@@ -106,9 +109,15 @@ export default {
 
             })
             .then(response =>{
-                // console.log(response.data.data);
-                this.$router.push({
-                  path:'/decaissements/list_decaissement',})
+                console.log(response.data);
+                if(response.data.status ='success'){
+                    this.$router.push({
+                    path:'/decaissements/list_decaissement',})
+
+                }
+                else{
+                    this.error = response.data.message
+                }
             })          
         },
 
