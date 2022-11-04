@@ -62,9 +62,10 @@
               <td>{{encaissement.montant}}</td>
               <td>{{encaissement.client.name}}</td>
               <td><div class="action"  v-for="(user, i) in users" :key="i">
-                <div @click="voirEncaissement(encaissement.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/encaissements/'+encaissement.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteEncaissement(encaissement.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  <div @click="voirEncaissement(encaissement.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/encaissements/'+encaissement.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteEncaissement(encaissement.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/ventes/voir/'+encaissement.sell_id" v-b-tooltip.hover title="Accéder à la facture" v-if=" compagny == user.pivot.compagnie_id && encaissement.sell_id" ><i class="fa fa-eye text-success" aria-hidden="true"></i></NuxtLink>
                 </div>
               </td>
             </tr>
@@ -217,7 +218,7 @@ export default {
                   per_page : this.form.nombre }   
           }).then(response => 
           {
-            // console.log(response);
+            console.log(response);
             this.encaissements = response.data.data.data
             this.res_data= response.data.data
             this.total = response.data.data.total
