@@ -39,12 +39,10 @@ export default {
 	// },
 	methods:{
 			async logout(){
-				localStorage.removeItem('auth.ajout');
-				localStorage.removeItem('auth.modifier');
-				localStorage.removeItem('auth.supprimer');
+				localStorage.removeItem('auth.user_id');
 				localStorage.removeItem('auth.company_id');
 				localStorage.removeItem('auth.roles');
-				localStorage.removeItem('auth.role');
+				localStorage.removeItem('auth.email');
 				this.$auth.logout();
 				this.$router.push('/login');
 			},

@@ -205,7 +205,6 @@
                         </div>
                     </div>
                 </div>
-            <div class="row">
                 
                 <div class="col-md-12 col-lg-12">
                     <div class="mb-3 card">
@@ -215,10 +214,10 @@
                                 Courbe évolutive des 07 derniers jours
                             </div>
                         </div>
-                        <div class="tab-content">
+                        <div class="tab-content col-md-12 col-lg-10">
                             <div class="tab-pane fade active show" id="tab-eg-55">
                                 <div class="widget-chart p-3">
-                                    <div style="height: 700px">
+                                    <div style="height: 400px">
                                         <canvas id="myChartVente"></canvas>
                                     </div>
                                 </div>
@@ -226,9 +225,6 @@
                         </div>
                     </div>
                 </div>
-                
-
-            </div>
                 <!-- <div class="col-md-6 col-xl-4">
                     <div class="card mb-3 widget-content">
                         <div class="widget-content-outer">

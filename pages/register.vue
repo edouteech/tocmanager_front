@@ -111,7 +111,8 @@ export default {
 
   mounted(){
     this.$axios.get("/countries")
-    .then(response =>{ console.log(response);
+    .then(response =>{ 
+      // console.log(response);
       this.countries = response.data.data
     })
   },
@@ -126,11 +127,12 @@ export default {
         phone: this.form.phone,
         country: this.form.country,
         compagnie: this.form.compagnie
-      }).then(response =>{console.log(response);
+      }).then(response =>{
+        // console.log(response);
           this.error = response.data.message
-          console.log(this.form.compagnie)
+          // console.log(this.form.compagnie)
            this.errors = response.data.data
-          console.log(this.error)
+          // console.log(this.error)
           this.user = response.data.data.original.user_id;
           this.$router.push({path:'/login'});
           // this.$router.push({

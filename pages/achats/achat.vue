@@ -47,7 +47,7 @@
                                 <th>Désignation</th>
                                 <th>Quantité voulue</th>
                                 <th>Prix unitaire</th>
-                                <!-- <th scope="col">Réduction (Prix ou %)</th> -->
+                                <th scope="col">Réduction (Prix ou %)</th>
                                 <!-- <th>Taxe appliquée (%)</th>  -->
                                 <th> Total</th>                     
                             </tr>
@@ -63,7 +63,7 @@
                                 </td>
                                 <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                                 <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
-                                <!-- <td><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td> -->
+                                <td><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
                                 <!-- <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
                                 <td><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required></td>
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger " aria-hidden="true"></i></td>
@@ -77,7 +77,7 @@
                 
                 <div class="d-flex">
                     <div class="form-group1 col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
-                    <!-- <div class="form-group col-md-6 mx-5">
+                    <div class="form-group col-md-6 mx-5">
                         <div class="form-group ">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
@@ -85,7 +85,7 @@
                             <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
                         </select>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                     {{amount_error}} 
@@ -161,14 +161,15 @@ export default {
                     tax: '0',
                     discount: '0',
                     amount_sent: '0',
-                    buy_lines: []          
+                    buy_lines: [],
+                    payment: 'ESPECES'          
                 },
             errors: [],
             error: null,
             user: '',
             token: '',
             compagny: '',
-            methodes: ''
+            methodes: '',
         }
     },
 
@@ -178,7 +179,7 @@ export default {
       this.compagnie()
       this.refresh()
       this.recupProduct()
-    //   this.payment()
+      this.payment()
     },
     
     methods: {
@@ -225,7 +226,7 @@ export default {
                     user_id: this.user,
                     supplier_id: this.form.supplier_id,  
                     buy_lines: this.form.buy_lines,
-                    // payment: this.form.payment,
+                    payment: this.form.payment,
                     compagnie_id: this.$auth.$storage.getUniversal('company_id')
                     }).then(response =>{ 
                         console.log( response ) 
@@ -279,7 +280,7 @@ export default {
 
         
         reduceChange(index){
-            let line = this.form.sell_lines[index]
+            let line = this.form.buy_lines[index]
             let calculQ = Number(line.price) * Number(line.quantity)
             var str = line.discount;
             var percent = str.indexOf("%"); 
@@ -290,16 +291,16 @@ export default {
                     let Rprix = calculR / 100
                     line.amount = calculQ - Rprix;
                     let sum = 0;
-                    for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount;
+                    for (let j = 0; j < this.form.buy_lines.length; j++) {
+                        sum += this.form.buy_lines[j].amount;
                     }
                     this.form.amount = sum;
                 } 
                 else{
                     line.amount = calculQ - str;
                     let sum = 0;
-                    for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount;
+                    for (let j = 0; j < this.form.buy_lines.length; j++) {
+                        sum += this.form.buy_lines[j].amount;
                     }
                     this.form.amount = sum;
                 }   

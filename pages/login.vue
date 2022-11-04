@@ -71,9 +71,14 @@
 </template>
 
 <script>
+import modalEmail from './modalEmail.vue'
 export default {
   middleware:'auth',
   name: 'login',
+  components: {
+    modalEmail
+  },
+
   data() {
     return {
       error: null,
@@ -83,7 +88,8 @@ export default {
         email: '' ,
         password: ''
       },
-      errors:[]
+      errors:[],
+      role: ''
 
     }
   },
@@ -101,78 +107,84 @@ export default {
         }
       },
 
-      emailVerify(){
-          this.showModal = true
+      setMessage(){
+        this.$router.push( '/login',)
       },
       
 
       async login() {
         if(this.form.password == "00000000"){
-          try {
-                let response = await this.$auth.loginWith('local', { data: this.form })
-                // console.log(response);
-                this.error = response.data.message
-                console.log(this.error)
-                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name)
-                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                this.$auth.$storage.setUniversal('user_id', response.data.data.original.compagnies[0].id)
-                this.$auth.$storage.setUniversal('email', this.form.email)
-                this.$auth.setUserToken(response.data.data.original.access_token)
-                .then(response =>{this.$router.push( '/change_pswd',)
-                })
-                // console.log(this.$state.user.email);
-              } catch (err) {
-                console.log(err);
-              }
-        }else{
-            if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
+            try {
+                  let response = await this.$auth.loginWith('local', { data: this.form })
+                  // this.error = response.data.message
+                  this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name)
+                  this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                  this.$auth.$storage.setUniversal('user_id', response.data.data.original.compagnies[0].id)
+                  this.$auth.$storage.setUniversal('email', this.form.email)
+                  let verification = response.data.data.original.user.email_verified_at
+                  this.$auth.setUserToken(response.data.data.original.access_token)
+                    if(verification == null){
+                      this.showModal = true
+                    }
+                    else{ 
+                      this.$auth.setUserToken(response.data.data.original.access_token)
+                      .then(response =>{this.$router.push( '/change_pswd',)
+                      })                   
+                    }
+                } catch (err) {
+                  console.log(err);
+                }
+        }
+        else{
+              // if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
               try {
                 let response = await this.$auth.loginWith('local', { data: this.form })
-                console.log(response);
                 this.error = response.data.message
-                console.log(this.error)
-                this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name) 
-                this.$auth.setUserToken(response.data.data.original.access_token)    
-                .then(response =>{this.$router.push( '/admin/admin',)
-                })
-              } catch (err) {
-                console.log(err);
-                // this.refresh();
-              }       
-              // }
-            } else {
-              try {
-                let response = await this.$auth.loginWith('local', { data: this.form })
-                console.log(response);
-                this.error = response.data.message
-                this.errors = response.data.data
-                console.log(this.error)
+                // console.log(this.error)
+                let verification = response.data.data.original.user.email_verified_at
                 this.$auth.$storage.setUniversal('user_id', response.data.data.original.user.id)
-                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
                 this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
                 this.$auth.$storage.setUniversal('email', this.form.email)
-                let role = response.data.data.original.roles[0].name
-                this.$auth.setUserToken(response.data.data.original.access_token)
-               
-                .then(response =>{
-                  if(role != 'admin'){
-                    this.$router.push( '/ventes/vente',)
-                  }
-                  else{
-                    this.$router.push( 'dashboard',)
-                    // console.log(this.$auth)
-                  }
-                })
+                this.$auth.setUserToken(response.data.data.original.access_token) 
+                    if(verification == null){
+                      this.showModal = true
+                    } 
+                    else{
+                      // this.$auth.setUserToken(response.data.data.original.access_token)         
+                      //   .then(response =>{
+                          this.role = localStorage.getItem('auth.roles');
+                            if(this.role == 'super_admin'){
+                                this.$auth.setUserToken(response.data.data.original.access_token)         
+                                .then(response =>{
+                                  this.$router.push( '/admin/admin',)
+                                })
+                            }
+                            else if(this.role == 'admin'){
+                              this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                              this.$auth.setUserToken(response.data.data.original.access_token)         
+                                .then(response =>{
+                                  this.$router.push( '/dashboard',)
+                              })
+                            }
+                            else{
+                              this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                              this.$auth.setUserToken(response.data.data.original.access_token)         
+                                .then(response =>{
+                                  this.$router.push( '/ventes/vente',)
+                              })
+                            }
+                          // })
+                    }    
               } catch (err) {
-                console.log(err);
-                // this.refresh();
+                  console.log(err);
+                  // this.refresh();
               }
-            }
-        }
+        }   
+      }
     }   
-  }
-
 }
+
+
 </script>
 
 <style scoped>

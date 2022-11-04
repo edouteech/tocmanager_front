@@ -71,13 +71,13 @@
               nature: this.form.nature,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
-            .then(response =>{console.log(response.data.data) 
+            .then(response =>{
+              // console.log(response.data.data) 
              this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })
-             console.log( response ) 
+            //  console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
                 this.status = response.data.status
-                console.log(this.error)
                 this.errors = response.data.data
                   if(this.status == 'success'){
                     // alert('Nouveau client ajouté avec succès');
@@ -161,7 +161,7 @@ input[type=submit]:hover{
 .modaler {
   text-align: center;
   background-color: white;
-  height: auto;
+  height: 600px;
   width: 600px;
   margin-top: 10%;
   padding: 30px 0;

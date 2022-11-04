@@ -138,7 +138,9 @@
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
           }).then(response =>
-            {console.log(response); this.categories = response.data.data.data })
+            {
+              // console.log(response); 
+              this.categories = response.data.data.data })
         },
 
         group(){

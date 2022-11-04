@@ -103,7 +103,8 @@
               stock_max: this.form.stock_max,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })
-            .then(response =>{console.log(response.data.data) 
+            .then(response =>{
+              // console.log(response.data.data) 
               this.$emit('prod', { nom_prod: this.form.name, prod_id: response.data.data.id, prod_sell: response.data.data.price_sell })
               this.error = response.data.message
               console.log(this.error)

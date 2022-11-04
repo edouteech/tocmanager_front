@@ -132,7 +132,6 @@ export default {
 
     methods: {
         async submit(){
-            console.log(this.form.tax_group)
             await  this.$axios.post('/products',{
               category_id: this.form.category_id,
               name: this.form.name,
@@ -144,7 +143,7 @@ export default {
               stock_max: this.form.stock_max,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{
-                console.log( response ) 
+                // console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
 
