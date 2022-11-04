@@ -79,7 +79,7 @@ export default {
             let encaissement = response.data.data[0];
             // this.clients = response.data.data
             this.form.montant = encaissement.montant,
-            this.form.date = moment(encaissement.date).format("yyyy-MM-D"),
+            this.form.date = moment(encaissement.date).format("yyyy-MM-DD"),
             this.form.facture = encaissement.facture,
             this.form.client_id = encaissement.client_id,
             this.sell_id = encaissement.sell_id

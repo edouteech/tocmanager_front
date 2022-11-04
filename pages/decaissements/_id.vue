@@ -68,18 +68,25 @@ export default {
             },
             error_message: "",
             error_champ: [],
+            buy_id: ''
         }
         },
     mounted() {
         this.refresh()
-        this.$axios.get('/decaissements/'+ this.$route.params.id)
-         .then(response => {console.log(response.data.data[0] )
+        this.$axios.get('/decaissements/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            }
+          })
+         .then(response => {
+            console.log(response.data.data[0] )
             let decaissement = response.data.data[0];
             // this.clients = response.data.data
             this.form.montant = decaissement.montant,
             this.form.date =  moment(decaissement.date).format("YYYY-MM-DD"),
             this.form.facture = decaissement.facture,
-            this.form.supplier_id = decaissement.supplier_id
+            this.form.supplier_id = decaissement.supplier_id,
+            this.buy_id = decaissement.buy_id
             
           }      
         )            
