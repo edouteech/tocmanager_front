@@ -77,8 +77,12 @@ export default {
         let fournisseur = response.data.data[0];
             this.form.name = fournisseur.name,
             this.form.phone = fournisseur.phone,
-            this.form.email = fournisseur.email,
-            this.form.nature = fournisseur.nature
+            this.form.email = fournisseur.email
+            if(fournisseur.nature == "Particulier"){
+                this.form.nature = 0
+            }else{
+                this.form.nature = 1
+            }
         }
         )
             

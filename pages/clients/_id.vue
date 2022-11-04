@@ -94,8 +94,12 @@ export default {
             // this.clients = response.data.data
             this.form.name = client.name,
             this.form.phone = client.phone,
-            this.form.email = client.email,
-            this.form.nature = client.nature
+            this.form.email = client.email
+            if(client.nature == "Particulier"){
+                this.form.nature = 0
+            }else{
+                this.form.nature = 1
+            }
             
           }      
         )

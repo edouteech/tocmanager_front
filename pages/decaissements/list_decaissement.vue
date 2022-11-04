@@ -7,33 +7,71 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des décaissements</h4><hr><br><br>
-      <NuxtLink  to="/decaissements/decaissement" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Remplir décaissement</span></button></NuxtLink>
-        <table class="table table-hover">
-          <thead>
-            <tr class="table-primary">
-                  <th>Dates de décaissement</th>
-                  <th>Montants</th>
-                  <th>Fournisseurs concernés</th>
-                  <th>Actions</th>
-              </tr>
-          </thead>
+        <div class="d-flex">
+          <div class="col-md-10">
+            <form class="d-flex col-md-7" role="search">
+              <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+            </form>
+          </div>
+          <NuxtLink  to="/decaissements/decaissement" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Remplir décaissement</span></button></NuxtLink>
+        </div>       
         
-          <tbody>
-            <tr  v-for="(decaissement, i) in decaissements" :key="i">
-              <td>{{decaissement.date}}</td>
-              <td>{{decaissement.montant}}</td>
-              <td>{{decaissement.supplier.name}}</td>
-              <td><div class="action"  v-for="(user, i) in users" :key="i">
-                <div @click="voirDecaissement(decaissement.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/decaissements/'+decaissement.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteDecaissement(decaissement.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="text-center"><strong>{{total}} décaissement(s) au total </strong></p><hr class="text-primary">
-        <br><br> 
+        <div v-if="this.element_search != ''">
+          <table class="table table-hover">
+            <thead>
+              <tr class="table-primary">
+                    <th>Dates de décaissement</th>
+                    <th>Montants</th>
+                    <th>Fournisseurs concernés</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+          
+            <tbody>
+              <tr  v-for="(result, i) in results" :key="i">
+                <td>{{result.date}}</td>
+                <td>{{result.montant}}</td>
+                <td>{{result.supplier.name}}</td>
+                <td><div class="action"  v-for="(user, i) in users" :key="i">
+                  <div @click="voirDecaissement(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/decaissements/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteDecaissement(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="text-center"><strong>{{total}} décaissement(s) au total </strong></p><hr class="text-primary">
+        </div>
+        
+        <div v-if="this.element_search == ''">
+          <table class="table table-hover">
+            <thead>
+              <tr class="table-primary">
+                    <th>Dates de décaissement</th>
+                    <th>Montants</th>
+                    <th>Fournisseurs concernés</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+          
+            <tbody>
+              <tr  v-for="(decaissement, i) in decaissements" :key="i">
+                <td>{{decaissement.date}}</td>
+                <td>{{decaissement.montant}}</td>
+                <td>{{decaissement.supplier.name}}</td>
+                <td><div class="action"  v-for="(user, i) in users" :key="i">
+                  <div @click="voirDecaissement(decaissement.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <NuxtLink :to="'/decaissements/'+decaissement.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteDecaissement(decaissement.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="text-center"><strong>{{total}} décaissement(s) au total </strong></p><hr class="text-primary">
+        </div><br><br> 
          <nav aria-label="Page navigation example "  class="d-flex"  v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -95,7 +133,9 @@ export default {
           nombre: '',
         },
         key: '',
-        showModalDelete:false
+        showModalDelete:false,
+        element_search: "",
+        results: "",
       }
     },
 
@@ -106,6 +146,20 @@ export default {
     },
 
     methods: {
+        search(){
+          this.$axios.get('/decaissements',{params: {
+            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            search: this.element_search
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+          this.results = response.data.data.data 
+          this.total = response.data.data.total
+          
+          })
+        },
+
         deleteDecaissement(id){ 
           this.showModalDelete = true
             this.key = id    
