@@ -211,6 +211,7 @@ export default {
 
         refresh(){
             this.$axios.get('/suppliers',{params: {
+                is_paginated: 0,
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }
             }).then(response => {

@@ -72,6 +72,7 @@
         </table>
         <p class="text-center"><strong>{{total}} encaissements au total </strong></p><hr class="text-primary">
       </div><br><br>  
+      <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button><button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button></form><br><br>
         <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -146,6 +147,44 @@ export default {
     },
 
     methods: {
+        submitFile(){
+          // let formData = new FormData();
+          // formData.append('fichier', this.file);
+
+          // this.$axios.post('/encaissements/import',
+          //   formData,
+          //   {
+          //     headers: {
+          //         'Content-Type': 'multipart/form-data'
+          //     },
+          //     params: {
+          //       compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          //     }
+          //   }
+          // ).then(response => {
+          //   console.log(response);
+          //   if(response.data.status == "success"){
+          //     this.refresh()
+                
+          //    }else{
+          //     this.error= "Echec de l'importation. Veuillez réessayer !!!"
+          //    }
+          // })
+        },
+
+        Export(){
+          // this.$axios.get('/"encaissements"',{
+          //     params: {
+          //       export: true,
+          //       compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          //     }
+          //   })
+          //   .then(response =>  {
+          //     console.log(response);
+          //   this.refresh()
+          // })
+         },
+
         search(){
           this.$axios.get('/encaissements',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),

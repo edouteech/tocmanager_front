@@ -138,7 +138,7 @@ export default {
     },
 
     mounted () {
-      this.user == localStorage.getItem('auth.user_id')
+      this.user = localStorage.getItem('auth.user_id')
       this.refresh()
       this.recupProduct()
       this.payment()
@@ -146,7 +146,8 @@ export default {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           })
-          .then(response => {console.log(response.data.data[0] )
+          .then(response => {
+            // console.log(response.data.data[0] )
             let vente = response.data.data[0];
             // this.categories = response.data.data
             this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-DDThh:mm"),
@@ -195,7 +196,7 @@ export default {
               sell_lines: this.form.sell_lines,
               compagnie_id: this.$auth.$storage.getUniversal('company_id')
             }).then(response =>{ 
-                // console.log( response ) 
+                console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
                 if(response.data.status == 'success'){
@@ -211,7 +212,8 @@ export default {
 
         refresh(){
             this.$axios.get('/clients',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                is_paginated: 0,
+                compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response => {
             // console.log(response);

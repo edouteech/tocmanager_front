@@ -65,6 +65,7 @@ export default {
             },
             error_message: "",
             error_champ: [],
+            sell_id: ''
         }
         },
     mounted() {
@@ -78,9 +79,10 @@ export default {
             let encaissement = response.data.data[0];
             // this.clients = response.data.data
             this.form.montant = encaissement.montant,
-            this.form.date = moment(encaissement.date).format("YYYY-MM-D"),
+            this.form.date = moment(encaissement.date).format("yyyy-MM-D"),
             this.form.facture = encaissement.facture,
-            this.form.client_id = encaissement.client_id
+            this.form.client_id = encaissement.client_id,
+            this.sell_id = encaissement.sell_id
             
           }      
         )            
@@ -94,7 +96,8 @@ export default {
             date: this.form.date,
             facture: this.form.facture,
             client_id: this.form.client_id,
-           compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            sell_id: this.sell_id,
+            compagnie_id: this.$auth.$storage.getUniversal('company_id')
 
             })
             .then(response =>{console.log(response)
