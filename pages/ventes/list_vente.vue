@@ -259,6 +259,9 @@
         }
       },
       methods: {
+        // myDateFormat: function(d) {
+        //   return d.getFullYear() + "/" + ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2);
+        // },
         search(){
           this.$axios.get('/sells',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id'),
@@ -515,6 +518,22 @@
   .btn-3 span:hover:after {
     width: 100%;
   }
+
+
+
+@media screen and (max-width: 900px) {
+  table thead tr th {
+    padding: 15px 20px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  table tbody tr td {
+    padding-left: 10px;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+}
+  
   
   </style>
   

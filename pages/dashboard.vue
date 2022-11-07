@@ -330,8 +330,8 @@ export default {
       decaissement: '',
       
       form:{
-        date_debut:  "",
-        date_fin:  "",
+        date_debut: moment().format("YYYY-MM-DDT00:00"),
+        date_fin:  moment().format("YYYY-MM-DDT23:59"),
       }
     }
       

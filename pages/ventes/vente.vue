@@ -15,12 +15,19 @@
             <form action="" method="POST">
                 <div class="cadre-haut">             
                     <div class="ajout-client">                                   
-                        <select class="form-control"  v-model="form.client_id">
+                        <!-- <select class="form-control"  v-model="form.client_id">
                             <option disabled value="">Choisir le client</option>
                             <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
                                 {{client.name}}
                             </option>                           
-                        </select>   
+                        </select>   -->
+                        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Choisir le client...">
+                        <datalist id="datalistOptions">
+                            <select v-model="form.client_id">
+                                <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">{{client.name}}
+                                </option>     
+                            </select> 
+                        </datalist> 
                         <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
                             {{errors.client_id}} 
                         </div>       
