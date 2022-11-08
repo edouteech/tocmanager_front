@@ -37,6 +37,7 @@
               <td v-if="profil.role_name =='admin'">Administrateur</td>
               <td v-else-if="profil.role_name =='comptable'">Comptable</td>
               <td v-else-if="profil.role_name =='cashier'">Caissier</td>
+              <td v-else-if="profil.role_name ==null">----</td>
               <td>{{profil.country}}</td>
               <td><div class="action"  v-for="(user, i) in users" :key="i">
                     <div @click="voirProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>

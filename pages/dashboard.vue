@@ -616,6 +616,7 @@ export default {
     padding: 5%;
 }
 
+
 .range{
   display: flex;
   /* border: 1px solid gainsboro; */
@@ -651,6 +652,16 @@ export default {
 
 .range input{
   width: 45%;
+}
+
+table{
+    font-size: 12px;
+    padding: 15px 20px;
+    white-space: nowrap;
+}
+
+.i{
+    font-size: 13px
 }
 }
 

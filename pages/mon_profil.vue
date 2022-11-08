@@ -45,11 +45,10 @@
 
                 <div class="form-outline mb-4">
                     <span class="fa fa-mobile px-2"></span> <label class="form-label">Téléphone</label>
-                    <div class="input-field"><input type="tel" class="form-control form-control-lg" v-model="form.phone" required
-                        placeholder="Entrer votre numéro de téléphone" /></div>      
+                    <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input>      
                 </div>
 
-                <div class="form-outline mb-4">
+                <!-- <div class="form-outline mb-4">
                   <span class="fa fa-globe px-2"></span><label class="title">Pays</label>
                   <div class="input-field">   
                     <select class="form-control" v-model="form.country" required>
@@ -57,7 +56,7 @@
                         <option v-for="(countrie, i) in countries" :key="i" :value="countrie.name">{{countrie.name}}</option>
                     </select>  
                   </div> 
-                </div>
+                </div> -->
 
                 <div class="form-outline mb-4">
                   <span class="fa fa-university px-2"></span><label class="form-label">Ville</label>
@@ -156,7 +155,7 @@ export default {
             name: this.form.name,
             email: this.form.email,
             phone: this.form.phone,
-            country: this.form.country,
+            // country: this.form.country,
             city: this.form.city,
             address: this.form.address,
             compagnie_id: this.$auth.$storage.getUniversal('company_id')

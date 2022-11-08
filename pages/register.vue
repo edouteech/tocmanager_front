@@ -53,15 +53,13 @@
               <div class="input-field"><vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> </div>     
             </div>
 
-            <div class="form-outline mb-4">
+            <!-- <div class="form-outline mb-4">
               <span class="fa fa-globe px-2"></span><label class="form-label">Pays</label>
-              <!-- <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.country" required
-                placeholder="Entrer le nom de votre pays" /></div>    -->
                 <select class="form-control" v-model="form.country" required>
                     <option  value="">Choisissez...</option>
                     <option v-for="(countrie, i) in countries" :key="i" :value="countrie.name">{{countrie.name}}</option>
                 </select>   
-            </div>
+            </div> -->
 
             <div class="form-outline mb-4">
             <span class="fa fa-briefcase px-2"></span><label class="form-label">Nom de l'entreprise</label>
@@ -99,7 +97,7 @@ export default {
         password: '',
         password_confirmation: '',
         phone: '',
-        country: '',
+        // country: '',
         compagnie: {
           name: '',
         },
@@ -119,14 +117,14 @@ export default {
 
   methods:{
     async register(){
-      // console.log(this.form.phone)
+      console.log(this.form.phone)
       await  this.$axios.post('/register',{
         name: this.form.name,
         email: this.form.email,
         password: this.form.password,
         password_confirmation: this.form.password_confirmation,
         phone: this.form.phone,
-        country: this.form.country,
+        // country: this.form.country,
         compagnie: this.form.compagnie
       }).then(response =>{
         // console.log(response);

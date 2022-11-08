@@ -22,7 +22,7 @@
             
             <div class="form-group ">
                 <label class="title">Entrer le numero de téléphone de l'utilisateur</label>
-                <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
+                <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
             </div>
             <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
                 {{errors.phone}}
@@ -69,15 +69,13 @@
                 </div>
                 
             </div><br>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="title">Pays</label>
-              <!-- <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.country" required
-                placeholder="Entrer le nom de votre pays" /></div>    -->
                 <select class="form-control" v-model="form.country" required>
                     <option  value="">Choisissez...</option>
                     <option v-for="(countrie, i) in countries" :key="i" :value="countrie.name">{{countrie.name}}</option>
                 </select>   
-            </div>
+            </div> -->
             <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.country">
                 {{errors.country}}
             </div><br><br>
@@ -106,7 +104,7 @@ export default {
                 name: '',
                 email: '',
                 phone: '',
-                country: '',
+                // country: '',
                 compagnie_id: '',
                 role: '',
                 ajout: 0,
@@ -133,7 +131,7 @@ export default {
               email: this.form.email,
               phone: this.form.phone,
               role: this.form.role,
-              country: this.form.country,
+            //   country: this.form.country,
               droits_add: this.form.ajout,
               droits_edit: this.form.modifier,
               droits_delete: this.form.supprimer,
