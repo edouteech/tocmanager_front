@@ -35,7 +35,7 @@
               <td v-if="result.parent != null">{{result.parent.name}}</td>
               <td v-else>---</td>
               <td><div class="action" v-for="(user, i) in users" :key="i">
-                <div @click="voirCategorie(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/categorie/voir'+result.id" class="text-black" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
                 <NuxtLink :to="'/categorie/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteCategorie(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
@@ -62,7 +62,7 @@
               <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
               <td v-else>---</td>
               <td><div class="action" v-for="(user, i) in users" :key="i">
-                <div @click="voirCategorie(categorie.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/categorie/voir/'+categorie.id" class="text-black" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
                 <NuxtLink :to="'/categorie/'+categorie.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteCategorie(categorie.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
@@ -94,7 +94,7 @@
           </form>
         </nav>
   </div><br>
- <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' v-show="showModal" @close-modal="showModal = false"/>  
+ <!-- <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' :stock= 'identifiant3' :valorisation= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>   -->
  <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
 </template>
@@ -126,6 +126,8 @@ export default {
         showModal: false,
         identifiant1 : "",
         identifiant2 : "",
+        identifiant3: '',
+        identifiant4: '',
         compagnie_id: ''  ,
         categories: [],
         categorie: "",
@@ -228,23 +230,25 @@ export default {
         },
 
 
-        voirCategorie(id){
-            this.showModal = true;
-            this.$axios.get('/categories/'+ id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-          }).then(response => {
-            // console.log(response.data.data[0]);
-             this.identifiant1 = response.data.data[0].name
-             if(response.data.data[0].parent != null){
-                this.identifiant2 = response.data.data[0].parent.name  
-             }else{
-                this.identifiant2 = "Pas de catégorie parente associée"
-             }
+        // voirCategorie(id){
+        //     this.showModal = true;
+        //     this.$axios.get('/categories/'+ id,{
+        //     params: {
+        //       compagnie_id: this.$auth.$storage.getUniversal('company_id')
+        //     }
+        //   }).then(response => {
+        //     console.log(response.data.data[0]);
+        //      this.identifiant1 = response.data.data[0].name
+        //      this.identifiant3 = response.data.data[0].stock_produit
+        //      this.identifiant4 = response.data.data[0].valorisation
+        //      if(response.data.data[0].parent != null){
+        //         this.identifiant2 = response.data.data[0].parent.name  
+        //      }else{
+        //         this.identifiant2 = "Pas de catégorie parente associée"
+        //      }
              
-             })               
-        },
+        //      })               
+        // },
 
 
         

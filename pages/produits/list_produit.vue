@@ -81,7 +81,8 @@
               <tr  v-for="(produit, i) in produits" :key="i">
                 
                 <td>{{produit.name}}</td>
-                <td>{{produit.category.name}}</td>
+                <td v-if="produit.category != null">{{produit.category.name}}</td>
+                <td v-else>---</td>
                 <td>{{produit.quantity}}</td>
                 <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(produit.id)"></i></div></td>
                 <td>{{produit.price_sell}}</td>
@@ -316,14 +317,20 @@ export default {
             }
           }).then(response => {
             // console.log(response.data.data[0]);
-             this.identifiant1 = response.data.data[0].category.name
              this.identifiant2 = response.data.data[0].name
              this.identifiant3 = response.data.data[0].quantity
              this.identifiant4 = response.data.data[0].price_sell      
              this.identifiant5 = response.data.data[0].price_buy
              this.identifiant6 = response.data.data[0].stock_min
              this.identifiant7 = response.data.data[0].stock_max 
-             this.identifiant8 = response.data.data[0].tax_group     
+             if(response.data.data[0].category|| response.data.data[0].tax_group ){
+              this.identifiant1 = response.data.data[0].category.name
+             this.identifiant8 = response.data.data[0].tax_group 
+             }
+             else{
+              this.identifiant1 = "Pas de catégorie associée"
+              this.identifiant8 = "Relié à aucun groupe"
+             }
             }) 
                
         },

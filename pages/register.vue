@@ -50,9 +50,9 @@
 
             <div class="form-outline mb-4">
               <span class="fa fa-mobile px-2"></span> <label class="form-label">Téléphone</label>
-              <div class="input-field"><input type="tel" class="form-control form-control-lg" v-model="form.phone" required
-                placeholder="Entrer votre numéro de téléphone" /></div>      
+              <div class="input-field"><vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> </div>     
             </div>
+
             <div class="form-outline mb-4">
               <span class="fa fa-globe px-2"></span><label class="form-label">Pays</label>
               <!-- <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.country" required
@@ -119,6 +119,7 @@ export default {
 
   methods:{
     async register(){
+      // console.log(this.form.phone)
       await  this.$axios.post('/register',{
         name: this.form.name,
         email: this.form.email,

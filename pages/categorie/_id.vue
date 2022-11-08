@@ -61,7 +61,7 @@ export default {
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
                 }})
           .then(response => {
-            // console.log(response.data.data[0] )
+            console.log(response.data.data[0] )
             let categorie = response.data.data[0];
             // this.categories = response.data.data
             this.form.name = categorie.name,

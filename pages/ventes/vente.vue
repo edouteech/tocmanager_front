@@ -22,12 +22,12 @@
                             </option>                           
                         </select>   -->
                         <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Choisir le client...">
-                        <datalist id="datalistOptions">
-                            <select v-model="form.client_id">
-                                <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">{{client.name}}
+                        <datalist id="datalistOptions" v-model="form.client_id">
+                            <!-- <select > -->
+                                <option v-for="(client, index) in clients" :key="index"  :value="client.id" @click.prevent="voir()">
                                 </option>     
-                            </select> 
-                        </datalist> 
+                            <!-- </select>  -->
+                        </datalist> {{form.client_id}}777
                         <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
                             {{errors.client_id}} 
                         </div>       
@@ -185,6 +185,10 @@ export default {
     },
     
     methods: {
+
+        // voir(){
+        //     console.log(this.form.client_id);
+        // },
         payment(){
             this.$axios.get('/invoice/payments',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')

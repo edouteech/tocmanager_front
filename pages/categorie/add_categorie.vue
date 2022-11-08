@@ -16,7 +16,7 @@
                 <label class="title">Entrer le nom de la catégorie </label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Pillules">
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.name">
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors">
                 {{errors.name}}
             </div>
 
@@ -27,7 +27,7 @@
                     <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
                 </select>
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.parent_id">
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors">
                 {{errors.parent_id}}
             </div>
 
@@ -62,17 +62,17 @@ export default {
                 parent_id: '',
                 compagnie_id: ''               
             },
-            errors: [],
+            errors: '',
             error: null,
         }
     },
     mounted(){
-        this.$axios.get('/categories',{params: {
+        this.$axios.get('/categories/without-parent',{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')
           }
           }).then(response =>{
-            // console.log(response.data.data.data);
-            this.categories = response.data.data.data
+            // console.log(response.data.data);
+            this.categories = response.data.data
             })     
     },
     
@@ -84,14 +84,12 @@ export default {
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
             })   
             .then(response =>{ 
-                // console.log( response ) 
-                this.error = response.data.message
-                // console.log(this.error)
-
+                    console.log(response.data);
                 if(response.data.status == "success"){
                     this.$router.push({path:'/categorie/list_categorie', })
                 }
                 else{
+                    this.error = response.data.message
                     this.errors = response.data.data
                     // this.$router.push({path:'/categorie/add_client'});
                 }

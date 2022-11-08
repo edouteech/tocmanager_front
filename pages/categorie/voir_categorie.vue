@@ -8,7 +8,6 @@
                   <tr class="table-success">
                         <th>A savoir</th>
                         <th>Catégorie</th>
-                        
                   </tr>
                 </thead>
                 <tbody>
@@ -19,6 +18,14 @@
                   <tr>
                     <td>Catégorie apparentée</td>
                     <td>{{parent}}</td>
+                  </tr>
+                  <tr>
+                    <td>Quantité de produits en stock</td>
+                    <td>{{stock}}</td>
+                  </tr>
+                  <tr>
+                    <td>Valorisation de la catégorie</td>
+                    <td>{{valorisation}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -41,7 +48,7 @@
 <script>
   export default {
     auth:true,
-    props: ['nom', 'parent'],
+    props: ['nom', 'parent', 'stock', 'valorisation'],
     name: 'voirCategorie',
 
 }
