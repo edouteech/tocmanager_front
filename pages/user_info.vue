@@ -4,7 +4,7 @@
         <ul>
             <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
 			<li class="item"><a href="#">
-				<span class="user_name" data-bs-dismiss="offcanvas"></span>
+				<span class="user_name" data-bs-dismiss="offcanvas">{{$auth.$state.user.name}}</span>
 				<i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
             <!-- First Tier Drop Down -->
             <ul>
@@ -35,9 +35,7 @@ export default {
 		user: ''
 	  }
 	},
-	mounted(){
-		this.checkUser()
-	},
+	
 	methods:{
 			async logout(){
 				localStorage.removeItem('auth.user_id');
@@ -54,14 +52,6 @@ export default {
 				.then(response => {
 					// console.log(response)        
 				this.liste = response.data 
-			})
-			},
-
-			checkUser(){
-				this.$axios.get('/user')
-				.then(response => {
-					console.log(response)        
-				this.user = response.data 
 			})
 			},
 
