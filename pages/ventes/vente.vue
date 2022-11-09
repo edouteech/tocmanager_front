@@ -15,19 +15,17 @@
             <form action="" method="POST">
                 <div class="cadre-haut">             
                     <div class="ajout-client">                                   
-                        <!-- <select class="form-control"  v-model="form.client_id">
+                        <select class="form-control"  v-model="form.client_id">
                             <option disabled value="">Choisir le client</option>
                             <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
                                 {{client.name}}
                             </option>                           
-                        </select>   -->
-                        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Choisir le client...">
+                        </select>  
+                        <!-- <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Choisir le client...">
                         <datalist id="datalistOptions" v-model="form.client_id">
-                            <!-- <select > -->
                                 <option v-for="(client, index) in clients" :key="index"  :value="client.id" @click.prevent="voir()">
                                 </option>     
-                            <!-- </select>  -->
-                        </datalist> {{form.client_id}}777
+                        </datalist> {{form.client_id}}777 -->
                         <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
                             {{errors.client_id}} 
                         </div>       
@@ -71,9 +69,9 @@
                                 </td>
                                 <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                                 <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required ></td>
-                                <td><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
+                                <td @change="taxChange()"><div @change="reduceAmount()"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
                                 <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
-                                <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
+                                <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
@@ -82,9 +80,26 @@
                         Veuillez ajouter une ligne de vente
                     </div>  
                 </div><br>
+                <br>
                 <div class="d-flex">
-                    <div class="form-group1 col-md-5"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
-                    <div class="form-group col-md-6 mx-5">
+                    <div class="form-group1 col-md-4"> 
+                        <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
+                    </div>
+                    <div class="form-group col-md-3 mx-4">
+                        <strong>Taxe</strong> <div @change="reduceAmount()"><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off"  required @change="taxChange()"></div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
+                    </div>
+                </div><br><br>
+ 
+                <hr><br>
+                <div class="d-flex">
+                    <div class="form-group1 col-md-2"> 
+                        <strong>Réduction (Prix ou %)</strong> <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()">
+                    </div>
+                    <div class="form-group1 col-md-4 mx-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
+                    <div class="form-group col-md-4">
                         <div class="form-group ">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
@@ -96,25 +111,12 @@
                 </div>
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                     {{amount_error}} 
-                </div> <br><br><br><br>
+                </div> 
+                <br><br><br><br>
                 <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
-                
-                
-                <!-- <div class="submit">
-                    <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture pour " name="submit">		          
-                </div>   -->
         
             </form>
-        <!-- <div v-else  class="text-center">
-             <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
-            <p>Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
-            Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
-            la mise à jour des informations. </p>
-        </div> -->
-
         
-        
-
     </div>
     
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
@@ -163,7 +165,9 @@ export default {
                 discount: '0',
                 amount_received: '0',
                 sell_lines: [],
-                payment: "ESPECES"   
+                payment: "ESPECES",
+                amount_ttc: '',
+                amount_ht: ''
             },
             errors: [],
             error: null,
@@ -224,6 +228,8 @@ export default {
               tax: this.form.tax,
               discount: this.form.discount,
               amount: this.form.amount,
+              amount_ht: this.form.amount_ht,
+              amount_ttc: this.form.amount_ttc,
               amount_received: this.form.amount_received,
               user_id: this.user,
               client_id: this.form.client_id,  
@@ -268,6 +274,38 @@ export default {
             this.produits = response.data.data}) 
         },
 
+        taxChange(){
+            var str = this.form.tax;
+            var percent = str.indexOf("%"); 
+
+                if(percent != -1){
+                    var newStr = str.substring(0, str.length - 1);
+                    let calculTTC = this.form.amount_ht * Number(newStr);
+                    let pourcentage = calculTTC / 100
+                    this.form.amount_ttc = this.form.amount_ht + pourcentage;
+                } 
+                else{
+                    let calculTTC = this.form.amount_ht * str;
+                    let pourcentage = calculTTC / 100
+                    this.form.amount_ttc = this.form.amount_ht + pourcentage;
+                } 
+        },
+
+        reduceAmount(){
+            var str = this.form.discount;
+            var percent = str.indexOf("%"); 
+
+                if(percent != -1){
+                    var newStr = str.substring(0, str.length - 1);
+                    let calcul1 = this.form.amount_ttc * Number(newStr);
+                    let calcul2 = calcul1 / 100
+                    this.form.amount = this.form.amount_ttc - calcul2;
+                } 
+                else{
+                    this.form.amount = this.form.amount_ttc - str
+                }   
+        },
+
         quantityChange(index){
             let line = this.form.sell_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
@@ -275,7 +313,7 @@ export default {
             for (let j = 0; j < this.form.sell_lines.length; j++) {
                 sum += this.form.sell_lines[j].amount;
             }
-            this.form.amount = sum;
+            this.form.amount_ht = sum;
                 
         },
 
@@ -285,7 +323,7 @@ export default {
             var str = line.discount;
             var percent = str.indexOf("%"); 
 
-                if(percent !== -1){
+                if(percent != -1){
                     var newStr = str.substring(0, str.length - 1);
                     let calculR = calculQ * Number(newStr);
                     let Rprix = calculR / 100
@@ -294,7 +332,7 @@ export default {
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
                         sum += this.form.sell_lines[j].amount;
                     }
-                    this.form.amount = sum;
+                    this.form.amount_ht = sum;
                 } 
                 else{
                     line.amount = calculQ - str;
@@ -302,7 +340,7 @@ export default {
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
                         sum += this.form.sell_lines[j].amount;
                     }
-                    this.form.amount = sum;
+                    this.form.amount_ht = sum;
                 }   
         },
 
@@ -321,7 +359,7 @@ export default {
                 for (let j = 0; j < this.form.sell_lines.length; j++) {
                     sum += this.form.sell_lines[j].amount;
                 }
-                this.form.amount = sum;
+                this.form.amount_ht = sum;
                 // console.log(sum); 
             }    
         },
