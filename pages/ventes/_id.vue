@@ -67,9 +67,26 @@
                     </tbody>
                 </table>     
             </div><br>
-            <div class="d-flex">
-                <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
-                <div class="form-group col-md-6 mx-5">
+            <br>
+                <div class="d-flex">
+                    <div class="form-group1 col-md-4"> 
+                        <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
+                    </div>
+                    <div class="form-group col-md-3 mx-4">
+                        <strong>Taxe (en %)</strong> <div @change="reduceAmount()"><input class="form-control received" type="string" v-model="form.tax"  autocomplete="off"  required @change="taxChange()"></div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
+                    </div>
+                </div><br><br>
+ 
+                <hr><br>
+                <div class="d-flex">
+                    <div class="form-group1 col-md-2"> 
+                        <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
+                    </div>
+                    <div class="form-group1 col-md-4 mx-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
+                    <div class="form-group col-md-4">
                         <div class="form-group ">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
@@ -128,8 +145,11 @@ export default {
                 tax: '0',
                 discount: '',
                 amount_received: '0',
-                sell_lines: []          
-                },
+                sell_lines: [],
+                payment: "ESPECES",
+                amount_ttc: '',
+                amount_ht: ''          
+            },
             errors: [],
             error: null,
             user: '',
@@ -156,6 +176,8 @@ export default {
             this.form.tax = vente.tax,
             this.form.discount = vente.discount,
             this.form.amount = vente.amount
+            this.form.amount_ht = vente.amount_ht
+            this.form.amount_ttc = vente.amount_ttc
             this.form.payment = vente.payment
             // this.form.amount_received = vente.amount_received
           }        
@@ -189,6 +211,8 @@ export default {
               tax: this.form.tax,
               discount: this.form.discount,
               amount: this.form.amount,
+              amount_ht: this.form.amount_ht,
+              amount_ttc: this.form.amount_ttc,
               amount_received: this.form.amount_received,
               user_id: this.user,
               client_id: this.form.client_id,  
@@ -210,6 +234,8 @@ export default {
                       
         },
 
+
+
         refresh(){
             this.$axios.get('/clients',{params: {
                 is_paginated: 0,
@@ -228,6 +254,38 @@ export default {
           }).then(response => {
             // console.log(response.data.data.data);
             this.produits = response.data.data}) 
+        },
+
+        taxChange(){
+            var str = this.form.tax;
+            var percent = str.indexOf("%"); 
+
+                if(percent != -1){
+                    var newStr = str.substring(0, str.length - 1);
+                    let calculTTC = this.form.amount_ht * Number(newStr);
+                    let pourcentage = calculTTC / 100
+                    this.form.amount_ttc = this.form.amount_ht + pourcentage;
+                } 
+                else{
+                    let calculTTC = this.form.amount_ht * str;
+                    let pourcentage = calculTTC / 100
+                    this.form.amount_ttc = this.form.amount_ht + pourcentage;
+                } 
+        },
+
+        reduceAmount(){
+            var str = this.form.discount;
+            var percent = str.indexOf("%"); 
+
+                if(percent != -1){
+                    var newStr = str.substring(0, str.length - 1);
+                    let calcul1 = this.form.amount_ttc * Number(newStr);
+                    let calcul2 = calcul1 / 100
+                    this.form.amount = this.form.amount_ttc - calcul2;
+                } 
+                else{
+                    this.form.amount = this.form.amount_ttc - str
+                }   
         },
 
         reduceChange(index){

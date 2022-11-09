@@ -86,7 +86,7 @@
                         <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
                     </div>
                     <div class="form-group col-md-3 mx-4">
-                        <strong>Taxe</strong> <div @change="reduceAmount()"><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off"  required @change="taxChange()"></div>
+                        <strong>Taxe (en %)</strong> <div @change="reduceAmount()"><input class="form-control received" type="string" v-model="form.tax"  autocomplete="off"  required @change="taxChange()"></div>
                     </div>
                     <div class="form-group col-md-4">
                         <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
@@ -96,7 +96,7 @@
                 <hr><br>
                 <div class="d-flex">
                     <div class="form-group1 col-md-2"> 
-                        <strong>Réduction (Prix ou %)</strong> <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()">
+                        <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                     </div>
                     <div class="form-group1 col-md-4 mx-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
                     <div class="form-group col-md-4">
