@@ -82,7 +82,7 @@
  
                 <hr><br>
                 <div class="d-flex">
-                    <div class="form-group1 col-md-2"> 
+                    <div class="form-group1 col-md-3"> 
                         <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                     </div>
                     <div class="form-group1 col-md-4 mx-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
@@ -220,7 +220,7 @@ export default {
               sell_lines: this.form.sell_lines,
               compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
-                console.log( response ) 
+                // console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
                 if(response.data.status == 'success'){
@@ -243,7 +243,7 @@ export default {
           }
           }).then(response => {
             // console.log(response);
-            this.clients = response.data.data.data})
+            this.clients = response.data.data})
         },
 
         recupProduct(){
