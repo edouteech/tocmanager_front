@@ -207,7 +207,7 @@ export default {
       // console.log(this.$auth)
       this.refresh()
       this.recupFournisseur()
-      this.users = this.$auth.$state.user;
+         this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem('auth.company_id');
     }
 }

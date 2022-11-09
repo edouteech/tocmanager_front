@@ -35,7 +35,10 @@ export default {
 		user: ''
 	  }
 	},
-	
+	mounted(){
+		// console.log(this.$auth)
+		this.checkUser()
+	},
 	methods:{
 			async logout(){
 				localStorage.removeItem('auth.user_id');
@@ -52,6 +55,14 @@ export default {
 				.then(response => {
 					// console.log(response)        
 				this.liste = response.data 
+			})
+			},
+
+			checkUser(){
+				this.$axios.get('/user')
+				.then(response => {
+					// console.log(response)        
+				this.user = response.data 
 			})
 			},
 

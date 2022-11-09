@@ -165,6 +165,7 @@ export default {
                   path:'/mon_profil'})
                   if(response.data.status == "success"){
                     this.errors="Modifications éffectuées avec succès !!!"
+                    this.$router.push('/dashboard')
                   }
                   else{
                       this.error = "Echec!!! Veuillez réessayer..."
