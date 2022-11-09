@@ -4,7 +4,7 @@
         <ul>
             <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
 			<li class="item"><a href="#">
-				<span class="user_name" data-bs-dismiss="offcanvas">{{$auth.$state.user.name}}</span>
+				<span class="user_name" data-bs-dismiss="offcanvas">{{user.name}}</span>
 				<i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
             <!-- First Tier Drop Down -->
             <ul>
