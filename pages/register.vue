@@ -132,7 +132,7 @@ export default {
           // console.log(this.form.compagnie)
            this.errors = response.data.data
           // console.log(this.error)
-          this.user = response.data.data.original.user_id;
+          // this.user = response.data.data.original.user_id;
           this.$router.push({path:'/login'});
           // this.$router.push({
           //   name: 'compagnie', params: { id: this.user  }

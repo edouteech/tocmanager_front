@@ -64,11 +64,11 @@
     right: 0;
     display: flex;
     justify-content: center;
-    background-color: #ffffffda;
+    background-color: #6d6d6dda;
   }
   
   .modaler {
-    background-color: rgb(184, 211, 252);
+    background-color: rgb(255, 255, 255);
     overflow: auto;
     width: 500px;
     margin-top: 15%;
@@ -76,6 +76,8 @@
     height: 300px;
     padding: 1%;
     box-shadow: 50px;
+    border-radius: 15px;
+    font-size: 22px;
   }
   .close {
     margin: 14% 0 0 16px;
