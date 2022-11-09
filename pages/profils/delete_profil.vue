@@ -99,7 +99,7 @@ export default {
     mounted () {
          this.$axios.get('/get/profil',{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           })
         .then(response => {console.log(response.data.data);
@@ -111,7 +111,7 @@ export default {
             console.log(id);
             this.$axios.get('/restore/profil/' +id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {console.log(response);
                 this.user = response.data.data

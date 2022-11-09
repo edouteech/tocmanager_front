@@ -98,7 +98,7 @@ export default {
         this.refresh()
         this.$axios.get('/products/'+ this.$route.params.id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => 
         {console.log(response.data.data[0] )
@@ -122,7 +122,7 @@ export default {
     methods: {
         refresh(){
                 this.$axios.get('/categories',{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
                 }
                 }).then(response =>{console.log(response.data.data.data);
                     this.categories = response.data.data.data
@@ -139,13 +139,13 @@ export default {
                 stock_min: this.form.stock_min,
                 stock_max: this.form.stock_max,
                 tax_group: this.form.tax_group,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{this.$router.push({path:'/produits/list_produit',})   })                     
         },
 
         group(){
             this.$axios.get('/invoice/taxGroups',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>
             {console.log(response); this.groupes = response.data.data })

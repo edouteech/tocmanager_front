@@ -185,7 +185,7 @@ export default {
     methods: {
         payment(){
             this.$axios.get('/invoice/payments',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>
             {
@@ -193,11 +193,11 @@ export default {
                 this.methodes = response.data.data })
         },
         addLine(){
-            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});
+            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: localStorage.getItem('auth.company_id')});
         },
 
         // deleteLine(){
-        //     this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});
+        //     this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: localStorage.getItem('auth.company_id')});
         // },
         deleteLine(index){
           console.log(index);
@@ -227,7 +227,7 @@ export default {
                     supplier_id: this.form.supplier_id,  
                     buy_lines: this.form.buy_lines,
                     payment: this.form.payment,
-                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                    compagnie_id: localStorage.getItem('auth.company_id')
                     }).then(response =>{ 
                         console.log( response ) 
                         this.error = response.data.message
@@ -249,7 +249,7 @@ export default {
             this.$axios.get('/suppliers',
             {
                 params: {
-                    compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+                    compagnie_id: localStorage.getItem('auth.company_id'),
                     is_paginated: 0
                 }
           }).then(response => {
@@ -259,7 +259,7 @@ export default {
 
         recupProduct(){
             this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
           }
           }).then(response => {

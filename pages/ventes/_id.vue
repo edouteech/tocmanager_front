@@ -143,7 +143,7 @@ export default {
       this.recupProduct()
       this.payment()
       this.$axios.get('/sells/'+ this.$route.params.id,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           })
           .then(response => {
@@ -174,7 +174,7 @@ export default {
         
         payment(){
             this.$axios.get('/invoice/payments',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>
             {
@@ -194,7 +194,7 @@ export default {
               client_id: this.form.client_id,  
               payment: this.form.payment,
               sell_lines: this.form.sell_lines,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
@@ -213,7 +213,7 @@ export default {
         refresh(){
             this.$axios.get('/clients',{params: {
                 is_paginated: 0,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response => {
             // console.log(response);
@@ -222,7 +222,7 @@ export default {
 
         recupProduct(){
             this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
           }
           }).then(response => {

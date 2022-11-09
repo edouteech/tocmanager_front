@@ -98,7 +98,7 @@ export default {
 
     mounted () {
          this.$axios.get('/get/suppliers',{ params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             per_page : this.form.nombre }   
           })        
         .then(response => {console.log(response.data.data);
@@ -114,7 +114,7 @@ export default {
             console.log(id);
             this.$axios.get('/restore/supplier/' +id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           })         
             .then(response => {console.log(response);

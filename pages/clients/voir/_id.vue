@@ -66,7 +66,7 @@ export default {
         // this.refresh()
         this.$axios.get('/clients/'+ this.$route.params.id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           })
           .then(response => {console.log(response.data.data[0] ) ,console.log(response.data.data[0].created_at )

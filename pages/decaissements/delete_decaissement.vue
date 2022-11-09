@@ -97,7 +97,7 @@ export default {
 
     mounted () {
          this.$axios.get('/get/decaissements',{ params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             per_page : this.form.nombre
             } 
         })          
@@ -114,7 +114,7 @@ export default {
             console.log(id);
             this.$axios.get('/restore/decaissement/' +id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }})                 
             .then(response => {console.log(response);
                 this.decaissement = response.data.data

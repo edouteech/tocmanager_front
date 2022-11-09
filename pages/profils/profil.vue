@@ -139,7 +139,7 @@ export default {
 
         search(){
           this.$axios.get('/users',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             search: this.element_search
           }
           })
@@ -152,7 +152,7 @@ export default {
         
         refresh(page=1){
           this.$axios.get('/users',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             page: page,
             per_page : this.form.nombre }   
           })        
@@ -171,7 +171,7 @@ export default {
         voirProfil(id){
             this.showModal = true;
             this.$axios.get('users/'+ id,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')}   
+            compagnie_id: localStorage.getItem('auth.company_id')}   
           }).then(response => {
             // console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name

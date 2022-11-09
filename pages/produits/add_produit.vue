@@ -141,7 +141,7 @@ export default {
               stock_min: this.form.stock_min,
               tax_group: this.form.tax_group,
               stock_max: this.form.stock_max,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{
                 // console.log( response ) 
                 this.error = response.data.message
@@ -161,7 +161,7 @@ export default {
 
         refresh(){
           this.$axios.get('/categories',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>
             {
@@ -171,7 +171,7 @@ export default {
 
         group(){
             this.$axios.get('/invoice/taxGroups',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>
             {

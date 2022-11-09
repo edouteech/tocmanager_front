@@ -144,7 +144,7 @@ export default {
     methods: {
         search(){
           this.$axios.get('/buys',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             search: this.element_search
           }
           })
@@ -165,7 +165,7 @@ export default {
         refresh(page=1){
           this.$axios.get('/buys',{params: {
             page: page,
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             per_page : this.form.nombre }   
           }).then(response => 
           {
@@ -180,7 +180,7 @@ export default {
 
         recupFournisseur(){
           this.$axios.get('/suppliers',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response => {console.log(response.data.data.data);
           this.fournisseurs = response.data.data.data })

@@ -69,7 +69,7 @@
               email: this.form.email,
               phone: this.form.phone,
               nature: this.form.nature,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             })
             .then(response =>{
               // console.log(response.data.data) 

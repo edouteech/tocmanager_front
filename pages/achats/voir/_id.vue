@@ -203,9 +203,10 @@ export default {
       this.$axios.get('/buys/'+ this.$route.params.id,
         {
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
-        }).then(response => {console.log(response.data.data);
+        }).then(response => {
+          // console.log(response.data.data);
         this.id = response.data.data[0].id,
         this.factures = response.data.data[0].buy_lines,
         this.date_buy = moment(response.data.data[0].date_buy).format("D MMM YYYY, h:mm:ss a"),
@@ -237,7 +238,7 @@ export default {
               supplier_id: this.supplier.id,
               user_id: this.$auth.user.id,
               buy_id: this.$route.params.id,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
@@ -263,10 +264,11 @@ export default {
           this.$axios.get('/buys/'+ this.$route.params.id,
             {
                 params: {
-                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                  compagnie_id: localStorage.getItem('auth.company_id')
                 }
             })
-          .then(response => {console.log(response.data.data);
+          .then(response => {
+            // console.log(response.data.data);
             this.date_buy = response.data.data[0].date_buy,
             this.supplier = response.data.data[0].supplier,
             this.montant = response.data.data[0].amount,
@@ -280,12 +282,12 @@ export default {
                 params: {
                   page : page,
                   buy_id: this.$route.params.id,
-                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                  compagnie_id: localStorage.getItem('auth.company_id')
                 }
             }
           ).then(response => 
           {
-            console.log(response);
+            // console.log(response);
             this.decaissements = response.data.data.data
             this.res_data= response.data.data
             // this.links = response.data.data.links

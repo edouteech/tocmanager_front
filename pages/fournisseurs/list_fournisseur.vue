@@ -171,7 +171,7 @@ export default {
                   'Content-Type': 'multipart/form-data'
               },
               params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
             }
           ).then(response => {console.log(response);
@@ -192,7 +192,7 @@ export default {
 
         search(){
           this.$axios.get('/suppliers',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             search: this.element_search
           }
           })
@@ -207,7 +207,7 @@ export default {
           this.$axios.get('/clients',{
               params: {
                 export: true,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
             })
             .then(response =>  {
@@ -228,7 +228,7 @@ export default {
          
         refresh(page=1){
           this.$axios.get('/suppliers',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             page: page,
             per_page : this.form.nombre
           }
@@ -249,7 +249,7 @@ export default {
             this.showModal = true;
             this.$axios.get('/suppliers/'+ id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {
             // console.log(response.data.data[0]);

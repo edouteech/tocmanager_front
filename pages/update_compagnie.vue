@@ -119,7 +119,7 @@ export default {
             rccm : this.form.registre,
             address:this.form.address,
             mecef_token: this.form.token,
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
             })
             .then(response =>{
                 console.log(response)
@@ -136,7 +136,7 @@ export default {
         },
         refresh(){
             this.$axios.get('/compagnies/'+ this.compagny,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           })
             .then(response => {

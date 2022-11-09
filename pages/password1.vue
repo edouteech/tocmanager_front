@@ -48,7 +48,7 @@ export default {
       async submit() {
         await  this.$axios.post('/forgot-password',{
               email: this.form.email,
-            //   compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            //   compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 this.status = response.data.status

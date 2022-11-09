@@ -343,9 +343,9 @@ export default {
         this.$axios.post('/tableau/de/bord',{
               date_debut: this.form.date_debut,
               date_fin: this.form.date_fin,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
         }).then(response => {
-            // console.log(response.data.data.produts_most_sell);
+            console.log(response);
 
            this.volume_vente  = response.data.data.volume_vente
            this.chiffre_affaire = response.data.data.chiffre_affaire
@@ -437,67 +437,13 @@ export default {
             }
           });
           myChartVente;
-
-        // var Q1 = this.courbe_achat[0].amount
-        // var Q2 = this.courbe_achat[1].amount
-        // var Q3 = this.courbe_achat[2].amount
-        // var Q4 = this.courbe_achat[3].amount
-        // var Q5 = this.courbe_achat[4].amount
-        // var Q6 = this.courbe_achat[5].amount
-        // var Q7 = this.courbe_achat[6].amount
-
-        // var D1 = moment(this.courbe_achat[0].date_buy).format("YYYY-MM-D")
-        // var D2 = moment(this.courbe_achat[1].date_buy).format("YYYY-MM-D")
-        // var D3 = moment(this.courbe_achat[2].date_buy).format("YYYY-MM-D")
-        // var D4 = moment(this.courbe_achat[3].date_buy).format("YYYY-MM-D")
-        // var D5 = moment(this.courbe_achat[4].date_buy).format("YYYY-MM-D")
-        // var D6 = moment(this.courbe_achat[5].date_buy).format("YYYY-MM-D")
-        // var D7 = moment(this.courbe_achat[6].date_buy).format("YYYY-MM-D")
-
-        //   const cty = document.getElementById('myChartAchat');
-        //   const myChartAchat = new Chart(cty, {
-        //     type: 'line',
-        //     data: {
-        //         labels: [D7, D6, D5, D4, D3, D2, D1],
-        //         datasets: [{
-        //             label: '# montant',
-        //             data: [Q7, Q6, Q5, Q4, Q3, Q2, Q1],
-        //             backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        //             borderColor: 'rgba(54, 162, 235, 1)',
-        //             borderWidth: 3,
-        //             tension: 0.5,
-        //         }]
-        //     },
-        //     options: {
-        //         scales: {
-        //             y: {
-        //                 beginAtZero: false
-        //             }
-        //         }
-        //     }
-        //   });
-        //   myChartAchat;
      })
-      // console.log(this.$auth);
-      // console.log(this.$auth.$storage.getUniversal('company_id'));
     },
 
     methods:{
         moment: function () {
           return moment();
         },
-        // picker(){
-        //   let recap = document.createElement('script') 
-        //   recap.setAttribute('src', 'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js') 
-        //   recap.setAttribute('src', 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js') 
-        //   recap.setAttribute('src', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js')
-        //   document.head.appendChild(recap);
-        //     $('input[name="daterange"]').daterangepicker({
-        //     opens: 'left'
-        //   }, function(start, end, label) {
-        //     console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-        //   });
-        // },
 
         async logout(){
             this.$auth.logout();
@@ -508,7 +454,7 @@ export default {
             this.$axios.post('/tableau/de/bord',{
                 date_debut: this.form.date_debut,
                 date_fin: this.form.date_fin,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response => {
                 // console.log(response.data);
 

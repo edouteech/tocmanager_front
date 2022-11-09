@@ -1,15 +1,7 @@
 <template>
 <div class="contain ">
   <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
-  <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-    {{error}} <br>
-      <!-- <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
-      <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
-      <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
-      <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div>
-      <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-      <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div> -->
-  </div>
+
   <div class="container-fluid h-custom">
       <div class="row d-flex  h-100">
         <div class="img col-md-9 col-lg-6 col-xl-5">
@@ -17,6 +9,15 @@
             class="img-fluid" alt="Sample image">
         </div>
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+            {{error}} <br>
+              <!-- <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
+              <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
+              <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
+              <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div>
+              <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
+              <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div> -->
+          </div>
           <form>
             <div class="divider d-flex align-items-center my-4">
               <p class="text-center fw-bold mx-3 mb-0">Informations personnelles</p>
@@ -103,21 +104,12 @@ export default {
         },
 
       },
-      countries:''
     }
   },
 
-  mounted(){
-    this.$axios.get("/countries")
-    .then(response =>{ 
-      // console.log(response);
-      this.countries = response.data.data
-    })
-  },
 
   methods:{
     async register(){
-      console.log(this.form.phone)
       await  this.$axios.post('/register',{
         name: this.form.name,
         email: this.form.email,
@@ -127,16 +119,13 @@ export default {
         // country: this.form.country,
         compagnie: this.form.compagnie
       }).then(response =>{
-        // console.log(response);
-          this.error = response.data.message
-          // console.log(this.form.compagnie)
-           this.errors = response.data.data
-          // console.log(this.error)
-          // this.user = response.data.data.original.user_id;
-          this.$router.push({path:'/login'});
-          // this.$router.push({
-          //   name: 'compagnie', params: { id: this.user  }
-          // })   
+              console.log(response);
+          if(response.data.status = "success"){
+            this.$router.push({path:'/login'});
+          }
+          else{
+            this.error = response.data.message
+          }
       }).catch( err => console.log( err ) )
               // console.log('user login')
     },

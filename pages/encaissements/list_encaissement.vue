@@ -159,7 +159,7 @@ export default {
           //         'Content-Type': 'multipart/form-data'
           //     },
           //     params: {
-          //       compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          //       compagnie_id: localStorage.getItem('auth.company_id')
           //     }
           //   }
           // ).then(response => {
@@ -177,7 +177,7 @@ export default {
           // this.$axios.get('/"encaissements"',{
           //     params: {
           //       export: true,
-          //       compagnie_id: this.$auth.$storage.getUniversal('company_id')
+          //       compagnie_id: localStorage.getItem('auth.company_id')
           //     }
           //   })
           //   .then(response =>  {
@@ -188,7 +188,7 @@ export default {
 
         search(){
           this.$axios.get('/encaissements',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             search: this.element_search
           }
           })
@@ -214,7 +214,7 @@ export default {
             {
                 params: {
                   page: page,
-                  compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+                  compagnie_id: localStorage.getItem('auth.company_id'),
                   per_page : this.form.nombre }   
           }).then(response => 
           {
@@ -231,7 +231,7 @@ export default {
             this.showModal = true;
             this.$axios.get('/encaissements/'+ id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {
             // console.log(response.data.data[0]);

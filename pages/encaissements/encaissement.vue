@@ -82,7 +82,7 @@ export default {
     mounted(){
       this.user = localStorage.getItem('auth.user_id')
         this.$axios.get('/clients',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           })
         .then(response => {console.log(response.data.data.data);
@@ -96,7 +96,7 @@ export default {
               date: this.form.date,
               client_id: this.form.client_id,
               user_id: this.user,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 // console.log( response ) 
                 this.error = response.data.message

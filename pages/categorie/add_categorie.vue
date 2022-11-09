@@ -68,7 +68,7 @@ export default {
     },
     mounted(){
         this.$axios.get('/categories/without-parent',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>{
             // console.log(response.data.data);
@@ -81,7 +81,7 @@ export default {
             await  this.$axios.post('/categories',{
                 name: this.form.name,
                 parent_id: this.form.parent_id,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
             })   
             .then(response =>{ 
                     console.log(response.data);

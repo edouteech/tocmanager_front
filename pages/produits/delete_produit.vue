@@ -102,7 +102,7 @@ export default {
 
     mounted () {
          this.$axios.get('/get/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             // page: page,
             per_page : this.form.nombre }   
           })        
@@ -119,7 +119,7 @@ export default {
             console.log(id);
             this.$axios.get('/restore/product/' +id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }})              
             .then(response => {console.log(response);
                 this.produit = response.data.data

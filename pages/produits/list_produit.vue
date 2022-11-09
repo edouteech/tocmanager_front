@@ -216,7 +216,7 @@ export default {
                   'Content-Type': 'multipart/form-data'
               },
               params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
             }
           ).then(response => {
@@ -236,7 +236,7 @@ export default {
            this.$axios.get('/products',{
               params: {
                 export: true,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               },
               responseType: 'blob'
           }).then((response) => {
@@ -269,7 +269,7 @@ export default {
         
         search(){
           this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             search: this.element_search
           }
           })
@@ -292,7 +292,7 @@ export default {
 
         refresh(page=1){
           this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             page: page,
             per_page : this.form.nombre
           }
@@ -313,7 +313,7 @@ export default {
             this.showModal = true;
             this.$axios.get('products/'+ id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {
             // console.log(response.data.data[0]);
@@ -341,7 +341,7 @@ export default {
           // console.log(document.getElementById(input_btn).value); 
           this.$axios.get('/products/'+id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           })               
           .then(response => {
@@ -358,7 +358,7 @@ export default {
                 stock_min: produit.stock_min,
                 stock_max: produit.stock_max,
                 tax_group: produit.tax_group,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{console.log(response)
               // console.log(this.name0)
             this.refresh()

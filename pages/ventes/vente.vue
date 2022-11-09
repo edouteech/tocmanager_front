@@ -191,7 +191,7 @@ export default {
         // },
         payment(){
             this.$axios.get('/invoice/payments',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>
             {
@@ -200,7 +200,7 @@ export default {
         },
 
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});           
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: localStorage.getItem('auth.company_id')});           
         },
 
         deleteLine(index){
@@ -229,7 +229,7 @@ export default {
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines,
               payment: this.form.payment,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')  
+              compagnie_id: localStorage.getItem('auth.company_id') 
             }).then(response =>{ 
                 // console.log( response ) 
                 this.error = response.data.message
@@ -249,7 +249,7 @@ export default {
         
         refresh(){
             this.$axios.get('/clients',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
           }
           }).then(response => {
@@ -260,7 +260,7 @@ export default {
 
         recupProduct(){
             this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
           }
           }).then(response => {
@@ -328,7 +328,7 @@ export default {
 
         compagnie(){
             this.$axios.get('/compagnies/'+ this.compagny,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           })
             .then(response => {

@@ -140,7 +140,7 @@ export default {
        voir(){
           this.$axios.get('/categories/'+ this.$route.params.identifiant,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {
             console.log(response.data.data[0]);
@@ -158,7 +158,7 @@ export default {
 
         refresh(page=1){
             this.$axios.get('/categories/'+ this.$route.params.identifiant + '/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
               page: page,
               per_page : this.form.nombre
             }
@@ -183,7 +183,7 @@ export default {
             this.showModal = true;
             this.$axios.get('products/'+ id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {
             // console.log(response.data.data[0]);

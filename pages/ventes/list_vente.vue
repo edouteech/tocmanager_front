@@ -264,7 +264,7 @@
         // },
         search(){
           this.$axios.get('/sells',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             search: this.element_search
           }
           })
@@ -288,7 +288,7 @@
           
           refresh(page=1){
             this.$axios.get('/sells',{params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+              compagnie_id: localStorage.getItem('auth.company_id'),
               page: page,
               per_page : this.form.nombre }   
             })        
@@ -305,7 +305,7 @@
   
           recupClient(){
             this.$axios.get('/clients',{params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
             })
             .then(response => {
@@ -316,7 +316,7 @@
           async print(id){
             await this.$axios.get('/sells/'+ id,{
               params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
             }).then(response => {
               console.log(response);
@@ -343,7 +343,7 @@
               // console.log(id)
               await this.$axios.get('/sells/'+ id,{
                   params: {
-                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                    compagnie_id: localStorage.getItem('auth.company_id')
                   }
                 }).then(response => {
                   // console.log(response);

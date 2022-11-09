@@ -88,7 +88,7 @@ export default {
 
     mounted () {
          this.$axios.get('/get/categories',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             per_page : this.form.nombre }   
           }).then(response => {console.log(response);
             this.categories = response.data.data.data 
@@ -104,7 +104,7 @@ export default {
             console.log(id);
             this.$axios.get('/restore/categorie/' +id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }})             
             .then(response => {console.log(response);
                 this.categorie = response.data.data

@@ -305,7 +305,7 @@ export default {
         refresh(){
           this.$axios.get('/sells/'+ this.$route.params.id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {
             // console.log(response.data.data[0]);
@@ -335,7 +335,7 @@ export default {
                 client_id: this.client.id,
                 user_id: this.$auth.user.id,
                 sell_id: this.$route.params.id,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }).then(response =>{ 
                   // console.log( response ) 
                   // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
@@ -364,7 +364,7 @@ export default {
         recupInfos(){
           this.$axios.get('/sells/'+ this.$route.params.id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {console.log(response.data.data);
             this.date_sell = response.data.data[0].date_sell,
@@ -386,7 +386,7 @@ export default {
                 params: {
                   page : page,
                   sell_id: this.$route.params.id,
-                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                  compagnie_id: localStorage.getItem('auth.company_id')
                 }
             }
           ).then(response => 
@@ -403,7 +403,7 @@ export default {
         
         validerFactureNormalise(){
           this.$axios.get('/sells/valid/'+this.$route.params.id,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           })
             .then(response =>{ 
@@ -417,7 +417,7 @@ export default {
 
         genererFactureNormalise(){
           this.$axios.get('/sells/invoice/'+this.$route.params.id,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           })
             .then(response =>{ 

@@ -75,7 +75,7 @@ export default {
         this.refresh()
         this.$axios.get('/encaissements/'+ this.$route.params.id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           })
          .then(response => {
@@ -101,7 +101,7 @@ export default {
             facture: this.form.facture,
             client_id: this.form.client_id,
             sell_id: this.sell_id,
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
 
             })
             .then(response =>{
@@ -119,7 +119,7 @@ export default {
 
         refresh(){
             this.$axios.get('/clients',{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
             }
             })
             .then(response => {

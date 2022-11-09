@@ -135,7 +135,7 @@ export default {
               droits_add: this.form.ajout,
               droits_edit: this.form.modifier,
               droits_delete: this.form.supprimer,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 // console.log( this.form.ajout ) 
                 // console.log( this.form.modifier ) 

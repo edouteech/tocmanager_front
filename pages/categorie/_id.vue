@@ -58,7 +58,7 @@ export default {
     mounted() {
         this.refresh()
         this.$axios.get('/categories/'+ this.$route.params.id,{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
                 }})
           .then(response => {
             console.log(response.data.data[0] )
@@ -76,13 +76,13 @@ export default {
                 id: this.$route.params.id,            
                 name: this.form.name, 
                 parent_id: this.form.parent_id,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')      
+                compagnie_id: localStorage.getItem('auth.company_id')      
             }).then(response =>{this.$router.push({ path:'/categorie/list_categorie',})})
 
         },
         refresh(){
             this.$axios.get('/categories',{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
                 }})        
             .then(response =>{console.log(response.data.data.data);
                 this.categories = response.data.data.data

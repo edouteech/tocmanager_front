@@ -132,7 +132,7 @@ export default {
 
         recup(){
           this.$axios.get('users/'+ this.$auth.$state.user[0].id,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')}   
+            compagnie_id: localStorage.getItem('auth.company_id')}   
           }).then(response => {
             console.log(response.data.data[0]);
              this.form.name = response.data.data[0].name
@@ -158,7 +158,7 @@ export default {
             // country: this.form.country,
             city: this.form.city,
             address: this.form.address,
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
 
             })
             .then(response =>{console.log(response)

@@ -26,7 +26,7 @@
       methods: {
         sup(){
             this.$axios.delete('/categories/' +this.identifiant,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>
         //   console.log(response.data.data);

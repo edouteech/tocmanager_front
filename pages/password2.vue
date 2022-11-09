@@ -64,7 +64,7 @@ export default {
             token:this.form.token,
             password: this.form.password,
             password_confirmation: this.form.password_confirmation
-            //   compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            //   compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 this.status = response.data.status

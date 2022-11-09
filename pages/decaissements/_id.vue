@@ -78,7 +78,7 @@ export default {
         this.refresh()
         this.$axios.get('/decaissements/'+ this.$route.params.id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           })
          .then(response => {
@@ -105,7 +105,7 @@ export default {
             supplier_id: this.form.supplier_id,
             user_id: this.$auth.user.id,
             buy_id: this.buy_id,
-           compagnie_id: this.$auth.$storage.getUniversal('company_id')
+           compagnie_id: localStorage.getItem('auth.company_id')
 
             })
             .then(response =>{
@@ -124,7 +124,7 @@ export default {
         refresh(){
             this.$axios.get('/suppliers',{
                 params: {
-                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                    compagnie_id: localStorage.getItem('auth.company_id')
                 }
             }).then(response => {
                 // console.log(response.data.data.data);

@@ -31,7 +31,8 @@
         supCategorie(infos){
             console.log(infos);
             this.$axios.delete('/categories/' +infos,{params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')}}
+              compagnie_id: localStorage.getItem('auth.company_id')
+            }}
             ).then(response => {console.log(response);
                 this.categorie = response.data.data
                 this.$router.push({path:'/corbeille',})})         

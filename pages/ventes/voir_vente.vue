@@ -94,7 +94,7 @@
               client_id: this.client,
               user_id: this.$auth.user.id,
               sell_id: this.sell,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 // this.$router.push({path:'/ventes/list_vente',})
