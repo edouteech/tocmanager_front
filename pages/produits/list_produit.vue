@@ -21,7 +21,7 @@
         {{error}} 
       </div>
       
-      <div class="search_result" v-if="this.element_search != ''">
+      <div class="table-responsive search_result" v-if="this.element_search != ''" >
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
           <thead>
@@ -61,7 +61,8 @@
         </table>
       </div>
       
-      <table class="table table-hover" v-if="this.element_search == ''">
+      <div class="table-responsive">
+        <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
                     <th>Nom</th>
@@ -100,7 +101,7 @@
             </tbody>
         </table>
         <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
-   <br><br>
+      </div><br><br>
     <form class="d-flex justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
        <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>

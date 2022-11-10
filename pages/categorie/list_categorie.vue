@@ -20,7 +20,7 @@
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
         {{error}} 
       </div>
-      <div class="search_result" v-if="this.element_search != ''">
+      <div class="table-responsive search_result" v-if="this.element_search != ''">
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -47,44 +47,53 @@
       
       
       
-      
-      <table class="table table-hover" v-if="this.element_search == ''">
-          <thead>
-            <tr class="table-primary">
-                <th>Noms de Catégorie</th>
-                <th>Catégories parentes</th>
-                <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr  v-for="(categorie, i) in categories" :key="i" >
-              <td>{{categorie.name}}</td>
-              <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
-              <td v-else>---</td>
-              <td><div class="action" v-for="(user, i) in users" :key="i">
-                <NuxtLink :to="'/categorie/voir/'+categorie.id" class="text-black" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
-                <NuxtLink :to="'/categorie/'+categorie.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteCategorie(categorie.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
+      <div class="table-responsive">
+        <table class="table table-hover" v-if="this.element_search == ''">
+            <thead>
+              <tr class="table-primary">
+                  <th>Noms de Catégorie</th>
+                  <th>Catégories parentes</th>
+                  <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  v-for="(categorie, i) in categories" :key="i" >
+                <td>{{categorie.name}}</td>
+                <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
+                <td v-else>---</td>
+                <td><div class="action" v-for="(user, i) in users" :key="i">
+                  <NuxtLink :to="'/categorie/voir/'+categorie.id" class="text-black" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
+                  <NuxtLink :to="'/categorie/'+categorie.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteCategorie(categorie.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
         </table>
         <p class="text-center"><strong>{{total}} catégorie(s) au total </strong></p><hr class="text-primary">
-        <br><br> 
+      </div><br><br> 
         <form class="d-flex justify-content-end" role="search">
           <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
           <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
           <button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button>
-          <downloadexcel
+          <!-- <downloadexcel
             class="btn"
             :fields="json_fields"
             :before-generate="startDownload"
             :before-finish="finishDownload"
-            @click.prevent="fetchData()"
         >
             Download Excel
-        </downloadexcel>
+        </downloadexcel> -->
+
+        <vue-excel-xlsx
+          :data="data"
+          :columns="columns"
+          :file-name="'categories'"
+          :file-type="'xlsx'"
+          :sheet-name="'sheetname'"
+          >
+          Download
+      </vue-excel-xlsx>
         </form><br><br>
         <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
@@ -154,9 +163,28 @@ export default {
         json_fields: {
           'Name': 'name',
         },
+        
+        columns : [
+                    {
+                        label: "Nom",
+                        field: "name",
+                    },
+                    {
+                        label: "Parent_id",
+                        field: "parent_id",
+                    },
+                    
+                ],
+                data :this.categories,
+                
       }
     },
+
+    
     methods: {
+      priceFormat(value){
+                return '$ ' + value;
+            },
       async fetchData() {
         const response = await this.$axios.get('/clients',{
               params: {
@@ -250,19 +278,59 @@ export default {
             })     
         },
 
-        Export(){
-           this.$axios.get('/export/categories',{
-              params: {
-                export: true,
+        async Export() {
+          await this.$axios({
+            url: "/export/categories", //your url
+            method: "GET",
+            responseType: "blob",
+            params: {
                 compagnie_id: localStorage.getItem('auth.company_id')
               },
-              headers: {
-                "Access-Control-Allow-Origin": "http://127.0.0.1",
-                // "Access-Control-Allow-Methods": "GET",
-                // "Access-Control-Allow-Headers": "Content-Type"
-              }
-              // responseType: 'blob'
-          })
+          }).then(response => {
+            console.log(response)
+            link.setAttribute("download");
+            link.click();
+            
+          }); // Please catch me!
+        },
+
+        // Export () {
+        //   this.$axios.get('/export/categories',{params: {
+        //         compagnie_id: localStorage.getItem('auth.company_id')
+        //       },
+        //   })
+        //   .then(res => {
+        //     var newBlob = new Blob([res.data.data], {
+        //     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
+        //     console.log(res.data)
+        //     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        //       window.navigator.msSaveOrOpenBlob(newBlob)
+        //       return
+        //     }
+        //     const data = window.URL.createObjectURL(newBlob)
+        //     var link = document.createElement('a')
+        //     link.href = data
+        //     link.download = 'comunicacion_piciz.xlsx'
+        //     link.click()
+        //     setTimeout(function () {
+        //       window.URL.revokeObjectURL(data)
+        //     }, 100) 
+        //     this.$spinner.close()
+        //     })
+        //     .finally(() => {
+        //       this.$spinner.close()
+        //     })
+        //   },
+
+        async Exporte(){
+           this.$axios.get('/export/categories',{
+              params: {
+                compagnie_id: localStorage.getItem('auth.company_id')
+              },
+            }).then(response =>{
+            console.log(response);
+
+            })     
         },
 
 
@@ -291,9 +359,10 @@ export default {
     },
 
     mounted () {
+      console.log(this.$auth);
       this.refresh()
          this.users = this.$auth.$state.user.roles;
-    this.compagny = localStorage.getItem('auth.company_id');
+       this.compagny = localStorage.getItem('auth.company_id');
     }
 }
 </script>

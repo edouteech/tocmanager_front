@@ -26,9 +26,9 @@
                                 <option v-for="(client, index) in clients" :key="index"  :value="client.id" @click.prevent="voir()">
                                 </option>     
                         </datalist> {{form.client_id}}777 -->
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
                             {{errors.client_id}} 
-                        </div>       
+                        </div>        -->
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
                         </button>                
@@ -241,7 +241,7 @@ export default {
               payment: this.form.payment,
               compagnie_id: localStorage.getItem('auth.company_id') 
             }).then(response =>{ 
-                // console.log( response ) 
+                console.log( response ) 
                 this.error = response.data.message
                 this.errors = response.data.data
                 // console.log(this.error)

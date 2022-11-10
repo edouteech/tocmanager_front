@@ -7,7 +7,8 @@
 
     <div class="app-main__outer p-5">
       <h4>Catégories supprimées</h4>
-       <table class="table table-hover">
+      <div class="table-responsive">
+        <table class="table table-hover">
           <thead>
             <tr class="table-success">
                 <th>
@@ -28,9 +29,9 @@
             </tr>
             
         </tbody>
-    </table>
+        </table>
     <p class="text-center"><strong>{{total}} catégories au total </strong></p><hr class="text-primary">
-        <br><br>  
+       </div> <br><br>  
      <nav aria-label="Page navigation example" class="d-flex" v-if="res_data != null">
         <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>

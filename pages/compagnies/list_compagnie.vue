@@ -7,7 +7,8 @@
       <div class="container">
       <p>Liste des compagnies</p>
       <NuxtLink class="custom-btn btn-10" to="/compagnies/add_compagnie" v-if="ajout==1">Ajouter compagnie</NuxtLink>
-       <table class="table table-striped">
+      <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr class="table-primary">
                   <th>Noms</th>
@@ -29,6 +30,7 @@
             </tr>
           </tbody>
         </table>  
+      </div>
   </div><br><br><br>
       
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  

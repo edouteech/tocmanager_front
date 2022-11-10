@@ -17,7 +17,7 @@
           <NuxtLink to="/encaissements/encaissement" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Remplir encaissement</span></button></NuxtLink>
         </div>
 
-        <div v-if="this.element_search != ''">
+        <div v-if="this.element_search != ''" class="table-responsive">
           <table class="table table-hover">
             <thead>
               <tr class="table-primary">
@@ -45,7 +45,7 @@
           <p class="text-center"><strong>{{total}} encaissements au total </strong></p><hr class="text-primary">
         </div>
       
-      <div v-if="this.element_search == ''">
+      <div v-if="this.element_search == ''" class="table-responsive">
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">

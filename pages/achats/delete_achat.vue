@@ -7,6 +7,7 @@
 
     <div class="app-main__outer p-5">
       <h4>Factures supprimées</h4>
+      <div class="table-responsive">
         <table class="table table-hover">
           <thead>
             <tr class="table-success">
@@ -38,6 +39,7 @@
                 
             </tbody>
         </table>
+      </div>
     <p class="text-center"><strong>{{total}} factures au total </strong></p><hr class="text-primary">
         <br><br>  
          <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">

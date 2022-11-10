@@ -64,7 +64,8 @@
               <th class="py-4">Nom du produit</th>
               <th class="py-4">Quantité </th>
               <th class="py-4">Prix unitaire </th>
-              <th class="py-4">Total HT</th>
+              <th class="py-4">Total</th>
+              <th class="py-4">Total après réduction</th>
             </tr>
           </thead>
           <tbody>
@@ -73,6 +74,7 @@
               <td>{{facture.quantity}}</td>
               <td>{{facture.price}}</td>
               <td>{{facture.amount}} F CFA</td>
+              <td>{{facture.amount_after_discount}} F CFA</td>
             </tr>
           </tbody>
         </table>  <br><br> 
@@ -89,11 +91,23 @@
         <table  class="total d-flex align-items-end flex-column">
           <tbody>
             <tr>
-              <td class="p-2">Taxe</td>
-              <td class="py-2 px-5">{{tax}} F CFA</td>
+              <td class="p-2"><strong>TOTAL Hors Taxe</strong></td>
+              <td class="py-2 px-5"><strong>{{montant_ht}} F CFA</strong></td>
             </tr>
             <tr>
-              <td class="p-2"><strong>TOTAL</strong></td>
+              <td class="p-2">Taxe</td>
+              <td class="py-2 px-5">{{tax}}</td>
+            </tr>
+            <tr>
+              <td class="p-2"><strong>TOTAL TTC</strong></td>
+              <td class="py-2 px-5"><strong>{{montant_ttc}} F CFA</strong></td>
+            </tr>
+            <tr>
+              <td class="p-2">Réduction</td>
+              <td class="py-2 px-5">{{discount}} F CFA</td>
+            </tr>
+            <tr>
+              <td class="p-2"><strong>Net à payer</strong></td>
               <td class="py-2 px-5"><strong>{{montant}} F CFA</strong></td>
             </tr>
             <tr>
@@ -157,18 +171,23 @@
           <div class="py-4 px-2 w-25">Nom du produit</div>
           <div class="py-4 px-2 w-25">Quantité </div>
           <div class="py-4 px-2 w-25">Prix unitaire </div>
-          <div class="py-4 px-2 w-25">Total HT</div>
+          <div class="py-4 px-2 w-25">Total</div>
+          <div class="py-4 px-2 w-25">Total après réduction</div>
       </div>
       <div class="d-flex" v-for="(facture, j) in factures" :key="j">
           <div class="px-2 w-25">{{facture.product.name}}</div>
           <div class="px-2 w-25">{{facture.quantity}}</div>
           <div class="px-2 w-25">{{facture.price}}</div>
           <div class="px-2 w-25">{{facture.amount}} F CFA</div>
+          <div class="px-2 w-25">{{facture.amount_after_discount}} F CFA</div>
       </div><br><br>
       <hr><br>
       <div >
-          <p><strong> Total : {{montant}} F CFA</strong> </p>
-          <p><strong> Taxe : {{tax}} F CFA</strong> </p>
+          <p><strong> Total Hors Taxe : {{montant_ht}} F CFA</strong> </p>
+          <p> Taxe : {{tax}}</p>
+          <p><strong> Total TTC : {{montant_ttc}} F CFA</strong> </p>
+          <p> Réduction: {{discount}} F CFA</p>
+          <p><strong> Net à payer : {{montant}} F CFA</strong> </p>
           <p><strong> Montant restant à encaisser : {{rest}} F CFA</strong> </p>
       </div>
 
@@ -252,6 +271,9 @@ export default {
         rest: '',
         number : 0,
         tax: '',
+        discount:'',
+        montant_ht: '',
+        montant_ttc: '',
         id: '',
         compagny:[],
         encaissements: [],
@@ -314,6 +336,9 @@ export default {
             this.date_sell = moment(response.data.data[0].date_sell).format("D MMM YYYY, h:mm:ss a"),
             this.client = response.data.data[0].client,
             this.montant = response.data.data[0].amount,
+            this.montant_ht = response.data.data[0].amount_ht,
+            this.montant_ttc = response.data.data[0].amount_ttc,
+            this.discount = response.data.data[0].discount,
             this.rest = response.data.data[0].rest
             this.tax = response.data.data[0].tax
             this.compagny = response.data.data[0].client.compagny

@@ -7,44 +7,45 @@
 
     <div class="app-main__outer p-5">
       <h4>Produits supprimés</h4>
-       <table class="table table-hover">
-          <thead>
-            <tr class="table-success">
-                        <th >
-                            Noms 
-                        </th>
-                        <th >
-                            Quantités
-                        </th>
-                        <th>
-                            Prix de vente
-                        </th>
-                        <th>
-                            Prix d'achat
-                        </th>
+        <div class="table-responsive">
+            <table class="table table-hover">
+            <thead>
+                <tr class="table-success">
+                            <th >
+                                Noms 
+                            </th>
+                            <th >
+                                Quantités
+                            </th>
+                            <th>
+                                Prix de vente
+                            </th>
+                            <th>
+                                Prix d'achat
+                            </th>
 
-                        <th>
-                            Actions
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr  v-for="(produit, i) in produits" :key="i"
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td>{{produit.name}}</td>
-                        <td>{{produit.quantity}}</td>
-                        <td>{{produit.price_sell}}</td>
-                        <td>{{produit.price_buy}}</td>                         
-                        <td><div class="action">
-                            <div class="sup" @click="supProduit(produit.id)">Supprimer définitivement</div>
-                            <div class="restore" @click="restaurerProduit(produit.id)">Restaurer ce produit</div></div>
-                        </td>
-                    </tr>
-                    
-                </tbody>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr  v-for="(produit, i) in produits" :key="i"
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td>{{produit.name}}</td>
+                            <td>{{produit.quantity}}</td>
+                            <td>{{produit.price_sell}}</td>
+                            <td>{{produit.price_buy}}</td>                         
+                            <td><div class="action">
+                                <div class="sup" @click="supProduit(produit.id)">Supprimer définitivement</div>
+                                <div class="restore" @click="restaurerProduit(produit.id)">Restaurer ce produit</div></div>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
             </table>
-    <p class="text-center"><strong>{{total}} produits au total </strong></p><hr class="text-primary">
-        <br><br> 
+            <p class="text-center"><strong>{{total}} produits au total </strong></p><hr class="text-primary">
+        </div><br><br> 
             <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
                 <ul class="pagination">
                     <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>

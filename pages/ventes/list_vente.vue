@@ -16,14 +16,14 @@
           </div>
           <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
         </div>
-        <div v-if="this.element_search != ''">
+        <div v-if="this.element_search != ''" class="table-responsive">
           <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
                   <th>Date facture</th>
                   <th>Client concerné</th>
-                  <th>Montant HT </th>
-                  <th>Montant TTC </th>
+                  <!-- <th>Montant HT </th>
+                  <th>Montant TTC </th> -->
                   <th>Net à payer </th>
                   <th>Montant du</th>
                   <th>Moyen de paiement</th>
@@ -34,8 +34,8 @@
                 <tr  v-for="(result, i) in results" :key="i">
                   <td>{{result.date_sell}}</td>
                   <td>{{result.client.name}}</td>
-                  <td>{{result.amount_ht}}</td>
-                  <td>{{result.amount_ttc}}</td>
+                  <!-- <td>{{result.amount_ht}}</td>
+                  <td>{{result.amount_ttc}}</td> -->
                   <td>{{result.amount}}</td>
                   <td class="text-danger">{{result.rest}}</td>
                   <td>{{result.payment}}</td>
@@ -52,14 +52,14 @@
           </table> 
         <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
         </div>
-        <div v-if="this.element_search == ''">
+        <div v-if="this.element_search == ''" class="table-responsive">
           <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
                   <th>Date facture</th>
                   <th>Client concerné</th>
-                  <th>Montant HT </th>
-                  <th>Montant TTC </th>
+                  <!-- <th>Montant HT </th>
+                  <th>Montant TTC </th> -->
                   <th>Net à payer </th>
                   <th>Montant du</th>
                   <th>Moyen de paiement</th>
@@ -70,8 +70,8 @@
                 <tr  v-for="(vente, i) in ventes" :key="i">
                   <td>{{vente.date_sell}}</td>
                   <td>{{vente.client.name}}</td>
-                  <td>{{vente.amount_ht}}</td>
-                  <td>{{vente.amount_ttc}}</td>
+                  <!-- <td>{{vente.amount_ht}}</td>
+                  <td>{{vente.amount_ttc}}</td> -->
                   <td>{{vente.amount}}</td>
                   <td class="text-danger">{{vente.rest}}</td>
                   <td>{{vente.payment}}</td>
