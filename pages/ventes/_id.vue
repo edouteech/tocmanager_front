@@ -63,7 +63,7 @@
                                 </select>
                             </td>
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required ></td>
+                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
                             <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
                             <td @change="taxChange()"><div @change="reduceAmount()"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
                             <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
@@ -103,7 +103,7 @@
                     </div>
                 </div>
              <br><br><br><br>
-            <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+            <button class="custom-btn btn-5" v-on:click.prevent="submit()" :disabled = "load">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
             
     
         </form>
@@ -136,6 +136,7 @@ export default {
 
     data () {
         return{
+            load: false,
             amount_error: null,
             showModal: false,
             showSaved: false,
@@ -211,6 +212,7 @@ export default {
         },
         
         submit(){
+            this.load =true
             this.$axios.put('/sells/' +this.$route.params.id,{
               id: this.$route.params.id,
               date_sell: this.form.date_sell,
@@ -233,6 +235,7 @@ export default {
                     this.$router.push({path:'/ventes/list_vente'})
                 }
                 else{
+                    this.load = false
                     this.error = response.data.message
                     
                 }
@@ -305,11 +308,12 @@ export default {
         quantityChange(index){
             let line = this.form.sell_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
+            line.amount_after_discount = Number(line.price) * Number(line.quantity);
             let sum = 0;
             for (let j = 0; j < this.form.sell_lines.length; j++) {
-                sum += this.form.sell_lines[j].amount;
+                sum += this.form.sell_lines[j].amount_after_discount;
             }
-            this.form.amount = sum;
+            this.form.amount_ht = sum;
                 
         },
 

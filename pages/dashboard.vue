@@ -560,6 +560,7 @@ export default {
 <style>
 .app-main__outer{
     padding: 5%;
+    font-size: 14px;
 }
 
 

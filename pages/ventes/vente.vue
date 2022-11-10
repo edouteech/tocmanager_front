@@ -69,7 +69,7 @@
                                     </select>
                                 </td>
                                 <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required ></td>
+                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
                                 <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
                                 <td @change="taxChange()"><div @change="reduceAmount()"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
                                 <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
@@ -78,9 +78,9 @@
                             </tr>
                         </tbody>
                     </table>   
-                    <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.amount">
+                    <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.amount">
                         Veuillez ajouter une ligne de vente
-                    </div>  
+                    </div>   -->
                 </div><br>
                 <br>
                 <div class="d-flex">
@@ -88,7 +88,7 @@
                         <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
                     </div>
                     <div class="form-group col-md-3 mx-4">
-                        <strong>Taxe [1 -100]</strong> <div @change="reduceAmount()"><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
+                        <strong>Taxe [0 -100]%</strong> <div @change="reduceAmount()"><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
                     </div>
                     <div class="form-group col-md-4">
                         <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
@@ -98,7 +98,7 @@
                 <hr><br>
                 <div class="d-flex">
                     <div class="form-group1 col-md-3"> 
-                        <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
+                        <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                     </div>
                     <div class="form-group1 col-md-4 mx-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
                     <div class="form-group col-md-4">
@@ -115,7 +115,7 @@
                     {{amount_error}} 
                 </div> 
                 <br><br><br><br>
-                <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+                <button class="custom-btn btn-5" v-on:click.prevent="submit()" :disabled="load">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
         
             </form>
         
@@ -149,6 +149,7 @@ export default {
 
     data () {
         return{
+            load: false,
             amount_error: null,
             message: '',
             cli_id: '0',
@@ -225,6 +226,7 @@ export default {
         },
 
         async submit(){
+            this.load = true
             await  this.$axios.post('/sells',{
               date_sell: this.form.date_sell,
               tax: this.form.tax,
@@ -247,6 +249,7 @@ export default {
                         this.$router.push({path:'/ventes/SavedModal',})
                     }
                     else{
+                        this.load = false
                         this.errors = response.data.data
                         // this.$router.push({path:'/clients/add_client'});
                     }
@@ -304,9 +307,10 @@ export default {
         quantityChange(index){
             let line = this.form.sell_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
+            line.amount_after_discount = Number(line.price) * Number(line.quantity);
             let sum = 0;
             for (let j = 0; j < this.form.sell_lines.length; j++) {
-                sum += this.form.sell_lines[j].amount;
+                sum += this.form.sell_lines[j].amount_after_discount;
             }
             this.form.amount_ht = sum;
                 

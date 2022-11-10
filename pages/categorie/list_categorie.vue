@@ -72,7 +72,20 @@
         </table>
         <p class="text-center"><strong>{{total}} catégorie(s) au total </strong></p><hr class="text-primary">
         <br><br> 
-        <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button><button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button></form><br><br>
+        <form class="d-flex justify-content-end" role="search">
+          <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
+          <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
+          <button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button>
+          <downloadexcel
+            class="btn"
+            :fields="json_fields"
+            :before-generate="startDownload"
+            :before-finish="finishDownload"
+            @click.prevent="fetchData()"
+        >
+            Download Excel
+        </downloadexcel>
+        </form><br><br>
         <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -137,10 +150,33 @@ export default {
           nombre: '',
         },
         key: "",
-        showModalDelete: false
+        showModalDelete: false,
+        json_fields: {
+          'Name': 'name',
+        },
       }
     },
     methods: {
+      async fetchData() {
+        const response = await this.$axios.get('/clients',{
+              params: {
+                export: true,
+                compagnie_id: localStorage.getItem('auth.company_id')
+              }
+        })
+        console.log(response)
+        return response.data.data.data
+      },
+
+      startDownload() {
+        alert('show loading')
+      },
+
+      finishDownload() {
+        alert('hide loading')
+      },
+
+
         submitFile(){
           let formData = new FormData();
           formData.append('fichier', this.file);

@@ -22,7 +22,9 @@
                 <tr class="table-primary">
                   <th>Date facture</th>
                   <th>Client concerné</th>
-                  <th>Montant facture </th>
+                  <th>Montant HT </th>
+                  <th>Montant TTC </th>
+                  <th>Net à payer </th>
                   <th>Montant du</th>
                   <th>Moyen de paiement</th>
                   <th>Actions</th>
@@ -32,8 +34,10 @@
                 <tr  v-for="(result, i) in results" :key="i">
                   <td>{{result.date_sell}}</td>
                   <td>{{result.client.name}}</td>
+                  <td>{{result.amount_ht}}</td>
+                  <td>{{result.amount_ttc}}</td>
                   <td>{{result.amount}}</td>
-                  <td>{{result.rest}}</td>
+                  <td class="text-danger">{{result.rest}}</td>
                   <td>{{result.payment}}</td>
                   <td><div class="action" v-for="(user, i) in users" :key="i">
                         <NuxtLink :to="'/ventes/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
@@ -54,7 +58,9 @@
                 <tr class="table-primary">
                   <th>Date facture</th>
                   <th>Client concerné</th>
-                  <th>Montant facture </th>
+                  <th>Montant HT </th>
+                  <th>Montant TTC </th>
+                  <th>Net à payer </th>
                   <th>Montant du</th>
                   <th>Moyen de paiement</th>
                   <th>Actions</th>
@@ -64,8 +70,10 @@
                 <tr  v-for="(vente, i) in ventes" :key="i">
                   <td>{{vente.date_sell}}</td>
                   <td>{{vente.client.name}}</td>
+                  <td>{{vente.amount_ht}}</td>
+                  <td>{{vente.amount_ttc}}</td>
                   <td>{{vente.amount}}</td>
-                  <td>{{vente.rest}}</td>
+                  <td class="text-danger">{{vente.rest}}</td>
                   <td>{{vente.payment}}</td>
                   <td><div class="action" v-for="(user, i) in users" :key="i">
                         <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
@@ -294,7 +302,7 @@
             })        
             .then(response => 
             {
-              console.log(response.data.data.data);
+              // console.log(response.data.data.data);
               this.ventes = response.data.data.data
               this.res_data= response.data.data
               this.total = response.data.data.total
@@ -319,7 +327,7 @@
                 compagnie_id: localStorage.getItem('auth.company_id')
               }
             }).then(response => {
-              console.log(response);
+              // console.log(response);
               this.id = response.data.data[0].id,
               this.factures = response.data.data[0].sell_lines,
               this.date_sell = moment(response.data.data[0].date_sell).format("D MMM YYYY, h:mm:ss a"),
@@ -372,8 +380,10 @@
   </script>
   
   <style scoped>
+
   .app-main__outer{
     overflow: auto;
+    font-size: 14px;
   }
   
   .imprim{
