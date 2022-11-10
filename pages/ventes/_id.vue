@@ -44,9 +44,10 @@
                             <th scope="col">Désignation</th>
                             <th scope="col">Quantité voulue</th>
                             <th scope="col">Prix unitaire</th>
-                            <!-- <th scope="col">Réduction (Prix ou %)</th> -->
-                            <!-- <th scope="col">Taxe appliquée (%)</th> -->
-                            <th scope="col">Total</th>                     
+                            <th scope="col">Total</th>  
+                            <th scope="col">Réduction (Prix ou %)</th>
+                            <th scope="col">Total après réduction</th>  
+                            <!-- <th scope="col">Taxe appliquée (%)</th> -->                   
                         </tr>
                     </thead>
                     
@@ -54,14 +55,19 @@
                         <tr v-for="(line, index) in form.sell_lines" :key="index">
                             <td>
                                 <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
-                                    <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
+                                    <option disabled value="">Choisissez...</option>
+                                    <!-- <template > -->
+                                    
+                                        <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
+                                    <!-- </template> -->
                                 </select>
                             </td>
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
-                            <!-- <td><input class="form-control" type="text" v-model="line.discount" min="0" max="0" autocomplete="off" @change="reduceChange(index)"  required></td> -->
-                            <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>             -->
-                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required ></td>
+                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
+                            <td @change="taxChange()"><div @change="reduceAmount()"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
+                            <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
+                            <td><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
                             <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                         </tr>
                     </tbody>
@@ -73,7 +79,7 @@
                         <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
                     </div>
                     <div class="form-group col-md-3 mx-4">
-                        <strong>Taxe (en %)</strong> <div @change="reduceAmount()"><input class="form-control received" type="string" v-model="form.tax"  autocomplete="off"  required @change="taxChange()"></div>
+                        <strong>Taxe (en %)</strong> <div @change="reduceAmount()"><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off"  required @change="taxChange()"></div>
                     </div>
                     <div class="form-group col-md-4">
                         <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
@@ -83,7 +89,7 @@
                 <hr><br>
                 <div class="d-flex">
                     <div class="form-group1 col-md-3"> 
-                        <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
+                        <strong>Réduction (Prix)</strong> <div  @change="taxChange()"><input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                     </div>
                     <div class="form-group1 col-md-4 mx-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
                     <div class="form-group col-md-4">
@@ -186,7 +192,7 @@ export default {
     
     methods: {
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});   
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id')});           
         },
 
         deleteLine(index){
@@ -257,35 +263,16 @@ export default {
         },
 
         taxChange(){
-            var str = this.form.tax;
-            var percent = str.indexOf("%"); 
-
-                if(percent != -1){
-                    var newStr = str.substring(0, str.length - 1);
-                    let calculTTC = this.form.amount_ht * Number(newStr);
-                    let pourcentage = calculTTC / 100
-                    this.form.amount_ttc = this.form.amount_ht + pourcentage;
-                } 
-                else{
-                    let calculTTC = this.form.amount_ht * str;
-                    let pourcentage = calculTTC / 100
-                    this.form.amount_ttc = this.form.amount_ht + pourcentage;
-                } 
+            var pourcentage = this.form.tax / 100;
+            // this.form.tax = pourcentage
+            var taxe = this.form.amount_ht * pourcentage
+            this.form.amount_ttc = this.form.amount_ht + taxe;
         },
 
         reduceAmount(){
-            var str = this.form.discount;
-            var percent = str.indexOf("%"); 
+            var red = this.form.discount;
+            this.form.amount = this.form.amount_ttc - red
 
-                if(percent != -1){
-                    var newStr = str.substring(0, str.length - 1);
-                    let calcul1 = this.form.amount_ttc * Number(newStr);
-                    let calcul2 = calcul1 / 100
-                    this.form.amount = this.form.amount_ttc - calcul2;
-                } 
-                else{
-                    this.form.amount = this.form.amount_ttc - str
-                }   
         },
 
         reduceChange(index){

@@ -50,9 +50,10 @@
                                 <th scope="col">Désignation</th>
                                 <th scope="col">Quantité voulue</th>
                                 <th scope="col">Prix unitaire</th>
+                                <th scope="col">Total</th>  
                                 <th scope="col">Réduction (Prix ou %)</th>
-                                <!-- <th scope="col">Taxe appliquée (%)</th> -->
-                                <th scope="col">Total</th>                     
+                                <th scope="col">Total après réduction</th>  
+                                <!-- <th scope="col">Taxe appliquée (%)</th> -->                   
                             </tr>
                         </thead>
                         
@@ -69,9 +70,10 @@
                                 </td>
                                 <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                                 <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required ></td>
+                                <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
                                 <td @change="taxChange()"><div @change="reduceAmount()"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
                                 <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
-                                <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
+                                <td><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
@@ -86,7 +88,7 @@
                         <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
                     </div>
                     <div class="form-group col-md-3 mx-4">
-                        <strong>Taxe (en %)</strong> <div @change="reduceAmount()"><input class="form-control received" type="string" v-model="form.tax"  autocomplete="off"  required @change="taxChange()"></div>
+                        <strong>Taxe [1 -100]</strong> <div @change="reduceAmount()"><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
                     </div>
                     <div class="form-group col-md-4">
                         <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
@@ -161,7 +163,7 @@ export default {
                 date_sell: moment().format("YYYY-MM-DDThh:mm"),
                 client_id: '',
                 amount: '',
-                tax: '0',
+                tax: '',
                 discount: '0',
                 amount_received: '0',
                 sell_lines: [],
@@ -204,7 +206,7 @@ export default {
         },
 
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: localStorage.getItem('auth.company_id')});           
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id')});           
         },
 
         deleteLine(index){
@@ -275,34 +277,27 @@ export default {
         },
 
         taxChange(){
-            var str = this.form.tax;
-            var percent = str.indexOf("%"); 
+            var pourcentage = this.form.tax / 100;
+            // this.form.tax = pourcentage
+            var taxe = this.form.amount_ht * pourcentage
+            this.form.amount_ttc = this.form.amount_ht + taxe;
 
-                if(percent != -1){
-                    var newStr = str.substring(0, str.length - 1);
-                    let calculTTC = this.form.amount_ht * Number(newStr);
-                    let pourcentage = calculTTC / 100
-                    this.form.amount_ttc = this.form.amount_ht + pourcentage;
-                } 
-                else{
-                    let calculTTC = this.form.amount_ht * str;
-                    let pourcentage = calculTTC / 100
-                    this.form.amount_ttc = this.form.amount_ht + pourcentage;
-                } 
         },
 
         reduceAmount(){
-            var str = this.form.discount;
-            var percent = str.indexOf("%"); 
+            var red = this.form.discount;
+            var percent = red.indexOf("%"); 
 
                 if(percent != -1){
-                    var newStr = str.substring(0, str.length - 1);
-                    let calcul1 = this.form.amount_ttc * Number(newStr);
+                    var newRed = red.substring(0, red.length - 1);
+                    let calcul1 = this.form.amount_ttc * Number(newRed);
                     let calcul2 = calcul1 / 100
+                    this.form.discount = calcul2
                     this.form.amount = this.form.amount_ttc - calcul2;
                 } 
                 else{
-                    this.form.amount = this.form.amount_ttc - str
+                    this.form.discount = red
+                    this.form.amount = this.form.amount_ttc - red
                 }   
         },
 
@@ -320,6 +315,7 @@ export default {
         reduceChange(index){
             let line = this.form.sell_lines[index]
             let calculQ = Number(line.price) * Number(line.quantity)
+            line.amount = calculQ
             var str = line.discount;
             var percent = str.indexOf("%"); 
 
@@ -327,18 +323,18 @@ export default {
                     var newStr = str.substring(0, str.length - 1);
                     let calculR = calculQ * Number(newStr);
                     let Rprix = calculR / 100
-                    line.amount = calculQ - Rprix;
+                    line.amount_after_discount = calculQ - Rprix;
                     let sum = 0;
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount;
+                        sum += this.form.sell_lines[j].amount_after_discount;
                     }
                     this.form.amount_ht = sum;
                 } 
                 else{
-                    line.amount = calculQ - str;
+                    line.amount_after_discount = calculQ - str;
                     let sum = 0;
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount;
+                        sum += this.form.sell_lines[j].amount_after_discount;
                     }
                     this.form.amount_ht = sum;
                 }   
@@ -353,11 +349,12 @@ export default {
                 let line = this.form.sell_lines[index]
                 line.price = product.price_sell;
                 line.amount = Number(line.price) * Number(line.quantity);
+                line.amount_after_discount = Number(line.price) * Number(line.quantity);
                     
                 
                 let sum = 0;
                 for (let j = 0; j < this.form.sell_lines.length; j++) {
-                    sum += this.form.sell_lines[j].amount;
+                    sum += this.form.sell_lines[j].amount_after_discount;
                 }
                 this.form.amount_ht = sum;
                 // console.log(sum); 
