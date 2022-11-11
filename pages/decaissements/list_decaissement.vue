@@ -176,20 +176,16 @@ export default {
       results: "",
       columns: [
         {
-          label: "Date",
+          label: "date",
           field: "date",
         },
         {
-          label: "Montant",
+          label: "montant",
           field: "montant",
         },
         {
           label: "fournisseur",
           field: "supplier.name",
-        },
-        {
-          label: "Facture_id",
-          field: "buy_id",
         },
       ],
       data: [],
