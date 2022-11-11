@@ -184,8 +184,8 @@ export default {
           field: "montant",
         },
         {
-          label: "Fournisseur_id",
-          field: "supplier_id",
+          label: "fournisseur",
+          field: "supplier.name",
         },
         {
           label: "Facture_id",
