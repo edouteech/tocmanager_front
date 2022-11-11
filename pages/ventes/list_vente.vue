@@ -89,6 +89,20 @@
         <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
         </div>
           <br><br> 
+          <form class="d-flex justify-content-end" role="search">
+            <!-- <input type="file" id="file" ref="file" @change="handleFileUpload()" />
+            <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button> -->
+            <vue-excel-xlsx
+                class="btn btn-outline-info mx-5"
+                :data="data"
+                :columns="columns"
+                :file-name="'factures_ventes'"
+                :file-type="'xlsx'"
+                :sheet-name="'sheetname'"
+                >
+                Exporter
+              </vue-excel-xlsx>
+          </form><br><br>
           <nav aria-label="Page navigation example "  class="d-flex" v-if="res_data != null">
             <ul class="pagination">
               <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -264,12 +278,57 @@
           showModalDelete: false,
           element_search: "",
           results: "",
-        }
-      },
+          columns : [
+            {
+                label: "Date d'édition",
+                field: "date_sell",
+            },
+            {
+                label: "Prix Hors Taxe",
+                field: "amount_ht",
+            },
+            {
+                label: "Taxe",
+                field: "tax",
+            },
+            {
+                label: "Prix TTC",
+                field: "amount_ttc",
+            },
+            {
+                label: "Réduction",
+                field: "discount",
+            },
+            {
+                label: "Net à payer",
+                field: "amount",
+            },
+            {
+                label: "Reste à payer",
+                field: "rest",
+            },
+            {
+                label: "Client_id",
+                field: "client_id",
+            },
+      ],
+      data : [],
+    }
+  },
+
       methods: {
-        // myDateFormat: function(d) {
-        //   return d.getFullYear() + "/" + ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2);
-        // },
+        async exp(){
+            await this.$axios.get('/sells',{
+                params: {
+                  compagnie_id: localStorage.getItem('auth.company_id'),
+                  is_paginated: 0
+                }
+              }).then(response =>{
+                // console.log(response);
+                this.data = response.data.data
+                })   
+        },
+
         search(){
           this.$axios.get('/sells',{params: {
             compagnie_id: localStorage.getItem('auth.company_id'),
@@ -369,13 +428,16 @@
           }
           
       },
-      mounted () {
+
+      
+    async mounted () {
+      await this.exp()
         this.refresh()
         this.recupClient()
-         this.users = this.$auth.$state.user.roles;
+        this.users = this.$auth.$state.user.roles;
         this.compagny = localStorage.getItem('auth.company_id');
         // console.log(this.$auth)
-      }
+    }
   }
   </script>
   

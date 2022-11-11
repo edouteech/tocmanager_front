@@ -39,7 +39,7 @@
               <td>{{result.name}}</td>
               <td>{{result.phone}}</td>
               <td>{{result.email}}</td>
-              <td>{{result.balance}}</td>
+              <td class="text-danger">{{result.balance}}</td>
               <td>{{result.nature}}</td>
               <td><div class="action" v-for="(user, i) in users" :key="i">
                 <div @click="voirClient(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
@@ -70,7 +70,7 @@
               <td>{{client.name}}</td>
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
-              <td>{{client.balance}}</td>
+              <td class="text-danger">{{client.balance}}</td>
               <td>{{client.nature}}</td>
               <td><div class="action" v-for="(user, i) in users" :key="i">
                 <div @click="voirClient(client.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
@@ -86,7 +86,16 @@
     <form class="d-flex justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
       <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-      <button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button>
+      <vue-excel-xlsx
+        class="btn btn-outline-info mx-5"
+        :data="data"
+        :columns="columns"
+        :file-name="'clients'"
+        :file-type="'xlsx'"
+        :sheet-name="'sheetname'"
+        >
+        Exporter
+      </vue-excel-xlsx>
     </form><br><br>
     <nav class="page" aria-label="Page navigation example px-8 " v-if="res_data != null">
       <ul class="pagination">
@@ -155,18 +164,53 @@ export default {
         },
         key: '',
         showModalDelete: false,
-        
+        columns : [
+            {
+                label: "Nom",
+                field: "name",
+            },
+            {
+                label: "Email",
+                field: "email",
+            },
+            {
+                label: "Téléphone",
+                field: "phone",
+            },
+            {
+                label: "Nature",
+                field: "nature",
+            },
+            {
+                label: "Balance",
+                field: "balance",
+            },
+        ],
+        data : [],
       }
     },
 
-    mounted () {
+    async mounted () {
+      await this.exp()
       this.refresh()
       this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
     },
 
     methods: {
-        submitFile(){
+      async exp(){
+        await this.$axios.get('/clients',{
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+              is_paginated: 0
+            }
+          }).then(response =>{
+            // console.log(response);
+            this.data = response.data.data
+            })   
+      },
+      
+      submitFile(){
           let formData = new FormData();
           formData.append('fichier', this.file);
 

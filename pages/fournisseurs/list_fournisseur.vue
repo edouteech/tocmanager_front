@@ -84,7 +84,20 @@
         <p class="text-center"><strong>{{total}} fournisseur(s) au total </strong></p><hr class="text-primary">
     
       </div>  <br><br>
-    <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button><button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button></form><br><br>
+    <form class="d-flex justify-content-end" role="search">
+      <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
+      <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
+      <vue-excel-xlsx
+        class="btn btn-outline-info mx-5"
+        :data="data"
+        :columns="columns"
+        :file-name="'fournisseurs'"
+        :file-type="'xlsx'"
+        :sheet-name="'sheetname'"
+        >
+        Exporter
+      </vue-excel-xlsx>
+    </form><br><br>
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -152,16 +165,52 @@ export default {
       },
       key: '',
       showModalDelete: false,
+      columns : [
+            {
+                label: "Nom",
+                field: "name",
+            },
+            {
+                label: "Email",
+                field: "email",
+            },
+            {
+                label: "Téléphone",
+                field: "phone",
+            },
+            {
+                label: "Nature",
+                field: "nature",
+            },
+            {
+                label: "Balance",
+                field: "balance",
+            },
+      ],
+      data : [],
     }
   },
-  mounted () {
+  async mounted () {
+      await this.exp()
       this.refresh()
-         this.users = this.$auth.$state.user.roles;
-    this.compagny = localStorage.getItem('auth.company_id');
+      this.users = this.$auth.$state.user.roles;
+      this.compagny = localStorage.getItem('auth.company_id');
   },
 
   methods: {
-      submitFile(){
+    async exp(){
+        await this.$axios.get('/suppliers',{
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+              is_paginated: 0
+            }
+          }).then(response =>{
+            // console.log(response);
+            this.data = response.data.data
+            })   
+    },
+
+    submitFile(){
           let formData = new FormData();
           formData.append('fichier', this.file);
 

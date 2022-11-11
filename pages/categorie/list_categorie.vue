@@ -75,25 +75,17 @@
         <form class="d-flex justify-content-end" role="search">
           <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
           <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-          <button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button>
-          <!-- <downloadexcel
-            class="btn"
-            :fields="json_fields"
-            :before-generate="startDownload"
-            :before-finish="finishDownload"
-        >
-            Download Excel
-        </downloadexcel> -->
-
-        <vue-excel-xlsx
-          :data="data"
-          :columns="columns"
-          :file-name="'categories'"
-          :file-type="'xlsx'"
-          :sheet-name="'sheetname'"
-          >
-          Download
-      </vue-excel-xlsx>
+          
+          <vue-excel-xlsx
+            class="btn btn-outline-info mx-5"
+            :data="data"
+            :columns="columns"
+            :file-name="'categories'"
+            :file-type="'xlsx'"
+            :sheet-name="'sheetname'"
+            >
+            Exporter
+          </vue-excel-xlsx>
         </form><br><br>
         <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
@@ -160,52 +152,38 @@ export default {
         },
         key: "",
         showModalDelete: false,
-        json_fields: {
-          'Name': 'name',
-        },
-        
         columns : [
-                    {
-                        label: "Nom",
-                        field: "name",
-                    },
-                    {
-                        label: "Parent_id",
-                        field: "parent_id",
-                    },
-                    
-                ],
-                data :this.categories,
+            {
+                label: "Nom",
+                field: "name",
+            },
+            {
+                label: "Parent_id",
+                field: "parent_id",
+            },
+            
+        ],
+        data : [],
+                
                 
       }
     },
 
     
     methods: {
-      priceFormat(value){
-                return '$ ' + value;
-            },
-      async fetchData() {
-        const response = await this.$axios.get('/clients',{
-              params: {
-                export: true,
-                compagnie_id: localStorage.getItem('auth.company_id')
-              }
-        })
-        console.log(response)
-        return response.data.data.data
+      async exp(){
+        await this.$axios.get('/categories',{
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+              is_paginated: 0
+            }
+          }).then(response =>{
+            // console.log(response);
+            this.data = response.data.data
+            })   
       },
-
-      startDownload() {
-        alert('show loading')
-      },
-
-      finishDownload() {
-        alert('hide loading')
-      },
-
-
-        submitFile(){
+      
+      submitFile(){
           let formData = new FormData();
           formData.append('fichier', this.file);
 
@@ -278,49 +256,23 @@ export default {
             })     
         },
 
-        async Export() {
-          await this.$axios({
-            url: "/export/categories", //your url
-            method: "GET",
-            responseType: "blob",
-            params: {
-                compagnie_id: localStorage.getItem('auth.company_id')
-              },
-          }).then(response => {
-            console.log(response)
-            link.setAttribute("download");
-            link.click();
-            
-          }); // Please catch me!
-        },
-
-        // Export () {
-        //   this.$axios.get('/export/categories',{params: {
+        // async Export() {
+        //   await this.$axios({
+        //     url: "/export/categories",
+        //     method: "GET",
+        //     responseType: "blob",
+        //     params: {
         //         compagnie_id: localStorage.getItem('auth.company_id')
         //       },
-        //   })
-        //   .then(res => {
-        //     var newBlob = new Blob([res.data.data], {
-        //     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
-        //     console.log(res.data)
-        //     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        //       window.navigator.msSaveOrOpenBlob(newBlob)
-        //       return
-        //     }
-        //     const data = window.URL.createObjectURL(newBlob)
-        //     var link = document.createElement('a')
-        //     link.href = data
-        //     link.download = 'comunicacion_piciz.xlsx'
-        //     link.click()
-        //     setTimeout(function () {
-        //       window.URL.revokeObjectURL(data)
-        //     }, 100) 
-        //     this.$spinner.close()
-        //     })
-        //     .finally(() => {
-        //       this.$spinner.close()
-        //     })
-        //   },
+        //   }).then(response => {
+        //     console.log(response)
+        //     link.setAttribute("download");
+        //     link.click();
+            
+        //   }); 
+        // },
+
+        
 
         async Exporte(){
            this.$axios.get('/export/categories',{
@@ -358,8 +310,8 @@ export default {
         
     },
 
-    mounted () {
-      console.log(this.$auth);
+    async mounted () {
+      await this.exp()
       this.refresh()
          this.users = this.$auth.$state.user.roles;
        this.compagny = localStorage.getItem('auth.company_id');

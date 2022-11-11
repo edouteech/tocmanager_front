@@ -105,18 +105,17 @@
     <form class="d-flex justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
        <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-       <button class="btn btn-outline-info mx-5" type="submit"  @click.prevent="Export()">Exporter</button>
+       <vue-excel-xlsx
+          class="btn btn-outline-info mx-5"
+          :data="data"
+          :columns="columns"
+          :file-name="'produits'"
+          :file-type="'xlsx'"
+          :sheet-name="'sheetname'"
+          >
+          Exporter
+        </vue-excel-xlsx>
     </form><br><br>
-
-    <!-- <downloadexcel
-      class="btn"
-      :fetch="fetchData"
-      :fields="json_fields"
-      :before-generate="startDownload"
-      :before-finish="finishDownload"
-    >
-      Download Excel
-    </downloadexcel> -->
 
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
@@ -194,18 +193,65 @@ export default {
           nombre: '',
       },
       key: "",
-      showModalDelete: false
-
+      showModalDelete: false,
+      columns : [
+            {
+                label: "Nom",
+                field: "name",
+            },
+            {
+                label: "Category_id",
+                field: "category_id",
+            },
+            {
+                label: "Groupe de taxation",
+                field: "tax_group",
+            },
+            {
+                label: "Quantité",
+                field: "quantity",
+            },
+            {
+                label: "Prix de vente",
+                field: "price_sell",
+            },
+            {
+                label: "Prix d'achat",
+                field: "price_buy",
+            },
+            {
+                label: "Stock minimal",
+                field: "stock_min",
+            },
+            {
+                label: "Stock_max",
+                field: "stock_max",
+            },
+      ],
+      data : [],
     }
   },
 
-  mounted () {
+  async mounted () {
+      await this.exp()
       this.refresh()
-         this.users = this.$auth.$state.user.roles;
+      this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
   },
 
   methods: {
+        async exp(){
+            await this.$axios.get('/products',{
+                params: {
+                  compagnie_id: localStorage.getItem('auth.company_id'),
+                  is_paginated: 0
+                }
+              }).then(response =>{
+                // console.log(response);
+                this.data = response.data.data
+                })   
+        },
+
        submitFile(){
           let formData = new FormData();
           formData.append('fichier', this.file);
