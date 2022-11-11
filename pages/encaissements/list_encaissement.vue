@@ -198,6 +198,7 @@ export default {
 
   async mounted() {
     await this.exp()
+    this.refresh()
     this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem('auth.company_id');
   },
@@ -210,7 +211,7 @@ export default {
           is_paginated: 0
         }
       }).then(response => {
-        // console.log(response);
+        console.log(response);
         this.data = response.data.data
       })
     },
@@ -286,7 +287,7 @@ export default {
             per_page: this.form.nombre
           }
         }).then(response => {
-          // console.log(response);
+          console.log(response);
           this.encaissements = response.data.data.data
           this.res_data = response.data.data
           this.total = response.data.data.total
