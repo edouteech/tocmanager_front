@@ -166,23 +166,23 @@ export default {
         showModalDelete: false,
         columns : [
             {
-                label: "Nom",
+                label: "name",
                 field: "name",
             },
             {
-                label: "Email",
+                label: "email",
                 field: "email",
             },
             {
-                label: "Téléphone",
+                label: "phone",
                 field: "phone",
             },
             {
-                label: "Nature",
+                label: "nature(particulier ou entreprise)",
                 field: "nature",
             },
             {
-                label: "Balance",
+                label: "balance",
                 field: "balance",
             },
         ],

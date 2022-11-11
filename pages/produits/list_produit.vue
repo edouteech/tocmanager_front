@@ -196,35 +196,35 @@ export default {
       showModalDelete: false,
       columns : [
             {
-                label: "Nom",
+                label: "name",
                 field: "name",
             },
             {
-                label: "Category_id",
+                label: "category_id",
                 field: "category_id",
             },
             {
-                label: "Groupe de taxation",
+                label: "tax_group",
                 field: "tax_group",
             },
             {
-                label: "Quantité",
+                label: "quantity",
                 field: "quantity",
             },
             {
-                label: "Prix de vente",
+                label: "price_sell",
                 field: "price_sell",
             },
             {
-                label: "Prix d'achat",
+                label: "price_buy",
                 field: "price_buy",
             },
             {
-                label: "Stock minimal",
+                label: "stock_min",
                 field: "stock_min",
             },
             {
-                label: "Stock_max",
+                label: "stock_max",
                 field: "stock_max",
             },
       ],

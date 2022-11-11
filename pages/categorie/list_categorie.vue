@@ -154,12 +154,16 @@ export default {
         showModalDelete: false,
         columns : [
             {
-                label: "Nom",
+                label: "id",
+                field: "id",
+            },
+            {
+                label: "name",
                 field: "name",
             },
             {
-                label: "Parent_id",
-                field: "parent_id",
+                label: "parent",
+                field: "parent_id" ,
             },
             
         ],
@@ -178,7 +182,7 @@ export default {
               is_paginated: 0
             }
           }).then(response =>{
-            // console.log(response);
+            // console.log(response.data.data);
             this.data = response.data.data
             })   
       },
