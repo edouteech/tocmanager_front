@@ -93,12 +93,16 @@
                     <div class="form-group col-md-4">
                         <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
                     </div>
-                </div><br><br>
+                </div><br>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.tax">
+                        Veuillez ajouter la taxe
+                </div>  
+                    <br><br>
  
                 <hr><br>
                 <div class="d-flex">
                     <div class="form-group1 col-md-3"> 
-                        <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
+                        <strong>Réduction (Prix ou %)</strong> <div><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                     </div>
                     <div class="form-group1 col-md-4 mx-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
                     <div class="form-group col-md-4">
@@ -122,7 +126,7 @@
     </div>
     
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
-    <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
+    <SavedModal v-show="showSaved" @close-modal="showSaved = false" :identifiant= 'cli_id'/>
     <produitModal v-show="showProduit" @close-modal="showProduit = false" @prod="setProduit"/>
 
 </div>
@@ -152,7 +156,7 @@ export default {
             load: false,
             amount_error: null,
             message: '',
-            cli_id: '0',
+            cli_id: '',
             showModal: false,
             showSaved: false,
             showProduit: false,
@@ -246,7 +250,8 @@ export default {
                 this.errors = response.data.data
                 // console.log(this.error)
                     if(response.data.status == "success"){
-                        this.$router.push({path:'/ventes/SavedModal',})
+                        this.cli_id = response.data.data.id
+                        this.showSaved = true
                     }
                     else{
                         this.load = false
@@ -313,6 +318,8 @@ export default {
                 sum += this.form.sell_lines[j].amount_after_discount;
             }
             this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
                 
         },
 
@@ -333,6 +340,8 @@ export default {
                         sum += this.form.sell_lines[j].amount_after_discount;
                     }
                     this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
                 } 
                 else{
                     line.amount_after_discount = calculQ - str;
@@ -341,6 +350,8 @@ export default {
                         sum += this.form.sell_lines[j].amount_after_discount;
                     }
                     this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
                 }   
         },
 
@@ -361,6 +372,8 @@ export default {
                     sum += this.form.sell_lines[j].amount_after_discount;
                 }
                 this.form.amount_ht = sum;
+                this.form.amount_ttc = sum;
+                this.form.amount = this.form.amount_ttc;
                 // console.log(sum); 
             }    
         },

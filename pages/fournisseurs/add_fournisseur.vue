@@ -23,7 +23,7 @@
 
             <div class="form-group col-md-6">
                 <label class="title">Entrer le numero de téléphone du fournisseur</label>
-                <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
+                <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
             </div>
             <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.phone">
                 {{errors.phone}}

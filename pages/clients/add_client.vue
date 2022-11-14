@@ -22,7 +22,7 @@
 
             <div class="form-group ">
                 <label class="title">Entrer le numero de téléphone du client</label>
-                <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
+                <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
             </div>
             <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
                 {{errors.phone}}
@@ -91,7 +91,7 @@ export default {
               nature: this.form.nature,
               compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
-                console.log( response ) 
+                // console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
 

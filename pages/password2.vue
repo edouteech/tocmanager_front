@@ -85,6 +85,31 @@ export default {
                 //  console.log(this.form.name)                
         },
 
+    changer(){
+      var pwd = document.getElementById("password");
+        var fa =  document.getElementById("eye")
+        if(pwd.getAttribute("type")=="password"){
+            pwd.setAttribute("type","text");
+            fa.class="fa fa-eye px-2";
+        } else {
+            pwd.setAttribute("type","password");
+          
+        }
+    },
+
+    change(){
+      var pwd = document.getElementById("password1");
+        var fa =  document.getElementById("eye")
+        if(pwd.getAttribute("type")=="password"){
+            pwd.setAttribute("type","text");
+            fa.class="fa fa-eye px-2";
+        } else {
+            pwd.setAttribute("type","password");
+          
+        }
+    },
+
+
   }
 
 

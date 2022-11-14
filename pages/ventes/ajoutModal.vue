@@ -15,7 +15,7 @@
                     <input type="text" class="form-control" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" id="name_cli" required>
                 </div>     
                 <div class="input-form">        
-                    <input type="tel" class="form-control" placeholder="Entrer le numero de téléphone du client " v-model="form.phone" id="phone_cli" required>
+                  <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
                 </div>
             
                 <div class="input-form">    

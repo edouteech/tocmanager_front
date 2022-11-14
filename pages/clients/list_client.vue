@@ -45,7 +45,8 @@
                 <div @click="voirClient(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteClient(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                </div>
+                
+              </div>
               </td>
             </tr>
           </tbody>
@@ -76,7 +77,8 @@
                 <div @click="voirClient(client.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+client.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteClient(client.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                </div>
+                <!-- <div><a href="https://api.whatsapp.com/send?phone=&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div> -->
+              </div>
               </td>
             </tr>
           </tbody>

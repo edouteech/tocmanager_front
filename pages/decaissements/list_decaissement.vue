@@ -97,12 +97,12 @@
       </div><br><br>
       
       <form class="d-flex justify-content-end" role="search">
-        <!-- <input type="file" id="file" ref="file" @change="handleFileUpload()" />
-            <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button> -->
-        <vue-excel-xlsx class="btn btn-outline-info mx-5" :data="data" :columns="columns" :file-name="'décaissements'"
-          :file-type="'xlsx'" :sheet-name="'sheetname'">
-          Exporter
-        </vue-excel-xlsx>
+          <input type="file" id="file" ref="file" @change="handleFileUpload()" />
+          <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
+          <vue-excel-xlsx class="btn btn-outline-info mx-5" :data="data" :columns="columns" :file-name="'décaissements'"
+            :file-type="'xlsx'" :sheet-name="'sheetname'">
+            Exporter
+          </vue-excel-xlsx>
       </form><br><br>
       <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
         <ul class="pagination">
@@ -156,6 +156,7 @@ export default {
   data() {
     return {
       links: [],
+      file: '',
       res_data: null,
       showModal: false,
       identifiant1: "",
@@ -213,28 +214,28 @@ export default {
     },
 
     submitFile() {
-      // let formData = new FormData();
-      // formData.append('fichier', this.file);
+      let formData = new FormData();
+      formData.append('fichier', this.file);
 
-      // this.$axios.post('/decaissements/import',
-      //   formData,
-      //   {
-      //     headers: {
-      //         'Content-Type': 'multipart/form-data'
-      //     },
-      //     params: {
-      //       compagnie_id: localStorage.getItem('auth.company_id')
-      //     }
-      //   }
-      // ).then(response => {
-      //   console.log(response);
-      //   if(response.data.status == "success"){
-      //     this.refresh()
+      this.$axios.post('/decaissements/import',
+        formData,
+        {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          },
+          params: {
+            compagnie_id: localStorage.getItem('auth.company_id')
+          }
+        }
+      ).then(response => {
+        console.log(response);
+        if(response.data.status == "success"){
+          this.refresh()
 
-      //    }else{
-      //     this.error= "Echec de l'importation. Veuillez réessayer !!!"
-      //    }
-      // })
+         }else{
+          this.error= "Echec de l'importation. Veuillez réessayer !!!"
+         }
+      })
     },
 
     Export() {
