@@ -75,8 +75,9 @@
         <form class="d-flex justify-content-end" role="search">
           <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
           <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
+          <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter</button>
           
-          <vue-excel-xlsx
+          <!-- <vue-excel-xlsx
             class="btn btn-outline-info mx-5"
             :data="data"
             :columns="columns"
@@ -85,7 +86,7 @@
             :sheet-name="'sheetname'"
             >
             Exporter
-          </vue-excel-xlsx>
+          </vue-excel-xlsx> -->
         </form><br><br>
         <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
@@ -110,11 +111,13 @@
   </div><br>
  <!-- <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' :stock= 'identifiant3' :valorisation= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>   -->
  <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
+ <exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
 </div>
 </template>
 
 <script>
 import deleteModal from './deleteModal.vue'
+import exportModal from './exportModal.vue'
 import voirCategorie from './voir_categorie.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -125,7 +128,8 @@ export default {
       Sidebar,  
       voirCategorie,
       Userinfo,
-      deleteModal
+      deleteModal,
+      exportModal
     },
 
     data () {
@@ -152,22 +156,7 @@ export default {
         },
         key: "",
         showModalDelete: false,
-        columns : [
-            {
-                label: "id",
-                field: "id",
-            },
-            {
-                label: "name",
-                field: "name",
-            },
-            {
-                label: "parent",
-                field: "parent_id" ,
-            },
-            
-        ],
-        data : [],
+        exportModal: false
                 
                 
       }
@@ -175,16 +164,8 @@ export default {
 
     
     methods: {
-      async exp(){
-        await this.$axios.get('/categories',{
-            params: {
-              compagnie_id: localStorage.getItem('auth.company_id'),
-              is_paginated: 0
-            }
-          }).then(response =>{
-            // console.log(response.data.data);
-            this.data = response.data.data
-            })   
+      exp(){
+       this.exportModal = true 
       },
       
       submitFile(){
@@ -276,19 +257,6 @@ export default {
         //   }); 
         // },
 
-        
-
-        async Exporte(){
-           this.$axios.get('/export/categories',{
-              params: {
-                compagnie_id: localStorage.getItem('auth.company_id')
-              },
-            }).then(response =>{
-            console.log(response);
-
-            })     
-        },
-
 
         // voirCategorie(id){
         //     this.showModal = true;
@@ -315,7 +283,6 @@ export default {
     },
 
     async mounted () {
-      await this.exp()
       this.refresh()
          this.users = this.$auth.$state.user.roles;
        this.compagny = localStorage.getItem('auth.company_id');

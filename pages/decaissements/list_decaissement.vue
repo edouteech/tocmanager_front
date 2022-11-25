@@ -99,10 +99,12 @@
       <form class="d-flex justify-content-end" role="search">
           <input type="file" id="file" ref="file" @change="handleFileUpload()" />
           <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-          <vue-excel-xlsx class="btn btn-outline-info mx-5" :data="data" :columns="columns" :file-name="'décaissements'"
+          <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exporte()">Exporter</button>
+          
+          <!-- <vue-excel-xlsx class="btn btn-outline-info mx-5" :data="data" :columns="columns" :file-name="'décaissements'"
             :file-type="'xlsx'" :sheet-name="'sheetname'">
             Exporter
-          </vue-excel-xlsx>
+          </vue-excel-xlsx> -->
       </form><br><br>
       <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
         <ul class="pagination">
@@ -141,6 +143,7 @@
 <script>
 import moment from "moment";
 import deleteModal from './deleteModal.vue'
+import exportModal from './exportModal.vue'
 import voirDecaissement from './voir_decaissement.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -151,7 +154,8 @@ export default {
     Sidebar,
     voirDecaissement,
     Userinfo,
-    deleteModal
+    deleteModal,
+    exportModal
   },
   data() {
     return {
@@ -175,42 +179,19 @@ export default {
       showModalDelete: false,
       element_search: "",
       results: "",
-      columns: [
-        {
-          label: "date",
-          field: "date",
-        },
-        {
-          label: "montant",
-          field: "montant",
-        },
-        {
-          label: "fournisseur",
-          field: "supplier.name",
-        },
-      ],
-      data: [],
+      expotModal: false
     }
   },
 
-  async mounted() {
-    await this.exp()
+  mounted() {
     this.refresh()
     this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem('auth.company_id');
   },
 
   methods: {
-    async exp() {
-      await this.$axios.get('/decaissements', {
-        params: {
-          compagnie_id: localStorage.getItem('auth.company_id'),
-          is_paginated: 0
-        }
-      }).then(response => {
-        // console.log(response);
-        this.data = response.data.data
-      })
+    exporte() {
+       this.expotModal = true
     },
 
     submitFile() {
@@ -236,19 +217,6 @@ export default {
           this.error= "Echec de l'importation. Veuillez réessayer !!!"
          }
       })
-    },
-
-    Export() {
-      // this.$axios.get('/decaissements',{
-      //     params: {
-      //       export: true,
-      //       compagnie_id: localStorage.getItem('auth.company_id')
-      //     }
-      //   })
-      //   .then(response =>  {
-      //     console.log(response);
-      //   this.refresh()
-      // })
     },
 
     search() {

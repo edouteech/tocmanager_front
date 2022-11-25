@@ -105,7 +105,8 @@
     <form class="d-flex justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
        <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-       <vue-excel-xlsx
+       <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter</button>
+       <!-- <vue-excel-xlsx
           class="btn btn-outline-info mx-5"
           :data="data"
           :columns="columns"
@@ -114,7 +115,7 @@
           :sheet-name="'sheetname'"
           >
           Exporter
-        </vue-excel-xlsx>
+        </vue-excel-xlsx> -->
     </form><br><br>
 
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
@@ -140,12 +141,15 @@
   </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
+<exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
+
 </div>
 
 </template>
 
 <script>
 import deleteModal from './deleteModal.vue'
+import exportModal from './exportModal.vue'
 import voirProduit from './voir_produit.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -156,7 +160,8 @@ export default {
     Sidebar,  
     voirProduit,
     Userinfo,
-    deleteModal
+    deleteModal,
+    exportModal
   },
 
   data () {
@@ -194,62 +199,19 @@ export default {
       },
       key: "",
       showModalDelete: false,
-      columns : [
-            {
-                label: "name",
-                field: "name",
-            },
-            {
-                label: "category_id",
-                field: "category_id",
-            },
-            {
-                label: "tax_group",
-                field: "tax_group",
-            },
-            {
-                label: "quantity",
-                field: "quantity",
-            },
-            {
-                label: "price_sell",
-                field: "price_sell",
-            },
-            {
-                label: "price_buy",
-                field: "price_buy",
-            },
-            {
-                label: "stock_min",
-                field: "stock_min",
-            },
-            {
-                label: "stock_max",
-                field: "stock_max",
-            },
-      ],
-      data : [],
+      exportModal: false,
     }
   },
 
-  async mounted () {
-      await this.exp()
+  mounted () {
       this.refresh()
       this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
   },
 
   methods: {
-        async exp(){
-            await this.$axios.get('/products',{
-                params: {
-                  compagnie_id: localStorage.getItem('auth.company_id'),
-                  is_paginated: 0
-                }
-              }).then(response =>{
-                // console.log(response);
-                this.data = response.data.data
-                })   
+        exp(){
+            this.exportModal = true
         },
 
        submitFile(){

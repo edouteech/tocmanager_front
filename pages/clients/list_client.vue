@@ -77,7 +77,7 @@
                 <div @click="voirClient(client.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+client.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteClient(client.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                <!-- <div><a href="https://api.whatsapp.com/send?phone=&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div> -->
+                <div><a :href="'https://api.whatsapp.com/send?phone='+client.phone+'&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!'"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div>
               </div>
               </td>
             </tr>
@@ -88,7 +88,8 @@
     <form class="d-flex justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
       <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-      <vue-excel-xlsx
+      <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exporte()">Exporter</button>
+      <!-- <vue-excel-xlsx
         class="btn btn-outline-info mx-5"
         :data="data"
         :columns="columns"
@@ -97,7 +98,7 @@
         :sheet-name="'sheetname'"
         >
         Exporter
-      </vue-excel-xlsx>
+      </vue-excel-xlsx> -->
     </form><br><br>
     <nav class="page" aria-label="Page navigation example px-8 " v-if="res_data != null">
       <ul class="pagination">
@@ -122,6 +123,7 @@
     <br> 
   </div>
 <voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance="identifiant5" :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+<exportModal v-show="exportModal" @close-modal="exportModal = false"/>
 
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
@@ -133,6 +135,7 @@ import voirClient from './voir_client.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
 import deleteModal from './deleteModal.vue'
+import exportModal from './exportModal.vue'
 export default {
   layout: "empty",
   auth: true,
@@ -140,7 +143,8 @@ export default {
     Sidebar,  
     voirClient,
     Userinfo,
-    deleteModal
+    deleteModal,
+    exportModal
   },
    data () {
       return {
@@ -166,29 +170,8 @@ export default {
         },
         key: '',
         showModalDelete: false,
-        columns : [
-            {
-                label: "name",
-                field: "name",
-            },
-            {
-                label: "email",
-                field: "email",
-            },
-            {
-                label: "phone",
-                field: "phone",
-            },
-            {
-                label: "nature(particulier ou entreprise)",
-                field: "nature",
-            },
-            {
-                label: "balance",
-                field: "balance",
-            },
-        ],
-        data : [],
+        exportModal: false,
+        
       }
     },
 
@@ -200,6 +183,10 @@ export default {
     },
 
     methods: {
+      exporte(){
+        this.exportModal = true
+      },
+          
       async exp(){
         await this.$axios.get('/clients',{
             params: {
@@ -265,19 +252,6 @@ export default {
           this.refresh()
         },
 
-        Export(){
-          this.$axios.get('/clients',{
-              params: {
-                export: true,
-                compagnie_id: localStorage.getItem('auth.company_id')
-              }
-            })
-            .then(response =>  {
-              console.log(response);
-            // this.refresh()
-          })
-         },
-          
         
         refresh(page=1){
           this.$axios.get('/clients',{params: {

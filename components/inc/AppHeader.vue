@@ -17,6 +17,9 @@
                 <li class="nav-item">
                     <NuxtLink to="/register" class="nav-link">Inscription</NuxtLink>
                 </li>
+                <li class="nav-item">
+                    <NuxtLink to="/abonnement" class="nav-link">Nos offres</NuxtLink>
+                </li>
                 <!-- <li class="nav-item">
                     <NuxtLink to="/services" class="nav-link">Nos Services</NuxtLink>
                 </li> -->
