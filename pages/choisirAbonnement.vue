@@ -13,29 +13,12 @@
                     <img src="/images/poignee.jpg" alt="" class="img-offer mx-5  w-75">
                 </div>
                 <div>
-                    <!-- <div class="liste">
-                        <div class="number-text"><span class="number">1</span><span class="text-liste">{{plan1.trial_period}} JOURS D'ESSAI</span></div><br>
-                        <div class="number-text"><span class="number">2</span><span class="text-liste">{{plan1.invoice_period}} MOIS D'ABONNEMENT</span></div><br>
-                        <div class="number-text"><span class="number">3</span><span class="text-liste">ASSISTANCE TECHNIQUE 24H/24</span></div><br>
-                        <div class="number-text"><span class="number">4</span><span class="text-liste">FORMATION GRATUITE</span></div><br>
-                    </div> -->
-                    <div class="d-flex"><button class="btn btn-outline-primary btn-offer p-2" @click.prevent="createAbonnement()">Sélectionner</button><nuxt-link to="/abonnement" class="btn btn-outline-dark btn-offer p-2">En savoir plus</nuxt-link></div>
+                    <div class="d-flex my-5"><button class="btn btn-outline-primary btn-offer p-2" @click.prevent="createAbonnement()">Sélectionner</button><nuxt-link to="/abonnement" class="btn btn-outline-dark btn-offer p-2">En savoir plus</nuxt-link></div>
                     <div class="title-offre col-md-6 mx-auto text-center">{{plan.price}} {{plan.currency}}</div>
                 </div>
             </div>
-            <!-- <div class="col-md-4 mx-auto offre">
-                <h4 class="text-center">{{plan2.name}}</h4><hr>
-                <p class="text-center">{{plan2.description}}</p>
-                <div class="img">
-                    <img src="/images/carousel.jpg" alt="" class="img-offer mx-5  w-75">
-                </div>
-                <div>
-                    <button class="btn btn-outline-primary btn-offer p-2">Sélectionner</button>
-                    <div class="title-offre col-md-6 mx-auto text-center">{{plan2.price}} {{plan2.currency}}</div>
-                </div>
-            </div> -->
         </div>
-<modalEmail :identifiant= 'key' v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/> 
+<modalEmail v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/> 
     </div>
     </template>
     

@@ -108,7 +108,29 @@ export default {
       },
 
       setMessage(){
-        this.$router.push( '/login',)
+        // this.$router.push( '/login',)
+        this.role = localStorage.getItem('auth.roles');
+          if(this.role == 'super_admin'){
+              this.$auth.setUserToken(response.data.data.original.access_token)         
+              .then(response =>{
+                this.$router.push( '/admin/admin',)
+              })
+          }
+          else if(this.role == 'admin'){
+            this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+            this.$auth.setUserToken(response.data.data.original.access_token)         
+              .then(response =>{
+                // console.log(response)
+                this.$router.push( '/dashboard',)
+            })
+          }
+          else{
+            this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+            this.$auth.setUserToken(response.data.data.original.access_token)         
+              .then(response =>{
+                this.$router.push( '/ventes/vente',)
+            })
+          }
       },
       
 
