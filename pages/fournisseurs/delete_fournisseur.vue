@@ -7,7 +7,8 @@
 
     <div class="app-main__outer p-5">
       <h4>Fournisseurs supprimés</h4>
-       <table class="table table-hover">
+      <div class="table-responsive">
+        <table class="table table-hover">
             <thead>
                 <tr class="table-success">
                     <th scope="col" class="px-6 py-3">
@@ -38,8 +39,8 @@
                 
             </tbody>
         </table>
-    <p class="text-center"><strong>{{total}} fournisseurs au total </strong></p><hr class="text-primary">
-        <br><br> 
+         <p class="text-center"><strong>{{total}} fournisseurs au total </strong></p><hr class="text-primary">
+      </div><br><br> 
         <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
             <ul class="pagination">
                 <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -98,7 +99,7 @@ export default {
 
     mounted () {
          this.$axios.get('/get/suppliers',{ params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             per_page : this.form.nombre }   
           })        
         .then(response => {console.log(response.data.data);
@@ -114,7 +115,7 @@ export default {
             console.log(id);
             this.$axios.get('/restore/supplier/' +id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           })         
             .then(response => {console.log(response);

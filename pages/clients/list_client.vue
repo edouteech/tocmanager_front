@@ -21,7 +21,7 @@
         {{error}} 
       </div>
 
-      <div class="search_result" v-if="this.element_search != ''">
+      <div class="table-responsive search_result" v-if="this.element_search != ''">
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
           <thead>
@@ -35,24 +35,27 @@
             </tr>
           </thead>
           <tbody>
-           <tr  v-for="(result, j) in results" :key="j" @click="voirClient(result.id)">
+           <tr  v-for="(result, j) in results" :key="j">
               <td>{{result.name}}</td>
               <td>{{result.phone}}</td>
               <td>{{result.email}}</td>
-              <td>{{result.balance}}</td>
+              <td class="text-danger">{{result.balance}}</td>
               <td>{{result.nature}}</td>
               <td><div class="action" v-for="(user, i) in users" :key="i">
                 <div @click="voirClient(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteClient(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                </div>
+                
+              </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
       
-      <table class="table table-hover" v-if="this.element_search == ''">
+      <div class="table-responsive">
+        <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
                   <th>Noms</th>
@@ -68,21 +71,36 @@
               <td>{{client.name}}</td>
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
-              <td>{{client.balance}}</td>
+              <td class="text-danger">{{client.balance}}</td>
               <td>{{client.nature}}</td>
               <td><div class="action" v-for="(user, i) in users" :key="i">
                 <div @click="voirClient(client.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+client.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteClient(client.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                </div>
+                <div><a :href="'https://api.whatsapp.com/send?phone='+client.phone+'&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!'"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div>
+              </div>
               </td>
             </tr>
           </tbody>
         </table>
         <p class="text-center"><strong>{{total}} client(s) au total </strong></p><hr class="text-primary">
-    <br><br>
-    <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button><button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button></form><br><br>
-    <nav class="page" aria-label="Page navigation example px-8 " v-if="res_data != null">
+      </div><br><br>
+    <form class="d-flex justify-content-end" role="search">
+      <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
+      <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
+      <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exporte()">Exporter</button>
+      <!-- <vue-excel-xlsx
+        class="btn btn-outline-info mx-5"
+        :data="data"
+        :columns="columns"
+        :file-name="'clients'"
+        :file-type="'xlsx'"
+        :sheet-name="'sheetname'"
+        >
+        Exporter
+      </vue-excel-xlsx> -->
+    </form><br><br>
+    <nav class="page" aria-label="Page navigation example px-8" v-if="res_data != null">
       <ul class="pagination">
         <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
         <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
@@ -105,6 +123,9 @@
     <br> 
   </div>
 <voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance="identifiant5" :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+<exportModal v-show="exportModal" @close-modal="exportModal = false"/>
+
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
 
 </template>
@@ -113,13 +134,17 @@
 import voirClient from './voir_client.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
+import deleteModal from './deleteModal.vue'
+import exportModal from './exportModal.vue'
 export default {
   layout: "empty",
   auth: true,
   components: {
     Sidebar,  
     voirClient,
-    Userinfo
+    Userinfo,
+    deleteModal,
+    exportModal
   },
    data () {
       return {
@@ -142,17 +167,38 @@ export default {
         compagny: '',
         form: {
           nombre: '',
-        }
+        },
+        key: '',
+        showModalDelete: false,
+        exportModal: false,
+        
       }
     },
 
-    mounted () {
+    async mounted () {
+      await this.exp()
       this.refresh()
-      this.users = this.$auth.$state.user;
-    this.compagny = localStorage.getItem('auth.company_id');
+      this.users = this.$auth.$state.user.roles;
+      this.compagny = localStorage.getItem('auth.company_id');
     },
 
     methods: {
+      exporte(){
+        this.exportModal = true
+      },
+          
+      async exp(){
+        await this.$axios.get('/clients',{
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+              is_paginated: 0
+            }
+          }).then(response =>{
+            // console.log(response);
+            this.data = response.data.data
+            })   
+      },
+      
       submitFile(){
           let formData = new FormData();
           formData.append('fichier', this.file);
@@ -164,7 +210,7 @@ export default {
                   'Content-Type': 'multipart/form-data'
               },
               params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
             }
           ).then(response => {
@@ -185,7 +231,7 @@ export default {
         },
         search(){
           this.$axios.get('/clients',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             search: this.element_search
           }
           })
@@ -197,34 +243,19 @@ export default {
         },
         
         deleteClient(id){ 
-          // console.log(id);
-          this.$axios.delete('/clients/' +id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-          })
-          .then(response =>  {
-            // console.log(response);
-          this.refresh()})
+          this.showModalDelete = true
+            this.key = id    
+                  
          },
 
-         Export(){
-          this.$axios.get('/clients',{
-              params: {
-                export: true,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
-              }
-            })
-            .then(response =>  {
-              console.log(response);
-            // this.refresh()
-          })
-         },
-          
+        setMessage(){
+          this.refresh()
+        },
+
         
         refresh(page=1){
           this.$axios.get('/clients',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             page: page,
             per_page : this.form.nombre
           }
@@ -244,7 +275,7 @@ export default {
             this.showModal = true;
             this.$axios.get('/clients/'+ id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {
             // console.log(response.data.data[0]);

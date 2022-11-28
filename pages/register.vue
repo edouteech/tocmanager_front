@@ -1,15 +1,7 @@
 <template>
 <div class="contain ">
   <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
-  <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-    {{error}} <br>
-      <!-- <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
-      <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
-      <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
-      <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div>
-      <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-      <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div> -->
-  </div>
+
   <div class="container-fluid h-custom">
       <div class="row d-flex  h-100">
         <div class="img col-md-9 col-lg-6 col-xl-5">
@@ -17,6 +9,15 @@
             class="img-fluid" alt="Sample image">
         </div>
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+            {{error}} <br>
+              <!-- <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
+              <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
+              <div class="error" v-if="errors['password'] != null">{{errors['password']}}</div>
+              <div class="error" v-if="errors['password_confirmation'] != null">{{errors['password_confirmation']}}</div>
+              <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
+              <div class="error" v-if="errors['country'] != null">{{errors['country']}}</div> -->
+          </div>
           <form>
             <div class="divider d-flex align-items-center my-4">
               <p class="text-center fw-bold mx-3 mb-0">Informations personnelles</p>
@@ -50,14 +51,16 @@
 
             <div class="form-outline mb-4">
               <span class="fa fa-mobile px-2"></span> <label class="form-label">Téléphone</label>
-              <div class="input-field"><input type="tel" class="form-control form-control-lg" v-model="form.phone" required
-                placeholder="Entrer votre numéro de téléphone" /></div>      
+              <div class="input-field"><vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> </div>     
             </div>
-            <div class="form-outline mb-4">
+
+            <!-- <div class="form-outline mb-4">
               <span class="fa fa-globe px-2"></span><label class="form-label">Pays</label>
-              <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.country" required
-                placeholder="Entrer le nom de votre pays" /></div>      
-            </div>
+                <select class="form-control" v-model="form.country" required>
+                    <option  value="">Choisissez...</option>
+                    <option v-for="(countrie, i) in countries" :key="i" :value="countrie.name">{{countrie.name}}</option>
+                </select>   
+            </div> -->
 
             <div class="form-outline mb-4">
             <span class="fa fa-briefcase px-2"></span><label class="form-label">Nom de l'entreprise</label>
@@ -95,18 +98,15 @@ export default {
         password: '',
         password_confirmation: '',
         phone: '',
-        country: '',
+        // country: '',
         compagnie: {
           name: '',
-        }
+        },
 
-      }
+      },
     }
   },
 
-  mounted(){
-      console.log(this.form.compagnie)
-  },
 
   methods:{
     async register(){
@@ -116,18 +116,16 @@ export default {
         password: this.form.password,
         password_confirmation: this.form.password_confirmation,
         phone: this.form.phone,
-        country: this.form.country,
+        // country: this.form.country,
         compagnie: this.form.compagnie
-      }).then(response =>{console.log(response);
-          this.error = response.data.message
-          console.log(this.form.compagnie)
-           this.errors = response.data.data
-          console.log(this.error)
-          this.user = response.data.data.original.user_id;
-          this.$router.push({path:'/login'});
-          // this.$router.push({
-          //   name: 'compagnie', params: { id: this.user  }
-          // })   
+      }).then(response =>{
+              console.log(response);
+          if(response.data.status = "success"){
+            this.$router.push({path:'/login'});
+          }
+          else{
+            this.error = response.data.message
+          }
       }).catch( err => console.log( err ) )
               // console.log('user login')
     },

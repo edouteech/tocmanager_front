@@ -7,7 +7,8 @@
       <div class="container">
       <p>Liste des compagnies</p>
       <NuxtLink class="custom-btn btn-10" to="/compagnies/add_compagnie" v-if="ajout==1">Ajouter compagnie</NuxtLink>
-       <table class="table table-striped">
+      <div class="table-responsive">
+        <table class="table table-striped">
           <thead>
             <tr class="table-primary">
                   <th>Noms</th>
@@ -29,13 +30,17 @@
             </tr>
           </tbody>
         </table>  
+      </div>
   </div><br><br><br>
       
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
+
 </div>
 
 </template>
 
 <script>
+import deleteModal from './deleteModal.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
 export default {
@@ -43,7 +48,8 @@ export default {
   layout: "empty",
   components: {
     Sidebar,
-    Userinfo  
+    Userinfo,
+    deleteModal 
   },
    data () {
       return {
@@ -52,6 +58,8 @@ export default {
         ajout: '',
         modifier: '',
         supprimer: '',
+        key:'',
+        showModalDelete: false
       }
     },
 
@@ -64,13 +72,16 @@ export default {
 
     methods: {
 
-        deleteCompagnie(id){ console.log(id);
-          this.$axios.delete('/delete/compagnie/' +id)
-          .then(response =>  {
-            // console.log(response.data.data);
-          this.refresh()})
+        deleteCompagnie(id){   
+          this.showModalDelete = true
+            this.key = id    
+                  
          },
-        
+
+        setMessage(){
+          this.refresh()
+        },
+
         refresh(){
           this.$axios.get('/index/compagnie').then(response => {
             // console.log(response.data.data);

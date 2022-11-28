@@ -187,7 +187,7 @@
   
       mounted(){
          this.compagny = localStorage.getItem('auth.company_id');
-         this.users = this.$auth.$state.user;
+         this.users = this.$auth.$state.user.roles;
         //  console.log(this.$auth)
 
         // console.log(this.role)

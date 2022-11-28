@@ -21,7 +21,7 @@
         {{error}} 
       </div>
 
-      <div class="search_result" v-if="this.element_search != ''">
+      <div class="table-responsive search_result" v-if="this.element_search != ''" >
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
           <thead>
@@ -35,7 +35,7 @@
             </tr>
           </thead>
           <tbody>
-           <tr  v-for="(result, j) in results" :key="j" @click="voirFournisseur(result.id)">
+           <tr  v-for="(result, j) in results" :key="j">
               <td>{{result.name}}</td>
               <td>{{result.phone}}</td>
               <td>{{result.email}}</td>
@@ -52,7 +52,8 @@
         </table>
       </div>
       
-      <table class="table table-hover" v-if="this.element_search == ''">
+      <div class="table-responsive">
+        <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary" >
                     <th>Noms</th>
@@ -65,7 +66,7 @@
             </thead>
           
             <tbody>
-              <tr  v-for="(fournisseur, i) in fournisseurs" :key="i" @click="voirFournisseur(fournisseur.id)">
+              <tr  v-for="(fournisseur, i) in fournisseurs" :key="i">
                 <td>{{fournisseur.name}}</td>
                 <td>{{fournisseur.phone}}</td>
                 <td>{{fournisseur.email}}</td>
@@ -82,8 +83,22 @@
         </table>
         <p class="text-center"><strong>{{total}} fournisseur(s) au total </strong></p><hr class="text-primary">
     
-        <br><br>
-    <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button><button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button></form><br><br>
+      </div>  <br><br>
+    <form class="d-flex justify-content-end" role="search">
+      <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
+      <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
+      <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exporte()">Exporter</button>
+<!-- <vue-excel-xlsx
+        class="btn btn-outline-info mx-5"
+        :data="data"
+        :columns="columns"
+        :file-name="'fournisseurs'"
+        :file-type="'xlsx'"
+        :sheet-name="'sheetname'"
+        >
+        Exporter
+      </vue-excel-xlsx> -->
+    </form><br><br>
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -106,11 +121,16 @@
         </nav>
  </div><br> 
 <voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance= 'identifiant5' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
+<exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
+
 </div>
 
 </template>
 
 <script>
+import deleteModal from './deleteModal.vue'
+import exportModal from './exportModal.vue'
 import voirFournisseur from './voir_fournisseur.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -120,7 +140,9 @@ export default {
   components: {
     Sidebar,  
     voirFournisseur,
-    Userinfo
+    Userinfo,
+    deleteModal,
+    exportModal
   },
 
   data () {
@@ -145,17 +167,24 @@ export default {
       compagny: '',
       form: {
           nombre: '',
-      }
+      },
+      key: '',
+      showModalDelete: false,
+      exportModal: false
     }
   },
-  mounted () {
+  async mounted () {
       this.refresh()
-      this.users = this.$auth.$state.user;
-    this.compagny = localStorage.getItem('auth.company_id');
+      this.users = this.$auth.$state.user.roles;
+      this.compagny = localStorage.getItem('auth.company_id');
   },
 
   methods: {
-      submitFile(){
+    exporte(){
+        this.exportModal = true 
+    },
+
+    submitFile(){
           let formData = new FormData();
           formData.append('fichier', this.file);
 
@@ -166,7 +195,7 @@ export default {
                   'Content-Type': 'multipart/form-data'
               },
               params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
             }
           ).then(response => {console.log(response);
@@ -187,7 +216,7 @@ export default {
 
         search(){
           this.$axios.get('/suppliers',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             search: this.element_search
           }
           })
@@ -202,7 +231,7 @@ export default {
           this.$axios.get('/clients',{
               params: {
                 export: true,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
             })
             .then(response =>  {
@@ -212,20 +241,18 @@ export default {
         },
 
        deleteFournisseur(id){
-          console.log(id);
-          this.$axios.delete('/suppliers/' +id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-          })
-          .then(response => {
-            // console.log(response.data.data);
-            this.refresh()})                 
+        this.showModalDelete = true
+            this.key = id    
+                  
+         },
+
+        setMessage(){
+          this.refresh()
         },
          
         refresh(page=1){
           this.$axios.get('/suppliers',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             page: page,
             per_page : this.form.nombre
           }
@@ -246,7 +273,7 @@ export default {
             this.showModal = true;
             this.$axios.get('/suppliers/'+ id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {
             // console.log(response.data.data[0]);

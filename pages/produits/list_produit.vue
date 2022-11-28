@@ -21,7 +21,7 @@
         {{error}} 
       </div>
       
-      <div class="search_result" v-if="this.element_search != ''">
+      <div class="table-responsive search_result" v-if="this.element_search != ''" >
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
           <thead>
@@ -61,7 +61,8 @@
         </table>
       </div>
       
-      <table class="table table-hover" v-if="this.element_search == ''">
+      <div class="table-responsive">
+        <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
                     <th>Nom</th>
@@ -80,7 +81,8 @@
             <tbody>
               <tr  v-for="(produit, i) in produits" :key="i">
                 <td>{{produit.name}}</td>
-                <td>{{produit.category.name}}</td>
+                <td v-if="produit.category != null">{{produit.category.name}}</td>
+                <td v-else>---</td>
                 <td>{{produit.quantity}}</td>
                 <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(produit.id)"></i></div></td>
                 <td>{{produit.price_sell}}</td>
@@ -98,22 +100,22 @@
             </tbody>
         </table>
         <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
-   <br><br>
+      </div><br><br>
     <form class="d-flex justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
        <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-       <button class="btn btn-outline-info mx-5" type="submit"  @click.prevent="Export()">Exporter</button>
+       <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter</button>
+       <!-- <vue-excel-xlsx
+          class="btn btn-outline-info mx-5"
+          :data="data"
+          :columns="columns"
+          :file-name="'produits'"
+          :file-type="'xlsx'"
+          :sheet-name="'sheetname'"
+          >
+          Exporter
+        </vue-excel-xlsx> -->
     </form><br><br>
-
-    <!-- <downloadexcel
-      class="btn"
-      :fetch="fetchData"
-      :fields="json_fields"
-      :before-generate="startDownload"
-      :before-finish="finishDownload"
-    >
-      Download Excel
-    </downloadexcel> -->
 
         <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
@@ -137,11 +139,16 @@
         </nav>
   </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
+<exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
+
 </div>
 
 </template>
 
 <script>
+import deleteModal from './deleteModal.vue'
+import exportModal from './exportModal.vue'
 import voirProduit from './voir_produit.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -151,7 +158,9 @@ export default {
   components: {
     Sidebar,  
     voirProduit,
-    Userinfo
+    Userinfo,
+    deleteModal,
+    exportModal
   },
 
   data () {
@@ -187,17 +196,23 @@ export default {
       form: {
           nombre: '',
       },
-
+      key: "",
+      showModalDelete: false,
+      exportModal: false,
     }
   },
 
   mounted () {
       this.refresh()
-      this.users = this.$auth.$state.user;
+      this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
   },
 
   methods: {
+        exp(){
+            this.exportModal = true
+        },
+
        submitFile(){
           let formData = new FormData();
           formData.append('fichier', this.file);
@@ -209,7 +224,7 @@ export default {
                   'Content-Type': 'multipart/form-data'
               },
               params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
             }
           ).then(response => {
@@ -229,7 +244,7 @@ export default {
            this.$axios.get('/products',{
               params: {
                 export: true,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               },
               responseType: 'blob'
           }).then((response) => {
@@ -262,7 +277,7 @@ export default {
         
         search(){
           this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             search: this.element_search
           }
           })
@@ -273,23 +288,19 @@ export default {
           })
         },
         deleteProduit(id){
-          console.log(id);
-          this.$axios.delete('/products/' +id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-          }).then(response => 
-            {
-              // console.log(response.data.data);
-              this.refresh()
-            }
-          )         
+          this.showModalDelete = true
+            this.key = id    
+                  
+         },
+
+        setMessage(){
+          this.refresh()
         },
           
 
         refresh(page=1){
           this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             page: page,
             per_page : this.form.nombre
           }
@@ -310,18 +321,24 @@ export default {
             this.showModal = true;
             this.$axios.get('products/'+ id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {
             // console.log(response.data.data[0]);
-             this.identifiant1 = response.data.data[0].category.name
              this.identifiant2 = response.data.data[0].name
              this.identifiant3 = response.data.data[0].quantity
              this.identifiant4 = response.data.data[0].price_sell      
              this.identifiant5 = response.data.data[0].price_buy
              this.identifiant6 = response.data.data[0].stock_min
              this.identifiant7 = response.data.data[0].stock_max 
-             this.identifiant8 = response.data.data[0].tax_group     
+             if(response.data.data[0].category|| response.data.data[0].tax_group ){
+              this.identifiant1 = response.data.data[0].category.name
+             this.identifiant8 = response.data.data[0].tax_group 
+             }
+             else{
+              this.identifiant1 = "Pas de catégorie associée"
+              this.identifiant8 = "Relié à aucun groupe"
+             }
             }) 
                
         },
@@ -331,7 +348,7 @@ export default {
           // console.log(document.getElementById(input_btn).value); 
           this.$axios.get('/products/'+id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           })               
           .then(response => {
@@ -348,7 +365,7 @@ export default {
                 stock_min: produit.stock_min,
                 stock_max: produit.stock_max,
                 tax_group: produit.tax_group,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{console.log(response)
               // console.log(this.name0)
             this.refresh()

@@ -7,38 +7,102 @@
   
       <div class="app-main__outer p-5">
         <h4>Liste des ventes effectuées</h4><hr><br>
-        <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
-        <table class="table table-hover">
-            <thead>
-              <tr class="table-primary">
-                <th>Date facture</th>
-                <th>Client concerné</th>
-                <th>Montant facture </th>
-                <th>Montant du</th>
-                <th>Moyen de paiement</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr  v-for="(vente, i) in ventes" :key="i">
-                <td>{{vente.date_sell}}</td>
-                <td>{{vente.client.name}}</td>
-                <td>{{vente.amount}}</td>
-                <td>{{vente.rest}}</td>
-                <td>{{vente.payment}}</td>
-                <td><div class="action" v-for="(user, i) in users" :key="i">
-                      <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
-                      <div class="cursor-pointer" @click.prevent="print(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
-                      <NuxtLink :to="'/ventes/'+vente.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
-                      <div class="cursor-pointer" @click.prevent="deleteVente(vente.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                      <div class="cursor-pointer" @click.prevent="generateOtherpdf(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-warning" aria-hidden="true"></i></div>
-                    </div>
-                </td>
-              </tr>
-            </tbody>
+        <div class="d-flex">
+          <div class="col-md-10">
+            <form class="d-flex col-md-7" role="search">
+              <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+            </form>
+          </div>
+          <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
+        </div>
+        <div v-if="this.element_search != ''" class="table-responsive">
+          <table class="table table-hover">
+              <thead>
+                <tr class="table-primary">
+                  <th>Date facture</th>
+                  <th>Client concerné</th>
+                  <!-- <th>Montant HT </th>
+                  <th>Montant TTC </th> -->
+                  <th>Net à payer </th>
+                  <th>Montant du</th>
+                  <th>Moyen de paiement</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  v-for="(result, i) in results" :key="i">
+                  <td>{{result.date_sell}}</td>
+                  <td>{{result.client.name}}</td>
+                  <!-- <td>{{result.amount_ht}}</td>
+                  <td>{{result.amount_ttc}}</td> -->
+                  <td>{{result.amount}}</td>
+                  <td class="text-danger">{{result.rest}}</td>
+                  <td>{{result.payment}}</td>
+                  <td><div class="action" v-for="(user, i) in users" :key="i">
+                        <NuxtLink :to="'/ventes/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
+                        <div class="cursor-pointer" @click.prevent="print(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
+                        <NuxtLink :to="'/ventes/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
+                        <div class="cursor-pointer" @click.prevent="deleteVente(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                        <div class="cursor-pointer" @click.prevent="generateOtherpdf(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-warning" aria-hidden="true"></i></div>
+                      </div>
+                  </td>
+                </tr>
+              </tbody>
           </table> 
-      <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
+        <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
+        </div>
+        <div v-if="this.element_search == ''" class="table-responsive">
+          <table class="table table-hover">
+              <thead>
+                <tr class="table-primary">
+                  <th>Date facture</th>
+                  <th>Client concerné</th>
+                  <!-- <th>Montant HT </th>
+                  <th>Montant TTC </th> -->
+                  <th>Net à payer </th>
+                  <th>Montant du</th>
+                  <th>Moyen de paiement</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  v-for="(vente, i) in ventes" :key="i">
+                  <td>{{vente.date_sell}}</td>
+                  <td>{{vente.client.name}}</td>
+                  <!-- <td>{{vente.amount_ht}}</td>
+                  <td>{{vente.amount_ttc}}</td> -->
+                  <td>{{vente.amount}}</td>
+                  <td class="text-danger">{{vente.rest}}</td>
+                  <td>{{vente.payment}}</td>
+                  <td><div class="action" v-for="(user, i) in users" :key="i">
+                        <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
+                        <div class="cursor-pointer" @click.prevent="print(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
+                        <NuxtLink :to="'/ventes/'+vente.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
+                        <div class="cursor-pointer" @click.prevent="deleteVente(vente.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                        <div class="cursor-pointer" @click.prevent="generateOtherpdf(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-warning" aria-hidden="true"></i></div>
+                      </div>
+                  </td>
+                </tr>
+              </tbody>
+          </table> 
+        <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
+        </div>
           <br><br> 
+          <form class="d-flex justify-content-end" role="search">
+            <!-- <input type="file" id="file" ref="file" @change="handleFileUpload()" />
+            <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button> -->
+            <vue-excel-xlsx
+                class="btn btn-outline-info mx-5"
+                :data="data"
+                :columns="columns"
+                :file-name="'factures_ventes'"
+                :file-type="'xlsx'"
+                :sheet-name="'sheetname'"
+                >
+                Exporter
+              </vue-excel-xlsx>
+          </form><br><br>
           <nav aria-label="Page navigation example "  class="d-flex" v-if="res_data != null">
             <ul class="pagination">
               <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -119,6 +183,7 @@
             </tbody>
           </table>  <br><br> 
       </div>
+      <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 
   <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
          
@@ -165,6 +230,7 @@
   
   
   <script>
+  import deleteModal from './deleteModal.vue';  
   import Impression from './impression.vue';  
   import moment from "moment";
   import Sidebar from '../sidebar.vue'
@@ -175,7 +241,8 @@
     components: {
       Sidebar,
       Userinfo,
-      Impression  
+      Impression,
+      deleteModal
     },
      data () {
         return {
@@ -206,30 +273,95 @@
           compagn:[],
           factures: [],
           qrcode: null,
-          qr_info: null, 
-        }
-      },
+          qr_info: null,
+          key: '',
+          showModalDelete: false,
+          element_search: "",
+          results: "",
+          columns : [
+            {
+                label: "Date d'édition",
+                field: "date_sell",
+            },
+            {
+                label: "Prix Hors Taxe",
+                field: "amount_ht",
+            },
+            {
+                label: "Taxe",
+                field: "tax",
+            },
+            {
+                label: "Prix TTC",
+                field: "amount_ttc",
+            },
+            {
+                label: "Réduction",
+                field: "discount",
+            },
+            {
+                label: "Net à payer",
+                field: "amount",
+            },
+            {
+                label: "Reste à payer",
+                field: "rest",
+            },
+            {
+                label: "Client_id",
+                field: "client_id",
+            },
+      ],
+      data : [],
+    }
+  },
+
       methods: {
+        async exp(){
+            await this.$axios.get('/sells',{
+                params: {
+                  compagnie_id: localStorage.getItem('auth.company_id'),
+                  is_paginated: 0
+                }
+              }).then(response =>{
+                // console.log(response);
+                this.data = response.data.data
+                })   
+        },
+
+        search(){
+          this.$axios.get('/sells',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            search: this.element_search
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+          this.results = response.data.data.data 
+          this.total = response.data.data.total
+          
+          })
+        },
           deleteVente(id){
-            console.log(id)
-            this.$axios.delete('/sells/'+id,{params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-            })
-            .then(response =>{
-              // console.log(response);
-              this.refresh()})                
-          },
+            this.showModalDelete = true
+            this.key = id    
+                  
+         },
+
+        setMessage(){
+          this.refresh()
+        },
+        
           
           refresh(page=1){
             this.$axios.get('/sells',{params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+              compagnie_id: localStorage.getItem('auth.company_id'),
               page: page,
               per_page : this.form.nombre }   
             })        
             .then(response => 
             {
-              // console.log(response);
+              // console.log(response.data.data.data);
               this.ventes = response.data.data.data
               this.res_data= response.data.data
               this.total = response.data.data.total
@@ -240,7 +372,7 @@
   
           recupClient(){
             this.$axios.get('/clients',{params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
             })
             .then(response => {
@@ -251,10 +383,10 @@
           async print(id){
             await this.$axios.get('/sells/'+ id,{
               params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
             }).then(response => {
-              console.log(response);
+              // console.log(response);
               this.id = response.data.data[0].id,
               this.factures = response.data.data[0].sell_lines,
               this.date_sell = moment(response.data.data[0].date_sell).format("D MMM YYYY, h:mm:ss a"),
@@ -278,7 +410,7 @@
               // console.log(id)
               await this.$axios.get('/sells/'+ id,{
                   params: {
-                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                    compagnie_id: localStorage.getItem('auth.company_id')
                   }
                 }).then(response => {
                   // console.log(response);
@@ -296,19 +428,24 @@
           }
           
       },
-      mounted () {
+
+      
+    async mounted () {
+      await this.exp()
         this.refresh()
         this.recupClient()
-        this.users = this.$auth.$state.user;
+        this.users = this.$auth.$state.user.roles;
         this.compagny = localStorage.getItem('auth.company_id');
         // console.log(this.$auth)
-      }
+    }
   }
   </script>
   
   <style scoped>
+
   .app-main__outer{
     overflow: auto;
+    font-size: 14px;
   }
   
   .imprim{
@@ -453,6 +590,22 @@
   .btn-3 span:hover:after {
     width: 100%;
   }
+
+
+
+@media screen and (max-width: 900px) {
+  table thead tr th {
+    padding: 15px 20px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  table tbody tr td {
+    padding-left: 10px;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+}
+  
   
   </style>
   

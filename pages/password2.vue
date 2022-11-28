@@ -64,7 +64,7 @@ export default {
             token:this.form.token,
             password: this.form.password,
             password_confirmation: this.form.password_confirmation
-            //   compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            //   compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 console.log( response ) 
                 this.status = response.data.status
@@ -84,6 +84,31 @@ export default {
             .catch( error => console.log( error ) )
                 //  console.log(this.form.name)                
         },
+
+    changer(){
+      var pwd = document.getElementById("password");
+        var fa =  document.getElementById("eye")
+        if(pwd.getAttribute("type")=="password"){
+            pwd.setAttribute("type","text");
+            fa.class="fa fa-eye px-2";
+        } else {
+            pwd.setAttribute("type","password");
+          
+        }
+    },
+
+    change(){
+      var pwd = document.getElementById("password1");
+        var fa =  document.getElementById("eye")
+        if(pwd.getAttribute("type")=="password"){
+            pwd.setAttribute("type","text");
+            fa.class="fa fa-eye px-2";
+        } else {
+            pwd.setAttribute("type","password");
+          
+        }
+    },
+
 
   }
 

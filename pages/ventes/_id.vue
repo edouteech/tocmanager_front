@@ -44,9 +44,10 @@
                             <th scope="col">Désignation</th>
                             <th scope="col">Quantité voulue</th>
                             <th scope="col">Prix unitaire</th>
-                            <!-- <th scope="col">Réduction (Prix ou %)</th> -->
-                            <!-- <th scope="col">Taxe appliquée (%)</th> -->
-                            <th scope="col">Total</th>                     
+                            <th scope="col">Total</th>  
+                            <th scope="col">Réduction (Prix ou %)</th>
+                            <th scope="col">Total après réduction</th>  
+                            <!-- <th scope="col">Taxe appliquée (%)</th> -->                   
                         </tr>
                     </thead>
                     
@@ -54,22 +55,44 @@
                         <tr v-for="(line, index) in form.sell_lines" :key="index">
                             <td>
                                 <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
-                                    <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
+                                    <option disabled value="">Choisissez...</option>
+                                    <!-- <template > -->
+                                    
+                                        <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
+                                    <!-- </template> -->
                                 </select>
                             </td>
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
-                            <!-- <td><input class="form-control" type="text" v-model="line.discount" min="0" max="0" autocomplete="off" @change="reduceChange(index)"  required></td> -->
-                            <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>             -->
-                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
+                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
+                            <td @change="taxChange()"><div @change="reduceAmount()"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
+                            <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
+                            <td><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
                             <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                         </tr>
                     </tbody>
                 </table>     
             </div><br>
-            <div class="d-flex">
-                <div class="form-group1 col-md-6"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
-                <div class="form-group col-md-6 mx-5">
+            <br>
+                <div class="d-flex">
+                    <div class="form-group1 col-md-4"> 
+                        <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
+                    </div>
+                    <div class="form-group col-md-3 mx-4">
+                        <strong>Taxe (en %)</strong> <div @change="reduceAmount()"><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off"  required @change="taxChange()"></div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
+                    </div>
+                </div><br><br>
+ 
+                <hr><br>
+                <div class="d-flex">
+                    <div class="form-group1 col-md-3"> 
+                        <strong>Réduction (Prix)</strong> <div  @change="taxChange()"><input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
+                    </div>
+                    <div class="form-group1 col-md-4 mx-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
+                    <div class="form-group col-md-4">
                         <div class="form-group ">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
@@ -80,7 +103,7 @@
                     </div>
                 </div>
              <br><br><br><br>
-            <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+            <button class="custom-btn btn-5" v-on:click.prevent="submit()" :disabled = "load">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
             
     
         </form>
@@ -113,6 +136,7 @@ export default {
 
     data () {
         return{
+            load: false,
             amount_error: null,
             showModal: false,
             showSaved: false,
@@ -128,8 +152,11 @@ export default {
                 tax: '0',
                 discount: '',
                 amount_received: '0',
-                sell_lines: []          
-                },
+                sell_lines: [],
+                payment: "ESPECES",
+                amount_ttc: '',
+                amount_ht: ''          
+            },
             errors: [],
             error: null,
             user: '',
@@ -138,15 +165,16 @@ export default {
     },
 
     mounted () {
-      this.user == localStorage.getItem('auth.user_id')
+      this.user = localStorage.getItem('auth.user_id')
       this.refresh()
       this.recupProduct()
       this.payment()
       this.$axios.get('/sells/'+ this.$route.params.id,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           })
-          .then(response => {console.log(response.data.data[0] )
+          .then(response => {
+            // console.log(response.data.data[0] )
             let vente = response.data.data[0];
             // this.categories = response.data.data
             this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-DDThh:mm"),
@@ -155,6 +183,8 @@ export default {
             this.form.tax = vente.tax,
             this.form.discount = vente.discount,
             this.form.amount = vente.amount
+            this.form.amount_ht = vente.amount_ht
+            this.form.amount_ttc = vente.amount_ttc
             this.form.payment = vente.payment
             // this.form.amount_received = vente.amount_received
           }        
@@ -163,7 +193,7 @@ export default {
     
     methods: {
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});   
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id')});           
         },
 
         deleteLine(index){
@@ -173,7 +203,7 @@ export default {
         
         payment(){
             this.$axios.get('/invoice/payments',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>
             {
@@ -182,18 +212,21 @@ export default {
         },
         
         submit(){
+            this.load =true
             this.$axios.put('/sells/' +this.$route.params.id,{
               id: this.$route.params.id,
               date_sell: this.form.date_sell,
               tax: this.form.tax,
               discount: this.form.discount,
               amount: this.form.amount,
+              amount_ht: this.form.amount_ht,
+              amount_ttc: this.form.amount_ttc,
               amount_received: this.form.amount_received,
               user_id: this.user,
               client_id: this.form.client_id,  
               payment: this.form.payment,
               sell_lines: this.form.sell_lines,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 // console.log( response ) 
                 this.error = response.data.message
@@ -202,6 +235,7 @@ export default {
                     this.$router.push({path:'/ventes/list_vente'})
                 }
                 else{
+                    this.load = false
                     this.error = response.data.message
                     
                 }
@@ -209,23 +243,39 @@ export default {
                       
         },
 
+
+
         refresh(){
             this.$axios.get('/clients',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                is_paginated: 0,
+                compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response => {
             // console.log(response);
-            this.clients = response.data.data.data})
+            this.clients = response.data.data})
         },
 
         recupProduct(){
             this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
           }
           }).then(response => {
             // console.log(response.data.data.data);
             this.produits = response.data.data}) 
+        },
+
+        taxChange(){
+            var pourcentage = this.form.tax / 100;
+            // this.form.tax = pourcentage
+            var taxe = this.form.amount_ht * pourcentage
+            this.form.amount_ttc = this.form.amount_ht + taxe;
+        },
+
+        reduceAmount(){
+            var red = this.form.discount;
+            this.form.amount = this.form.amount_ttc - red
+
         },
 
         reduceChange(index){
@@ -258,11 +308,12 @@ export default {
         quantityChange(index){
             let line = this.form.sell_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
+            line.amount_after_discount = Number(line.price) * Number(line.quantity);
             let sum = 0;
             for (let j = 0; j < this.form.sell_lines.length; j++) {
-                sum += this.form.sell_lines[j].amount;
+                sum += this.form.sell_lines[j].amount_after_discount;
             }
-            this.form.amount = sum;
+            this.form.amount_ht = sum;
                 
         },
 

@@ -7,39 +7,49 @@
 
     <div class="app-main__outer p-5">
       <h4>Liste des utilisateurs enregistrés</h4><hr><br><br>
-      <NuxtLink  to="/profils/add_profil" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
-        <table class="table table-hover">
-          <thead>
-            <tr class="table-primary">
-                  <th>Noms</th>
-                  <th>Numéros de téléphone</th>
-                  <th>Emails</th>
-                  <th>Fonction de l'utilisateur</th>
-                  <th>Pays</th>
-                  <th>Actions</th>
-              </tr>
-          </thead>
-        
-          <tbody>
-            <tr  v-for="(profil, i) in profils" :key="i">
-              <td>{{profil.name}}</td>
-              <td>{{profil.phone}}</td>
-              <td>{{profil.email}}</td>
-              <td v-if="profil.role_name =='admin'">Administrateur</td>
-              <td v-else-if="profil.role_name =='comptable'">Comptable</td>
-              <td v-else-if="profil.role_name =='cashier'">Caissier</td>
-              <td>{{profil.country}}</td>
-              <td><div class="action"  v-for="(user, i) in users" :key="i">
-                    <div @click="voirProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                    <NuxtLink :to="'/profils/'+profil.id"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                    <div @click="deleteProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                  </div>
-              </td>
-            </tr>
-          </tbody>
-      </table>
-    <p class="text-center"><strong>{{total}} utilisateur(s) au total </strong></p><hr class="text-primary">
-        <br><br> 
+      <div class="d-flex">
+          <div class="col-md-10">
+            <form class="d-flex col-md-7" role="search">
+              <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+            </form>
+          </div>
+          <NuxtLink  to="/profils/add_profil" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
+      </div>
+      <div class="table-responsive">
+          <table class="table table-hover">
+              <thead>
+                <tr class="table-primary">
+                      <th>Noms</th>
+                      <th>Numéros de téléphone</th>
+                      <th>Emails</th>
+                      <th>Fonction de l'utilisateur</th>
+                      <th>Pays</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+            
+              <tbody>
+                <tr  v-for="(profil, i) in profils" :key="i">
+                  <td>{{profil.name}}</td>
+                  <td>{{profil.phone}}</td>
+                  <td>{{profil.email}}</td>
+                  <td v-if="profil.role_name =='admin'">Administrateur</td>
+                  <td v-else-if="profil.role_name =='comptable'">Comptable</td>
+                  <td v-else-if="profil.role_name =='cashier'">Caissier</td>
+                  <td v-else-if="profil.role_name ==null">----</td>
+                  <td>{{profil.country}}</td>
+                  <td><div class="action"  v-for="(user, i) in users" :key="i">
+                        <div @click="voirProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                        <NuxtLink :to="'/profils/'+profil.id"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                        <div @click="deleteProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                      </div>
+                  </td>
+                </tr>
+              </tbody>
+          </table>
+        <p class="text-center"><strong>{{total}} utilisateur(s) au total </strong></p><hr class="text-primary">
+      </div><br><br> 
         <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -62,11 +72,13 @@
     </div><br><br><br>
 
 <voirProfil :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :pays= 'identifiant4' :role= 'identifiant5' :ajout= 'identifiant6' :modifier= 'identifiant7' :supprimer= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
+<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
 
 </template>
 
 <script>
+import deleteModal from './deleteModal.vue'
 import voirProfil from './voir_profil.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -76,11 +88,13 @@ export default {
     components: {
       Sidebar,  
       voirProfil,
-      Userinfo
+      Userinfo,
+      deleteModal
     },
 
     data () {
         return {
+          element_search: '',
           links: [],
           res_data: null,
           showModal: false,
@@ -99,30 +113,46 @@ export default {
           compagny:'',
           form: {
               nombre: '',
-          }
+          },
+          key: "",
+          showModalDelete: false,
+          results: ''
         }
       },
 
     mounted () {
       this.refresh()
-      this.users = this.$auth.$state.user;
+         this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem('auth.company_id');
     },
     methods: {
 
         deleteProfil(id){
-          // console.log(id);
-          this.$axios.delete('/users/' +id,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')}   
-          })         
+          this.showModalDelete = true
+            this.key = id    
+                  
+        },
+
+        setMessage(){
+          this.refresh()
+        },
+
+        search(){
+          this.$axios.get('/users',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            search: this.element_search
+          }
+          })
           .then(response => {
-            // console.log(response.data.data);
-            this.refresh()})                            
+            // console.log(response.data);
+          this.results = response.data.data.data 
+          
+          })
         },
         
         refresh(page=1){
           this.$axios.get('/users',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             page: page,
             per_page : this.form.nombre }   
           })        
@@ -141,7 +171,7 @@ export default {
         voirProfil(id){
             this.showModal = true;
             this.$axios.get('users/'+ id,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')}   
+            compagnie_id: localStorage.getItem('auth.company_id')}   
           }).then(response => {
             // console.log(response.data.data[0]);
              this.identifiant1 = response.data.data[0].name

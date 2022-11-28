@@ -7,6 +7,9 @@
 
     <div class="app-main__outer p-5">
         <h4>Modifier les informations de ce décaissement</h4>
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+             {{error}}
+        </div>
         <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le montant</label>
@@ -66,20 +69,27 @@ export default {
                 facture:'',
                 // compagnie_id: '',
             },
-            error_message: "",
-            error_champ: [],
+            error: null,
+            errors: [],
+            buy_id: ''
         }
         },
     mounted() {
         this.refresh()
-        this.$axios.get('/decaissements/'+ this.$route.params.id)
-         .then(response => {console.log(response.data.data[0] )
+        this.$axios.get('/decaissements/'+ this.$route.params.id,{
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id')
+            }
+          })
+         .then(response => {
+            // console.log(response.data.data[0] )
             let decaissement = response.data.data[0];
             // this.clients = response.data.data
             this.form.montant = decaissement.montant,
             this.form.date =  moment(decaissement.date).format("YYYY-MM-DD"),
             this.form.facture = decaissement.facture,
-            this.form.supplier_id = decaissement.supplier_id
+            this.form.supplier_id = decaissement.supplier_id,
+            this.buy_id = decaissement.buy_id
             
           }      
         )            
@@ -94,21 +104,30 @@ export default {
             facture: this.form.facture,
             supplier_id: this.form.supplier_id,
             user_id: this.$auth.user.id,
-           compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            buy_id: this.buy_id,
+           compagnie_id: localStorage.getItem('auth.company_id')
 
             })
-            .then(response =>{console.log(response.data.data);
-                this.$router.push({
-                  path:'/decaissements/list_decaissement',})
+            .then(response =>{
+                console.log(response.data);
+                if(response.data.status ='success'){
+                    this.$router.push({
+                    path:'/decaissements/list_decaissement',})
+
+                }
+                else{
+                    this.error = response.data.message
+                }
             })          
         },
 
         refresh(){
             this.$axios.get('/suppliers',{
                 params: {
-                    compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                    compagnie_id: localStorage.getItem('auth.company_id')
                 }
-            }).then(response => {console.log(response.data.data.data);
+            }).then(response => {
+                // console.log(response.data.data.data);
             this.fournisseurs = response.data.data.data })
         },
             

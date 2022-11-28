@@ -7,7 +7,10 @@
 
     <div class="app-main__outer p-5">
         <h4>Modifier les informations de cet encaissement</h4>
-                     <form action="">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+             {{error}}
+        </div>
+        <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le montant</label>
                 <input type="number" class="form-control" v-model="form.montant" autocomplete="off" required placeholder="10000">
@@ -63,24 +66,27 @@ export default {
                 facture:'',
                 // compagnie_id: '',
             },
-            error_message: "",
+            error: null,
             error_champ: [],
+            sell_id: ''
         }
         },
     mounted() {
         this.refresh()
         this.$axios.get('/encaissements/'+ this.$route.params.id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           })
-         .then(response => {console.log(response.data.data[0] )
+         .then(response => {
+            // console.log(response.data.data[0] )
             let encaissement = response.data.data[0];
             // this.clients = response.data.data
             this.form.montant = encaissement.montant,
-            this.form.date = moment(encaissement.date).format("YYYY-MM-D"),
+            this.form.date = moment(encaissement.date).format("yyyy-MM-DD"),
             this.form.facture = encaissement.facture,
-            this.form.client_id = encaissement.client_id
+            this.form.client_id = encaissement.client_id,
+            this.sell_id = encaissement.sell_id
             
           }      
         )            
@@ -94,21 +100,30 @@ export default {
             date: this.form.date,
             facture: this.form.facture,
             client_id: this.form.client_id,
-           compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            sell_id: this.sell_id,
+            compagnie_id: localStorage.getItem('auth.company_id')
 
             })
-            .then(response =>{console.log(response)
+            .then(response =>{
+                console.log(response)
+                
+                if(response.data.status ='success'){
                 this.$router.push({
-                  path:'/encaissements/list_encaissement',})
+                  path:'/encaissements/list_encaissement',})   
+                }
+                else{
+                    this.error = response.data.message
+                }
             })          
         },
 
         refresh(){
             this.$axios.get('/clients',{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
             }
             })
-            .then(response => {console.log(response.data.data.data);
+            .then(response => {
+                // console.log(response.data.data.data);
             this.clients = response.data.data.data })
         },
         

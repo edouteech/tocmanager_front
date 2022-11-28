@@ -20,7 +20,7 @@
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
         {{error}} 
       </div>
-      <div class="search_result" v-if="this.element_search != ''">
+      <div class="table-responsive search_result" v-if="this.element_search != ''">
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
@@ -35,7 +35,7 @@
               <td v-if="result.parent != null">{{result.parent.name}}</td>
               <td v-else>---</td>
               <td><div class="action" v-for="(user, i) in users" :key="i">
-                <div @click="voirCategorie(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/categorie/voir'+result.id" class="text-black" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
                 <NuxtLink :to="'/categorie/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteCategorie(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
@@ -47,32 +47,47 @@
       
       
       
-      
-      <table class="table table-hover" v-if="this.element_search == ''">
-          <thead>
-            <tr class="table-primary">
-                <th>Noms de Catégorie</th>
-                <th>Catégories parentes</th>
-                <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr  v-for="(categorie, i) in categories" :key="i" >
-              <td>{{categorie.name}}</td>
-              <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
-              <td v-else>---</td>
-              <td><div class="action" v-for="(user, i) in users" :key="i">
-                <div @click="voirCategorie(categorie.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                <NuxtLink :to="'/categorie/'+categorie.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteCategorie(categorie.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
+      <div class="table-responsive">
+        <table class="table table-hover" v-if="this.element_search == ''">
+            <thead>
+              <tr class="table-primary">
+                  <th>Noms de Catégorie</th>
+                  <th>Catégories parentes</th>
+                  <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  v-for="(categorie, i) in categories" :key="i" >
+                <td>{{categorie.name}}</td>
+                <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
+                <td v-else>---</td>
+                <td><div class="action" v-for="(user, i) in users" :key="i">
+                  <NuxtLink :to="'/categorie/voir/'+categorie.id" class="text-black" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
+                  <NuxtLink :to="'/categorie/'+categorie.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteCategorie(categorie.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
         </table>
         <p class="text-center"><strong>{{total}} catégorie(s) au total </strong></p><hr class="text-primary">
-        <br><br> 
-        <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button><button class="btn btn-outline-info mx-5" type="submit" @click.prevent="Export()">Exporter</button></form><br><br>
+      </div><br><br> 
+        <form class="d-flex justify-content-end" role="search">
+          <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
+          <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
+          <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter</button>
+          
+          <!-- <vue-excel-xlsx
+            class="btn btn-outline-info mx-5"
+            :data="data"
+            :columns="columns"
+            :file-name="'categories'"
+            :file-type="'xlsx'"
+            :sheet-name="'sheetname'"
+            >
+            Exporter
+          </vue-excel-xlsx> -->
+        </form><br><br>
         <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -94,12 +109,15 @@
           </form>
         </nav>
   </div><br>
- <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' v-show="showModal" @close-modal="showModal = false"/>  
-
+ <!-- <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' :stock= 'identifiant3' :valorisation= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>   -->
+ <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
+ <exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
 </div>
 </template>
 
 <script>
+import deleteModal from './deleteModal.vue'
+import exportModal from './exportModal.vue'
 import voirCategorie from './voir_categorie.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -109,7 +127,9 @@ export default {
     components: {
       Sidebar,  
       voirCategorie,
-      Userinfo
+      Userinfo,
+      deleteModal,
+      exportModal
     },
 
     data () {
@@ -124,6 +144,8 @@ export default {
         showModal: false,
         identifiant1 : "",
         identifiant2 : "",
+        identifiant3: '',
+        identifiant4: '',
         compagnie_id: ''  ,
         categories: [],
         categorie: "",
@@ -131,11 +153,22 @@ export default {
         compagny: '',
         form: {
           nombre: '',
-        }
+        },
+        key: "",
+        showModalDelete: false,
+        exportModal: false
+                
+                
       }
     },
+
+    
     methods: {
-        submitFile(){
+      exp(){
+       this.exportModal = true 
+      },
+      
+      submitFile(){
           let formData = new FormData();
           formData.append('fichier', this.file);
 
@@ -146,7 +179,7 @@ export default {
                   'Content-Type': 'multipart/form-data'
               },
               params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
             }
           ).then(response => {
@@ -171,7 +204,7 @@ export default {
 
         search(){
           this.$axios.get('/categories',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             search: this.element_search
           }
           })
@@ -183,21 +216,18 @@ export default {
         },
 
        deleteCategorie(id){
-          console.log(id);
-          this.$axios.delete('/categories/' +id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-          })
-          .then(response => {
-            // console.log(response.data.data);
-            this.refresh()})                 
+          this.showModalDelete = true
+            this.key = id                  
         },      
+
+        setMessage(){
+          this.refresh()
+        },
         
         refresh(page=1){
           this.$axios.get('/categories',{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+              compagnie_id: localStorage.getItem('auth.company_id'),
               page: page,
               per_page : this.form.nombre
             }
@@ -211,48 +241,51 @@ export default {
             })     
         },
 
-        Export(){
-           this.$axios.get('/export/categories',{
-              params: {
-                export: true,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
-              },
-              headers: {
-                "Access-Control-Allow-Origin": "http://127.0.0.1",
-                // "Access-Control-Allow-Methods": "GET",
-                // "Access-Control-Allow-Headers": "Content-Type"
-              }
-              // responseType: 'blob'
-          })
-        },
+        // async Export() {
+        //   await this.$axios({
+        //     url: "/export/categories",
+        //     method: "GET",
+        //     responseType: "blob",
+        //     params: {
+        //         compagnie_id: localStorage.getItem('auth.company_id')
+        //       },
+        //   }).then(response => {
+        //     console.log(response)
+        //     link.setAttribute("download");
+        //     link.click();
+            
+        //   }); 
+        // },
 
 
-        voirCategorie(id){
-            this.showModal = true;
-            this.$axios.get('/categories/'+ id,{
-            params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
-            }
-          }).then(response => {
-            // console.log(response.data.data[0]);
-             this.identifiant1 = response.data.data[0].name
-             if(response.data.data[0].parent != null){
-                this.identifiant2 = response.data.data[0].parent.name  
-             }else{
-                this.identifiant2 = "Pas de catégorie parente associée"
-             }
+        // voirCategorie(id){
+        //     this.showModal = true;
+        //     this.$axios.get('/categories/'+ id,{
+        //     params: {
+        //       compagnie_id: localStorage.getItem('auth.company_id')
+        //     }
+        //   }).then(response => {
+        //     console.log(response.data.data[0]);
+        //      this.identifiant1 = response.data.data[0].name
+        //      this.identifiant3 = response.data.data[0].stock_produit
+        //      this.identifiant4 = response.data.data[0].valorisation
+        //      if(response.data.data[0].parent != null){
+        //         this.identifiant2 = response.data.data[0].parent.name  
+        //      }else{
+        //         this.identifiant2 = "Pas de catégorie parente associée"
+        //      }
              
-             })               
-        },
+        //      })               
+        // },
 
 
         
     },
 
-    mounted () {
+    async mounted () {
       this.refresh()
-      this.users = this.$auth.$state.user;
-    this.compagny = localStorage.getItem('auth.company_id');
+         this.users = this.$auth.$state.user.roles;
+       this.compagny = localStorage.getItem('auth.company_id');
     }
 }
 </script>

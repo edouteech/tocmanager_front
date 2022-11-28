@@ -7,6 +7,7 @@
 
     <div class="app-main__outer p-5">
       <h4>Factures supprimées</h4>
+      <div class="table-responsive">
         <table class="table table-hover">
           <thead>
             <tr class="table-success">
@@ -38,6 +39,7 @@
                 
             </tbody>
         </table>
+      </div>
     <p class="text-center"><strong>{{total}} factures au total </strong></p><hr class="text-primary">
         <br><br>  
          <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
@@ -97,7 +99,7 @@ export default {
 
     mounted () {
          this.$axios.get('/get/buys',{ params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             per_page : this.form.nombre }   
           })
         .then(response => {
@@ -114,7 +116,7 @@ export default {
             console.log(id);
             this.$axios.get('/restore/buy/' +id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }})         
             .then(response => {console.log(response);
                 this.achat = response.data.data

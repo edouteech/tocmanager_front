@@ -101,9 +101,10 @@
               price_buy: this.form.price_buy,
               stock_min: this.form.stock_min,
               stock_max: this.form.stock_max,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             })
-            .then(response =>{console.log(response.data.data) 
+            .then(response =>{
+              // console.log(response.data.data) 
               this.$emit('prod', { nom_prod: this.form.name, prod_id: response.data.data.id, prod_sell: response.data.data.price_sell })
               this.error = response.data.message
               console.log(this.error)
@@ -135,7 +136,7 @@
               this.$axios.get('/categories',
               {
                 params: {
-                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                  compagnie_id: localStorage.getItem('auth.company_id')
                 }
               }).then(response =>
                 {this.categories = response.data.data.data })
@@ -143,7 +144,7 @@
 
             group(){
                 this.$axios.get('/invoice/taxGroups',{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
               }
               }).then(response =>
                 {

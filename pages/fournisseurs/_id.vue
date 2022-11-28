@@ -68,7 +68,7 @@ export default {
         this.$axios
             .get('/suppliers/'+ this.$route.params.id,{
             params: {
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }
           })
             .then(response => 
@@ -77,8 +77,12 @@ export default {
         let fournisseur = response.data.data[0];
             this.form.name = fournisseur.name,
             this.form.phone = fournisseur.phone,
-            this.form.email = fournisseur.email,
-            this.form.nature = fournisseur.nature
+            this.form.email = fournisseur.email
+            if(fournisseur.nature == "Particulier"){
+                this.form.nature = 0
+            }else{
+                this.form.nature = 1
+            }
         }
         )
             
@@ -93,7 +97,7 @@ export default {
                 phone: this.form.phone,
                 nature: this.form.nature,
                 nature: this.form.nature,
-                compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
                 }).then(response =>{
                     this.$router.push({
                     path:'/fournisseurs/list_fournisseur',})

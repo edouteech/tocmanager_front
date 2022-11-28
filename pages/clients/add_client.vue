@@ -5,29 +5,37 @@
       <Userinfo />
     </nav>
 
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
-      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
-      <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
-      <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-      <div class="error" v-if="errors['nature'] != null">{{errors['nature']}}</div>
-    </div>
 
     <div class="app-main__outer p-5">
         <h4>Enregistrer un nouveau client</h4>
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+            {{error}}
+        </div>
         <form action="">
             <div class="form-group ">
                 <label class="title">Entrer le nom du client</label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.name">
+                {{errors.name}}
+            </div>
+
             <div class="form-group ">
                 <label class="title">Entrer le numero de téléphone du client</label>
-                <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
+                <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
+                {{errors.phone}}
+            </div>
+
             <div class="form-group">
                 <label class="title">Entrer l'email du client</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.email">
+                {{errors.email}}
+            </div>
+
             <div class="form-group">
                 <div class="form-group ">
                 <label class="title">Nature du client</label>
@@ -37,6 +45,9 @@
                         <option value="1">Entreprise</option>
                 </select>
                 </div>
+            </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.nature">
+                {{errors.nature}}
             </div>
 
             <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer le client</button>
@@ -78,14 +89,17 @@ export default {
               email: this.form.email,
               phone: this.form.phone,
               nature: this.form.nature,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
-                console.log( response ) 
+                // console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/clients/list_client'});
+                    this.$toast('Nouveau client ajouté avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.errors = response.data.data

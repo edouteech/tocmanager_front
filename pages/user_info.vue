@@ -4,7 +4,7 @@
         <ul>
             <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
 			<li class="item"><a href="#">
-				<span class="user_name" data-bs-dismiss="offcanvas">{{$auth.$state.user[0].name}}</span>
+				<span class="user_name" data-bs-dismiss="offcanvas">{{user.name}}</span>
 				<i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
             <!-- First Tier Drop Down -->
             <ul>
@@ -32,19 +32,19 @@ export default {
       return {
         showModal: false,
         liste: '',
+		user: ''
 	  }
 	},
-	// mounted(){
-	// 	console.log(this.$auth.$state.user[0].name)
-	// },
+	mounted(){
+		// console.log(this.$auth)
+		this.checkUser()
+	},
 	methods:{
 			async logout(){
-				localStorage.removeItem('auth.ajout');
-				localStorage.removeItem('auth.modifier');
-				localStorage.removeItem('auth.supprimer');
+				localStorage.removeItem('auth.user_id');
 				localStorage.removeItem('auth.company_id');
 				localStorage.removeItem('auth.roles');
-				localStorage.removeItem('auth.role');
+				localStorage.removeItem('auth.email');
 				this.$auth.logout();
 				this.$router.push('/login');
 			},
@@ -53,10 +53,19 @@ export default {
 				this.showModal = true;
 				this.$axios.get('/user/compagnies')
 				.then(response => {
-					console.log(response)        
+					// console.log(response)        
 				this.liste = response.data 
 			})
-			}
+			},
+
+			checkUser(){
+				this.$axios.get('/user')
+				.then(response => {
+					// console.log(response)        
+				this.user = response.data 
+			})
+			},
+
               
       }
 

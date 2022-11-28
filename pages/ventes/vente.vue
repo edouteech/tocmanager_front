@@ -5,14 +5,12 @@
       <Userinfo />
     </nav>
 
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
-      <!-- <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div> -->
-      <!-- <div class="error" v-if="errors['client_id'] != null">{{errors['client_id']}}</div>
-      <div class="error" v-if="errors['date_sell'] != null">{{errors['date_sell']}}</div> -->
-    </div>
+    
   
     <div class="app-main__outer p-5">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+            {{error}} 
+        </div>
             <h4>Enregistrer une vente </h4><hr>
             <form action="" method="POST">
                 <div class="cadre-haut">             
@@ -22,7 +20,15 @@
                             <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
                                 {{client.name}}
                             </option>                           
-                        </select>          
+                        </select>  
+                        <!-- <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Choisir le client...">
+                        <datalist id="datalistOptions" v-model="form.client_id">
+                                <option v-for="(client, index) in clients" :key="index"  :value="client.id" @click.prevent="voir()">
+                                </option>     
+                        </datalist> {{form.client_id}}777 -->
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+                            {{errors.client_id}} 
+                        </div>        -->
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
                         </button>                
@@ -44,9 +50,10 @@
                                 <th scope="col">Désignation</th>
                                 <th scope="col">Quantité voulue</th>
                                 <th scope="col">Prix unitaire</th>
+                                <th scope="col">Total</th>  
                                 <th scope="col">Réduction (Prix ou %)</th>
-                                <!-- <th scope="col">Taxe appliquée (%)</th> -->
-                                <th scope="col">Total</th>                     
+                                <th scope="col">Total après réduction</th>  
+                                <!-- <th scope="col">Taxe appliquée (%)</th> -->                   
                             </tr>
                         </thead>
                         
@@ -62,18 +69,43 @@
                                     </select>
                                 </td>
                                 <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required ></td>
-                                <td><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
+                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
+                                <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
+                                <td @change="taxChange()"><div @change="reduceAmount()"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
                                 <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
-                                <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
+                                <td><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
-                    </table>     
+                    </table>   
+                    <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.amount">
+                        Veuillez ajouter une ligne de vente
+                    </div>   -->
                 </div><br>
+                <br>
                 <div class="d-flex">
-                    <div class="form-group1 col-md-5"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
-                    <div class="form-group col-md-6 mx-5">
+                    <div class="form-group1 col-md-4"> 
+                        <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
+                    </div>
+                    <div class="form-group col-md-3 mx-4">
+                        <strong>Taxe [0 -100]%</strong> <div @change="reduceAmount()"><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
+                    </div>
+                </div><br>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.tax">
+                        Veuillez ajouter la taxe
+                </div>  
+                    <br><br>
+ 
+                <hr><br>
+                <div class="d-flex">
+                    <div class="form-group1 col-md-3"> 
+                        <strong>Réduction (Prix ou %)</strong> <div><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
+                    </div>
+                    <div class="form-group1 col-md-4 mx-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
+                    <div class="form-group col-md-4">
                         <div class="form-group ">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
@@ -85,29 +117,16 @@
                 </div>
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                     {{amount_error}} 
-                </div> <br><br><br><br>
-                <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
-                
-                
-                <!-- <div class="submit">
-                    <input type="submit" id='submit' v-on:click.prevent="submit()" value="Enregistrer la facture pour " name="submit">		          
-                </div>   -->
+                </div> 
+                <br><br><br><br>
+                <button class="custom-btn btn-5" v-on:click.prevent="submit()" :disabled="load">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
         
             </form>
-        <!-- <div v-else  class="text-center">
-             <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
-            <p>Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
-            Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
-            la mise à jour des informations. </p>
-        </div> -->
-
         
-        
-
     </div>
     
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
-    <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
+    <SavedModal v-show="showSaved" @close-modal="showSaved = false" :identifiant= 'cli_id'/>
     <produitModal v-show="showProduit" @close-modal="showProduit = false" @prod="setProduit"/>
 
 </div>
@@ -134,9 +153,10 @@ export default {
 
     data () {
         return{
+            load: false,
             amount_error: null,
             message: '',
-            cli_id: '0',
+            cli_id: '',
             showModal: false,
             showSaved: false,
             showProduit: false,
@@ -148,11 +168,13 @@ export default {
                 date_sell: moment().format("YYYY-MM-DDThh:mm"),
                 client_id: '',
                 amount: '',
-                tax: '0',
+                tax: '',
                 discount: '0',
                 amount_received: '0',
                 sell_lines: [],
-                payment: "ESPECES"   
+                payment: "ESPECES",
+                amount_ttc: '',
+                amount_ht: ''
             },
             errors: [],
             error: null,
@@ -174,9 +196,13 @@ export default {
     },
     
     methods: {
+
+        // voir(){
+        //     console.log(this.form.client_id);
+        // },
         payment(){
             this.$axios.get('/invoice/payments',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>
             {
@@ -185,7 +211,7 @@ export default {
         },
 
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: this.$auth.$storage.getUniversal('company_id')});           
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id')});           
         },
 
         deleteLine(index){
@@ -204,26 +230,34 @@ export default {
         },
 
         async submit(){
+            this.load = true
             await  this.$axios.post('/sells',{
               date_sell: this.form.date_sell,
               tax: this.form.tax,
               discount: this.form.discount,
               amount: this.form.amount,
+              amount_ht: this.form.amount_ht,
+              amount_ttc: this.form.amount_ttc,
               amount_received: this.form.amount_received,
               user_id: this.user,
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines,
               payment: this.form.payment,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')  
+              compagnie_id: localStorage.getItem('auth.company_id') 
             }).then(response =>{ 
-                // console.log( response ) 
+                console.log( response ) 
                 this.error = response.data.message
                 this.errors = response.data.data
                 // console.log(this.error)
                     if(response.data.status == "success"){
-                        this.$router.push({path:'/ventes/SavedModal',})
+                        this.cli_id = response.data.data.id
+                        this.showSaved = true
+                        this.$toast("Enregistrement d'une facture !!! ", {
+                            icon: 'fa fa-check-circle',
+                        })
                     }
                     else{
+                        this.load = false
                         this.errors = response.data.data
                         // this.$router.push({path:'/clients/add_client'});
                     }
@@ -234,7 +268,7 @@ export default {
         
         refresh(){
             this.$axios.get('/clients',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
           }
           }).then(response => {
@@ -245,7 +279,7 @@ export default {
 
         recupProduct(){
             this.$axios.get('/products',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+            compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
           }
           }).then(response => {
@@ -253,41 +287,74 @@ export default {
             this.produits = response.data.data}) 
         },
 
+        taxChange(){
+            var pourcentage = this.form.tax / 100;
+            // this.form.tax = pourcentage
+            var taxe = this.form.amount_ht * pourcentage
+            this.form.amount_ttc = this.form.amount_ht + taxe;
+
+        },
+
+        reduceAmount(){
+            var red = this.form.discount;
+            var percent = red.indexOf("%"); 
+
+                if(percent != -1){
+                    var newRed = red.substring(0, red.length - 1);
+                    let calcul1 = this.form.amount_ttc * Number(newRed);
+                    let calcul2 = calcul1 / 100
+                    this.form.discount = calcul2
+                    this.form.amount = this.form.amount_ttc - calcul2;
+                } 
+                else{
+                    this.form.discount = red
+                    this.form.amount = this.form.amount_ttc - red
+                }   
+        },
+
         quantityChange(index){
             let line = this.form.sell_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
+            line.amount_after_discount = Number(line.price) * Number(line.quantity);
             let sum = 0;
             for (let j = 0; j < this.form.sell_lines.length; j++) {
-                sum += this.form.sell_lines[j].amount;
+                sum += this.form.sell_lines[j].amount_after_discount;
             }
-            this.form.amount = sum;
+            this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
                 
         },
 
         reduceChange(index){
             let line = this.form.sell_lines[index]
             let calculQ = Number(line.price) * Number(line.quantity)
+            line.amount = calculQ
             var str = line.discount;
             var percent = str.indexOf("%"); 
 
-                if(percent !== -1){
+                if(percent != -1){
                     var newStr = str.substring(0, str.length - 1);
                     let calculR = calculQ * Number(newStr);
                     let Rprix = calculR / 100
-                    line.amount = calculQ - Rprix;
+                    line.amount_after_discount = calculQ - Rprix;
                     let sum = 0;
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount;
+                        sum += this.form.sell_lines[j].amount_after_discount;
                     }
-                    this.form.amount = sum;
+                    this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
                 } 
                 else{
-                    line.amount = calculQ - str;
+                    line.amount_after_discount = calculQ - str;
                     let sum = 0;
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount;
+                        sum += this.form.sell_lines[j].amount_after_discount;
                     }
-                    this.form.amount = sum;
+                    this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
                 }   
         },
 
@@ -300,20 +367,23 @@ export default {
                 let line = this.form.sell_lines[index]
                 line.price = product.price_sell;
                 line.amount = Number(line.price) * Number(line.quantity);
+                line.amount_after_discount = Number(line.price) * Number(line.quantity);
                     
                 
                 let sum = 0;
                 for (let j = 0; j < this.form.sell_lines.length; j++) {
-                    sum += this.form.sell_lines[j].amount;
+                    sum += this.form.sell_lines[j].amount_after_discount;
                 }
-                this.form.amount = sum;
+                this.form.amount_ht = sum;
+                this.form.amount_ttc = sum;
+                this.form.amount = this.form.amount_ttc;
                 // console.log(sum); 
             }    
         },
 
         compagnie(){
             this.$axios.get('/compagnies/'+ this.compagny,{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           })
             .then(response => {

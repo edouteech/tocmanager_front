@@ -1,11 +1,21 @@
 <template>
   <div class="modal-overlay"  @click="$emit('close-modal')">
     <div class="modaler" @click.stop>
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+            {{error}}
+        </div>
       <img class="check" src="/images/eff.jpg" alt="" />
       <h6>Enregistré!</h6>
-      <p>La facture a été sauvegardé</p>
-      <NuxtLink to="/ventes/vente"><button>Nouvelle facture</button></NuxtLink>
-      <NuxtLink to="/dashboard"><button>Tableau de bord</button></NuxtLink>
+      <p>La facture a été sauvegardé</p><br>
+      <form action="">
+        <div class="form-group">
+            <strong>Entrer l'email auquel il faut envoyer la facture</strong>
+            <input type="email" class="form-control w-75 mx-auto" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
+        </div><br>
+        <button class="btn btn-success" @click.prevent="submit()">Envoyer facture</button>
+      </form>
+      <!-- <NuxtLink to="/ventes/vente"><button>Nouvelle facture</button></NuxtLink>
+      <NuxtLink to="/dashboard"><button>Tableau de bord</button></NuxtLink> -->
     </div>
   </div>
 </template>
@@ -14,18 +24,33 @@
 <script>
   export default {
     name: 'ajoutModal',
+    props: ['identifiant'],
     data () {
     return{
         form: {
-            name: '',
             email: '',
-            phone: '',
-            nature:''
         },
-        error_message: "",
+        error: null,
         error_champ: [],
     }
     },
+    methods:{
+      submit() {
+      this.$axios.post('/sells/'+this.identifiant+'/notify', {
+        email:this.form.email,
+        compagnie_id: localStorage.getItem('auth.company_id')
+      })
+        .then(response => {
+          console.log(response);
+          if(response.data.status = "success"){
+            this.$router.push({path:'/ventes/list_vente'});
+          }
+          else{
+            this.error= response.data.message
+          }
+        })
+    },
+    }
     
    
 }
@@ -46,8 +71,8 @@
 .modaler {
   text-align: center;
   background-color: white;
-  height: 500px;
-  width: 500px;
+  height: 600px;
+  width: 600px;
   margin-top: 10%;
   padding: 60px 0;
   border-radius: 20px;
@@ -76,13 +101,4 @@ p {
   margin: 20px 0;
 }
 
-button {
-  background-color: #ac003e;
-  width: 150px;
-  height: 40px;
-  color: white;
-  font-size: 14px;
-  border-radius: 16px;
-  margin-top: 50px;
-}
 </style>

@@ -6,18 +6,18 @@
     </nav>
 
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
-      <div class="error" v-if="errors['montant'] != null">{{errors['montant']}}</div>
-      <div class="error" v-if="errors['date'] != null">{{errors['date']}}</div>
-      <div class="error" v-if="errors['supplier_id'] != null">{{errors['supplier_id']}}</div>
+      {{error}}
     </div>
 
     <div class="app-main__outer p-5">
-        <h4>Enregistrer un décaissement</h4>
+        <h4>Enregistrer un décaissement</h4><hr>
         <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le montant</label>
                 <input type="number" class="form-control" v-model="form.montant" autocomplete="off" required placeholder="10000">
+            </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.montant">
+                {{errors.montant}}
             </div>
             <!-- <div class="input-form">       
                 <input type="number" placeholder="Entrer le montant " v-model="form.facture" autocomplete="off" required> -->
@@ -38,6 +38,9 @@
                     <option v-for="(fournisseur, i) in fournisseurs" :key="i" :value="fournisseur.id">{{fournisseur.name}}</option>
                 </select>
                 </div>
+            </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.supplier_id">
+                {{errors.supplier_id}}
             </div>
         <button type="submit" class="btn btn-primary" @click.prevent="submit()">Enregistrer</button>
         </form>
@@ -72,15 +75,18 @@ export default {
             },
             errors: [],
             error: null,
+            user:''
         }
     },
 
     mounted(){
+      this.user = localStorage.getItem('auth.user_id')
         this.$axios.get('/suppliers',{params: {
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
           }
           })
-        .then(response => {console.log(response.data.data.data);
+        .then(response => {
+            // console.log(response.data.data.data);
         this.fournisseurs = response.data.data.data })
     },
 
@@ -90,15 +96,18 @@ export default {
               montant: this.form.montant,
               date: this.form.date,
               supplier_id: this.form.supplier_id,
-              user_id: this.$auth.user.id,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              user_id: this.user,
+              compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
-               console.log( response ) 
+            //    console.log( response ) 
                 this.error = response.data.message
                 console.log(this.error)
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/decaissements/list_decaissement', })
+                    this.$toast('Décaissement enregistré avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.errors = response.data.data

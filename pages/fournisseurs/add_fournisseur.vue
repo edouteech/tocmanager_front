@@ -5,29 +5,38 @@
       <User_info />
     </nav>
 
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
-      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
-      <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
-      <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-      <div class="error" v-if="errors['nature'] != null">{{errors['nature']}}</div>
-    </div>
+
   
     <div class="app-main__outer p-5">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+            {{error}}
+        </div>
         <h4>Enregistrer un nouveau fournisseur</h4>
         <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le nom du fournisseur</label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
             </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.name">
+                {{errors.name}}
+            </div>
+
             <div class="form-group col-md-6">
                 <label class="title">Entrer le numero de téléphone du fournisseur</label>
-                <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
+                <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
             </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.phone">
+                {{errors.phone}}
+            </div>
+
             <div class="form-group col-md-6">
                 <label class="title">Entrer l'email du fournisseur</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.email">
+                {{errors.email}}
+            </div>
+
             <div class="form-group col-md-6">
                 <div class="form-group ">
                 <label class="title">Nature du fournisseur</label>
@@ -76,7 +85,7 @@ export default {
             email: this.form.email,
             phone: this.form.phone,
             nature: this.form.nature,
-            compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{
                 console.log( response ) 
                 this.error = response.data.message
@@ -84,6 +93,9 @@ export default {
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/fournisseurs/list_fournisseur'});
+                    this.$toast('Nouveau fournisseur ajouté !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.errors = response.data.data

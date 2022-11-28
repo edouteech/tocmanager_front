@@ -109,7 +109,7 @@
     
             search(){
               this.$axios.get('/clients',{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+                compagnie_id: localStorage.getItem('auth.company_id'),
                 search: this.element_search
               }
               })
@@ -128,7 +128,7 @@
             
             refresh(page=1){
               this.$axios.get('/clients',{params: {
-                compagnie_id: this.$auth.$storage.getUniversal('company_id'),
+                compagnie_id: localStorage.getItem('auth.company_id'),
                 page: page
               }
               })
@@ -145,7 +145,7 @@
                 this.showModal = true;
                 this.$axios.get('/clients/'+ id,{
                 params: {
-                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
+                  compagnie_id: localStorage.getItem('auth.company_id')
                 }
               }).then(response => {console.log(response.data.data[0]);
                  this.identifiant1 = response.data.data[0].name

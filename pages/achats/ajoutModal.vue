@@ -15,7 +15,7 @@
                     <input type="text" class="form-control" placeholder="Entrer le nom du fournisseur " v-model="form.name" autocomplete="off" id="name_four" required>
                 </div>     
                 <div class="input-form">        
-                    <input type="tel" class="form-control" placeholder="Entrer le numero de téléphone du fournisseur " v-model="form.phone" id="phone_four" required>
+                  <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
                 </div>
             
                 <div class="input-form">    
@@ -69,14 +69,14 @@
               email: this.form.email,
               phone: this.form.phone,
               nature: this.form.nature,
-              compagnie_id: this.$auth.$storage.getUniversal('company_id')
+              compagnie_id: localStorage.getItem('auth.company_id')
             })
             .then(response =>{
               this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })
-                console.log( response ) 
+                // console.log( response ) 
                 this.error = response.data.message
                 this.status = response.data.status
-                console.log(this.error)
+                // console.log(this.error)
                 this.errors = response.data.data
                   if(this.status == 'success'){
                     // alert('Nouveau client ajouté avec succès');
@@ -159,7 +159,7 @@ input[type=submit]:hover{
 .modaler {
   text-align: center;
   background-color: white;
-  height: auto;
+  height: 600px;
   width: 600px;
   margin-top: 10%;
   padding: 30px 0;
