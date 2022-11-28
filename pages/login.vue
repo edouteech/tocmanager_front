@@ -108,29 +108,8 @@ export default {
       },
 
       setMessage(){
-        // this.$router.push( '/login',)
-        this.role = localStorage.getItem('auth.roles');
-          if(this.role == 'super_admin'){
-              this.$auth.setUserToken(response.data.data.original.access_token)         
-              .then(response =>{
-                this.$router.push( '/admin/admin',)
-              })
-          }
-          else if(this.role == 'admin'){
-            this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-            this.$auth.setUserToken(response.data.data.original.access_token)         
-              .then(response =>{
-                // console.log(response)
-                this.$router.push( '/dashboard',)
-            })
-          }
-          else{
-            this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-            this.$auth.setUserToken(response.data.data.original.access_token)         
-              .then(response =>{
-                this.$router.push( '/ventes/vente',)
-            })
-          }
+        this.$router.push( '/',)
+        
       },
       
 
@@ -145,10 +124,10 @@ export default {
                   this.$auth.$storage.setUniversal('email', this.form.email)
                   let verification = response.data.data.original.user.email_verified_at
                   this.$auth.setUserToken(response.data.data.original.access_token)
-                    if(response.data.data.original.compagnies[0].is_suscribed == 0){
-                    this.$router.push( '/choisirAbonnement')
-                    }
-                    else{
+                    // if(response.data.data.original.compagnies[0].is_suscribed == 0){
+                    // this.$router.push( '/choisirAbonnement')
+                    // }
+                    // else{
                       if(verification == null){
                         this.showModal = true
                       }
@@ -157,7 +136,7 @@ export default {
                         .then(response =>{this.$router.push( '/change_pswd',)
                         })                   
                       }
-                    }
+                    // }
                 } catch (err) {
                   console.log(err);
                 }
@@ -167,18 +146,12 @@ export default {
               try {
                 let response = await this.$auth.loginWith('local', { data: this.form })
                 this.error = response.data.message
-                console.log(response)
+                // console.log(response)
                 let verification = response.data.data.original.user.email_verified_at
                 this.$auth.$storage.setUniversal('user_id', response.data.data.original.user.id)
                 this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
                 this.$auth.$storage.setUniversal('email', this.form.email)
                 this.$auth.setUserToken(response.data.data.original.access_token) 
-                
-                if(response.data.data.original.compagnies[0].is_suscribed == 0){
-                  this.$router.push( '/choisirAbonnement')
-                }
-                else{
-                  
                       if(verification == null){
                         this.showModal = true
                       } 
@@ -193,12 +166,19 @@ export default {
                                   })
                               }
                               else if(this.role == 'admin'){
-                                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                                this.$auth.setUserToken(response.data.data.original.access_token)         
-                                  .then(response =>{
-                                    // console.log(response)
-                                    this.$router.push( '/dashboard',)
-                                })
+                                let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
+                                  
+                                    this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                                    this.$auth.setUserToken(response.data.data.original.access_token)         
+                                      .then(response =>{
+                                        console.log(response)
+                                          if( checkAbonnement == 0){
+                                            this.$router.push( '/choisirAbonnement')
+                                          }
+                                          else{
+                                            this.$router.push( '/dashboard',)
+                                          }
+                                    })
                               }
                               else{
                                 this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
@@ -209,7 +189,6 @@ export default {
                               }
                             // })
                       }    
-                }
               } catch (err) {
                   console.log(err);
                   // this.refresh();

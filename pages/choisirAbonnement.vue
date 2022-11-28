@@ -17,24 +17,19 @@
                 </div>
                 <div>
                     <div class="my-2">
-                        <button class="btn btn-outline-primary btn-offer p-2" @click.prevent="createAbonnement(plan.id)">Sélectionner</button>
+                        <!-- <button class="btn btn-outline-primary btn-offer p-2" >Sélectionner</button> -->
                         <nuxt-link to="/abonnement" class="btn btn-outline-dark btn-offer my-4">En savoir plus</nuxt-link></div>
-                    <div class="title-offre col-md-6 mx-auto text-center">{{plan.price}} {{plan.currency}}</div>
+                    <div class="title-offre col-md-6 mx-auto text-center" @click.prevent="createAbonnement(plan.id)">{{plan.price}} {{plan.currency}}</div>
                 </div>
             </div>
         </div>
-<modalEmail v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/> 
     </div>
     </template>
     
     <script>
-    import modalEmail from './modalEmail.vue'
     export default {
-      auth: false,
+      auth: true,
       layout : 'empty',
-      components: {
-        modalEmail
-      },
       data() {
         return{
             plan1: '',
@@ -61,75 +56,23 @@
             createAbonnement(id){
                 // console.log(id)
                 this.$axios.post('/create/abonnement',{
-                compagnie_id: localStorage.getItem('auth.company_id'),
-                plan_id: id
+                    compagnie_id: localStorage.getItem('auth.company_id'),
+                    plan_id: id
                 })        
                 .then(response => 
                 {
+                    console.log(response)
                     if(response.data.status == "success"){
                         this.$toast('Abonnement choisi avec succès !!!', {
                             icon: 'fa fa-check-circle',
                         })
-                        if(verification == null){
-                            this.showModal = true
-                        } 
-                        else{
-                            // this.$auth.setUserToken(response.data.data.original.access_token)         
-                            //   .then(response =>{
-                                this.role = localStorage.getItem('auth.roles');
-                                if(this.role == 'super_admin'){
-                                    this.$auth.setUserToken(response.data.data.original.access_token)         
-                                    .then(response =>{
-                                        this.$router.push( '/admin/admin',)
-                                    })
-                                }
-                                else if(this.role == 'admin'){
-                                    this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                                    this.$auth.setUserToken(response.data.data.original.access_token)         
-                                    .then(response =>{
-                                        // console.log(response)
-                                        this.$router.push( '/dashboard',)
-                                    })
-                                }
-                                else{
-                                    this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                                    this.$auth.setUserToken(response.data.data.original.access_token)         
-                                    .then(response =>{
-                                        this.$router.push( '/ventes/vente',)
-                                    })
-                                }
-                                // })
-                        } 
+                      this.$router.push( '/dashboard',)
                     }else{
                         this.error = response.data.message
                     }
                 })  
             },
             
-            setMessage(){
-                this.role = localStorage.getItem('auth.roles');
-                    if(this.role == 'super_admin'){
-                        this.$auth.setUserToken(response.data.data.original.access_token)         
-                        .then(response =>{
-                            this.$router.push( '/admin/admin',)
-                        })
-                    }
-                    else if(this.role == 'admin'){
-                        this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                        this.$auth.setUserToken(response.data.data.original.access_token)         
-                        .then(response =>{
-                            // console.log(response)
-                            this.$router.push( '/dashboard',)
-                        })
-                    }
-                    else{
-                        this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                        this.$auth.setUserToken(response.data.data.original.access_token)         
-                        .then(response =>{
-                            this.$router.push( '/ventes/vente',)
-                        })
-                    }
-            },
         
       }
     }
