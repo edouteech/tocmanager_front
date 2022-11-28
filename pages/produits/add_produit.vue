@@ -149,6 +149,9 @@ export default {
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/produits/list_produit'});
+                    this.$toast('Nouveau produit enregistré avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.errors = response.data.data

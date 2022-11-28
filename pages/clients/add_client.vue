@@ -97,6 +97,9 @@ export default {
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/clients/list_client'});
+                    this.$toast('Nouveau client ajouté avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.errors = response.data.data

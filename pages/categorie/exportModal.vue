@@ -60,9 +60,9 @@
       data () {
         return{
             form: {
-                date: 1,
-                montant: 1,
-                client: 1,
+                id: 1,
+                nom: 1,
+                parent: 1,
             },
             columns : [
                 {

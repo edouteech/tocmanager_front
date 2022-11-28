@@ -93,6 +93,9 @@ export default {
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/fournisseurs/list_fournisseur'});
+                    this.$toast('Nouveau fournisseur ajouté !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.errors = response.data.data

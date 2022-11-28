@@ -105,6 +105,9 @@ export default {
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/decaissements/list_decaissement', })
+                    this.$toast('Décaissement enregistré avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.errors = response.data.data

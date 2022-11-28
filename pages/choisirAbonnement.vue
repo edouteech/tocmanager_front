@@ -19,13 +19,18 @@
                     <div class="my-2">
                         <!-- <button class="btn btn-outline-primary btn-offer p-2" >Sélectionner</button> -->
                         <nuxt-link to="/abonnement" class="btn btn-outline-dark btn-offer my-4">En savoir plus</nuxt-link></div>
-                    <div class="title-offre col-md-6 mx-auto text-center" @click.prevent="createAbonnement(plan.id)">{{plan.price}} {{plan.currency}}</div>
+                    <button class="btn btn-outline-primary btn-offer p-2" @click="createAbonnement(plan)"
+                        id="pay-btn"
+                    >
+                        {{plan.price}} {{plan.currency}}
+                    </button>
                 </div>
             </div>
+        <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
         </div>
-    </div>
+        </div>
     </template>
-    
+
     <script>
     export default {
       auth: true,
@@ -37,40 +42,64 @@
             plans: '',
             error: null,
             showModal: false,
+            user_email: ''
         }
       },
     
-      mounted(){
-                this.$axios.get('/index/plans')        
-                .then(response => 
-                {
-                  console.log(response);
-                  this.plans = response.data.data
-                  this.plan1 = response.data.data[0]
-                  this.plan2 = response.data.data[1]
-    
-                })  
-              },
+    mounted(){
+        this.user_email = localStorage.getItem('auth.email')      
+        this.$axios.get('/index/plans')        
+        .then(response => 
+        {
+            console.log(response);
+            this.plans = response.data.data
+            this.plan1 = response.data.data[0]
+            this.plan2 = response.data.data[1]
+
+        })  
+    },
     
       methods:{
-            createAbonnement(id){
-                // console.log(id)
-                this.$axios.post('/create/abonnement',{
-                    compagnie_id: localStorage.getItem('auth.company_id'),
-                    plan_id: id
-                })        
-                .then(response => 
-                {
-                    console.log(response)
-                    if(response.data.status == "success"){
-                        this.$toast('Abonnement choisi avec succès !!!', {
-                            icon: 'fa fa-check-circle',
-                        })
-                      this.$router.push( '/dashboard',)
-                    }else{
-                        this.error = response.data.message
-                    }
-                })  
+            
+            createAbonnement(plan){
+                // console.log(plan.price)
+                let identifiant = plan.id
+                FedaPay.init('#pay-btn', {
+                    public_key: 'pk_sandbox_9l7ZopqxuP-yptRR8bK5jiSR',
+                    transaction: {
+                    amount: plan.price,
+                    description: "Payer l'abonnement"
+                    },
+                    customer: {
+                    email: this.user_email,
+                    },
+                    onComplete: (result => {
+                        console.log(result);
+                        if (result.transaction.status == "approved" ) {
+                             console.log(identifiant)
+                            this.$axios.post('/create/abonnement',{
+                                compagnie_id: localStorage.getItem('auth.company_id'),
+                                plan_id: identifiant
+                            })        
+                            .then(response => 
+                            {
+                                console.log(response)
+                                if(response.data.status == "success"){
+                                    this.$router.push( '/dashboard',)
+                                    this.$toast('Abonnement choisi avec succès !!!', {
+                                        icon: 'fa fa-check-circle',
+                                    })
+                                }else{
+                                    this.error = response.data.message
+                                }
+                            })  
+                        }
+                        else{
+                            console.log("erreur");
+                        }
+                    })
+                });
+                
             },
             
         

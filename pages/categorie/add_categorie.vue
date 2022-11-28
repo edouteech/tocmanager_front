@@ -87,6 +87,9 @@ export default {
                     console.log(response.data);
                 if(response.data.status == "success"){
                     this.$router.push({path:'/categorie/list_categorie', })
+                    this.$toast('Nouvelle catégorie ajoutée !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.error = response.data.message

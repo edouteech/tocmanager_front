@@ -108,7 +108,7 @@ export default {
       },
 
       setMessage(){
-        this.$router.push( '/',)
+        this.$router.push( '/login',)
         
       },
       
@@ -124,10 +124,11 @@ export default {
                   this.$auth.$storage.setUniversal('email', this.form.email)
                   let verification = response.data.data.original.user.email_verified_at
                   this.$auth.setUserToken(response.data.data.original.access_token)
-                    // if(response.data.data.original.compagnies[0].is_suscribed == 0){
-                    // this.$router.push( '/choisirAbonnement')
-                    // }
-                    // else{
+                  let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
+                    if(checkAbonnement == 0){
+                      this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
+                    }
+                    else{
                       if(verification == null){
                         this.showModal = true
                       }
@@ -136,7 +137,7 @@ export default {
                         .then(response =>{this.$router.push( '/change_pswd',)
                         })                   
                       }
-                    // }
+                    }
                 } catch (err) {
                   console.log(err);
                 }
@@ -181,11 +182,17 @@ export default {
                                     })
                               }
                               else{
-                                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                                this.$auth.setUserToken(response.data.data.original.access_token)         
-                                  .then(response =>{
-                                    this.$router.push( '/ventes/vente',)
-                                })
+                                let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
+                                  if(checkAbonnement == 0){
+                                    this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
+                                  }
+                                  else{
+                                    this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                                    this.$auth.setUserToken(response.data.data.original.access_token)         
+                                      .then(response =>{
+                                        this.$router.push( '/ventes/vente',)
+                                    })
+                                  }
                               }
                             // })
                       }    

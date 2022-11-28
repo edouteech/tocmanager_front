@@ -252,6 +252,9 @@ export default {
                     if(response.data.status == "success"){
                         this.cli_id = response.data.data.id
                         this.showSaved = true
+                        this.$toast("Enregistrement d'une facture !!! ", {
+                            icon: 'fa fa-check-circle',
+                        })
                     }
                     else{
                         this.load = false

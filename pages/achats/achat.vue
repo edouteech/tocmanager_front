@@ -235,6 +235,9 @@ export default {
                         // console.log(this.error)
                         if(response.data.status == "success"){
                             this.$router.push({path:'/achats/SavedModal',})
+                            this.$toast("Enregistrement d'une facture !!! ", {
+                                icon: 'fa fa-check-circle',
+                            })
                         }
                     
                         else{ 

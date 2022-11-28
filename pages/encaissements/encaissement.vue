@@ -104,6 +104,9 @@ export default {
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/encaissements/list_encaissement', })
+                    this.$toast('Encaissement enregistré avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.errors = response.data.data
