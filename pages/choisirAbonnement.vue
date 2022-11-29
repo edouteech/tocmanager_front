@@ -65,7 +65,7 @@
                 // console.log(plan.price)
                 let identifiant = plan.id
                 FedaPay.init('#pay-btn', {
-                    public_key: 'pk_sandbox_9l7ZopqxuP-yptRR8bK5jiSR',
+                    public_key: 'pk_live_cUgIfSpT8tSIWG07zgn2t31z',
                     transaction: {
                     amount: plan.price,
                     description: "Payer l'abonnement"
