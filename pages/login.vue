@@ -129,7 +129,7 @@ export default {
                   this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
                     .then(result =>{
                       // console.log(result);
-                      if( result.data.data == null){
+                      if( result.data.data.length > 0){
                         this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
                       }
                       else{
@@ -180,8 +180,8 @@ export default {
                                         // console.log(response)
                                           this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
                                           .then(result =>{
-                                            // console.log(result);
-                                            if( result.data.data == null){
+                                            console.log(result);
+                                            if( result.data.data.length > 0){
                                               this.$router.push( '/choisirAbonnement')
                                             }
                                             else{
@@ -195,7 +195,7 @@ export default {
                                 this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
                                 .then(result =>{
                                   // console.log(result);
-                                  if( result.data.data == null){
+                                  if( result.data.data.length > 0){
                                     this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
                                   }
                                   else{
