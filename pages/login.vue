@@ -125,19 +125,24 @@ export default {
                   let verification = response.data.data.original.user.email_verified_at
                   this.$auth.setUserToken(response.data.data.original.access_token)
                   let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
-                    if(checkAbonnement == 0){
-                      this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
-                    }
-                    else{
-                      if(verification == null){
-                        this.showModal = true
+                  
+                  this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
+                    .then(result =>{
+                      // console.log(result);
+                      if( result.data.data == null){
+                        this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
                       }
-                      else{ 
-                        this.$auth.setUserToken(response.data.data.original.access_token)
-                        .then(response =>{this.$router.push( '/change_pswd',)
-                        })                   
+                      else{
+                        if(verification == null){
+                          this.showModal = true
+                        }
+                        else{ 
+                          this.$auth.setUserToken(response.data.data.original.access_token)
+                          .then(response =>{this.$router.push( '/change_pswd',)
+                          })                   
+                        }
                       }
-                    }
+                   }) 
                 } catch (err) {
                   console.log(err);
                 }
@@ -172,18 +177,25 @@ export default {
                                     this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
                                     this.$auth.setUserToken(response.data.data.original.access_token)         
                                       .then(response =>{
-                                        console.log(response)
-                                          if( checkAbonnement == 0){
-                                            this.$router.push( '/choisirAbonnement')
-                                          }
-                                          else{
-                                            this.$router.push( '/dashboard',)
-                                          }
+                                        // console.log(response)
+                                          this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
+                                          .then(result =>{
+                                            // console.log(result);
+                                            if( result.data.data == null){
+                                              this.$router.push( '/choisirAbonnement')
+                                            }
+                                            else{
+                                              this.$router.push( '/dashboard',)
+                                            }
+                                          }) 
                                     })
                               }
                               else{
                                 let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
-                                  if(checkAbonnement == 0){
+                                this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
+                                .then(result =>{
+                                  // console.log(result);
+                                  if( result.data.data == null){
                                     this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
                                   }
                                   else{
@@ -193,6 +205,7 @@ export default {
                                         this.$router.push( '/ventes/vente',)
                                     })
                                   }
+                                }) 
                               }
                             // })
                       }    
