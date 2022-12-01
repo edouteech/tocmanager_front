@@ -26,7 +26,7 @@
                     </button>
                 </div>
             </div>
-        <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
+        <!-- <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script> -->
         </div>
         </div>
     </template>
@@ -62,21 +62,20 @@
       methods:{
             
             createAbonnement(plan){
-                // console.log(plan.price)
                 let identifiant = plan.id
-                FedaPay.init('#pay-btn', {
-                    public_key: 'pk_live_cUgIfSpT8tSIWG07zgn2t31z',
-                    transaction: {
-                    amount: plan.price,
-                    description: "Payer l'abonnement"
-                    },
-                    customer: {
-                    email: this.user_email,
-                    },
-                    onComplete: (result => {
-                        console.log(result);
-                        if (result.transaction.status == "approved" ) {
-                             console.log(identifiant)
+                // FedaPay.init('#pay-btn', {
+                //     public_key: 'pk_live_cUgIfSpT8tSIWG07zgn2t31z',
+                //     transaction: {
+                //     amount: plan.price,
+                //     description: "Payer l'abonnement"
+                //     },
+                //     customer: {
+                //     email: this.user_email,
+                //     },
+                //     onComplete: (result => {
+                //         console.log(result);
+                //         if (result.transaction.status == "approved" ) {
+                //              console.log(identifiant)
                             this.$axios.post('/create/abonnement',{
                                 compagnie_id: localStorage.getItem('auth.company_id'),
                                 plan_id: identifiant
@@ -93,12 +92,12 @@
                                     this.error = response.data.message
                                 }
                             })  
-                        }
-                        else{
-                            console.log("erreur");
-                        }
-                    })
-                });
+                //         }
+                //         else{
+                //             console.log("erreur");
+                //         }
+                //     })
+                // });
                 
             },
             
