@@ -11,7 +11,7 @@
         <div class="row mx-auto" >
             <div class="col-md-4 mx-auto offre" v-for="(plan, i) in plans" :key="i">
                 <h4 class="text-center">{{plan.name}}</h4><hr>
-                <p class="text-center">{{plan.description}}</p>
+                <p class="text-center">Choississez un {{plan.description}} et bénéficiez d'<b>une période d'éssai de {{plan.trial_period}} jours</b>.</p>
                 <div class="img">
                     <img src="/images/poignee.jpg" alt="" class="img-offer w-50">
                 </div>
