@@ -30,7 +30,7 @@
                 
                 <div class="text-center text-lg-start mt-6 pt-2">
                     <button type="button"  @click.prevent="submit()" class="btn btn-primary btn-lg"
-                        style="padding-left: 1rem; padding-right: 1rem;">Accéder à l'espace de travail</button><br><br>
+                        style="padding-left: 1rem; padding-right: 1rem;">Enregistrer</button><br><br>
             
                 </div>
 
@@ -41,9 +41,7 @@
 
 <script>
 export default {
-    layout: "empty",
-
-
+   layout: "empty",
    data () {
       return {
         error: null,
@@ -98,7 +96,14 @@ export default {
                 console.log( response ) 
                 this.error = response.data.message
                 if(response.data.status == "success"){
-                    this.$router.push( '/login',)
+                    this.$toast('Mot de passe modifié avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
+                    localStorage.removeItem('auth.user_id');
+                    localStorage.removeItem('auth.company_id');
+                    localStorage.removeItem('auth.email');
+                    this.$auth.logout();
+                    this.$router.push('/login');
                 }
                 else{
                     this.error = response.data.data

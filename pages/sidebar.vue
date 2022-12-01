@@ -158,9 +158,9 @@
                   </NuxtLink>   
               </li> 
               <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
-                  <NuxtLink to="/update_compagnie" data-bs-dismiss="offcanvas">
+                  <NuxtLink to="/renouvelerAbonnement" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
-                          <i class="fa fa-briefcase" aria-hidden="true " data-bs-dismiss="offcanvas"></i>
+                        <i class="fa fa-handshake-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
                           <span class="links_name" data-bs-dismiss="offcanvas">Renouveler l'abonnement</span>
                       </div>
                   </NuxtLink>
