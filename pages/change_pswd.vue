@@ -58,7 +58,6 @@ export default {
 
     
     mounted () {
-        // console.log(this.$auth.$state.user.email);
         this.email = localStorage.getItem('auth.email');
         this.role = localStorage.getItem('auth.roles');
     },
@@ -98,20 +97,11 @@ export default {
             .then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
-                // localStorage.removeItem('auth.email');
-                // this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
-                // let role = response.data.data.original.roles[0].name
                 if(response.data.status == "success"){
-                    if(this.role != 'admin'){
-                    this.$router.push( '/ventes/vente',)
-                    }
-                    else{
-                      this.$router.push( 'dashboard',)
-                    }
+                    this.$router.push( '/login',)
                 }
                 else{
                     this.error = response.data.data
-                    // this.$router.push({path:'/categorie/add_client'});
                 }
             }).catch( err => console.log( err ) )
             
