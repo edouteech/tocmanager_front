@@ -6,12 +6,12 @@
         <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
         <div class="col-md-6 mx-auto my-5">
             <!-- <h3 class="text-center title-offre">NOS OFFRES</h3> -->
-            <p class="text-center p-offre">Choississez un pack d'abonnement pour bénéficier de nos services...</p>
+            <p class="text-center p-offre">Veuillez procéder au paiement d'un pack d'abonnement pour bénéficier de nos services...</p>
         </div>
         <div class="row mx-auto" >
             <div class="col-md-4 mx-auto offre" v-for="(plan, i) in plans" :key="i">
                 <h4 class="text-center">{{plan.name}}</h4><hr>
-                <p class="text-center">Choississez un {{plan.description}} et bénéficiez d'<b>une période d'éssai de {{plan.trial_period}} jours</b>.</p>
+                <p class="text-center">{{plan.description}}</p>
                 <div class="img">
                     <img src="/images/poignee.jpg" alt="" class="img-offer w-50">
                 </div>
@@ -26,7 +26,7 @@
                     </button>
                 </div>
             </div>
-        <!-- <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script> -->
+        <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
         </div>
         </div>
     </template>
@@ -63,19 +63,19 @@
             
             createAbonnement(plan){
                 let identifiant = plan.id
-                // FedaPay.init('#pay-btn', {
-                //     public_key: 'pk_live_cUgIfSpT8tSIWG07zgn2t31z',
-                //     transaction: {
-                //     amount: plan.price,
-                //     description: "Payer l'abonnement"
-                //     },
-                //     customer: {
-                //     email: this.user_email,
-                //     },
-                //     onComplete: (result => {
-                //         console.log(result);
-                //         if (result.transaction.status == "approved" ) {
-                //              console.log(identifiant)
+                FedaPay.init('#pay-btn', {
+                    public_key: 'pk_live_cUgIfSpT8tSIWG07zgn2t31z',
+                    transaction: {
+                    amount: plan.price,
+                    description: "Payer l'abonnement"
+                    },
+                    customer: {
+                    email: this.user_email,
+                    },
+                    onComplete: (result => {
+                        console.log(result);
+                        if (result.transaction.status == "approved" ) {
+                             console.log(identifiant)
                             this.$axios.post('/create/abonnement',{
                                 compagnie_id: localStorage.getItem('auth.company_id'),
                                 plan_id: identifiant
@@ -85,19 +85,19 @@
                                 console.log(response)
                                 if(response.data.status == "success"){
                                     this.$router.push( '/dashboard',)
-                                    this.$toast('Abonnement choisi avec succès !!!', {
+                                    this.$toast('Paiement effectué avec succès !!!', {
                                         icon: 'fa fa-check-circle',
                                     })
                                 }else{
                                     this.error = response.data.message
                                 }
                             })  
-                //         }
-                //         else{
-                //             console.log("erreur");
-                //         }
-                //     })
-                // });
+                        }
+                        else{
+                            console.log("erreur");
+                        }
+                    })
+                });
                 
             },
             

@@ -30,7 +30,7 @@
                 
                 <div class="text-center text-lg-start mt-6 pt-2">
                     <button type="button"  @click.prevent="submit()" class="btn btn-primary btn-lg"
-                        style="padding-left: 1rem; padding-right: 1rem;">Accéder à l'espace de travail</button><br><br>
+                        style="padding-left: 1rem; padding-right: 1rem;">Enregistrer</button><br><br>
             
                 </div>
 
@@ -41,9 +41,7 @@
 
 <script>
 export default {
-    layout: "empty",
-
-
+   layout: "empty",
    data () {
       return {
         error: null,
@@ -58,7 +56,6 @@ export default {
 
     
     mounted () {
-        // console.log(this.$auth.$state.user.email);
         this.email = localStorage.getItem('auth.email');
         this.role = localStorage.getItem('auth.roles');
     },
@@ -98,20 +95,18 @@ export default {
             .then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
-                // localStorage.removeItem('auth.email');
-                // this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
-                // let role = response.data.data.original.roles[0].name
                 if(response.data.status == "success"){
-                    if(this.role != 'admin'){
-                    this.$router.push( '/ventes/vente',)
-                    }
-                    else{
-                      this.$router.push( 'dashboard',)
-                    }
+                    this.$toast('Mot de passe modifié avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
+                    localStorage.removeItem('auth.user_id');
+                    localStorage.removeItem('auth.company_id');
+                    localStorage.removeItem('auth.email');
+                    this.$auth.logout();
+                    this.$router.push('/login');
                 }
                 else{
                     this.error = response.data.data
-                    // this.$router.push({path:'/categorie/add_client'});
                 }
             }).catch( err => console.log( err ) )
             

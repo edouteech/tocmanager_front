@@ -120,29 +120,11 @@ export default {
                   // this.error = response.data.message
                   this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name)
                   this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                  this.$auth.$storage.setUniversal('user_id', response.data.data.original.compagnies[0].id)
+                  this.$auth.$storage.setUniversal('user_id', response.data.data.original.user.id)
                   this.$auth.$storage.setUniversal('email', this.form.email)
-                  let verification = response.data.data.original.user.email_verified_at
-                  this.$auth.setUserToken(response.data.data.original.access_token)
-                  let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
-                  
-                  this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
-                    .then(result =>{
-                      // console.log(result);
-                      if( result.data.data.length == 0){
-                        this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
-                      }
-                      else{
-                        if(verification == null){
-                          this.showModal = true
-                        }
-                        else{ 
-                          this.$auth.setUserToken(response.data.data.original.access_token)
-                          .then(response =>{this.$router.push( '/change_pswd',)
-                          })                   
-                        }
-                      }
-                   }) 
+                    this.$auth.setUserToken(response.data.data.original.access_token)
+                    .then(response =>{this.$router.push( '/change_pswd',)
+                    })     
                 } catch (err) {
                   console.log(err);
                 }
@@ -178,14 +160,32 @@ export default {
                                     this.$auth.setUserToken(response.data.data.original.access_token)         
                                       .then(response =>{
                                         // console.log(response)
-                                          this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
+                                          this.$axios.get('/index/abonnement/compagnie/'+localStorage.getItem('auth.company_id'))
                                           .then(result =>{
-                                            console.log(result);
+                                            // console.log(result);
                                             if( result.data.data.length == 0){
                                               this.$router.push( '/choisirAbonnement')
                                             }
                                             else{
-                                              this.$router.push( '/dashboard',)
+                                              this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
+                                              .then(result =>{
+                                                if( result.data.data.length == 0){
+                                                  this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
+                                                  .then(response =>{
+                                                    console.log(response)
+                                                    if( result.data.data.hasEndGrace == false){
+                                                      this.$router.push( '/dashboard',)
+                                                    }
+                                                    else{
+                                                      this.$router.push( '/renouvelerAbonnement',)
+                                                    }
+                                                  })
+                                                }
+                                                else{
+                                                  this.$router.push( '/dashboard',)
+                                                }
+
+                                              })
                                             }
                                           }) 
                                     })
