@@ -106,6 +106,8 @@
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
        <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
        <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter</button>
+       <button class="btn btn-outline-info mx-4" type="submit" @click.prevent="pdf()">Pdf</button>
+
        <!-- <vue-excel-xlsx
           class="btn btn-outline-info mx-5"
           :data="data"
@@ -212,6 +214,13 @@ export default {
   methods: {
         exp(){
             this.exportModal = true
+        },
+
+        pdf(){
+          this.$axios.get('/products/download',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id')
+              }
+            })
         },
 
        submitFile(){
