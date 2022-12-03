@@ -1,15 +1,21 @@
 <template>
-    <div class="contain my-5">
+<div>
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
+    <Sidebar /><h3 class="name">Abonnement </h3>
+    <Userinfo />
+    </nav>
+  
+    <div class="app-main__outer p-5">
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
             {{error}}
         </div>
         <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
         <div class="col-md-6 mx-auto my-5">
             <!-- <h3 class="text-center title-offre">NOS OFFRES</h3> -->
-            <p class="text-center p-offre">Veuillez procéder au paiement d'un pack d'abonnement pour bénéficier de nos services...</p>
+            <p class="text-center p-offre">Veuillez procéder au paiement de votre pack d'abonnement pour continuer à bénéficier de nos services...</p>
         </div>
         <div class="row mx-auto" >
-            <div class="col-md-4 mx-auto offre" v-for="(plan, i) in plans" :key="i">
+            <div class="col-md-4 mx-auto offre">
                 <h4 class="text-center">{{plan.name}}</h4><hr>
                 <p class="text-center">{{plan.description}}</p>
                 <div class="img">
@@ -28,18 +34,23 @@
             </div>
         <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
         </div>
-        </div>
-    </template>
+    </div>
+</div>
+</template>
 
-    <script>
+<script>
+  import Sidebar from './sidebar.vue'
+  import Userinfo from './user_info.vue'
     export default {
       auth: true,
       layout : 'empty',
+      components: {
+        Sidebar,
+        Userinfo,
+      },
       data() {
         return{
-            plan1: '',
-            plan2: '',
-            plans: '',
+            plan: '',
             error: null,
             showModal: false,
             user_email: ''
@@ -48,13 +59,16 @@
     
     mounted(){
         this.user_email = localStorage.getItem('auth.email')      
-        this.$axios.get('/index/plans')        
+
+        this.$axios.get('/compagnie/suscribed/plan/'+localStorage.getItem('auth.company_id'),{
+            params: {
+                compagnie_id: localStorage.getItem('auth.company_id')
+            }
+        })        
         .then(response => 
         {
             console.log(response);
-            this.plans = response.data.data
-            this.plan1 = response.data.data[0]
-            this.plan2 = response.data.data[1]
+            this.plan = response.data.data
 
         })  
     },
@@ -62,7 +76,6 @@
       methods:{
             
             createAbonnement(plan){
-                let identifiant = plan.id
                 FedaPay.init('#pay-btn', {
                     public_key: 'pk_live_cUgIfSpT8tSIWG07zgn2t31z',
                     transaction: {
@@ -75,23 +88,26 @@
                     onComplete: (result => {
                         console.log(result);
                         if (result.transaction.status == "approved" ) {
-                             console.log(identifiant)
-                            this.$axios.post('/create/abonnement',{
-                                compagnie_id: localStorage.getItem('auth.company_id'),
-                                plan_id: identifiant
-                            })        
-                            .then(response => 
-                            {
-                                console.log(response)
-                                if(response.data.status == "success"){
-                                    this.$router.push( '/dashboard',)
-                                    this.$toast('Paiement effectué avec succès !!!', {
-                                        icon: 'fa fa-check-circle',
-                                    })
-                                }else{
-                                    this.error = response.data.message
-                                }
-                            })  
+                            this.$toast('Paiement effectué avec succès !!!', {
+                                icon: 'fa fa-check-circle',
+                            })
+                                this.$axios.post('/abonnement/renew',{ compagnie_id: localStorage.getItem('auth.company_id'),
+                                    params: {
+                                        compagnie_id: localStorage.getItem('auth.company_id')
+                                    }
+                                })         
+                                .then(response => 
+                                {
+                                    // console.log(response)
+                                    if(response.data.status == "success"){
+                                        this.$router.push( '/dashboard',)
+                                        this.$toast("Votre abonnement vient d'etre renouvelé !!!", {
+                                            icon: 'fa fa-check-circle',
+                                        })
+                                    }else{
+                                        this.error = response.data.message
+                                    }
+                                })
                         }
                         else{
                             console.log("erreur");
