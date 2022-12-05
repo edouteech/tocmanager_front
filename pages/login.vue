@@ -16,7 +16,7 @@
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form>
-          <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+          <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}}
         </div>
           <div class="divider d-flex align-items-center my-4">

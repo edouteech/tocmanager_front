@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="contenu">
-        <div class="alert alert-danger justify-content-center avertissement-abonnement" role="alert" v-if="verifyGrace != null">
+        <div class="alert alert-danger justify-content-center avertissement-abonnement" role="alert" v-if="verifyGrace">
           Votre abonnement est expiré !!! Vous bénéficiez d'une période de grace. Veuillez vous réabonnez avant le {{verifyGrace}}.
         </div>
         <Nuxt />
@@ -21,7 +21,7 @@ export default{
     },
     data(){
         return {
-            verifyGrace : ''
+            verifyGrace : null
         }
     },
 
