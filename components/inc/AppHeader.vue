@@ -21,7 +21,7 @@
                     <NuxtLink to="/abonnement" class="nav-link">Nos offres</NuxtLink>
                 </li>
                 <li class="nav-item">
-                    <NuxtLink to="/landing_page" class="nav-link">A propos</NuxtLink>
+                    <NuxtLink to="/landing_page" class="nav-link">Informations</NuxtLink>
                 </li>
                 <!-- <li class="nav-item">
                     <NuxtLink to="/contact" class="nav-link">Contact Us</NuxtLink>

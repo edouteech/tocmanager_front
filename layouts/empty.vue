@@ -28,7 +28,7 @@ export default{
     mounted(){
         this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
         .then(response =>{
-            console.log(response)
+            // console.log(response)
             this.verifyGrace = response.data.data.graceEndDate
         })
     }

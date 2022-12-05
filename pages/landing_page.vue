@@ -1,6 +1,7 @@
 <template>
   <div>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <nav class="navbar navbar-expand-lg  nav-bar">
         <div class="container">
             <NuxtLink to="/login">
@@ -259,19 +260,19 @@ eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
             <div class="col-md-1">
             </div>
             <div class="col-md-3 fonction">
-                <div class="i-cercle"><i class="fa fa-database mx-auto" aria-hidden="true"></i></div>
+                <div class="i-cercle"><i class="fa-solid fa-cart-shopping"></i></div>
                 <h4 class="fonction-titre">Stock</h4><br><br>
                 <p>You are allowed to use the Chain App Dev HTML template. 
                     Feel free to modify or edit this layout.</p>
             </div>
             <div class="col-md-3 fonction">
-                <div class="i-cercle"><i class="fa fa-money" aria-hidden="true"></i></div>
+                <div class="i-cercle"><i class="fa-sharp fa-solid fa-building-columns"></i></div>
                 <h4 class="fonction-titre">Trésorerie</h4><br><br>
                 <p>You are allowed to use the Chain App Dev HTML template. 
                     Feel free to modify or edit this layout.</p>
             </div>
             <div class="col-md-3 fonction">
-                <div class="i-cercle"><i class="fa fa-fax" aria-hidden="true"></i></div>
+                <div class="i-cercle"><i class="fa-sharp fa-solid fa-file-circle-check"></i></div>
                 <h4 class="fonction-titre">Facturation</h4><br><br>
                 <p>You are allowed to use the Chain App Dev HTML template. 
                     Feel free to modify or edit this layout.</p>
@@ -318,10 +319,10 @@ eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
                     <div class="social">
                         <h6 class="text-right mt-4">Rejoignez-nous :</h6><hr>
                         <div class="d-flex">
-                            <div class="mx-2 social-icon"><i class="fa fa-whatsapp"></i></div>
-                            <div class="mx-2 social-icon"><i class="fa fa-facebook-official" aria-hidden="true"></i></div>
-                            <div class="mx-2 social-icon"><i class="fa fa-telegram"></i></div>
-                            <div class="mx-2 social-icon"><i class="fa fa-linkedin" aria-hidden="true"></i></div>
+                            <div class="mx-2 social-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                            <div class="mx-2 social-icon"><i class="fa-brands fa-facebook"></i></div>
+                            <div class="mx-2 social-icon"><i class="fa-brands fa-telegram"></i></div>
+                            <div class="mx-2 social-icon"><i class="fa-brands fa-telegram"></i></div>
                         </div>
                     </div>
                 </div>
@@ -462,6 +463,7 @@ export default {
     border: 1px solid black;
     background: linear-gradient(157.25deg, #2E9DDC 43.26%, rgba(255, 255, 255, 0) 97.71%);
     opacity: 0.6;
+    width: 200px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     padding: 30px;
     height: 400px;

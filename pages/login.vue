@@ -172,8 +172,8 @@ export default {
                                                 if( result.data.data.length == 0){
                                                   this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
                                                   .then(response =>{
-                                                    console.log(response)
-                                                    if( result.data.data.hasEndGrace == false){
+                                                    // console.log(response)
+                                                    if( response.data.data.hasEndGrace == false){
                                                       this.$router.push( '/dashboard',)
                                                     }
                                                     else{
@@ -193,18 +193,34 @@ export default {
                               else{
                                 let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
                                 this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
-                                .then(result =>{
+                                
                                   // console.log(result);
-                                  if( result.data.data.length == 0){
-                                    this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
-                                  }
-                                  else{
-                                    this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                                    this.$auth.setUserToken(response.data.data.original.access_token)         
-                                      .then(response =>{
+                                  // if( result.data.data.length == 0){
+                                  //   this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
+                                  // }
+                                  // else{
+                                  //   this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                                  //   this.$auth.setUserToken(response.data.data.original.access_token)         
+                                  //     .then(response =>{
+                                  //       this.$router.push( '/ventes/vente',)
+                                  //   })
+                                  // }
+                                  .then(result =>{
+                                      if( result.data.data.length == 0){
+                                        this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
+                                        .then(response =>{
+                                          console.log(response)
+                                          if( response.data.data.hasEndGrace == false){
+                                            this.$router.push( '/ventes/vente',)
+                                          }
+                                          else{
+                                            this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
+                                          }
+                                        })
+                                      }
+                                      else{
                                         this.$router.push( '/ventes/vente',)
-                                    })
-                                  }
+                                      }
                                 }) 
                               }
                             // })

@@ -8,11 +8,19 @@
       <div class="app-main__outer p-5">
         <h4>Liste des ventes effectuées</h4><hr><br>
         <div class="d-flex">
-          <div class="col-md-10">
+          <div class="col-md-10 row">
             <form class="d-flex col-md-7" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
               <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
             </form>
+            <div class="col-md-4"> 
+                   <select v-model="filtre" class="form-control"  required>
+                        <option disabled value="">Trier par ...</option>
+                        <option value="" >Date par ordre décroissant</option>
+                        <option value="">Date par ordre croissant</option>
+                        <option value="">Prix par ordre croissant</option>
+                    </select>
+                </div>
           </div>
           <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
         </div>
@@ -92,7 +100,10 @@
           <form class="d-flex justify-content-end" role="search">
             <!-- <input type="file" id="file" ref="file" @change="handleFileUpload()" />
             <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button> -->
-            <vue-excel-xlsx
+            
+            <!-- <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exporte()">Exporter</button> -->
+            
+            <!-- <vue-excel-xlsx
                 class="btn btn-outline-info mx-5"
                 :data="data"
                 :columns="columns"
@@ -101,7 +112,7 @@
                 :sheet-name="'sheetname'"
                 >
                 Exporter
-              </vue-excel-xlsx>
+            </vue-excel-xlsx> -->
           </form><br><br>
           <nav aria-label="Page navigation example "  class="d-flex" v-if="res_data != null">
             <ul class="pagination">
@@ -313,6 +324,7 @@
             },
       ],
       data : [],
+      filtre: ""
     }
   },
 

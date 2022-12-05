@@ -41,12 +41,15 @@
                 </thead>
               
                 <tbody>
-                  <tr  v-for="(compagnie, i) in compagnies" :key="i" @click="voirCompagnie(compagnie.id)">
+                  <tr  v-for="(compagnie, i) in compagnies" :key="i">
                     <td>{{compagnie.name}}</td>
                     <td>{{compagnie.phone}}</td>
                     <td>{{compagnie.email}}</td>
                     <td class="text-center"><NuxtLink :to="'/admin/compagnies/'+compagnie.id">
                         <button type="button" id="PopoverCustomT-1" class="btn btn-success btn-sm">Details</button></NuxtLink>
+                        <!-- <NuxtLink :to="'/admin/compagnies/'+compagnie.id"> -->
+                          <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" @click.prevent="abonne()">Abonnement</button>
+                        <!-- </NuxtLink> -->
                     </td>
                   </tr>
                 </tbody>
@@ -76,20 +79,23 @@
               </form>
             </nav>
      </div><br> 
-    <voirCompagnie :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/>
-    </div>
+    <!-- <voirCompagnie :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/> -->
+    <abonnementModal  v-show="showModal" @close-modal="showModal = false"/>
+</div>
     
     </template>
     
     <script>
-    import voirCompagnie from './voir_compagnie.vue'
+    import abonnementModal from './abonnementModal.vue'
+    // import voirCompagnie from './voir_compagnie.vue'
     import Sidebar from '../sidebar.vue'
     export default {
       auth: true,
       layout: "empty",
       components: {
         Sidebar,  
-        voirCompagnie
+        // voirCompagnie,
+        abonnementModal
       },
     
       data () {
@@ -128,7 +134,8 @@
                       'Content-Type': 'multipart/form-data'
                   }
                 }
-              ).then(response => {console.log(response);
+              ).then(response => {
+                // console.log(response);
                 if(response.data.status == "success"){
                   this.refresh()
                   alert("L'importation s'est bien effectuée ...");
@@ -148,7 +155,8 @@
                 search: this.element_search
               }
               })
-              .then(response => {console.log(response.data);
+              .then(response => {
+                // console.log(response.data);
               this.results = response.data.data.data 
               
               })
@@ -157,7 +165,8 @@
            deleteCompagnie(id){
               console.log(id);
               this.$axios.delete('/suppliers/' +id)
-              .then(response => {console.log(response.data.data);
+              .then(response => {
+                // console.log(response.data.data);
                 this.refresh()})                 
             },
              
@@ -169,7 +178,7 @@
               })
               .then(response => 
                 {
-                  console.log(response);
+                  // console.log(response);
                   this.total = response.data.data.total;
                   this.compagnies = response.data.data.data
     
@@ -179,20 +188,24 @@
                 })
             },
     
-            voirCompagnie(id){
-                this.showModal = true;
-                this.$axios.get('/admin/compagnies/'+ id,{
-                params: {
-                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
-                }
-              }).then(response => {
-                console.log(response.data.data[0]);
-                 this.identifiant1 = response.data.data[0].name
-                 this.identifiant2 = response.data.data[0].phone
-                 this.identifiant3 = response.data.data[0].email     
-                 }) 
+            // voirCompagnie(id){
+            //     this.showModal = true;
+            //     this.$axios.get('/admin/compagnies/'+ id,{
+            //     params: {
+            //       compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            //     }
+            //   }).then(response => {
+            //     console.log(response.data.data[0]);
+            //      this.identifiant1 = response.data.data[0].name
+            //      this.identifiant2 = response.data.data[0].phone
+            //      this.identifiant3 = response.data.data[0].email     
+            //      }) 
                    
-            },
+            // },
+
+            abonne(){
+              this.showModal = true
+            }
         },
     
     }
