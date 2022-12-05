@@ -1,9 +1,9 @@
 <template>
     <div class="modal-overlay" @click="$emit('close-modal')">
       <div class="modaler" @click.stop>    
-      <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="status == 'error'">
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
         {{error}}
-      </div>                  -->
+      </div>                 
               <form action="" method="POST"> 
                 <h4 class="text-center">Abonnement d'entreprise</h4><br>
                 <div class="input-form">					
@@ -14,7 +14,7 @@
                     </select>
                 </div>  
                 <div class="input-form my-4">					
-                    <label class="title">Nombre de mois</label>
+                    <label class="title">Nombre d'abonnement</label>
                     <input type="number" class="form-control" v-model="form.number" autocomplete="off" required placeholder="Exemple: 1">
                 </div>  
                 
@@ -32,6 +32,7 @@
   <script>
     export default {
       name: 'abonnementModal',
+      props : ['compagnie'],
       data () {
         return{
             form: {
@@ -39,6 +40,7 @@
                 number: ''
             },
             plans: '',
+            error: null
         }
       },
 
@@ -54,7 +56,25 @@
       
       methods: {
         async submit(){
-              
+          this.$axios.post('/admin/abonnement/add',{
+            compagnie_id: this.compagnie,
+            plan_id: this.form.plan,
+            number: this.form.number
+          })        
+            .then(response => 
+            {
+                console.log(response);
+                if(response.data.status == "success"){
+                    this.$router.push({path:'/admin/compagnies/list_compagnie', })
+                    this.$toast('Abonnement ajouté !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
+                }
+                else{
+                    this.error = response.data.message
+                    // this.$router.push({path:'/categorie/add_client'});
+                }
+            })  
               
         },
       }

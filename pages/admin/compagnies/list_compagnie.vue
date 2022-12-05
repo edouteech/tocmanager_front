@@ -48,7 +48,7 @@
                     <td class="text-center"><NuxtLink :to="'/admin/compagnies/'+compagnie.id">
                         <button type="button" id="PopoverCustomT-1" class="btn btn-success btn-sm">Details</button></NuxtLink>
                         <!-- <NuxtLink :to="'/admin/compagnies/'+compagnie.id"> -->
-                          <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" @click.prevent="abonne()">Abonnement</button>
+                          <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" @click.prevent="abonne(compagnie.id)">Abonnement</button>
                         <!-- </NuxtLink> -->
                     </td>
                   </tr>
@@ -80,7 +80,7 @@
             </nav>
      </div><br> 
     <!-- <voirCompagnie :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/> -->
-    <abonnementModal  v-show="showModal" @close-modal="showModal = false"/>
+    <abonnementModal :compagnie = 'identifiant1' v-show="showModal" @close-modal="showModal = false"/>
 </div>
     
     </template>
@@ -203,8 +203,9 @@
                    
             // },
 
-            abonne(){
+            abonne(id){
               this.showModal = true
+              this.identifiant1 = id
             }
         },
     
