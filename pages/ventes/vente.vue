@@ -43,7 +43,7 @@
                     <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
                 </div>
 
-                <div class="commande">
+                <div class="commande table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -211,7 +211,7 @@ export default {
         },
 
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id')});           
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});           
         },
 
         deleteLine(index){
@@ -632,7 +632,7 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
 
 @media screen and (max-width: 900px) {
     .add_buttons{
-        margin: 30% 0;
+        margin: 50% 0;
     }
     .cadre-haut{
         display: inline;
@@ -643,7 +643,7 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
         margin-right: 0;
         margin: 10px 5px;
         border: 1px solid darkblue;
-        padding: 50px ;
+        padding: 5px ;
     }
 
     .facture-date{

@@ -14,7 +14,7 @@
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search">
               <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
           </form>
-          <div class="search_result" v-if="this.element_search != ''">
+          <div class="search_result table-responsive" v-if="this.element_search != ''">
             <!-- <div >{{result.name}}</div> -->
             <table class="table table-hover">
               <thead>
@@ -46,36 +46,38 @@
             </table>
           </div><br>
           <!-- <NuxtLink  to="/clients/add_client"><button class="custom-btn btn-3"><span>Ajouter nouveau client</span></button></NuxtLink> -->
-            <table class="table table-hover" v-if="this.element_search == ''">
-              <thead>
-                <tr class="table-primary">
-                      <th>Noms</th>
-                      <th>Numéros de téléphone</th>
-                      <th>Emails </th>
-                      <th>Balance </th>
-                      <th>Nature</th>
-                      <th>Compagnie associée</th>
-                </tr>
-              </thead>
-              <tbody>
-               <tr  v-for="(client, i) in clients" :key="i" @click="voirClient(client.id)">
-                  <td>{{client.name}}</td>
-                  <td>{{client.phone}}</td>
-                  <td>{{client.email}}</td>
-                  <td>{{client.balance}}</td>
-                  <td>{{client.nature}}</td>
-                  <td>{{client.compagny.name}}</td>
-                  <!-- <td><div class="action">
-                    <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                    <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                    <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                    </div>
-                  </td> -->
-                </tr>
-              </tbody>
-            </table>
-            <p class="text-center"><strong>{{total}} client(s) au total </strong></p><hr class="text-primary">
-        <br><br>
+            <div class=" table-responsive">
+              <table class="table table-hover" v-if="this.element_search == ''">
+                <thead>
+                  <tr class="table-primary">
+                        <th>Noms</th>
+                        <th>Numéros de téléphone</th>
+                        <th>Emails </th>
+                        <th>Balance </th>
+                        <th>Nature</th>
+                        <th>Compagnie associée</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <tr  v-for="(client, i) in clients" :key="i">
+                    <td>{{client.name}}</td>
+                    <td>{{client.phone}}</td>
+                    <td>{{client.email}}</td>
+                    <td>{{client.balance}}</td>
+                    <td>{{client.nature}}</td>
+                    <td>{{client.compagny.name}}</td>
+                    <!-- <td><div class="action">
+                      <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                      <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                      <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                      </div>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+              <p class="text-center"><strong>{{total}} client(s) au total </strong></p><hr class="text-primary">
+            </div>
+            <br><br>
         <!-- <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br> -->
         <nav class="page" aria-label="Page navigation example px-8 " v-if="res_data != null">
           <ul class="pagination">
@@ -84,18 +86,20 @@
             
             <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
           </ul>
-          <label class="title">Affichage :</label> 
-          <form action="">
-          <div class="nombre">
-            <!-- -->
-            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                <option disabled value>10</option>
-                <option value="25" >25</option>
-                <option value="50">50</option>
-                <option value="10">100</option>
-            </select>
+          <div class="d-flex">
+            <label class="title">Affichage :</label> 
+            <form action="">
+              <div class="nombre">
+                <!-- -->
+                <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+                    <option disabled value>10</option>
+                    <option value="25" >25</option>
+                    <option value="50">50</option>
+                    <option value="10">100</option>
+                </select>
+              </div>
+            </form>
           </div>
-        </form>
         </nav>
         <br> 
       </div>
@@ -252,9 +256,9 @@
         font-weight: bold;
     }
     
-    .app-main__outer{
+    /* .app-main__outer{
       overflow: auto;
-    }
+    } */
     
     .fa{
       margin: 0 5px;
@@ -366,5 +370,12 @@
     .btn-3 span:hover:after {
       width: 100%;
     }
+
+    
+  @media screen and (max-width: 900px) {
+    .page{
+      display: inline;
+    }
+  }
     </style>
     

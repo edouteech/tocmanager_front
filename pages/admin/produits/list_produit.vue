@@ -10,7 +10,7 @@
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
               <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
           </form>
-          <div class="search_result" v-if="this.element_search != ''">
+          <div class="search_result table-responsive" v-if="this.element_search != ''">
             <!-- <div >{{result.name}}</div> -->
             <table class="table table-hover">
               <thead>
@@ -37,6 +37,7 @@
                 </tbody>
             </table>
           </div><br>
+          <div class="table-responsive">
             <table class="table table-hover" v-if="this.element_search == ''">
               <thead>
                 <tr class="table-primary">
@@ -55,7 +56,7 @@
                 </thead>
               
                 <tbody>
-                  <tr  v-for="(produit, i) in produits" :key="i" @click="voirProduit(produit.id)">
+                  <tr  v-for="(produit, i) in produits" :key="i" >
                     
                     <td>{{produit.name}}</td>
                     <td>{{produit.category.name}}</td>
@@ -68,7 +69,7 @@
                 </tbody>
             </table>
             <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
-       <br><br>
+          </div><br><br>
         <!-- <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br> -->
             <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
               <ul class="pagination">
@@ -77,7 +78,8 @@
                 
                 <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
               </ul>
-              <label class="title">Affichage :</label> 
+              <div class="d-flex mx-3">
+              <label class="title mt-1">Affichage</label> 
               <form action="">
               <div class="nombre">
                 <!-- -->
@@ -89,6 +91,7 @@
                 </select>
               </div>
               </form>
+            </div>
             </nav>
       </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
     <voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :compagny= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
@@ -269,11 +272,7 @@
     }
     </script>
     
-    <style scoped>
-    .page{
-        display: flex;    
-    }
-    
+    <style scoped>    
     .nombre{
       margin: 0 ;
     }
@@ -402,6 +401,12 @@
     .btn-3 span:hover:after {
       width: 100%;
     }
+
+    @media screen and (max-width: 900px) {
+    .page{
+      display: inline;
+    }
+  }
     
     
     @media screen and (max-width: 600px) {
@@ -410,6 +415,7 @@
         margin: 5px 2px;
         font-size: 20px;
       }
+
     
     }
     </style>

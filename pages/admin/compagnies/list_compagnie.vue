@@ -10,7 +10,7 @@
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
               <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
           </form>
-          <div class="search_result" v-if="this.element_search != ''">
+          <div class="search_result table-responsive" v-if="this.element_search != ''">
             <!-- <div >{{result.name}}</div> -->
             <table class="table table-hover">
               <thead>
@@ -30,6 +30,7 @@
             </table>
           </div><br>
           <!-- <NuxtLink  to="/fournisseurs/add_fournisseur"><button class="custom-btn btn-3"><span>Ajouter nouveau fournisseur</span></button></NuxtLink> -->
+          <div class="table-responsive">
             <table class="table table-hover" v-if="this.element_search == ''">
               <thead>
                 <tr class="table-primary" >
@@ -55,7 +56,7 @@
                 </tbody>
             </table>
             <p class="text-center"><strong>{{total}} compagnie(s) au total </strong></p><hr class="text-primary">
-        
+          </div>
             <br><br>
         <!-- <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br> -->
             <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
@@ -65,7 +66,8 @@
                 
                 <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
               </ul>
-              <label class="title">Affichage :</label> 
+              <div class="d-flex">
+              <label class="title mt-1">Affichage :</label> 
               <form action="">
               <div class="nombre">
                 <!-- -->
@@ -77,6 +79,7 @@
                 </select>
               </div>
               </form>
+            </div>
             </nav>
      </div><br> 
     <!-- <voirCompagnie :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/> -->
@@ -213,9 +216,6 @@
     </script>
     
     <style scoped>
-    .page{
-        display: flex;    
-    }
     
     .nombre{
       margin: 0 ;
@@ -226,9 +226,9 @@
       font-weight: bold;
     }
     
-    .app-main__outer{
+    /* .app-main__outer{
       overflow: auto;
-    }
+    } */
     
     .fa{
       margin: 0 5px;

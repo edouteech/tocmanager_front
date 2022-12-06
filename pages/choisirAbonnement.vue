@@ -16,15 +16,31 @@
                     <img src="/images/poignee.jpg" alt="" class="img-offer w-50">
                 </div>
                 <div>
+                    <div class="liste">
+                        <div class="number-text"><span class="number">1</span><span class="text-liste">{{plan.trial_period}} JOURS D'ESSAI</span></div><br>
+                        <div class="number-text"><span class="number">2</span><span class="text-liste">ASSISTANCE TECHNIQUE 24H/24</span></div><br>
+                        <div class="number-text"><span class="number">3</span><span class="text-liste">FORMATION GRATUITE</span></div><br>
+                        <div class="number-text"><span class="number">4</span><span class="text-liste">POUR UN MONTANT DE <span class="text-primary">{{plan.price}} {{plan.currency}}</span></span></div><br>
+                    </div>
+                    <!-- <div class="my-2">
+                        <button class="btn btn-outline-primary btn-offer p-2" >Sélectionner</button>
+                        <nuxt-link to="/abonnement" class="btn btn-outline-dark btn-offer my-4">En savoir plus</nuxt-link>
+                    </div> -->
+                    <button class="btn btn-outline-primary btn-offer p-2" @click="createAbonnement(plan)"
+                        id="pay-btn"
+                    >
+                        Sélectionner
+                    </button>
+                </div>
+                <!-- <div>
                     <div class="my-2">
-                        <!-- <button class="btn btn-outline-primary btn-offer p-2" >Sélectionner</button> -->
                         <nuxt-link to="/abonnement" class="btn btn-outline-dark btn-offer my-4">En savoir plus</nuxt-link></div>
                     <button class="btn btn-outline-primary btn-offer p-2" @click="createAbonnement(plan)"
                         id="pay-btn"
                     >
                         {{plan.price}} {{plan.currency}}
                     </button>
-                </div>
+                </div> -->
             </div>
         <!-- <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script> -->
         </div>
@@ -130,7 +146,7 @@
         background-color: aliceblue;
     }
     
-    /* .liste{
+    .liste{
         font-size: 18px;
         font-weight: bold;
     }
@@ -145,7 +161,7 @@
     .number-text{
         margin: 5px 50px;
     }
-     */
+    
     .img-offer{
         margin: 10px 25%;
 
