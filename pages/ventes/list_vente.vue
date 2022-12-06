@@ -101,7 +101,8 @@
             <!-- <input type="file" id="file" ref="file" @change="handleFileUpload()" />
             <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button> -->
             
-            <!-- <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exporte()">Exporter</button> -->
+            <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter en excel</button>
+            <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
             
             <!-- <vue-excel-xlsx
                 class="btn btn-outline-info mx-5"
@@ -196,6 +197,8 @@
       </div>
       <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 
+      <exportModal v-show="exportModal" @close-modal="exportModal = false" />  
+
   <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
          
   <!-- Footer -->
@@ -241,6 +244,7 @@
   
   
   <script>
+  import exportModal from './exportModal.vue';
   import deleteModal from './deleteModal.vue';  
   import Impression from './impression.vue';  
   import moment from "moment";
@@ -253,13 +257,15 @@
       Sidebar,
       Userinfo,
       Impression,
-      deleteModal
+      deleteModal,
+      exportModal
     },
      data () {
         return {
           links: [],
           res_data: null,
           showModal: false,
+          exportModal: false,
           identifiant1: '',
           identifiant2: '',
           identifiant3: '',
@@ -289,57 +295,33 @@
           showModalDelete: false,
           element_search: "",
           results: "",
-          columns : [
-            {
-                label: "Date d'édition",
-                field: "date_sell",
-            },
-            {
-                label: "Prix Hors Taxe",
-                field: "amount_ht",
-            },
-            {
-                label: "Taxe",
-                field: "tax",
-            },
-            {
-                label: "Prix TTC",
-                field: "amount_ttc",
-            },
-            {
-                label: "Réduction",
-                field: "discount",
-            },
-            {
-                label: "Net à payer",
-                field: "amount",
-            },
-            {
-                label: "Reste à payer",
-                field: "rest",
-            },
-            {
-                label: "Client_id",
-                field: "client_id",
-            },
-      ],
-      data : [],
       filtre: ""
     }
   },
 
       methods: {
-        async exp(){
-            await this.$axios.get('/sells',{
-                params: {
-                  compagnie_id: localStorage.getItem('auth.company_id'),
-                  is_paginated: 0
-                }
-              }).then(response =>{
-                // console.log(response);
-                this.data = response.data.data
-                })   
+        // async exp(){
+        //     await this.$axios.get('/sells',{
+        //         params: {
+        //           compagnie_id: localStorage.getItem('auth.company_id'),
+        //           is_paginated: 0
+        //         }
+        //       }).then(response =>{
+        //         // console.log(response);
+        //         this.data = response.data.data
+        //         })   
+        // },
+        exp(){
+            this.exportModal = true
         },
+
+        pdf(){
+          this.$axios.get('/sells/download',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id')
+              }
+            })
+        },
+
 
         search(){
           this.$axios.get('/sells',{params: {
@@ -442,8 +424,8 @@
       },
 
       
-    async mounted () {
-      await this.exp()
+    mounted () {
+      // await this.exp()
         this.refresh()
         this.recupClient()
         this.users = this.$auth.$state.user.roles;

@@ -105,8 +105,8 @@
     <form class="d-flex justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
        <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-       <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter</button>
-       <button class="btn btn-outline-info mx-4" type="submit" @click.prevent="pdf()">Pdf</button>
+       <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter en excel</button>
+       <button class="btn btn-outline-info mx-4" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
 
        <!-- <vue-excel-xlsx
           class="btn btn-outline-info mx-5"
