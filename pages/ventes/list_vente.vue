@@ -317,11 +317,22 @@
             this.exportModal = true
         },
 
-        pdf(){
-          this.$axios.get('/sells/download',{params: {
-                compagnie_id: localStorage.getItem('auth.company_id')
-              }
-            })
+        pdf() {
+          this.$axios.get('/sells/download', {
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id')
+            },
+            responseType: 'blob',
+            Accept: 'application/pdf'
+          }).then((response) => {
+            // console.log(response);
+            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'factures_ventes.pdf'); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+          })
         },
 
 

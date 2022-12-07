@@ -87,14 +87,23 @@
     name: 'voirProduit',
 
     methods:{
-      pdf(){
-          console.log(this.prod_id)
-          this.$axios.get('/products/'+this.prod_id+'/download',{params: {
-                compagnie_id: localStorage.getItem('auth.company_id')
-              }
-            })
-            // .then(response => {
-            // console.log(response);})
+
+        pdf() {
+          this.$axios.get('/products/'+this.prod_id+'/download', {
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id')
+            },
+            responseType: 'blob',
+            Accept: 'application/pdf'
+          }).then((response) => {
+            // console.log(response);
+            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', this.nom+'_stock.pdf'); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+          })
         },
     }
     

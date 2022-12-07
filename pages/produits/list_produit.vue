@@ -91,10 +91,12 @@
                 <!-- <td>{{produit.stock_min}}</td>
                 <td>{{produit.stock_max}}</td> -->
                 <td>{{produit.quantity * produit.price_sell}}</td>
-                <td><div class="action"  v-for="(user, i) in users" :key="i">
-                  <div @click="voirProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                  <NuxtLink :to="'/produits/'+produit.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <td>
+                  <div class="action"  v-for="(user, i) in users" :key="i">
+                    <div @click="voirProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    <NuxtLink :to="'/produits/'+produit.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                    <div @click="deleteProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                    <div class="cursor-pointer" @click="pdfExporte(produit)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download text-success" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>
@@ -146,12 +148,13 @@
 <voirProduit :prod_id='identifiant0' :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
-
+<pdfModal :prod="id_prod" :prod_name="nom_prod" v-show="pdfModal" @close-modal="pdfModal = false"/>  
 </div>
 
 </template>
 
 <script>
+import pdfModal from './pdfModal.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
 import voirProduit from './voir_produit.vue'
@@ -165,7 +168,8 @@ export default {
     voirProduit,
     Userinfo,
     deleteModal,
-    exportModal
+    exportModal,
+    pdfModal
   },
 
   data () {
@@ -205,6 +209,9 @@ export default {
       key: "",
       showModalDelete: false,
       exportModal: false,
+      pdfModal: false,
+      id_prod: "",
+      nom_prod:""
     }
   },
 
@@ -220,6 +227,13 @@ export default {
             this.exportModal = true
         },
 
+        pdfExporte(produit){
+          // console.log(produit)
+          this.pdfModal = true,
+          this.id_prod = produit.id
+          this.nom_prod = produit.name
+        },
+
         pdf() {
           this.$axios.get('/products/download', {
             params: {
@@ -228,9 +242,9 @@ export default {
             responseType: 'blob',
             Accept: 'application/pdf'
           }).then((response) => {
+            // console.log(response);
             const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
             const link = document.createElement('a');
-            console.log(link);
             link.href = url;
             link.setAttribute('download', 'produits.pdf'); //or any other extension
             document.body.appendChild(link);
