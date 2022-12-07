@@ -11,7 +11,7 @@
         <div class="col-md-10">
           <form class="d-flex col-md-7" role="search">
             <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
-            <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
           </form>
         </div>
 
@@ -89,14 +89,8 @@
             Exporter
           </vue-excel-xlsx> -->
         </form><br><br>
-        <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
-          <ul class="pagination">
-            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-            
-            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-          </ul>
-          <label class="title">Affichage :</label> 
+        <div class="d-flex col-md-2 my-4">
+          <label class="title my-2">Affichage :</label> 
           <form action="">
           <div class="nombre">
             <!-- -->
@@ -107,7 +101,14 @@
                 <option value="10">100</option>
             </select>
           </div>
-          </form>
+          </form></div>
+        <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
         </nav>
   </div><br>
  <!-- <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' :stock= 'identifiant3' :valorisation= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>   -->
@@ -176,7 +177,7 @@ export default {
               }
             },{responseType: 'arraybuffer'}).then(response => {
             console.log(response);
-            let blob = new Blob([response.data], { type: 'application/pdf' })
+            let blob = new Blob([response], { type: 'application/pdf' })
             let link = document.createElement('a')
             link.href = window.URL.createObjectURL(blob)
             link.download = 'test.pdf'

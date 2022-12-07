@@ -195,13 +195,18 @@ export default {
       this.$axios.get('/buys', {
         params: {
           compagnie_id: localStorage.getItem('auth.company_id'),
-          search: this.element_search
+          search: this.element_search,
+          date_debut: this.date_debut,
+          date_fin: this.date_fin
         }
       })
         .then(response => {
           console.log(response);
           this.results = response.data.data.data
+          this.res_data = response.data.data
           this.total = response.data.data.total
+          let firstE = response.data.data.links.shift()
+          let lastE = response.data.data.links.splice(-1, 1);
 
         })
     },

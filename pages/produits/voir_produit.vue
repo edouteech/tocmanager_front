@@ -92,8 +92,9 @@
           this.$axios.get('/products/'+this.prod_id+'/download',{params: {
                 compagnie_id: localStorage.getItem('auth.company_id')
               }
-            }).then(response => {
-            console.log(response);})
+            })
+            // .then(response => {
+            // console.log(response);})
         },
     }
     
