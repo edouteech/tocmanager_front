@@ -104,7 +104,7 @@
         </table>
         <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
       </div><br><br>
-    <form class="d-flex justify-content-end" role="search">
+    <form class="justify-content-end btn-group" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
        <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
        <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter en excel</button>
@@ -425,6 +425,10 @@ export default {
     display: flex;    
 }
 
+.btn-group{
+  display: flex
+}
+
 .nombre{
   margin: 0 ;
 }
@@ -568,6 +572,14 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 @media screen and (max-width: 700px) {
   .btn_recherche{
     display:none;
+  }
+
+  .btn-group{
+    display: inline;
+  }
+
+  .btn-group .btn{
+    margin: 10px 0;
   }
 }
 </style>

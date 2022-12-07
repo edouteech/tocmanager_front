@@ -76,7 +76,7 @@
           <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
           <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
           <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter</button>
-          <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="pdf()">pdf</button>
+          <!-- <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="pdf()">pdf</button> -->
 
           <!-- <vue-excel-xlsx
             class="btn btn-outline-info mx-5"
@@ -169,21 +169,6 @@ export default {
       exp(){
        this.exportModal = true 
       },
-
-      pdf(){
-          // console.log(this.prod_id)
-          this.$axios.get('/products/1/download',{params: {
-                compagnie_id: localStorage.getItem('auth.company_id')
-              }
-            },{responseType: 'arraybuffer'}).then(response => {
-            console.log(response);
-            let blob = new Blob([response], { type: 'application/pdf' })
-            let link = document.createElement('a')
-            link.href = window.URL.createObjectURL(blob)
-            link.download = 'test.pdf'
-            link.click()
-          })
-        },
       
       submitFile(){
           let formData = new FormData();
@@ -257,23 +242,6 @@ export default {
             let lastE = response.data.data.links.splice(-1,1);
             })     
         },
-
-        // async Export() {
-        //   await this.$axios({
-        //     url: "/export/categories",
-        //     method: "GET",
-        //     responseType: "blob",
-        //     params: {
-        //         compagnie_id: localStorage.getItem('auth.company_id')
-        //       },
-        //   }).then(response => {
-        //     console.log(response)
-        //     link.setAttribute("download");
-        //     link.click();
-            
-        //   }); 
-        // },
-
 
         // voirCategorie(id){
         //     this.showModal = true;
