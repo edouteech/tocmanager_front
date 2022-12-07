@@ -145,8 +145,12 @@ export default {
       this.refresh()
       this.recupProduct()
     //   this.payment()
-      this.$axios.get('buys/'+ this.$route.params.id)
-          .then(response => {console.log(response.data.data[0] )
+      this.$axios.get('buys/'+ this.$route.params.id,{params: {
+            compagnie_id: localStorage.getItem('auth.company_id')
+          }
+        })
+          .then(response => {
+            console.log(response.data.data[0] )
             let achat = response.data.data[0];
             // this.categories = response.data.data
             this.form.date_buy = moment(achat.date_buy).format("YYYY-MM-DDThh:mm"),
@@ -178,7 +182,6 @@ export default {
         },
 
         deleteLine(index){
-          console.log(index);
           this.form.buy_lines.splice(index, 1)
         },
         
