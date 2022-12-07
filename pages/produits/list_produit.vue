@@ -11,7 +11,7 @@
           <div class="col-md-10">
             <form class="d-flex col-md-7" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
-              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
           </div>
           <NuxtLink  to="/produits/add_produit" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau produit</span></button></NuxtLink>
@@ -119,15 +119,8 @@
           Exporter
         </vue-excel-xlsx> -->
     </form><br><br>
-
-        <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
-          <ul class="pagination">
-            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-            
-            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-          </ul>
-          <label class="title">Affichage :</label> 
+    <div class="d-flex col-md-2 my-4">
+      <label class="title my-2">Affichage :</label> 
           <form action="">
           <div class="nombre">
             <!-- -->
@@ -139,6 +132,15 @@
             </select>
           </div>
           </form>
+    </div>
+
+        <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
         </nav>
   </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
 <voirProduit :prod_id='identifiant0' :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
@@ -336,7 +338,7 @@ export default {
               compagnie_id: localStorage.getItem('auth.company_id')
             }
           }).then(response => {
-            console.log(response.data.data[0]);
+            // console.log(response.data.data[0]);
             this.identifiant0 = response.data.data[0].id
              this.identifiant2 = response.data.data[0].name
              this.identifiant3 = response.data.data[0].quantity
@@ -410,8 +412,8 @@ export default {
   overflow: auto;
 }
 .fa{
-  margin: 5px 10px;
-  font-size: 22px;
+  margin: 2px 10px;
+  font-size: 18px;
   cursor: pointer;
 }
 .table{

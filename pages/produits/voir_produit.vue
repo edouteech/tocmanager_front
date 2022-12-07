@@ -88,7 +88,7 @@
 
     methods:{
       pdf(){
-          // console.log(this.prod_id)
+          console.log(this.prod_id)
           this.$axios.get('/products/'+this.prod_id+'/download',{params: {
                 compagnie_id: localStorage.getItem('auth.company_id')
               }
