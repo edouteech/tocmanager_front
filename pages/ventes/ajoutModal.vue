@@ -10,7 +10,6 @@
       </div>                    
             <form action="" method="POST"> 
                         <h4>Ajout rapide de client </h4>
-
                 <div class="input-form">					
                     <input type="text" class="form-control" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" id="name_cli" required>
                 </div>     
@@ -28,7 +27,7 @@
                         <option value="1">Entreprise</option>
                     </select>
                 </div>
-                <div class="submit-form" @click="$emit('close-modal')">
+                <div class="submit-form">
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
                 </div>
                 <!-- <div v-else class="submit-form">
@@ -86,6 +85,10 @@
                       this.form.email = '',
                       this.form.nature = '',
                       this.status = response.data.status
+                      this.$emit('close-modal')
+                        this.$toast("Client ajouté !!! ", {
+                            icon: 'fa fa-check-circle',
+                        })
                   }
                   else{
                     // alert("Echec lors de l'ajout du client ! Veuillez réessayer.");
@@ -161,14 +164,14 @@ input[type=submit]:hover{
 .modaler {
   text-align: center;
   background-color: white;
-  height: 600px;
+  height: max-content;
   width: 600px;
-  margin-top: 10%;
+  margin-top: 5%;
   padding: 30px 0;
   border-radius: 20px;
 }
 .close {
-  margin: 10% 0 0 0;
+  margin: 5% 0 0 0;
   cursor: pointer;
 }
 

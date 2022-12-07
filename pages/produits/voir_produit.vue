@@ -46,7 +46,7 @@
                   
                 </tbody>
               </table><br>
-              <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="pdf()">Télécharger l'état du stock</button>
+              <!-- <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="pdf()">Télécharger l'état du stock</button> -->
             
                 <!-- <div class="input-form">					
                    <span class="mode">Catégorie concernée : </span> <span class="resp">{{id}}</span>

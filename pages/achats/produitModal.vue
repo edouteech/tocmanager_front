@@ -44,7 +44,7 @@
             <div class="input-form"> 
                 <input type="number" placeholder="Entrer le stock maximal " v-model="form.stock_max" autocomplete="off" id="max" required>
             </div>
-            <div class="submit-form" @click="$emit('close-modal')">
+            <div class="submit-form">
                 <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
             </div>
             <!-- <div v-else class="submit-form">
@@ -120,6 +120,10 @@
                     this.form.stock_min = '',
                     this.form.stock_max = '',
                     this.form.tax_group = ''
+                    this.$emit('close-modal')
+                    this.$toast("Produit ajouté !!! ", {
+                      icon: 'fa fa-check-circle',
+                  })
                 }
                 else{
                   // alert("Echec lors de l'ajout du produit ! Veuillez réessayer.");

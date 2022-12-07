@@ -30,7 +30,7 @@
                     <!-- <input type="number" placeholder="Entrer la nature du fournisseur " v-model="form.nature" autocomplete="off" required> -->
                     
                 </div>
-                <div class="submit-form" @click="$emit('close-modal')" >
+                <div class="submit-form" >
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
                 </div>
                 <!-- <div v-else class="submit-form">
@@ -85,6 +85,10 @@
                       this.form.email = '',
                       this.form.nature = '',
                       this.status = response.data.status
+                      this.$emit('close-modal')
+                      this.$toast("Fournisseur ajouté !!! ", {
+                      icon: 'fa fa-check-circle',
+                  })
                   }
                   else{
                     // alert("Echec lors de l'ajout du client ! Veuillez réessayer.");

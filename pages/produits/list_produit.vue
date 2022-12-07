@@ -50,10 +50,12 @@
                 <!-- <td>{{result.stock_min}}</td>
                 <td>{{result.stock_max}}</td> -->
                 <td>{{result.quantity * result.price_sell}}</td>
-                <td><div class="action"  v-for="(user, i) in users" :key="i">
-                  <div @click="voirProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                  <NuxtLink :to="'/produits/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <td>
+                  <div class="action"  v-for="(user, i) in users" :key="i">
+                    <div @click="voirProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    <NuxtLink :to="'/produits/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                    <div @click="deleteProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                    <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de stock" @click="pdfExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download text-success" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>
@@ -96,7 +98,7 @@
                     <div @click="voirProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/produits/'+produit.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
-                    <div class="cursor-pointer" @click="pdfExporte(produit)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download text-success" aria-hidden="true"></i></div>
+                    <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de stock" @click="pdfExporte(produit)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download text-success" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>

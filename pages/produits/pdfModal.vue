@@ -46,6 +46,9 @@
             link.setAttribute('download', this.prod_name+'_stock.pdf'); //or any other extension
             document.body.appendChild(link);
             link.click();
+            this.$toast('Téléchargement', {
+                        icon: 'fa fa-check-circle',
+                    })
           })
         },
       }
