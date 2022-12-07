@@ -14,14 +14,18 @@
           <form class="d-flex col-md-7" role="search">
             <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search"
               @input="search()" aria-label="Search">
-            <button class="btn btn-outline-success btn_recherche" type="submit"
-              @click.prevent="search()">Rechercher</button>
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
           </form>
         </div>
         <NuxtLink to="/achats/achat" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3"
             v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvel achat</span></button>
         </NuxtLink>
       </div>
+        <div class="range">
+            <input class="form-control" type="date"  v-model="date_debut"  required />  
+            <input  class="form-control" type="date"  v-model="date_fin"  required />  
+            <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
+          </div>  
       <div v-if="this.element_search != ''" class="table-responsive">
         <table class="table table-hover">
           <thead>
@@ -98,12 +102,24 @@
       <br><br>
       <form class="d-flex justify-content-end" role="search">
         <!-- <input type="file" id="file" ref="file" @change="handleFileUpload()" />
-            <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button> -->
+        <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
         <vue-excel-xlsx class="btn btn-outline-info mx-5" :data="data" :columns="columns" :file-name="'factures_achats'"
           :file-type="'xlsx'" :sheet-name="'sheetname'">
           Exporter
-        </vue-excel-xlsx>
+        </vue-excel-xlsx> -->
+        <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter en excel</button>
       </form><br><br>
+        <form action="">
+          <div class="nombre d-flex col-md-2 my-4">
+            <label class="title mx-3 my-2"><strong> Affichage:</strong></label>
+            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+              <option disabled value>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="10">100</option>
+            </select>
+          </div>
+        </form>
       <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
         <ul class="pagination">
           <li :class="(res_data.prev_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
@@ -115,22 +131,11 @@
           <li :class="(res_data.next_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
               @click="refresh(res_data.current_page + 1)">Suivant</a></li>
         </ul>
-        <form action="">
-          <div class="nombre d-flex">
-            <label class="title mx-5 my-2"><strong> Affichage:</strong></label>
-            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-              <option disabled value>10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="10">100</option>
-            </select>
-          </div>
-        </form>
       </nav>
     </div> <!-- <pre> {{res_data}}</pre> --><br><br>
     <voirAchat :date='identifiant1' :fournisseur='identifiant2' :montant='identifiant3' :facture='identifiant4'
       v-show="showModal" @close-modal="showModal = false" />
-
+      <exportModal v-show="exportModal" @close-modal="exportModal = false" />  
     <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
       @conf="setMessage" />
 
@@ -139,6 +144,7 @@
 </template>
 
 <script>
+import exportModal from './exportModal.vue'
 import deleteModal from './deleteModal.vue'
 import voirAchat from './voir_achat.vue'
 import Sidebar from '../sidebar.vue'
@@ -150,13 +156,15 @@ export default {
     Sidebar,
     voirAchat,
     Userinfo,
-    deleteModal
+    deleteModal,
+    exportModal
   },
   data() {
     return {
       links: [],
       res_data: null,
       showModal: false,
+      exportModal: false,
       identifiant1: "",
       identifiant2: "",
       identifiant3: "",
@@ -172,48 +180,15 @@ export default {
       key: '',
       showModalDelete: false,
       element_search: "",
-      results: "", columns: [
-        {
-          label: "Date d'édition",
-          field: "date_buy",
-        },
-        {
-          label: "Taxe",
-          field: "tax",
-        },
-        {
-          label: "Réduction",
-          field: "discount",
-        },
-        {
-          label: "Total",
-          field: "amount",
-        },
-        {
-          label: "Reste à payer",
-          field: "rest",
-        },
-        
-        {
-          label: "Fournisseur_id",
-          field: "supplier_id",
-        },
-      ],
-      data: [],
+      results: "",
+      date_debut: "",
+      date_fin: ""
     }
   },
 
   methods: {
-    async exp() {
-      await this.$axios.get('/buys', {
-        params: {
-          compagnie_id: localStorage.getItem('auth.company_id'),
-          is_paginated: 0
-        }
-      }).then(response => {
-        // console.log(response);
-        this.data = response.data.data
-      })
+    exp(){
+        this.exportModal = true
     },
 
     search() {
@@ -242,7 +217,9 @@ export default {
         params: {
           page: page,
           compagnie_id: localStorage.getItem('auth.company_id'),
-          per_page: this.form.nombre
+          per_page: this.form.nombre,
+          date_debut: this.date_debut,
+          date_fin: this.date_fin
         }
       }).then(response => {
         console.log(response);
@@ -284,7 +261,6 @@ export default {
   },
 
   async mounted() {
-    await this.exp()
     this.refresh()
     this.recupFournisseur()
     this.users = this.$auth.$state.user.roles;
@@ -297,6 +273,23 @@ export default {
 .app-main__outer {
   overflow: auto;
 }
+
+
+.range{
+  display: flex;
+  /* border: 1px solid gainsboro; */
+  border-radius: 10px;
+  padding: 1% 2%;
+  margin-bottom: 2%;
+  margin-top: 2%;
+  font-size: 18px;
+
+}
+
+.range input{
+  margin-right: 2%;
+}
+
 
 .fa {
   margin: 0 5px;
@@ -430,5 +423,15 @@ tbody tr:last-of-type {
   .action {
     padding: 20px 0;
   }
+}
+
+  
+@media screen and (max-width: 900px) {
+.range input{
+  width: 45%;
+}
+}
+.range{
+  margin: 30px 0;
 }
 </style>
