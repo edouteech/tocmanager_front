@@ -160,11 +160,11 @@
             await this.$axios.get('/sells',{
                 params: {
                 compagnie_id: localStorage.getItem('auth.company_id'),
-                // is_paginated: 0
+                is_paginated: 0
                 }
             }).then(response =>{
                 // console.log(response);
-                this.data = response.data.data.data
+                this.data = response.data.data
                 
                 if(this.form.date == 0){
                     this.columns.splice(0, 1);

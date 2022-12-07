@@ -11,19 +11,19 @@
           <div class="col-md-10 row">
             <form class="d-flex col-md-7" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
-              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
-            <div class="col-md-4"> 
-                   <select v-model="filtre" class="form-control"  required>
-                        <option disabled value="">Trier par ...</option>
-                        <option value="" >Date par ordre décroissant</option>
-                        <option value="">Date par ordre croissant</option>
-                        <option value="">Prix par ordre croissant</option>
-                    </select>
-                </div>
+            <!-- <div class="col-md-4"> 
+                
+            </div> -->
           </div>
           <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
         </div>
+        <div class="range">
+            <input class="form-control" type="date"  v-model="date_debut"  required />  
+            <input  class="form-control" type="date"  v-model="date_fin"  required />  
+            <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
+          </div>  
         <div v-if="this.element_search != ''" class="table-responsive">
           <table class="table table-hover">
               <thead>
@@ -115,17 +115,10 @@
                 Exporter
             </vue-excel-xlsx> -->
           </form><br><br>
-          <nav aria-label="Page navigation example "  class="d-flex" v-if="res_data != null">
-            <ul class="pagination">
-              <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-              <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-              
-              <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-            </ul>
             <form action="">
-                <div class="nombre d-flex">
-                    <label class="title mx-5 my-2"><strong> Affichage:</strong></label> 
-                    <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+                <div class="nombre d-flex my-4 col-md-2">
+                    <label class="title mx-3 my-2"><strong> Affichage:</strong></label> 
+                    <select class="form-control " v-model="form.nombre" required @click.prevent="refresh()">
                         <option disabled value>10</option>
                         <option value="25" >25</option>
                         <option value="50">50</option>
@@ -133,6 +126,13 @@
                     </select>
                 </div>
             </form>
+          <nav aria-label="Page navigation example "  class="d-flex" v-if="res_data != null">
+            <ul class="pagination">
+              <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+              <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+              
+              <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+            </ul>
           </nav>
       </div>
       <br> 
@@ -295,7 +295,9 @@
           showModalDelete: false,
           element_search: "",
           results: "",
-      filtre: ""
+          filtre: "",
+          date_debut: "",
+          date_fin: ""
     }
   },
 
@@ -351,11 +353,14 @@
             this.$axios.get('/sells',{params: {
               compagnie_id: localStorage.getItem('auth.company_id'),
               page: page,
-              per_page : this.form.nombre }   
+              per_page : this.form.nombre,
+              date_debut: this.date_debut,
+              date_fin: this.date_fin
+            }   
             })        
             .then(response => 
             {
-              // console.log(response.data.data.data);
+              // console.log(response);
               this.ventes = response.data.data.data
               this.res_data= response.data.data
               this.total = response.data.data.total
@@ -447,6 +452,22 @@
   }
   
   
+.range{
+  display: flex;
+  /* border: 1px solid gainsboro; */
+  border-radius: 10px;
+  padding: 1% 2%;
+  margin-bottom: 2%;
+  margin-top: 2%;
+  font-size: 18px;
+
+}
+
+.range input{
+  margin-right: 2%;
+}
+
+
   @media print {
     .navbar {
       display: none !important;
@@ -475,7 +496,7 @@
   }
   .fa{
     margin: 0 5px;
-    font-size: 22px;
+    font-size: 18px;
     cursor: pointer;
   }
   .table{
@@ -601,5 +622,14 @@
 }
   
   
+@media screen and (max-width: 900px) {
+.range input{
+  width: 45%;
+}
+}
+.range{
+  margin: 30px 0;
+}
+
   </style>
   
