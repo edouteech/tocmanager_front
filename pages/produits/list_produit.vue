@@ -220,11 +220,22 @@ export default {
             this.exportModal = true
         },
 
-        pdf(){
-          this.$axios.get('/products/download',{params: {
-                compagnie_id: localStorage.getItem('auth.company_id')
-              }
-            })
+        pdf() {
+          this.$axios.get('/products/download', {
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id')
+            },
+            responseType: 'blob',
+            Accept: 'application/pdf'
+          }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
+            const link = document.createElement('a');
+            console.log(link);
+            link.href = url;
+            link.setAttribute('download', 'produits.pdf'); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+          })
         },
 
        submitFile(){
