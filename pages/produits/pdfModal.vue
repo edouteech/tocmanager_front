@@ -8,7 +8,7 @@
                 <input class="form-control" type="date"  v-model="form.date_debut" />  
                 <input  class="form-control" type="date"  v-model="form.date_fin"  />  
             </div> 
-            <button class="btn btn-outline-success" @click="pdf()">Télécharger</button> 
+            <button class="btn btn-outline-success" @click.prevent="pdf()">Télécharger</button> 
         </form>
       </div>
     </div>
@@ -47,8 +47,9 @@
             document.body.appendChild(link);
             link.click();
             this.$toast('Téléchargement', {
-                        icon: 'fa fa-check-circle',
-                    })
+                icon: 'fa fa-check-circle',
+            })
+            this.$emit('close-modal')
           })
         },
       }
