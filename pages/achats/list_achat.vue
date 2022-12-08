@@ -121,7 +121,7 @@
             </select>
           </div>
         </form>
-      <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
+      <nav aria-label="Page navigation example" class="d-flex" v-if="res_data != null">
         <ul class="pagination">
           <li :class="(res_data.prev_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
               @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -280,6 +280,7 @@ export default {
     this.recupFournisseur()
     this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem('auth.company_id');
+    this.role = localStorage.getItem('auth.roles');
   }
 }
 </script>

@@ -312,6 +312,9 @@ export default {
 </script>
 
 <style scoped>
+.btn-group{
+  display: flex;
+}
 .page{
     display: flex;    
 }

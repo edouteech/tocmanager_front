@@ -288,6 +288,10 @@ export default {
 </script>
 
 <style scoped>
+.btn-group{
+  display: flex;
+}
+
 .app-main__outer {
   overflow: auto;
 }
