@@ -141,12 +141,14 @@
 <voirProduit :prod_id='identifiant0' :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
+<listpdfModal v-show="listModal" @close-modal="listModal = false"/> 
 <pdfModal :prod="id_prod" :prod_name="nom_prod" v-show="pdfModal" @close-modal="pdfModal = false"/>  
 </div>
 
 </template>
 
 <script>
+import listpdfModal from './listpdfModal.vue'
 import pdfModal from './pdfModal.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
@@ -162,7 +164,8 @@ export default {
     Userinfo,
     deleteModal,
     exportModal,
-    pdfModal
+    pdfModal,
+    listpdfModal
   },
 
   data () {
@@ -205,7 +208,8 @@ export default {
       pdfModal: false,
       id_prod: "",
       nom_prod:"",
-      role: ''
+      role: '',
+      listModal: ""
     }
   },
 
@@ -230,21 +234,7 @@ export default {
         },
 
         pdf() {
-          this.$axios.get('/products/download', {
-            params: {
-              compagnie_id: localStorage.getItem('auth.company_id')
-            },
-            responseType: 'blob',
-            Accept: 'application/pdf'
-          }).then((response) => {
-            // console.log(response);
-            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'produits.pdf'); //or any other extension
-            document.body.appendChild(link);
-            link.click();
-          })
+          this.listModal = true
         },
 
        submitFile(){
