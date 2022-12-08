@@ -108,20 +108,11 @@
       </div><br><br>
     <form class="justify-content-end btn-group" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
-       <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-       <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter en excel</button>
-       <button class="btn btn-outline-info mx-4" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+       <button class="btn btn-outline-success" type="submit" @click.prevent="submitFile()">Importer</button>
+       <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+       <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role == 'admin'">Exporter en excel</button>
 
-       <!-- <vue-excel-xlsx
-          class="btn btn-outline-info mx-5"
-          :data="data"
-          :columns="columns"
-          :file-name="'produits'"
-          :file-type="'xlsx'"
-          :sheet-name="'sheetname'"
-          >
-          Exporter
-        </vue-excel-xlsx> -->
+
     </form><br><br>
     <div class="d-flex col-md-2 my-4">
       <label class="title my-2">Affichage :</label> 
@@ -213,7 +204,8 @@ export default {
       exportModal: false,
       pdfModal: false,
       id_prod: "",
-      nom_prod:""
+      nom_prod:"",
+      role: ''
     }
   },
 
@@ -221,6 +213,7 @@ export default {
       this.refresh()
       this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
+      this.role = localStorage.getItem('auth.roles');
       
   },
 

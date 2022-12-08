@@ -107,7 +107,8 @@
           :file-type="'xlsx'" :sheet-name="'sheetname'">
           Exporter
         </vue-excel-xlsx> -->
-        <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter en excel</button>
+        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'">Exporter en excel</button>
+        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
       </form><br><br>
         <form action="">
           <div class="nombre d-flex col-md-2 my-4">
@@ -136,6 +137,7 @@
     <voirAchat :date='identifiant1' :fournisseur='identifiant2' :montant='identifiant3' :facture='identifiant4'
       v-show="showModal" @close-modal="showModal = false" />
       <exportModal v-show="exportModal" @close-modal="exportModal = false" />  
+      <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" /> 
     <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
       @conf="setMessage" />
 
@@ -144,6 +146,7 @@
 </template>
 
 <script>
+import pdfModal from './pdfModal.vue'
 import exportModal from './exportModal.vue'
 import deleteModal from './deleteModal.vue'
 import voirAchat from './voir_achat.vue'
@@ -157,7 +160,8 @@ export default {
     voirAchat,
     Userinfo,
     deleteModal,
-    exportModal
+    exportModal,
+    pdfModal
   },
   data() {
     return {
@@ -182,13 +186,19 @@ export default {
       element_search: "",
       results: "",
       date_debut: "",
-      date_fin: ""
+      date_fin: "",
+      role: "",
+      pdfModal: false
     }
   },
 
   methods: {
     exp(){
         this.exportModal = true
+    },
+
+    pdf() {
+      this.pdfModal = true
     },
 
     search() {

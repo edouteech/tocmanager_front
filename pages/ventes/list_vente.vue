@@ -101,8 +101,8 @@
             <!-- <input type="file" id="file" ref="file" @change="handleFileUpload()" />
             <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button> -->
             
-            <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter en excel</button>
-            <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'">Exporter en excel</button>
+            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
             
             <!-- <vue-excel-xlsx
                 class="btn btn-outline-info mx-5"
@@ -172,10 +172,10 @@
               <div class="d-flex align-items-end flex-column mb-4" v-if="qr_info != null">
                 <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+qr_info.qrcode" alt="QRcode" />
                 <div class="d-flex align-items-start flex-column mb-4">
-                  <p> <strong>Mecef_counteurs :</strong>{{qr_info.mecef_counteurs}}</p>
-                  <p> <strong>Mecef_nim: </strong>{{qr_info.mecef_nim}}</p>
-                  <p><strong>Mecef_date :</strong> {{qr_info.mecef_date}}</p>
-                  <p><strong>CodeMECeFDGI : </strong>{{qr_info.codeMECeFDGI}}</p>
+                  <div> <strong>Mecef_counteurs :</strong>{{qr_info.mecef_counteurs}}</div>
+                  <div> <strong>Mecef_nim: </strong>{{qr_info.mecef_nim}}</div>
+                  <div><strong>Mecef_date :</strong> {{qr_info.mecef_date}}</div>
+                  <div><strong>CodeMECeFDGI : </strong>{{qr_info.codeMECeFDGI}}</div>
                 </div>
               </div>
           <table  class="total d-flex align-items-end flex-column">
@@ -198,7 +198,7 @@
       <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 
       <exportModal v-show="exportModal" @close-modal="exportModal = false" />  
-
+      <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" /> 
   <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
          
   <!-- Footer -->
@@ -244,6 +244,7 @@
   
   
   <script>
+  import pdfModal from './pdfModal.vue';
   import exportModal from './exportModal.vue';
   import deleteModal from './deleteModal.vue';  
   import Impression from './impression.vue';  
@@ -258,7 +259,8 @@
       Userinfo,
       Impression,
       deleteModal,
-      exportModal
+      exportModal,
+      pdfModal
     },
      data () {
         return {
@@ -297,7 +299,9 @@
           results: "",
           filtre: "",
           date_debut: "",
-          date_fin: ""
+          date_fin: "",
+          role: "",
+          pdfModal: false,
     }
   },
 
@@ -318,21 +322,7 @@
         },
 
         pdf() {
-          this.$axios.get('/sells/download', {
-            params: {
-              compagnie_id: localStorage.getItem('auth.company_id')
-            },
-            responseType: 'blob',
-            Accept: 'application/pdf'
-          }).then((response) => {
-            // console.log(response);
-            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'factures_ventes.pdf'); //or any other extension
-            document.body.appendChild(link);
-            link.click();
-          })
+          this.pdfModal = true
         },
 
 
@@ -450,6 +440,7 @@
         this.recupClient()
         this.users = this.$auth.$state.user.roles;
         this.compagny = localStorage.getItem('auth.company_id');
+        this.role = localStorage.getItem('auth.roles')
         // console.log(this.$auth)
     }
   }

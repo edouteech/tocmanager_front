@@ -291,8 +291,6 @@ export default {
             var taxe = this.form.amount_ht * pourcentage
             this.form.amount_ttc = this.form.amount_ht + taxe;
             this.form.amount = this.form.amount_ht + taxe
-            console.log(taxe);
-
         },
 
         reduceAmount(){

@@ -85,10 +85,11 @@
         </table>
         <p class="text-center"><strong>{{total}} client(s) au total </strong></p><hr class="text-primary">
       </div><br><br>
-    <form class="d-flex justify-content-end" role="search">
+    <form class="btn-group justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
-      <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-      <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exporte()">Exporter</button>
+      <button class="btn btn-outline-success" type="submit" @click.prevent="submitFile()">Importer</button>
+      <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+      <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exporte()" v-if="role == 'admin'">Exporter en excel</button>
       <!-- <vue-excel-xlsx
         class="btn btn-outline-info mx-5"
         :data="data"
@@ -171,7 +172,7 @@ export default {
         key: '',
         showModalDelete: false,
         exportModal: false,
-        
+        role: ""
       }
     },
 
@@ -180,12 +181,37 @@ export default {
       this.refresh()
       this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
+      this.role = localStorage.getItem('auth.roles');
     },
 
     methods: {
       exporte(){
         this.exportModal = true
       },
+
+      pdf() {
+          this.$axios.get('/clients/download', {
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+              start_at: this.form.date_debut,
+              end_at: this.form.date_fin
+            },
+            responseType: 'blob',
+            Accept: 'application/pdf'
+          }).then((response) => {
+            // console.log(response);
+            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'clients.pdf'); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+            this.$toast('Téléchargement', {
+                icon: 'fa fa-check-circle',
+            })
+            this.$emit('close-modal')
+          })
+        },
           
       async exp(){
         await this.$axios.get('/clients',{
@@ -297,6 +323,7 @@ export default {
 .page{
     display: flex;    
 }
+
 
 .nombre{
   margin: 0;
@@ -440,6 +467,15 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 @media screen and (max-width: 700px) {
   .btn_recherche{
     display:none;
+  }
+
+  
+  .btn-group{
+    display: inline;
+  }
+
+  .btn-group .btn{
+    margin: 10px 0;
   }
 }
 </style>

@@ -96,15 +96,23 @@
         <hr class="text-primary">
       </div><br><br>
       
-      <form class="d-flex justify-content-end" role="search">
+      <form class="btn-group justify-content-end" role="search">
           <input type="file" id="file" ref="file" @change="handleFileUpload()" />
-          <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-          <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter</button>
-          <!-- <vue-excel-xlsx class="btn btn-outline-info mx-5" :data="data" :columns="columns" :file-name="'encaissements'"
-            :file-type="'xlsx'" :sheet-name="'sheetname'">
-            Exporter
-          </vue-excel-xlsx> -->
+          <button class="btn btn-outline-success" type="submit" @click.prevent="submitFile()">Importer</button>
+          <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+          <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role == 'admin'">Exporter en excel</button>
       </form><br><br>
+        <form action="">
+          <div class="nombre d-flex col-md-2 my-4">
+            <label class="title mx-2 my-2"><strong> Affichage:</strong></label>
+            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+              <option disabled value>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="10">100</option>
+            </select>
+          </div>
+        </form>
       <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
         <ul class="pagination">
           <li :class="(res_data.prev_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
@@ -116,17 +124,6 @@
           <li :class="(res_data.next_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
               @click="refresh(res_data.current_page + 1)">Suivant</a></li>
         </ul>
-        <form action="">
-          <div class="nombre d-flex">
-            <label class="title mx-5 my-2"><strong> Affichage:</strong></label>
-            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-              <option disabled value>10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="10">100</option>
-            </select>
-          </div>
-        </form>
       </nav>
     </div><br>
     <voirEncaissement :montant='identifiant1' :date='identifiant2' :client_id='identifiant3' v-show="showModal"
@@ -135,6 +132,7 @@
     <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
       @conf="setMessage" />
       <exportModal v-show="exportModal" @close-modal="exportModal = false"/>
+      <pdfModal v-show="pdfModal" @close-modal="pdfModal = false"/>
   </div>
 
 </template>
@@ -146,6 +144,7 @@ import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
+import pdfModal from './pdfModal.vue'
 export default {
   layout: "empty",
   auth: true,
@@ -154,7 +153,8 @@ export default {
     voirEncaissement,
     Userinfo,
     deleteModal,
-    exportModal
+    exportModal,
+    pdfModal
   },
   data() {
     return {
@@ -178,7 +178,9 @@ export default {
       showModalDelete: false,
       element_search: "",
       results: "",
-      exportModal: false
+      exportModal: false,
+      pdfModal: false,
+      role: ""
     }
   },
 
@@ -186,11 +188,16 @@ export default {
     this.refresh()
     this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem('auth.company_id');
+    this.role = localStorage.getItem('auth.roles');
   },
 
   methods: {
     exp() {
       this.exportModal = true
+    },
+
+    pdf(){
+      this.pdfModal = true
     },
 
     submitFile() {
@@ -208,7 +215,7 @@ export default {
           }
         }
       ).then(response => {
-        console.log(response);
+        // console.log(response);
         if(response.data.status == "success"){
           this.refresh()
 
@@ -251,7 +258,7 @@ export default {
             per_page: this.form.nombre
           }
         }).then(response => {
-          console.log(response);
+          // console.log(response);
           this.encaissements = response.data.data.data
           this.res_data = response.data.data
           this.total = response.data.data.total
@@ -410,5 +417,21 @@ tbody tr:last-of-type {
 
 .btn-3 span:hover:after {
   width: 100%;
+}
+
+
+@media screen and (max-width: 700px) {
+  .btn_recherche{
+    display:none;
+  }
+
+  
+  .btn-group{
+    display: inline;
+  }
+
+  .btn-group .btn{
+    margin: 10px 0;
+  }
 }
 </style>

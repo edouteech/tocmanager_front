@@ -96,16 +96,29 @@
         <hr class="text-primary">
       </div><br><br>
       
-      <form class="d-flex justify-content-end" role="search">
+      <form class="btn-group justify-content-end" role="search">
           <input type="file" id="file" ref="file" @change="handleFileUpload()" />
-          <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-          <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exporte()">Exporter</button>
+          <button class="btn btn-outline-success" type="submit" @click.prevent="submitFile()">Importer</button>
+          <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+          <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exporte()" v-if="role == 'admin'">Exporter en excel</button>
           
           <!-- <vue-excel-xlsx class="btn btn-outline-info mx-5" :data="data" :columns="columns" :file-name="'décaissements'"
             :file-type="'xlsx'" :sheet-name="'sheetname'">
             Exporter
           </vue-excel-xlsx> -->
       </form><br><br>
+      
+      <form action="">
+          <div class="nombre d-flex col-md-2 my-4">
+            <label class="title mx-2 my-2"><strong> Affichage:</strong></label>
+            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+              <option disabled value>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="10">100</option>
+            </select>
+          </div>
+        </form>
       <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
         <ul class="pagination">
           <li :class="(res_data.prev_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
@@ -117,22 +130,11 @@
           <li :class="(res_data.next_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
               @click="refresh(res_data.current_page + 1)">Suivant</a></li>
         </ul>
-        <form action="">
-          <div class="nombre d-flex">
-            <label class="title mx-5 my-2"><strong> Affichage:</strong></label>
-            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-              <option disabled value>10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="10">100</option>
-            </select>
-          </div>
-        </form>
       </nav>
     </div><br>
     <voirDecaissement :montant='identifiant1' :date='identifiant2' :supplier_id='identifiant3' v-show="showModal"
       @close-modal="showModal = false" />
-
+      <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" />
     <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
       @conf="setMessage" />
 
@@ -142,6 +144,7 @@
 
 <script>
 import moment from "moment";
+import pdfModal from './pdfModal.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
 import voirDecaissement from './voir_decaissement.vue'
@@ -155,7 +158,8 @@ export default {
     voirDecaissement,
     Userinfo,
     deleteModal,
-    exportModal
+    exportModal,
+    pdfModal
   },
   data() {
     return {
@@ -179,7 +183,9 @@ export default {
       showModalDelete: false,
       element_search: "",
       results: "",
-      expotModal: false
+      expotModal: false,
+      pdfModal: false,
+      role: ''
     }
   },
 
@@ -187,11 +193,16 @@ export default {
     this.refresh()
     this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem('auth.company_id');
+    this.role = localStorage.getItem('auth.roles');
   },
 
   methods: {
     exporte() {
        this.expotModal = true
+    },
+
+    pdf(){
+      this.pdfModal =true
     },
 
     submitFile() {
@@ -414,5 +425,20 @@ tbody tr:last-of-type {
 
 .btn-3 span:hover:after {
   width: 100%;
+}
+
+@media screen and (max-width: 700px) {
+  .btn_recherche{
+    display:none;
+  }
+
+  
+  .btn-group{
+    display: inline;
+  }
+
+  .btn-group .btn{
+    margin: 10px 0;
+  }
 }
 </style>
