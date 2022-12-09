@@ -14,7 +14,12 @@
               <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
           </div>
+          <NuxtLink  to="/produits/add_produit" v-for="(user, i) in users" :key="i" class="web-btn"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau produit</span></button></NuxtLink>
+      </div>
+
+      <div class="mobile-btn my-4">
           <NuxtLink  to="/produits/add_produit" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau produit</span></button></NuxtLink>
+        
       </div>
 
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
@@ -108,14 +113,20 @@
       </div><br><br>
     <form class="justify-content-end btn-group" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
-       <button class="btn btn-outline-success" type="submit" @click.prevent="submitFile()">Importer</button>
-       <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
-       <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role == 'admin'">Exporter en excel</button>
+       <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
+       <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+       <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'">Exporter en excel</button>
 
+       <div class="d-flex mt-4">
+          <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()" title="Importer fichier"><i class="fa fa-upload" aria-hidden="true"></i></button>
 
-    </form><br><br>
+          <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()" title="Exporter en pdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+
+          <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'" title="Exporter en excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+        </div>
+    </form><br>
     <div class="d-flex col-md-2 my-4">
-      <label class="title my-2">Affichage :</label> 
+      <label class="title my-2">Affichage</label> 
           <form action="">
           <div class="nombre">
             <!-- -->
@@ -553,10 +564,23 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 
 }
 
+.mobile-btn{
+  display: none;
+}
 
-@media screen and (max-width: 700px) {
-  .btn_recherche{
+
+
+@media screen and (max-width: 900px) {
+  /* .btn_recherche{
     display:none;
+  } */
+
+  .mobile-btn{
+    display: block;
+  }
+
+  .web-btn{
+    display: none;
   }
 
   .btn-group{

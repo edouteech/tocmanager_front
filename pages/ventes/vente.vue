@@ -61,11 +61,9 @@
                             <tr v-for="(line, index) in form.sell_lines" :key="index">
                                 <td>
                                     <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
+                                        <input class="form-control me-2" type="search" placeholder="choississez..." v-model="element_search" aria-label="Search" @input="search()">
                                         <option disabled value="">Choisissez...</option>
-                                        <!-- <template > -->
-                                        
-                                            <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
-                                        <!-- </template> -->
+                                        <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
                                     </select>
                                 </td>
                                 <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
@@ -85,7 +83,7 @@
                 <br>
                 <div class="d-flex">
                     <div class="form-group1 col-md-3"> 
-                        <strong>Réduction (Prix ou %)</strong> <div><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
+                        <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                     </div>
                     <div class="form-group1 col-md-4 mx-4"> 
                         <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
@@ -181,7 +179,9 @@ export default {
             user: '',
             token: null,
             compagny: '',
-            methodes: ''
+            methodes: '',
+            element_search: '',
+            designations: ''
         }
     },
 
@@ -196,6 +196,20 @@ export default {
     },
     
     methods: {
+        
+        search(){
+          this.$axios.get('/products',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            search: this.element_search,
+            is_paginated: 0
+          }
+          })
+          .then(response => {
+            console.log(response.data);
+            this.designations = response.data.data 
+          
+          })
+        },
 
         // voir(){
         //     console.log(this.form.client_id);
@@ -308,13 +322,11 @@ export default {
                     this.form.discount = calcul2
                     this.form.amount = sum - calcul2;
                     this.form.amount_ht = sum -calcul2
-                    this.form.amount_ttc = sum -calcul2
                 } 
                 else{
                     this.form.discount = red
                     this.form.amount = sum - red
                     this.form.amount_ht = sum -red
-                    this.form.amount_ttc = sum -red
 
                 }   
         },
@@ -328,8 +340,6 @@ export default {
                 sum += this.form.sell_lines[j].amount_after_discount;
             }
             this.form.amount_ht = sum;
-                    this.form.amount_ttc = sum;
-                    this.form.amount =  this.form.amount_ttc;
                 
         },
 
@@ -352,6 +362,7 @@ export default {
                     this.form.amount_ht = sum;
                     this.form.amount_ttc = sum;
                     this.form.amount =  this.form.amount_ttc;
+                    this.taxChange()
                 } 
                 else{
                     line.amount_after_discount = calculQ - str;
@@ -362,6 +373,7 @@ export default {
                     this.form.amount_ht = sum;
                     this.form.amount_ttc = sum;
                     this.form.amount =  this.form.amount_ttc;
+                    this.taxChange()
                 }   
         },
 
@@ -382,8 +394,8 @@ export default {
                     sum += this.form.sell_lines[j].amount_after_discount;
                 }
                 this.form.amount_ht = sum;
-                this.form.amount_ttc = sum;
-                this.form.amount = this.form.amount_ttc;
+                this.form.tax =0
+                this.taxChange()
                 // console.log(sum); 
             }    
         },
@@ -409,6 +421,11 @@ export default {
 </script>
 
 <style scoped>
+.results-prod{
+    border: 1px solid;
+    height: 200px;
+}
+
 .received {
     border: none; outline: none;
     border-bottom: 2px solid #605050;

@@ -2,14 +2,7 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>  
       <div class="alert alert-danger justify-content-center" role="alert" v-if="status == 'error'">
-        {{error}} <br>
-        <div class="error" v-if="errors['category_id'] != null">{{errors['category_id']}}</div>
-        <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
-        <div class="error" v-if="errors['quantity'] != null">{{errors['quantity']}}</div>
-        <div class="error" v-if="errors['price_sell'] != null">{{errors['price_sell']}}</div>
-        <div class="error" v-if="errors['price_buy'] != null">{{errors['price_buy']}}</div>
-        <div class="error" v-if="errors['stock_min'] != null">{{errors['stock_min']}}</div>
-        <div class="error" v-if="errors['stock_max'] != null">{{errors['stock_max']}}</div>
+        {{error}} 
       </div>                   
         <form action="" method="POST">
             <h1>Ajout rapide de produit</h1>
@@ -19,31 +12,46 @@
                     <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">{{categorie.name}}</option>
                 </select>
             </div>  
+            <div class="alert alert-danger justify-content-center" role="alert"  v-if="errors['category_id'] != null">{{errors['category_id']}}</div>
+
             <div class="input-form">					
                 <input type="text" placeholder="Entrer le nom du produit " v-model="form.name" autocomplete="off" id="name_prod" required>
             </div>  
+            <div class="alert alert-danger justify-content-center" role="alert"  v-if="errors['name'] != null">{{errors['name']}}</div>
+
             <div class="input-form">
                 <select class="form-control" v-model="form.tax_group">
                     <option value="">Choisissez le groupe de taxation du produit</option>
                     <option v-for="(groupe, j) in groupes" :key="j" :value="groupe">{{groupe}}</option>
                 </select>
             </div>  
+            <!-- <div class="alert alert-danger justify-content-center" role="alert"  v-if="errors['category_id'] != null">{{errors['category_id']}}</div> -->
+
             <div class="input-form">        
                 <input type="number" placeholder="Entrer la quantité " v-model="form.quantity" id="quantite" required>
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert"  v-if="errors['quantity'] != null">{{errors['quantity']}}</div>
           
             <div class="input-form">    
                 <input type="number" placeholder="Entrer le prix de vente " v-model="form.price_sell" autocomplete="off" id="vente" required>
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert"  v-if="errors['price_sell'] != null">{{errors['price_sell']}}</div>
+
             <div class="input-form"> 
                 <input type="number" placeholder="Entrer le prix d'achat " v-model="form.price_buy" autocomplete="off" id="achat" required>
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert"  v-if="errors['price_buy'] != null">{{errors['price_buy']}}</div>
+
             <div class="input-form"> 
                 <input type="number" placeholder="Entrer le stock minimal " v-model="form.stock_min" autocomplete="off" id="min" required>
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert"  v-if="errors['stock_min'] != null">{{errors['stock_min']}}</div>
+
             <div class="input-form"> 
                 <input type="number" placeholder="Entrer le stock maximal " v-model="form.stock_max" autocomplete="off" id="max" required>
             </div>
+            <div class="alert alert-danger justify-content-center" role="alert"  v-if="errors['stock_max'] != null">{{errors['stock_max']}}</div>
+
             <div class="submit-form">
                 <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
             </div>
@@ -168,7 +176,7 @@ form {
 .input-form {
     display: flex;
     flex-direction: column-reverse;
-    margin: 1.2em 0;
+    margin-top: 30px;
     height: 50px;
 }
 

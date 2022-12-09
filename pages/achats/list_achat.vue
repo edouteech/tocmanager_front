@@ -17,10 +17,17 @@
               <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
           </form>
         </div>
-        <NuxtLink to="/achats/achat" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3"
-            v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvel achat</span></button>
-        </NuxtLink>
+        <div class="web-btn">
+          <NuxtLink to="/achats/achat" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3"
+              v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvel achat</span></button>
+          </NuxtLink>
+        </div>
       </div>
+      <div class="mobile-btn mt-4">
+          <NuxtLink to="/achats/achat" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3"
+              v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvel achat</span></button>
+          </NuxtLink>
+        </div>
         <div class="range">
             <input class="form-control" type="date"  v-model="date_debut"  required />  
             <input  class="form-control" type="date"  v-model="date_fin"  required />  
@@ -434,6 +441,10 @@ tbody tr:last-of-type {
   width: 100%;
 }
 
+.mobile-btn{
+  display: none;
+}
+
 
 @media screen and (max-width: 400px) {
   .action {
@@ -445,6 +456,14 @@ tbody tr:last-of-type {
 @media screen and (max-width: 900px) {
 .range input{
   width: 45%;
+}
+
+.mobile-btn{
+  display: block;
+}
+
+.web-btn{
+  display: none;
 }
 }
 .range{

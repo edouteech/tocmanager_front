@@ -2,24 +2,25 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>  
       <div class="alert alert-danger justify-content-center" role="alert" v-if="status == 'error'">
-        {{error}} <br>
-        <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
-        <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
-        <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-        <div class="error" v-if="errors['nature'] != null">{{errors['nature']}}</div>
+        {{error}}
       </div>                    
             <form action="" method="POST"> 
                         <h4>Ajout rapide de client </h4>
                 <div class="input-form">					
                     <input type="text" class="form-control" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" id="name_cli" required>
-                </div>     
+                </div> 
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['name'] != null">{{errors['name']}}</div>
+                
                 <div class="input-form">        
                   <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
                 </div>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['phone'] != null">{{errors['phone']}}</div>
             
                 <div class="input-form">    
                     <input type="email" class="form-control" placeholder="Entrer l'email du client " v-model="form.email" autocomplete="off" id="email_cli" required>
                 </div>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['email'] != null">{{errors['email']}}</div>
+
                 <div class="input-form"> 
                    <select v-model="form.nature" class="form-control"  required>
                         <option disabled value="">Choisissez la nature du client</option>
@@ -27,6 +28,8 @@
                         <option value="1">Entreprise</option>
                     </select>
                 </div>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['nature'] != null">{{errors['nature']}}</div>
+
                 <div class="submit-form">
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
                 </div>
@@ -112,7 +115,7 @@ form {
 .input-form {
     display: flex;
     flex-direction: column-reverse;
-    margin: 1.2em 0;
+    margin-top: 30px;
     height: 50px;
 }
     

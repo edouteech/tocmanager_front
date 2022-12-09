@@ -13,12 +13,12 @@
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
               <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
-            <!-- <div class="col-md-4"> 
-                
-            </div> -->
           </div>
-          <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
+          <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i" class="web-btn"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
         </div>
+
+        <div class="mobile-btn mt-4">
+        <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink></div>
         <div class="range">
             <input class="form-control" type="date"  v-model="date_debut"  required />  
             <input  class="form-control" type="date"  v-model="date_fin"  required />  
@@ -612,6 +612,10 @@
     width: 100%;
   }
 
+  
+.mobile-btn{
+  display: none;
+}
 
 
 @media screen and (max-width: 900px) {
@@ -629,10 +633,20 @@
   
   
 @media screen and (max-width: 900px) {
-.range input{
-  width: 45%;
+  .range input{
+    width: 45%;
+  }
+
+  .web-btn{
+    display: none;
+  }
+
+  .mobile-btn{
+    display: block;
+  }
+
 }
-}
+
 .range{
   margin: 30px 0;
 }

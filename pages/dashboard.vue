@@ -610,6 +610,7 @@ table{
 .i{
     font-size: 13px
 }
-}
 
+}
+ 
 </style>
