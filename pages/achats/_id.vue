@@ -150,7 +150,7 @@ export default {
           }
         })
           .then(response => {
-            console.log(response.data.data[0] )
+            // console.log(response.data.data[0] )
             let achat = response.data.data[0];
             // this.categories = response.data.data
             this.form.date_buy = moment(achat.date_buy).format("YYYY-MM-DDThh:mm"),
@@ -215,11 +215,11 @@ export default {
         refresh(){
             this.$axios.get('/suppliers',{params: {
                 is_paginated: 0,
-            compagnie_id: localStorage.getItem('auth.company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
             }
             }).then(response => {
                 // console.log(response);
-            this.fournisseurs = response.data.data.data})
+            this.fournisseurs = response.data.data})
         },
 
         recupProduct(){
