@@ -16,13 +16,19 @@
             <form action="" method="POST">
                 <div class="cadre-haut">             
                     <div class="ajout-client">                                   
-                        <select class="form-control" v-model="form.supplier_id">
+                        <!-- <select class="form-control" v-model="form.supplier_id">
                             <option disabled value="">Choisir le fournisseur</option>
-                            <!-- <option :value= four_id>{{message}}</option> -->
                             <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
                                 {{fournisseur.name}}
                             </option>                           
-                        </select>      
+                        </select>       -->
+                        <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
+                        <div class="select2-cli" v-if="afficheCli !=0">
+                            <ul>
+                                <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="">{{acteur.name}}</a></li>
+                            </ul>
+                        </div>
+
                         <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.supplier_id">
                         {{errors.supplier_id}}
                         </div>    
@@ -170,6 +176,12 @@ export default {
             token: '',
             compagny: '',
             methodes: '',
+            element_searchCli: '',
+            element_searchProd: '',
+            designations: '',
+            acteurs: '',
+            afficheCli: 0,
+            afficheProd: 0
         }
     },
 
@@ -183,6 +195,52 @@ export default {
     },
     
     methods: {
+
+        choiceProd(designation,i){
+            console.log(i);
+            let line = this.form.sell_lines[i]
+            this.element_searchProd = designation.name
+            line.product_id = designation.id
+            this.afficheProd = 0
+        },
+
+        searchProd(){
+        this.afficheProd =1
+        this.$axios.get('/products',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            search: this.element_searchProd,
+            is_paginated: 0
+        }
+        })
+        .then(response => {
+            // console.log(response.data);
+            this.designations = response.data.data 
+        
+        })
+        },
+
+
+        choiceCli(acteur){
+            this.element_searchCli = acteur.name
+            this.form.client_id = acteur.id
+            this.afficheCli= 0
+        },
+
+        searchCli(){
+        this.afficheCli =1
+        this.$axios.get('/suppliers',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            search: this.element_searchCli,
+            is_paginated: 0
+        }
+        })
+        .then(response => {
+            // console.log(response.data);
+            this.acteurs = response.data.data 
+        
+        })
+        },
+
         payment(){
             this.$axios.get('/invoice/payments',{params: {
             compagnie_id: localStorage.getItem('auth.company_id')
@@ -351,6 +409,64 @@ export default {
 </script>
 
 <style scoped>
+.select2-cli{
+    border: 1px solid ;
+    width: 14%;
+    position: absolute;
+    z-index: 99;
+    background-color: #fefefe;
+}
+
+.select2-cli a{
+    color: #605050;
+    text-decoration: none;
+}
+
+.select2-cli ul{
+    list-style: none;
+    overflow: auto;
+    padding: 0;
+    height: 200px;
+    text-align: left;
+}
+
+.select2-cli li{
+    padding: 2px 10px;
+}
+
+.select2-cli li:hover{
+    background-color: rgb(103, 180, 247);
+}
+
+.select2-prod{
+    border: 1px solid ;
+    width: 10%;
+    position: absolute;
+    z-index: 99;
+    background-color: #fefefe;
+}
+
+.select2-prod a{
+    color: #605050;
+    text-decoration: none;
+}
+
+.select2-prod ul{
+    list-style: none;
+    overflow: auto;
+    padding: 0;
+    height: 200px;
+    text-align: left;
+}
+
+.select2-prod li{
+    padding: 2px 10px;
+}
+
+.select2-prod li:hover{
+    background-color: rgb(103, 180, 247);
+}
+
 /* .list_produit{
     overflow: scroll;
 } */
