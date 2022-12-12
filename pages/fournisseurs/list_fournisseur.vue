@@ -44,8 +44,10 @@
               <td>{{result.balance}}</td>
               <td>{{result.nature}}</td>
               <td><div class="action"  v-for="(user, i) in users" :key="i">
-                  <div @click="voirFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <div @click="voirFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/fournisseurs/'+result.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
+                <div><a :href="'https://api.whatsapp.com/send?phone='+result.phone+'&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!'"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div>
                   <div @click="deleteFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
                 </td>
@@ -75,8 +77,10 @@
                 <td>{{fournisseur.balance}}</td>
                 <td>{{fournisseur.nature}}</td>
                 <td><div class="action"  v-for="(user, i) in users" :key="i">
-                  <div @click="voirFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <div @click="voirFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/fournisseurs/'+fournisseur.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(fournisseur)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
+                <div><a :href="'https://api.whatsapp.com/send?phone='+fournisseur.phone+'&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!'"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div>
                   <div @click="deleteFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
                 </td>
@@ -124,13 +128,15 @@
  </div><br> 
 <voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance= 'identifiant5' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
-<exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
+<exportModal v-show="exportModal" @close-modal="exportModal = false"/> 
+<stockModal :cli="id_cli" :cli_name="nom_cli" v-show="stockModal" @close-modal="stockModal = false"/>   
 
 </div>
 
 </template>
 
 <script>
+import stockModal from './stockModal.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
 import voirFournisseur from './voir_fournisseur.vue'
@@ -144,7 +150,8 @@ export default {
     voirFournisseur,
     Userinfo,
     deleteModal,
-    exportModal
+    exportModal,
+    stockModal
   },
 
   data () {
@@ -173,7 +180,10 @@ export default {
       key: '',
       showModalDelete: false,
       exportModal: false,
-      role: ""
+      role: "",
+      id_cli: '',
+      nom_cli: '',
+      stockModal: false
     }
   },
   async mounted () {
@@ -187,6 +197,14 @@ export default {
     exporte(){
         this.exportModal = true 
     },
+
+    
+    stockExporte(fournisseur){
+          // console.log(produit)
+          this.stockModal = true,
+          this.id_cli = fournisseur.id
+          this.nom_cli = fournisseur.name
+        },
 
     pdf() {
       this.$axios.get('/suppliers/download', {
