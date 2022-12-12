@@ -87,6 +87,7 @@
   display: flex;
   justify-content: center;
   background-color: #ebebfcda;
+  z-index: 999;
 }
 
 .modaler {
