@@ -107,13 +107,24 @@
  
                 <hr><br>
                 <div class="d-flex">
-                    <div class="form-group col-md-3 ">
+                    <div class="form-group col-md-2 ">
                         <strong>Taxe [0 -100]%</strong> <div><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
                     </div>
-                    <div class="form-group col-md-4 mx-4">
+                    <div class="form-group col-md-3 mx-4">
                         <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
                     </div>
-                    <div class="form-group1 col-md-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
+                    <div class="form-group1 col-md-3"> 
+                        Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required>
+                    </div>
+                    <div class="form-group1 col-md-3 mx-4"> 
+                        Echéance de paiement: 
+                        <select v-model="echeance" class="form-control">
+                            <option disabled value="">Choisissez</option>
+                            <option value="30" >30</option>
+                            <option value="60">60</option>
+                            <option value="90">90</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_tax">
                         Veuillez ajouter la taxe
@@ -193,7 +204,8 @@ export default {
             acteurs: '',
             afficheCli: 0,
             afficheProd: 0,
-            recherche: ''
+            recherche: '',
+            echeance: ""
         }
     },
 
@@ -298,6 +310,7 @@ export default {
               client_id: this.form.client_id,  
               sell_lines: this.form.sell_lines,
               payment: this.form.payment,
+              echeance: this.echeance,
               compagnie_id: localStorage.getItem('auth.company_id') 
             }).then(response =>{ 
                 console.log( response ) 
