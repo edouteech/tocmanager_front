@@ -28,6 +28,13 @@
                         <option value="1">Entreprise</option>
                     </select>
                 </div>
+                
+                <div class="input-form"> 
+                   <select v-model="form.type_client" class="form-control"  required>
+                        <option disabled value="">Choisissez le type du client</option>
+                        <option :value="type" v-for="(type, i) in types" :key="i">{{type}}</option>
+                    </select>
+                </div>
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['nature'] != null">{{errors['nature']}}</div>
 
                 <div class="submit-form">
@@ -50,18 +57,31 @@
     auth:true,
     name: 'ajoutModal',
     data () {
-    return{
-        form: {
-            name: '',
-            email: '',
-            phone: '',
-            nature: 0, 
-            compagnie_id: ''
-        },
-        errors: [],
-        error: null,
-        status: '',
-    }
+      return{
+          form: {
+              name: '',
+              email: '',
+              phone: '',
+              nature: 0, 
+              type_client: 'normal',
+              compagnie_id: ''
+          },
+          errors: [],
+          error: null,
+          status: '',
+          types: '',
+      }
+    },
+
+    mounted(){
+        this.$axios.get('/clients/types',{
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+            }
+          }).then(response =>{
+            // console.log(response);
+            this.types = response.data.data
+            })   
     },
 
     methods: {
@@ -71,6 +91,7 @@
               email: this.form.email,
               phone: this.form.phone,
               nature: this.form.nature,
+              type_client: this.form.type_client,
               compagnie_id: localStorage.getItem('auth.company_id')
             })
             .then(response =>{
@@ -80,13 +101,13 @@
                 this.error = response.data.message
                 console.log(this.error)
                 this.status = response.data.status
-                this.errors = response.data.data
                   if(this.status == 'success'){
                     // alert('Nouveau client ajouté avec succès');
                       this.form.name = '',
                       this.form.phone = '',
                       this.form.email = '',
-                      this.form.nature = '',
+                      this.form.nature = 0,
+                      this.form.type_client = 'normal',
                       this.status = response.data.status
                       this.$emit('close-modal')
                         this.$toast("Client ajouté !!! ", {
