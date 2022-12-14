@@ -651,11 +651,11 @@ button {
   line-height: 42px;
   padding: 20px ;
   border: none;
-  background: rgb(121, 255, 148);
-background: linear-gradient(0deg, rgb(121, 255, 132) 0%, rgb(121, 255, 170) 100%);
+  background: rgb(121, 161, 255);
+background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%);
 }
 .btn-5:hover {
-  color: #09f01c;
+  color: #0909f0;
   background: transparent;
    box-shadow:none;
 }
@@ -667,7 +667,7 @@ background: linear-gradient(0deg, rgb(121, 255, 132) 0%, rgb(121, 255, 170) 100%
   right:0;
   height:2px;
   width:0;
-  background: rgb(121, 255, 128);
+  background: rgb(121, 161, 255);
   box-shadow:
    -1px -1px 5px 0px #fff,
    7px 7px 20px 0px #0003,
@@ -685,6 +685,7 @@ background: linear-gradient(0deg, rgb(121, 255, 132) 0%, rgb(121, 255, 170) 100%
   width:100%;
   transition:800ms ease all;
 }
+
 @media screen and (max-width: 900px) {
     .add_buttons{
         margin: 50% 0;
