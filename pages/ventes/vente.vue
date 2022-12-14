@@ -81,9 +81,9 @@
                             </tr>
                         </tbody>
                     </table>   
-                    <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.amount">
+                    <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_amount">
                         Veuillez ajouter une ligne de vente
-                    </div>   -->
+                    </div>  
                 </div><br>
                 <br>
                 <div class="d-flex">
@@ -115,7 +115,7 @@
                     </div>
                     <div class="form-group1 col-md-4"> Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required></div>
                 </div>
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.tax">
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_tax">
                         Veuillez ajouter la taxe
                 </div>  
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
@@ -180,6 +180,8 @@ export default {
                 amount_ht: ''
             },
             errors: [],
+            errors_tax: null,
+            errors_amount: null,
             error: null,
             user: '',
             token: null,
@@ -300,7 +302,6 @@ export default {
             }).then(response =>{ 
                 console.log( response ) 
                 this.error = response.data.message
-                this.errors = response.data.data
                 // console.log(this.form.client_id)
                     if(response.data.status == "success"){
                         this.cli_id = response.data.data.id
@@ -312,6 +313,8 @@ export default {
                     else{
                         this.load = false
                         this.errors = response.data.data
+                        this.errors_tax = response.data.data.tax
+                        this.errors_amount = response.data.data.amount
                     }
                 
             }).catch( err => console.log( err ) )
