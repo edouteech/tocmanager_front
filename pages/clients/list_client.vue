@@ -139,7 +139,7 @@
     <br> 
   </div>
 <stockModal :cli="id_cli" :cli_name="nom_cli" v-show="stockModal" @close-modal="stockModal = false"/>  
-<voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance="identifiant5" :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+<voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance="identifiant5" :nature= 'identifiant4' :type= 'type_client' :seuil='seuil_client' v-show="showModal" @close-modal="showModal = false"/>
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/>
 
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
@@ -179,6 +179,8 @@ export default {
         identifiant3 : "",
         identifiant4 : "",
         identifiant5 : "",
+        type_client: "",
+        seuil_client: "",
         compagnie_id: '',
         clients: [],
         client: "",
@@ -337,7 +339,10 @@ export default {
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email
              this.identifiant4 = response.data.data[0].nature  
-             this.identifiant5 = response.data.data[0].balance     
+             this.identifiant5 = response.data.data[0].balance  
+             this.type_client = response.data.data[0].type_client
+             this.seuil_client = response.data.data[0].seuil_max    
+
              }) 
                
         },

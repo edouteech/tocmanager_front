@@ -32,6 +32,14 @@
                     <td>Nature du client</td>
                     <td>{{nature}}</td>
                   </tr>
+                  <tr>
+                    <td>Type de client</td>
+                    <td>{{type}}</td>
+                  </tr>
+                  <tr v-if="type == 'douteux'">
+                    <td>Seuil maximal à ne pas excéder</td>
+                    <td>{{seuil}}</td>
+                  </tr>
                   
                 </tbody>
               </table>
@@ -64,7 +72,7 @@
 <script>
   export default {
     auth:true,
-    props: ['nom', 'phone', 'email', 'balance', 'nature'],
+    props: ['nom', 'phone', 'email', 'balance', 'nature', 'type', 'seuil'],
     name: 'voirClient',
     data () {
     return{

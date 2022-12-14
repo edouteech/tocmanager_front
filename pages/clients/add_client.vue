@@ -56,6 +56,10 @@
                     <option :value="type" v-for="(type, i) in types" :key="i">{{type}}</option>
             </select>
             </div>
+            <div class="form-group " v-if="form.type_client == 'douteux'">
+                <label class="title">Montant Seuil à ne pas excéder pour ce client</label>
+                <input type="number" class="form-control" v-model="form.seuil_max" autocomplete="off" required  placeholder="10000" >
+            </div>
 
             <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer le client</button>
         </form>
@@ -83,6 +87,7 @@ export default {
                 phone: '',
                 nature: 0,
                 type_client: 'normal',
+                seuil_max: 0,
                 compagnie_id: ''
             },
             types: '',
@@ -111,6 +116,7 @@ export default {
               phone: this.form.phone,
               nature: this.form.nature,
               type_client: this.form.type_client,
+              seuil_max: this.form.seuil_max,
               compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 // console.log( response ) 

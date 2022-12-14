@@ -28,15 +28,17 @@
                         <option value="1">Entreprise</option>
                     </select>
                 </div>
-                
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['nature'] != null">{{errors['nature']}}</div>
+
                 <div class="input-form"> 
                    <select v-model="form.type_client" class="form-control"  required>
                         <option disabled value="">Choisissez le type du client</option>
                         <option :value="type" v-for="(type, i) in types" :key="i">{{type}}</option>
                     </select>
                 </div>
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['nature'] != null">{{errors['nature']}}</div>
-
+                <div class="input-form" v-if="form.type_client == 'douteux'">    
+                    <input type="number" class="form-control" placeholder="Entrer le montant seuil à ne pas excéder" v-model="form.seuil_max" autocomplete="off" id="email_cli" required>
+                </div>
                 <div class="submit-form">
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
                 </div>
@@ -64,6 +66,7 @@
               phone: '',
               nature: 0, 
               type_client: 'normal',
+              seuil_max: 0,
               compagnie_id: ''
           },
           errors: [],
@@ -92,6 +95,7 @@
               phone: this.form.phone,
               nature: this.form.nature,
               type_client: this.form.type_client,
+              seuil_max: this.form.seuil_max,
               compagnie_id: localStorage.getItem('auth.company_id')
             })
             .then(response =>{
@@ -107,6 +111,7 @@
                       this.form.phone = '',
                       this.form.email = '',
                       this.form.nature = 0,
+                      this.form.seuil_max = 0,
                       this.form.type_client = 'normal',
                       this.status = response.data.status
                       this.$emit('close-modal')

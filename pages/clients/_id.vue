@@ -50,11 +50,15 @@
             </div>
             
             <div class="form-group col-md-6" v-if="role == 'admin'">
-            <label class="title">Type de client</label>
-            <select class="form-control" v-model="form.type_client" >
-                    <option disabled value="">Choisissez...</option>
-                    <option :value="type" v-for="(type, i) in types" :key="i">{{type}}</option>
-            </select>
+                <label class="title">Type de client</label>
+                <select class="form-control" v-model="form.type_client" >
+                        <option disabled value="">Choisissez...</option>
+                        <option :value="type" v-for="(type, i) in types" :key="i">{{type}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6" v-if="form.type_client == 'douteux'">
+                <label class="title">Entrer le montant seuil</label>
+                <input type="email" class="form-control" v-model="form.seuil_max" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
 
             <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer le client</button>
@@ -115,6 +119,7 @@ export default {
                 this.form.name = client.name,
                 this.form.phone = client.phone,
                 this.form.email = client.email
+                this.form.seuil_max = client.seuil_max
                 this.form.type_client = client.type_client
                 if(client.nature == "Particulier"){
                     this.form.nature = 0
@@ -145,6 +150,7 @@ export default {
                 phone: this.form.phone,
                 nature: this.form.nature,
                 type_client: this.form.type_client,
+                seuil_max: this.form.seuil_max,
                 compagnie_id: localStorage.getItem('auth.company_id')
 
             })
