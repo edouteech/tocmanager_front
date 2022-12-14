@@ -4,12 +4,6 @@
       <Sidebar /><h3 class="name">Ventes </h3>
       <User_info />
     </nav>
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-      {{error}} <br>
-      <!-- <div class="error" v-if="errors['amount'] != null">{{errors['amount']}}</div>
-      <div class="error" v-if="errors['supplier_id'] != null">{{errors['supplier_id']}}</div>
-      <div class="error" v-if="errors['date_buy'] != null">{{errors['date_buy']}}</div> -->
-    </div>
 
     <div class="app-main__outer p-5">
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
