@@ -272,7 +272,7 @@ export default {
             }
             })
             .then(response => {
-                // console.log(response.data.data[0] )
+                console.log(response.data.data[0] )
                 let vente = response.data.data[0];
                 // this.categories = response.data.data
                 this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-DDThh:mm"),
@@ -367,43 +367,36 @@ export default {
             this.produits = response.data.data}) 
         },
 
+       
         taxChange(){
             var pourcentage = this.form.tax / 100;
             // this.form.tax = pourcentage
             var taxe = this.form.amount_ht * pourcentage
             this.form.amount_ttc = this.form.amount_ht + taxe;
+            this.form.amount = this.form.amount_ht + taxe
         },
 
         reduceAmount(){
             var red = this.form.discount;
-            this.form.amount = this.form.amount_ttc - red
+            var percent = red.indexOf("%"); 
+            let sum = 0;
+            for (let j = 0; j < this.form.sell_lines.length; j++) {
+                sum += this.form.sell_lines[j].amount_after_discount;
+            }
 
-        },
-
-        reduceChange(index){
-            let line = this.form.sell_lines[index]
-            let calculQ = Number(line.price) * Number(line.quantity)
-            var str = line.discount;
-            var percent = str.indexOf("%"); 
-
-                if(percent !== -1){
-                    var newStr = str.substring(0, str.length - 1);
-                    let calculR = calculQ * Number(newStr);
-                    let Rprix = calculR / 100
-                    line.amount = calculQ - Rprix;
-                    let sum = 0;
-                    for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount;
-                    }
-                    this.form.amount = sum;
+                if(percent != -1){
+                    var newRed = red.substring(0, red.length - 1);
+                    let calcul1 = sum * Number(newRed);
+                    let calcul2 = calcul1 / 100
+                    this.form.discount = calcul2
+                    this.form.amount = sum - calcul2;
+                    this.form.amount_ht = sum -calcul2
                 } 
                 else{
-                    line.amount = calculQ - str;
-                    let sum = 0;
-                    for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount;
-                    }
-                    this.form.amount = sum;
+                    this.form.discount = red
+                    this.form.amount = sum - red
+                    this.form.amount_ht = sum -red
+
                 }   
         },
 
@@ -416,8 +409,45 @@ export default {
                 sum += this.form.sell_lines[j].amount_after_discount;
             }
             this.form.amount_ht = sum;
+            this.form.tax =0
+            this.taxChange()
                 
         },
+
+        reduceChange(index){
+            let line = this.form.sell_lines[index]
+            let calculQ = Number(line.price) * Number(line.quantity)
+            line.amount = calculQ
+            var str = line.discount;
+            var percent = str.indexOf("%"); 
+
+                if(percent != -1){
+                    var newStr = str.substring(0, str.length - 1);
+                    let calculR = calculQ * Number(newStr);
+                    let Rprix = calculR / 100
+                    line.amount_after_discount = calculQ - Rprix;
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount_after_discount;
+                    }
+                    this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
+                    this.taxChange()
+                } 
+                else{
+                    line.amount_after_discount = calculQ - str;
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount_after_discount;
+                    }
+                    this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
+                    this.taxChange()
+                }   
+        },
+
 
         productChange(e){
             if(e.target.options.selectedIndex > -1) {
@@ -427,18 +457,19 @@ export default {
                 let line = this.form.sell_lines[index]
                 line.price = product.price_sell;
                 line.amount = Number(line.price) * Number(line.quantity);
+                line.amount_after_discount = Number(line.price) * Number(line.quantity);
                     
                 
                 let sum = 0;
                 for (let j = 0; j < this.form.sell_lines.length; j++) {
-                    sum += this.form.sell_lines[j].amount;
+                    sum += this.form.sell_lines[j].amount_after_discount;
                 }
-                this.form.amount = sum;
+                this.form.amount_ht = sum;
+                this.form.tax =0
+                this.taxChange()
                 // console.log(sum); 
-            }
-
-                
-        }
+            }    
+        },
    
     },
 
