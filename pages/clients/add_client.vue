@@ -57,7 +57,7 @@
             </select>
             </div>
             <div class="form-group " v-if="form.type_client == 'douteux'">
-                <label class="title">Montant Seuil à ne pas excéder pour ce client</label>
+                <label class="title">Seuil de crédit possible</label>
                 <input type="number" class="form-control" v-model="form.seuil_max" autocomplete="off" required  placeholder="10000" >
             </div>
 

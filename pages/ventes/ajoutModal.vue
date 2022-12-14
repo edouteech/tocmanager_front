@@ -37,7 +37,7 @@
                     </select>
                 </div>
                 <div class="input-form" v-if="form.type_client == 'douteux'">    
-                    <input type="number" class="form-control" placeholder="Entrer le montant seuil à ne pas excéder" v-model="form.seuil_max" autocomplete="off" id="email_cli" required>
+                    <input type="number" class="form-control" placeholder="Entrer le seuil de crédit possible" v-model="form.seuil_max" autocomplete="off" id="email_cli" required>
                 </div>
                 <div class="submit-form">
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          

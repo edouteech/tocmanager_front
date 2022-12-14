@@ -57,7 +57,7 @@
                 </select>
             </div>
             <div class="form-group col-md-6" v-if="form.type_client == 'douteux'">
-                <label class="title">Entrer le montant seuil</label>
+                <label class="title">Entrer le seuil de crédit possible</label>
                 <input type="email" class="form-control" v-model="form.seuil_max" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
 
