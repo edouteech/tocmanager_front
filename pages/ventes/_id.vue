@@ -276,7 +276,7 @@ export default {
                 let vente = response.data.data[0];
                 // this.categories = response.data.data
                 this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-DDThh:mm"),
-                this.form.client_id = vente.client_id,
+                this.element_searchCli = vente.client.name,
                 this.form.sell_lines = vente.sell_lines,   
                 this.form.tax = vente.tax,
                 this.form.discount = vente.discount,
