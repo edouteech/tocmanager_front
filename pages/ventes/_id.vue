@@ -301,42 +301,87 @@ export default {
                 this.methodes = response.data.data })
         },
         
-        submit(){
+        async submit(){
             this.load =true
-            this.$axios.put('/sells/' +this.$route.params.id,{
-              id: this.$route.params.id,
-              date_sell: this.form.date_sell,
-              tax: this.form.tax,
-              discount: this.form.discount,
-              amount: this.form.amount,
-              amount_ht: this.form.amount_ht,
-              amount_ttc: this.form.amount_ttc,
-              amount_received: this.form.amount_received,
-              user_id: this.user,
-              client_id: this.form.client_id,  
-              payment: this.form.payment,
-              sell_lines: this.form.sell_lines,
-              compagnie_id: localStorage.getItem('auth.company_id')
-            }).then(response =>{ 
-                // console.log( response ) 
-                this.error = response.data.message
-                console.log(this.error)
-                if(response.data.status == 'success'){
-                    this.$toast("Modification éffectuée  !!! ", {
-                        icon: 'fa fa-check-circle',
-                    })
-                    this.$router.push({path:'/ventes/list_vente'})
+            await this.$axios.get('/sells/'+ this.$route.params.id,{params: {
+                compagnie_id: localStorage.getItem('auth.company_id')
+            }
+            })
+            .then(response => {
+                console.log(response.data.data[0] )
+                let vente = response.data.data[0];
+                if(this.element_searchCli == vente.client.name){
+                    this.$axios.put('/sells/' +this.$route.params.id,{
+                        id: this.$route.params.id,
+                        date_sell: this.form.date_sell,
+                        tax: this.form.tax,
+                        discount: this.form.discount,
+                        amount: this.form.amount,
+                        amount_ht: this.form.amount_ht,
+                        amount_ttc: this.form.amount_ttc,
+                        amount_received: this.form.amount_received,
+                        user_id: this.user,
+                        client_id: vente.client_id,  
+                        payment: this.form.payment,
+                        sell_lines: this.form.sell_lines,
+                        compagnie_id: localStorage.getItem('auth.company_id')
+                    }).then(response =>{ 
+                        // console.log( response ) 
+                        this.error = response.data.message
+                        console.log(this.error)
+                        if(response.data.status == 'success'){
+                            this.$toast("Modification éffectuée  !!! ", {
+                                icon: 'fa fa-check-circle',
+                            })
+                            this.$router.push({path:'/ventes/list_vente'})
+                        }
+                        else{
+                            this.load = false
+                            this.error = response.data.message
+                            this.errors = response.data.data
+                            this.errors_tax = response.data.data.tax
+                            this.errors_amount = response.data.data.amount
+                            
+                        }
+                    }).catch( err => console.log( err ) )
+                }else{
+                    this.$axios.put('/sells/' +this.$route.params.id,{
+                        id: this.$route.params.id,
+                        date_sell: this.form.date_sell,
+                        tax: this.form.tax,
+                        discount: this.form.discount,
+                        amount: this.form.amount,
+                        amount_ht: this.form.amount_ht,
+                        amount_ttc: this.form.amount_ttc,
+                        amount_received: this.form.amount_received,
+                        user_id: this.user,
+                        client_id: this.form.client_id,  
+                        payment: this.form.payment,
+                        sell_lines: this.form.sell_lines,
+                        compagnie_id: localStorage.getItem('auth.company_id')
+                    }).then(response =>{ 
+                            // console.log( response ) 
+                            this.error = response.data.message
+                            console.log(this.error)
+                            if(response.data.status == 'success'){
+                                this.$toast("Modification éffectuée  !!! ", {
+                                    icon: 'fa fa-check-circle',
+                                })
+                                this.$router.push({path:'/ventes/list_vente'})
+                            }
+                            else{
+                                this.load = false
+                                this.error = response.data.message
+                                this.errors = response.data.data
+                                this.errors_tax = response.data.data.tax
+                                this.errors_amount = response.data.data.amount
+                                
+                            }
+                    }).catch( err => console.log( err ) )
+                            
                 }
-                else{
-                    this.load = false
-                    this.error = response.data.message
-                    this.errors = response.data.data
-                    this.errors_tax = response.data.data.tax
-                    this.errors_amount = response.data.data.amount
-                    
-                }
-             }).catch( err => console.log( err ) )
-                      
+            }) 
+                 
         },
 
 
@@ -471,6 +516,64 @@ export default {
 </script>
 
 <style scoped>
+.select2-cli{
+    border: 1px solid ;
+    width: 14%;
+    position: absolute;
+    z-index: 99;
+    background-color: #fefefe;
+}
+
+.select2-cli a{
+    color: #605050;
+    text-decoration: none;
+}
+
+.select2-cli ul{
+    list-style: none;
+    overflow: auto;
+    padding: 0;
+    height: 200px;
+    text-align: left;
+}
+
+.select2-cli li{
+    padding: 2px 10px;
+}
+
+.select2-cli li:hover{
+    background-color: rgb(103, 180, 247);
+}
+
+.select2-prod{
+    border: 1px solid ;
+    width: 10%;
+    position: absolute;
+    z-index: 99;
+    background-color: #fefefe;
+}
+
+.select2-prod a{
+    color: #605050;
+    text-decoration: none;
+}
+
+.select2-prod ul{
+    list-style: none;
+    overflow: auto;
+    padding: 0;
+    height: 200px;
+    text-align: left;
+}
+
+.select2-prod li{
+    padding: 2px 10px;
+}
+
+.select2-prod li:hover{
+    background-color: rgb(103, 180, 247);
+}
+
 .received {
     border: none; outline: none;
     border-bottom: 2px solid #605050;
