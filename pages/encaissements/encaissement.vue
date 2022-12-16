@@ -43,7 +43,7 @@
             <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.client_id">
                 {{errors.client_id}}
             </div>
-            <div class="form-group ">
+            <div class="form-group col-md-6">
                 <label class="title">Méthode de paiement</label>
                 <select class="form-control" v-model="form.payment">
                     <option value="">Choississez</option>
