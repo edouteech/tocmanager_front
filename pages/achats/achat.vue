@@ -29,9 +29,9 @@
                             </ul>
                         </div>
 
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.supplier_id">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.supplier_id">
                         {{errors.supplier_id}}
-                        </div>    
+                        </div>     -->
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
                         </button>                
