@@ -198,7 +198,7 @@ export default {
 
         choiceProd(designation,i){
             console.log(i);
-            let line = this.form.sell_lines[i]
+            let line = this.form.buy_lines[i]
             this.element_searchProd = designation.name
             line.product_id = designation.id
             this.afficheProd = 0
@@ -222,7 +222,7 @@ export default {
 
         choiceCli(acteur){
             this.element_searchCli = acteur.name
-            this.form.client_id = acteur.id
+            this.form.supplier_id = acteur.id
             this.afficheCli= 0
         },
 
