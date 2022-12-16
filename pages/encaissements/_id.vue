@@ -35,6 +35,13 @@
                 </select>
                 </div>
             </div>
+            <div class="form-group col-md-6">
+                <label class="title">Méthode de paiement</label>
+                <select class="form-control" v-model="form.payment">
+                    <option value="">Choississez</option>
+                    <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
+                </select>
+            </div>
            <button type="submit" class="btn btn-success" v-on:click.prevent="submit()">Modifier</button>
         </form>
 </div>
@@ -64,14 +71,17 @@ export default {
                 date: '',
                 client_id: '',
                 facture:'',
-                // compagnie_id: '',
+                payment: "ESPECES",
+                compagnie_id: '',
             },
             error: null,
             error_champ: [],
-            sell_id: ''
+            sell_id: '',
+            methodes: ''
         }
         },
     mounted() {
+        this.payment()
         this.refresh()
         this.$axios.get('/encaissements/'+ this.$route.params.id,{
             params: {
@@ -86,6 +96,7 @@ export default {
             this.form.date = moment(encaissement.date).format("yyyy-MM-DD"),
             this.form.facture = encaissement.facture,
             this.form.client_id = encaissement.client_id,
+            this.form.payment = encaissement.payment,
             this.sell_id = encaissement.sell_id
             
           }      
@@ -101,6 +112,7 @@ export default {
             facture: this.form.facture,
             client_id: this.form.client_id,
             sell_id: this.sell_id,
+            payment: this.form.payment,
             compagnie_id: localStorage.getItem('auth.company_id')
 
             })
@@ -126,7 +138,16 @@ export default {
                 // console.log(response.data.data.data);
             this.clients = response.data.data.data })
         },
-        
+            
+        payment(){
+            this.$axios.get('/invoice/payments',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id')
+          }
+          }).then(response =>
+            {
+                // console.log(response); 
+                this.methodes = response.data.data })
+        },
     }
    
 }

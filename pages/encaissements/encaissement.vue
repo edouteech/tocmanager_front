@@ -43,6 +43,13 @@
             <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.client_id">
                 {{errors.client_id}}
             </div>
+            <div class="form-group ">
+                <label class="title">Méthode de paiement</label>
+                <select class="form-control" v-model="form.payment">
+                    <option value="">Choississez</option>
+                    <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
+                </select>
+            </div>
            <button type="submit" class="btn btn-primary" @click.prevent="submit()">Enregistrer</button>
         </form>
         
@@ -71,22 +78,25 @@ export default {
                 facture: '',
                 date:  moment().format("YYYY-MM-DD"),
                 client_id:'',
-                compagnie_id: ''
+                compagnie_id: '',
+                payment: "ESPECES",
             },
             errors: [],
             error: null,
-            user:''
+            user:'',
+            methodes:''
         }
     },
 
     mounted(){
-      this.user = localStorage.getItem('auth.user_id')
-        this.$axios.get('/clients',{params: {
-            compagnie_id: localStorage.getItem('auth.company_id')
-          }
-          })
-        .then(response => {console.log(response.data.data.data);
-        this.clients = response.data.data.data })
+        this.payment()
+        this.user = localStorage.getItem('auth.user_id')
+            this.$axios.get('/clients',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id')
+            }
+            })
+            .then(response => {console.log(response.data.data.data);
+            this.clients = response.data.data.data })
     },
 
     methods: {
@@ -96,6 +106,7 @@ export default {
               date: this.form.date,
               client_id: this.form.client_id,
               user_id: this.user,
+              payment: this.form.payment,
               compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 // console.log( response ) 
@@ -115,6 +126,17 @@ export default {
              }).catch( err => console.log( err ) )
             
             },
+
+            
+        payment(){
+            this.$axios.get('/invoice/payments',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id')
+          }
+          }).then(response =>
+            {
+                // console.log(response); 
+                this.methodes = response.data.data })
+        },
 
     },
   

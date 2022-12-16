@@ -75,7 +75,7 @@ export default {
           property: 'access_token',
           global: true,
           type: 'Bearer',
-          maxAge: 18000,
+          maxAge: 120,
 
         },
         autoLogout:false,
