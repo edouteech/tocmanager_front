@@ -76,7 +76,7 @@
                             </tr>
                         </tbody>
                     </table>  
-                    <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.amount">
+                    <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_amount">
                         Veuillez ajouter une ligne d'achat
                     </div>   
                 </div><br>
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error">
                     {{amount_error}} 
                 </div> 
                 <br><br><br><br><br>
@@ -171,6 +171,7 @@ export default {
                     payment: 'ESPECES'          
                 },
             errors: [],
+            errors_amount: null,
             error: null,
             user: '',
             token: '',
@@ -289,8 +290,6 @@ export default {
                     }).then(response =>{ 
                         console.log( response ) 
                         this.error = response.data.message
-                        this.errors = response.data.data
-                        // console.log(this.error)
                         if(response.data.status == "success"){
                             this.$router.push({path:'/achats/SavedModal',})
                             this.$toast("Enregistrement d'une facture !!! ", {
@@ -300,6 +299,7 @@ export default {
                     
                         else{ 
                             this.errors = response.data.data
+                            this.errors_amount = response.data.data.amount
                         }
                 }).catch( err => console.log( err ) )
                     //  console.log(this.form.name)                                        
