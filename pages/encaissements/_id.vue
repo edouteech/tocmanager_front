@@ -71,7 +71,7 @@ export default {
                 date: '',
                 client_id: '',
                 facture:'',
-                payment: "ESPECES",
+                payment: "",
                 compagnie_id: '',
             },
             error: null,
