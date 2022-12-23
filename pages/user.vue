@@ -82,7 +82,7 @@
       auth: true,
       components: {
         Sidebar,  
-        voirClient,
+        // voirClient,
       },
        data () {
           return {

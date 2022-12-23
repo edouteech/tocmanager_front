@@ -1,7 +1,7 @@
 <template>
 <div class="contain ">
   <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
-
+  <no-ssr>
   <div class="container-fluid h-custom">
       <div class="row d-flex  h-100">
         <div class="img col-md-9 col-lg-6 col-xl-5">
@@ -80,7 +80,7 @@
         </div>
       </div>
   </div>
-
+  </no-ssr>
 </div>
 </template>
 
