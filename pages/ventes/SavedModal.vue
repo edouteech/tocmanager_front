@@ -73,7 +73,7 @@
   background-color: white;
   height: 600px;
   width: 600px;
-  margin-top: 10%;
+  margin-top: 5%;
   padding: 60px 0;
   border-radius: 20px;
 }

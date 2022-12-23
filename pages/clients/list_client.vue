@@ -14,6 +14,9 @@
               <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
             </form>
           </div>
+        <NuxtLink  to="/clients/add_client" v-for="(user, i) in users" :key="i" class="web-btn"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau client</span></button></NuxtLink>
+      </div>
+      <div class="mobile-btn my-4">
         <NuxtLink  to="/clients/add_client" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau client</span></button></NuxtLink>
       </div>
 
@@ -42,8 +45,10 @@
               <td class="text-danger">{{result.balance}}</td>
               <td>{{result.nature}}</td>
               <td><div class="action" v-for="(user, i) in users" :key="i">
-                <div @click="voirClient(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <div @click="voirClient(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
+                <div><a :href="'https://api.whatsapp.com/send?phone='+result.phone+'&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!'"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div>
                 <div @click="deleteClient(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 
               </div>
@@ -74,10 +79,11 @@
               <td class="text-danger">{{client.balance}}</td>
               <td>{{client.nature}}</td>
               <td><div class="action" v-for="(user, i) in users" :key="i">
-                <div @click="voirClient(client.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                <div @click="voirClient(client.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+client.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                <div @click="deleteClient(client.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(client)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
                 <div><a :href="'https://api.whatsapp.com/send?phone='+client.phone+'&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!'"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div>
+                <div @click="deleteClient(client.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
               </div>
               </td>
             </tr>
@@ -85,10 +91,18 @@
         </table>
         <p class="text-center"><strong>{{total}} client(s) au total </strong></p><hr class="text-primary">
       </div><br><br>
-    <form class="d-flex justify-content-end" role="search">
+    <form class="btn-group justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
-      <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-      <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exporte()">Exporter</button>
+      <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
+      <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+      <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="exporte()" v-if="role == 'admin'">Exporter en excel</button>
+      <div class="d-flex mt-4">
+        <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()" title="Importer fichier"><i class="fa fa-upload" aria-hidden="true"></i></button>
+
+        <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()" title="Exporter en pdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+
+        <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exporte()" v-if="role == 'admin'" title="Exporter en excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+      </div>
       <!-- <vue-excel-xlsx
         class="btn btn-outline-info mx-5"
         :data="data"
@@ -99,15 +113,9 @@
         >
         Exporter
       </vue-excel-xlsx> -->
-    </form><br><br>
-    <nav class="page" aria-label="Page navigation example px-8" v-if="res_data != null">
-      <ul class="pagination">
-        <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-        <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-        
-        <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-      </ul>
-      <label class="title">Affichage :</label> 
+    </form><br>
+    <div class=" d-flex col-md-2 my-4">
+      <label class="title mt-2">Affichage :</label> 
       <form action="">
       <div class="nombre">
         <!-- -->
@@ -119,10 +127,19 @@
         </select>
       </div>
     </form>
+    </div>
+    <nav class="page" aria-label="Page navigation example px-8" v-if="res_data != null">
+      <ul class="pagination">
+        <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+        <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+        
+        <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+      </ul>
     </nav>
     <br> 
   </div>
-<voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance="identifiant5" :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+<stockModal :cli="id_cli" :cli_name="nom_cli" v-show="stockModal" @close-modal="stockModal = false"/>  
+<voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance="identifiant5" :nature= 'identifiant4' :type= 'type_client' :seuil='seuil_client' v-show="showModal" @close-modal="showModal = false"/>
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/>
 
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
@@ -131,6 +148,7 @@
 </template>
 
 <script>
+import stockModal from './stockModal.vue'
 import voirClient from './voir_client.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
@@ -144,7 +162,8 @@ export default {
     voirClient,
     Userinfo,
     deleteModal,
-    exportModal
+    exportModal,
+    stockModal
   },
    data () {
       return {
@@ -160,6 +179,8 @@ export default {
         identifiant3 : "",
         identifiant4 : "",
         identifiant5 : "",
+        type_client: "",
+        seuil_client: "",
         compagnie_id: '',
         clients: [],
         client: "",
@@ -171,7 +192,10 @@ export default {
         key: '',
         showModalDelete: false,
         exportModal: false,
-        
+        role: "",
+        id_cli: '',
+        nom_cli: '',
+        stockModal: false
       }
     },
 
@@ -180,12 +204,44 @@ export default {
       this.refresh()
       this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
+      this.role = localStorage.getItem('auth.roles');
     },
 
     methods: {
       exporte(){
         this.exportModal = true
       },
+
+      stockExporte(client){
+          // console.log(produit)
+          this.stockModal = true,
+          this.id_cli = client.id
+          this.nom_cli = client.name
+        },
+
+      pdf() {
+          this.$axios.get('/clients/download', {
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+              start_at: this.form.date_debut,
+              end_at: this.form.date_fin
+            },
+            responseType: 'blob',
+            Accept: 'application/pdf'
+          }).then((response) => {
+            // console.log(response);
+            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'clients.pdf'); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+            this.$toast('Téléchargement', {
+                icon: 'fa fa-check-circle',
+            })
+            this.$emit('close-modal')
+          })
+        },
           
       async exp(){
         await this.$axios.get('/clients',{
@@ -283,7 +339,10 @@ export default {
              this.identifiant2 = response.data.data[0].phone
              this.identifiant3 = response.data.data[0].email
              this.identifiant4 = response.data.data[0].nature  
-             this.identifiant5 = response.data.data[0].balance     
+             this.identifiant5 = response.data.data[0].balance  
+             this.type_client = response.data.data[0].type_client
+             this.seuil_client = response.data.data[0].seuil_max    
+
              }) 
                
         },
@@ -294,9 +353,13 @@ export default {
 </script>
 
 <style scoped>
+.btn-group{
+  display: flex;
+}
 .page{
     display: flex;    
 }
+
 
 .nombre{
   margin: 0;
@@ -436,10 +499,31 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
   width: 100%;
 }
 
+.mobile-btn{
+  display: none;
+}
 
-@media screen and (max-width: 700px) {
-  .btn_recherche{
+
+
+@media screen and (max-width: 900px) {
+  /* .btn_recherche{
     display:none;
+  } */
+
+  .mobile-btn{
+    display: block;
+  }
+
+  .web-btn{
+    display: none;
+  }
+  
+  .btn-group{
+    display: inline;
+  }
+
+  .btn-group .btn{
+    margin: 10px 0;
   }
 }
 </style>

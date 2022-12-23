@@ -22,13 +22,13 @@
                     <img src="/images/poignee.jpg" alt="" class="img-offer w-50">
                 </div>
                 <div>
-                    <div class="my-2">
-                        <!-- <button class="btn btn-outline-primary btn-offer p-2" >Sélectionner</button> -->
-                        <nuxt-link to="/abonnement" class="btn btn-outline-dark btn-offer my-4">En savoir plus</nuxt-link></div>
-                    <button class="btn btn-outline-primary btn-offer p-2" @click="createAbonnement(plan)"
+                    <!-- <div class="my-2">
+                        <button class="btn btn-outline-primary btn-offer p-2" >Sélectionner</button>
+                        <nuxt-link to="/abonnement" class="btn btn-outline-dark btn-offer my-4">En savoir plus</nuxt-link></div> -->
+                    <button class="btn btn-outline-primary btn-offer p-2 my-4" @click="createAbonnement(plan)"
                         id="pay-btn"
                     >
-                        {{plan.price}} {{plan.currency}}
+                        Payer pour un montant de <span class="text-success">{{plan.price}} {{plan.currency}}</span>
                     </button>
                 </div>
             </div>

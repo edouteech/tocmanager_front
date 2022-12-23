@@ -70,7 +70,7 @@
             </div><br>
             <div class="d-flex">
                     <div class="form-group1 col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
-                    <!-- <div class="form-group col-md-6 mx-5">
+                    <div class="form-group col-md-6 mx-5">
                         <div class="form-group ">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
@@ -78,7 +78,7 @@
                             <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
                         </select>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             <br><br><br><br><br>
             <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
@@ -144,17 +144,22 @@ export default {
       this.user == localStorage.getItem('auth.user_id')
       this.refresh()
       this.recupProduct()
-    //   this.payment()
-      this.$axios.get('buys/'+ this.$route.params.id)
-          .then(response => {console.log(response.data.data[0] )
+      this.payment()
+      this.$axios.get('buys/'+ this.$route.params.id,{params: {
+            compagnie_id: localStorage.getItem('auth.company_id')
+          }
+        })
+          .then(response => {
+            // console.log(response.data.data[0] )
             let achat = response.data.data[0];
             // this.categories = response.data.data
             this.form.date_buy = moment(achat.date_buy).format("YYYY-MM-DDThh:mm"),
-            this.form.supplier_id = achat.supplier_id,
+            this.element_searchCli = achat.supplier.name,
             this.form.buy_lines = achat.buy_lines,   
             this.form.tax = achat.tax,
             this.form.discount = achat.discount,
             this.form.amount = achat.amount
+            this.form.payment = achat.payment
             this.form.amount_sent = achat.amount_sent
           }        
         )          
@@ -178,33 +183,68 @@ export default {
         },
 
         deleteLine(index){
-          console.log(index);
           this.form.buy_lines.splice(index, 1)
         },
         
-        submit(){
-           this.$axios.put('/buys/' +this.$route.params.id,{
-              id: this.$route.params.id,
-              date_buy: this.form.date_buy,
-              tax: this.form.tax,
-              discount: this.form.discount,
-              amount: this.form.amount,
-              amount_sent: this.form.amount_sent,
-              user_id: this.user,
-              supplier_id: this.form.supplier_id,  
-              buy_lines: this.form.buy_lines,  
-              compagnie_id: localStorage.getItem('auth.company_id')
-            }).then(response =>{ 
-                console.log( response ) 
-                this.error = response.data.message
-                console.log(this.error)
-                if(response.data.status == 'success'){
-                    this.$router.push({path:'/ventes/list_vente'})
-                }
-                else{
-                    this.error = response.data.message
-                }
-             }).catch( err => console.log( err ) )
+        async submit(){
+            await this.$axios.get('/buys/'+ this.$route.params.id,{params: {
+                compagnie_id: localStorage.getItem('auth.company_id')}
+            }).then(response => {
+                // console.log(response.data.data[0] )
+                let achat = response.data.data[0];
+                if(this.element_searchCli == achat.supplier.name){
+            
+                    this.$axios.put('/buys/' +this.$route.params.id,{
+                        id: this.$route.params.id,
+                        date_buy: this.form.date_buy,
+                        tax: this.form.tax,
+                        discount: this.form.discount,
+                        amount: this.form.amount,
+                        payment: this.form.payment,
+                        amount_sent: this.form.amount_sent,
+                        user_id: this.user,
+                        supplier_id: achat.supplier_id,  
+                        buy_lines: this.form.buy_lines,  
+                        compagnie_id: localStorage.getItem('auth.company_id')
+                        }).then(response =>{ 
+                            console.log( response ) 
+                            this.error = response.data.message
+                            console.log(this.error)
+                            if(response.data.status == 'success'){
+                                this.$router.push({path:'/ventes/list_vente'})
+                            }
+                            else{
+                                this.error = response.data.message
+                            }
+                        }).catch( err => console.log( err ) )
+
+                }else{
+                    this.$axios.put('/buys/' +this.$route.params.id,{
+                        id: this.$route.params.id,
+                        date_buy: this.form.date_buy,
+                        tax: this.form.tax,
+                        discount: this.form.discount,
+                        amount: this.form.amount,
+                        payment: this.form.payment,
+                        amount_sent: this.form.amount_sent,
+                        user_id: this.user,
+                        supplier_id: this.form.supplier_id, 
+                        buy_lines: this.form.buy_lines,  
+                        compagnie_id: localStorage.getItem('auth.company_id')
+                        }).then(response =>{ 
+                            console.log( response ) 
+                            this.error = response.data.message
+                            console.log(this.error)
+                            if(response.data.status == 'success'){
+                                this.$router.push({path:'/ventes/list_vente'})
+                            }
+                            else{
+                                this.error = response.data.message
+                            }
+                        }).catch( err => console.log( err ) )
+                            
+                        }
+                    }) 
                       
         },
          
@@ -212,11 +252,11 @@ export default {
         refresh(){
             this.$axios.get('/suppliers',{params: {
                 is_paginated: 0,
-            compagnie_id: localStorage.getItem('auth.company_id')
+                compagnie_id: localStorage.getItem('auth.company_id')
             }
             }).then(response => {
                 // console.log(response);
-            this.fournisseurs = response.data.data.data})
+            this.fournisseurs = response.data.data})
         },
 
         recupProduct(){

@@ -11,10 +11,14 @@
         <div class="col-md-10">
           <form class="d-flex col-md-7" role="search">
             <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
-            <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
           </form>
         </div>
 
+        <NuxtLink  to="/categorie/add_categorie" v-for="(user, i) in users" :key="i" class="web-btn"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
+      </div>
+
+      <div class="mobile-btn my-4">
         <NuxtLink  to="/categorie/add_categorie" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvelle catégorie</span></button></NuxtLink>
       </div>
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
@@ -72,30 +76,22 @@
         </table>
         <p class="text-center"><strong>{{total}} catégorie(s) au total </strong></p><hr class="text-primary">
       </div><br><br> 
-        <form class="d-flex justify-content-end" role="search">
+        <form class="btn-group justify-content-end" role="search">
           <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
-          <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-          <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter</button>
+          <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
+          <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+          <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'">Exporter en excel</button>
           
-          <!-- <vue-excel-xlsx
-            class="btn btn-outline-info mx-5"
-            :data="data"
-            :columns="columns"
-            :file-name="'categories'"
-            :file-type="'xlsx'"
-            :sheet-name="'sheetname'"
-            >
-            Exporter
-          </vue-excel-xlsx> -->
-        </form><br><br>
-        <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
-          <ul class="pagination">
-            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-            
-            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-          </ul>
-          <label class="title">Affichage :</label> 
+       <div class="d-flex mt-4">
+          <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()" title="Importer fichier"><i class="fa fa-upload" aria-hidden="true"></i></button>
+
+          <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()" title="Exporter en pdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+
+          <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'" title="Exporter en excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+        </div>
+        </form><br>
+        <div class="d-flex col-md-2 my-4">
+          <label class="title my-2">Affichage :</label> 
           <form action="">
           <div class="nombre">
             <!-- -->
@@ -106,16 +102,25 @@
                 <option value="10">100</option>
             </select>
           </div>
-          </form>
+          </form></div>
+        <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
         </nav>
   </div><br>
  <!-- <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' :stock= 'identifiant3' :valorisation= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>   -->
  <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
  <exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
+ <pdfModal v-show="pdfModal" @close-modal="pdfModal = false"/>  
 </div>
 </template>
 
 <script>
+import pdfModal from './pdfModal.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
 import voirCategorie from './voir_categorie.vue'
@@ -129,7 +134,8 @@ export default {
       voirCategorie,
       Userinfo,
       deleteModal,
-      exportModal
+      exportModal,
+      pdfModal
     },
 
     data () {
@@ -156,7 +162,9 @@ export default {
         },
         key: "",
         showModalDelete: false,
-        exportModal: false
+        exportModal: false,
+        pdfModal: false,
+        role: ""
                 
                 
       }
@@ -166,6 +174,10 @@ export default {
     methods: {
       exp(){
        this.exportModal = true 
+      },
+      
+      pdf(){
+       this.pdfModal = true 
       },
       
       submitFile(){
@@ -241,23 +253,6 @@ export default {
             })     
         },
 
-        // async Export() {
-        //   await this.$axios({
-        //     url: "/export/categories",
-        //     method: "GET",
-        //     responseType: "blob",
-        //     params: {
-        //         compagnie_id: localStorage.getItem('auth.company_id')
-        //       },
-        //   }).then(response => {
-        //     console.log(response)
-        //     link.setAttribute("download");
-        //     link.click();
-            
-        //   }); 
-        // },
-
-
         // voirCategorie(id){
         //     this.showModal = true;
         //     this.$axios.get('/categories/'+ id,{
@@ -286,12 +281,15 @@ export default {
       this.refresh()
          this.users = this.$auth.$state.user.roles;
        this.compagny = localStorage.getItem('auth.company_id');
+       this.role = localStorage.getItem('auth.roles');
     }
 }
 </script>
 
 <style scoped>
-
+.btn-group{
+  display: flex;
+}
 .nombre{
   margin: 0 ;
 }
@@ -417,9 +415,32 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 }
 
 
-@media screen and (max-width: 700px) {
-  .btn_recherche{
+.mobile-btn{
+  display: none;
+}
+
+
+
+@media screen and (max-width: 900px) {
+  /* .btn_recherche{
     display:none;
+  } */
+
+  .mobile-btn{
+    display: block;
+  }
+
+  .web-btn{
+    display: none;
+  }
+
+
+  .btn-group{
+    display: inline;
+  }
+
+  .btn-group .btn{
+    margin: 10px 0;
   }
 }
 

@@ -14,8 +14,10 @@
               <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
             </form>
           </div>
-          <NuxtLink  to="/fournisseurs/add_fournisseur" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau fournisseur</span></button></NuxtLink>
+          <NuxtLink  to="/fournisseurs/add_fournisseur" v-for="(user, i) in users" :key="i" class="web-btn"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau fournisseur</span></button></NuxtLink>
       </div>
+
+      <div class="mobile-btn mt-4"><NuxtLink  to="/fournisseurs/add_fournisseur" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau fournisseur</span></button></NuxtLink></div>
 
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
         {{error}} 
@@ -42,8 +44,10 @@
               <td>{{result.balance}}</td>
               <td>{{result.nature}}</td>
               <td><div class="action"  v-for="(user, i) in users" :key="i">
-                  <div @click="voirFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <div @click="voirFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/fournisseurs/'+result.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
+                <div><a :href="'https://api.whatsapp.com/send?phone='+result.phone+'&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!'"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div>
                   <div @click="deleteFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
                 </td>
@@ -73,8 +77,10 @@
                 <td>{{fournisseur.balance}}</td>
                 <td>{{fournisseur.nature}}</td>
                 <td><div class="action"  v-for="(user, i) in users" :key="i">
-                  <div @click="voirFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                  <div @click="voirFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/fournisseurs/'+fournisseur.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(fournisseur)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
+                <div><a :href="'https://api.whatsapp.com/send?phone='+fournisseur.phone+'&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!'"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div>
                   <div @click="deleteFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                   </div>
                 </td>
@@ -84,29 +90,21 @@
         <p class="text-center"><strong>{{total}} fournisseur(s) au total </strong></p><hr class="text-primary">
     
       </div>  <br><br>
-    <form class="d-flex justify-content-end" role="search">
+    <form class="btn-group justify-content-end" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
-      <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-      <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exporte()">Exporter</button>
-<!-- <vue-excel-xlsx
-        class="btn btn-outline-info mx-5"
-        :data="data"
-        :columns="columns"
-        :file-name="'fournisseurs'"
-        :file-type="'xlsx'"
-        :sheet-name="'sheetname'"
-        >
-        Exporter
-      </vue-excel-xlsx> -->
-    </form><br><br>
-        <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
-          <ul class="pagination">
-            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-            
-            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-          </ul>
-          <label class="title">Affichage :</label> 
+      <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
+      <button class="btn btn-outline-dark web-btn mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+      <button class="btn btn-outline-dark web-btn mx-2" type="submit" @click.prevent="exporte()" v-if="role == 'admin'">Exporter en excel</button>
+      <div class="d-flex mt-4">
+        <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()" title="Importer fichier"><i class="fa fa-upload" aria-hidden="true"></i></button>
+
+        <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()" title="Exporter en pdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+
+        <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exporte()" v-if="role == 'admin'" title="Exporter en excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+      </div>
+    </form><br>
+        <div class="d-flex col-md-2 my-4">
+          <label class="title my-2">Affichage :</label> 
           <form action="">
           <div class="nombre">
             <!-- -->
@@ -118,17 +116,27 @@
             </select>
           </div>
           </form>
+        </div>
+        <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
         </nav>
  </div><br> 
 <voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance= 'identifiant5' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
-<exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
+<exportModal v-show="exportModal" @close-modal="exportModal = false"/> 
+<stockModal :cli="id_cli" :cli_name="nom_cli" v-show="stockModal" @close-modal="stockModal = false"/>   
 
 </div>
 
 </template>
 
 <script>
+import stockModal from './stockModal.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
 import voirFournisseur from './voir_fournisseur.vue'
@@ -142,7 +150,8 @@ export default {
     voirFournisseur,
     Userinfo,
     deleteModal,
-    exportModal
+    exportModal,
+    stockModal
   },
 
   data () {
@@ -170,19 +179,57 @@ export default {
       },
       key: '',
       showModalDelete: false,
-      exportModal: false
+      exportModal: false,
+      role: "",
+      id_cli: '',
+      nom_cli: '',
+      stockModal: false
     }
   },
   async mounted () {
       this.refresh()
       this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
+      this.role = localStorage.getItem('auth.roles');
   },
 
   methods: {
     exporte(){
         this.exportModal = true 
     },
+
+    
+    stockExporte(fournisseur){
+          // console.log(produit)
+          this.stockModal = true,
+          this.id_cli = fournisseur.id
+          this.nom_cli = fournisseur.name
+        },
+
+    pdf() {
+      this.$axios.get('/suppliers/download', {
+        params: {
+          compagnie_id: localStorage.getItem('auth.company_id'),
+          start_at: this.form.date_debut,
+          end_at: this.form.date_fin
+        },
+        responseType: 'blob',
+        Accept: 'application/pdf'
+      }).then((response) => {
+        // console.log(response);
+        const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'fournisseurs.pdf'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+        this.$toast('Téléchargement', {
+            icon: 'fa fa-check-circle',
+        })
+        this.$emit('close-modal')
+      })
+    },
+
 
     submitFile(){
           let formData = new FormData();
@@ -291,6 +338,9 @@ export default {
 </script>
 
 <style scoped>
+.btn-group{
+  display: flex;
+}
 .page{
     display: flex;    
 }
@@ -304,9 +354,9 @@ export default {
   font-weight: bold;
 }
 
-.app-main__outer{
+/* .app-main__outer{
   overflow: auto;
-}
+} */
 
 .fa{
   margin: 0 5px;
@@ -419,10 +469,30 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
   width: 100%;
 }
 
+.mobile-btn{
+  display: none;
+}
 
-@media screen and (max-width: 700px) {
-  .btn_recherche{
+
+
+@media screen and (max-width: 900px) {
+  /* .btn_recherche{
     display:none;
+  } */
+
+  .mobile-btn{
+    display: block;
+  }
+
+  .web-btn{
+    display: none;
+  }
+  .btn-group{
+    display: inline;
+  }
+
+  .btn-group .btn{
+    margin: 10px 0;
   }
 }
 </style>

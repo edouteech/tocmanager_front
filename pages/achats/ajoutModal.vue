@@ -2,25 +2,26 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>    
     <div class="alert alert-danger justify-content-center" role="alert" v-if="status == 'error'">
-      {{error}} <br>
-      <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
-      <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
-      <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-      <div class="error" v-if="errors['nature'] != null">{{errors['nature']}}</div>
+      {{error}}
     </div>                 
             <form action="" method="POST"> 
                         <h4>Ajout de fournisseur</h4>
 
                 <div class="input-form">					
                     <input type="text" class="form-control" placeholder="Entrer le nom du fournisseur " v-model="form.name" autocomplete="off" id="name_four" required>
-                </div>     
+                </div>  
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['name'] != null">{{errors['name']}}</div>   
+
                 <div class="input-form">        
                   <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
                 </div>
-            
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['phone'] != null">{{errors['phone']}}</div> 
+
                 <div class="input-form">    
                     <input type="email" class="form-control" placeholder="Entrer l'email du fournisseur " v-model="form.email" autocomplete="off" id="email_four" required>
                 </div>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['email'] != null">{{errors['email']}}</div> 
+
                 <div class="input-form"> 
                    <select class="form-control" v-model="form.nature" id="nature_four" required>
                         <option disabled value="">Choisissez la nature du fournisseur</option>
@@ -30,7 +31,8 @@
                     <!-- <input type="number" placeholder="Entrer la nature du fournisseur " v-model="form.nature" autocomplete="off" required> -->
                     
                 </div>
-                <div class="submit-form" @click="$emit('close-modal')" >
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['nature'] != null">{{errors['nature']}}</div> 
+                <div class="submit-form" >
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
                 </div>
                 <!-- <div v-else class="submit-form">
@@ -85,6 +87,10 @@
                       this.form.email = '',
                       this.form.nature = '',
                       this.status = response.data.status
+                      this.$emit('close-modal')
+                      this.$toast("Fournisseur ajouté !!! ", {
+                      icon: 'fa fa-check-circle',
+                  })
                   }
                   else{
                     // alert("Echec lors de l'ajout du client ! Veuillez réessayer.");
@@ -107,7 +113,7 @@ form {
 .input-form {
     display: flex;
     flex-direction: column-reverse;
-    margin: 1.2em 0;
+    margin-top: 30px;
     height: 50px;
 }
   
@@ -159,14 +165,14 @@ input[type=submit]:hover{
 .modaler {
   text-align: center;
   background-color: white;
-  height: 600px;
+  height: max-content;
   width: 600px;
-  margin-top: 10%;
+  margin-top: 3%;
   padding: 30px 0;
   border-radius: 20px;
 }
 .close {
-  margin: 10% 0 0 0;
+  margin: 3% 0 0 0;
   cursor: pointer;
 }
 

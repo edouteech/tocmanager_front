@@ -49,6 +49,17 @@
             <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.nature">
                 {{errors.nature}}
             </div>
+            <div class="form-group ">
+            <label class="title">Type de client</label>
+            <select class="form-control" v-model="form.type_client" >
+                    <option disabled value="">Choisissez...</option>
+                    <option :value="type" v-for="(type, i) in types" :key="i">{{type}}</option>
+            </select>
+            </div>
+            <div class="form-group " v-if="form.type_client == 'douteux'">
+                <label class="title">Seuil de crédit possible</label>
+                <input type="number" class="form-control" v-model="form.seuil_max" autocomplete="off" required  placeholder="10000" >
+            </div>
 
             <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer le client</button>
         </form>
@@ -75,20 +86,37 @@ export default {
                 email: '',
                 phone: '',
                 nature: 0,
+                type_client: 'normal',
+                seuil_max: 0,
                 compagnie_id: ''
             },
+            types: '',
             errors: [],
             error: null,
         }
     },
 
+    mounted(){
+        this.$axios.get('/clients/types',{
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+            }
+          }).then(response =>{
+            // console.log(response);
+            this.types = response.data.data
+            })   
+    },
+
     methods: {
         async submit(){
+        console.log( this.form.type_client ) 
             await  this.$axios.post('/clients',{
               name: this.form.name,
               email: this.form.email,
               phone: this.form.phone,
               nature: this.form.nature,
+              type_client: this.form.type_client,
+              seuil_max: this.form.seuil_max,
               compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 // console.log( response ) 

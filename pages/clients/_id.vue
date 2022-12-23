@@ -48,6 +48,18 @@
             <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.nature">
                 {{errors.nature}}
             </div>
+            
+            <div class="form-group col-md-6" v-if="role == 'admin'">
+                <label class="title">Type de client</label>
+                <select class="form-control" v-model="form.type_client" >
+                        <option disabled value="">Choisissez...</option>
+                        <option :value="type" v-for="(type, i) in types" :key="i">{{type}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6" v-if="form.type_client == 'douteux'">
+                <label class="title">Entrer le seuil de crédit possible</label>
+                <input type="email" class="form-control" v-model="form.seuil_max" autocomplete="off" required  placeholder="azerty@azert.com" >
+            </div>
 
             <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer le client</button>
         </form>
@@ -77,36 +89,58 @@ export default {
                 email: '',
                 phone: '',
                 nature:'',
+                type_client: '',
                 compagnie_id: '',
             },
             error:null,
-            errors: []
+            errors: [],
+            types: '',
+            role: ''
         }
         },
     mounted() {
-        this.$axios.get('/clients/'+ this.$route.params.id,{
-            params: {
-              compagnie_id: localStorage.getItem('auth.company_id')
-            }
-          })
-         .then(response => {console.log(response.data.data[0] )
-            let client = response.data.data[0];
-            // this.clients = response.data.data
-            this.form.name = client.name,
-            this.form.phone = client.phone,
-            this.form.email = client.email
-            if(client.nature == "Particulier"){
-                this.form.nature = 0
-            }else{
-                this.form.nature = 1
-            }
-            
-          }      
-        )
-            
+        this.recupClient()
+        this.recupType()  
+        this.role = localStorage.getItem('auth.roles')   
     },
 
     methods: {
+
+        recupClient(){
+            this.$axios.get('/clients/'+ this.$route.params.id,{
+                params: {
+                compagnie_id: localStorage.getItem('auth.company_id')
+                }
+            })
+            .then(response => {
+                // console.log(response.data.data[0] )
+                let client = response.data.data[0];
+                // this.clients = response.data.data
+                this.form.name = client.name,
+                this.form.phone = client.phone,
+                this.form.email = client.email
+                this.form.seuil_max = client.seuil_max
+                this.form.type_client = client.type_client
+                if(client.nature == "Particulier"){
+                    this.form.nature = 0
+                }else{
+                    this.form.nature = 1
+                }
+                
+            })
+
+        },
+
+        recupType(){
+            this.$axios.get('/clients/types',{
+                params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                }
+            }).then(response =>{
+                // console.log(response);
+                this.types = response.data.data
+                })   
+        },
 
         submit(){          
             this.$axios.put('/clients/' +this.$route.params.id,{
@@ -115,6 +149,8 @@ export default {
                 email: this.form.email,
                 phone: this.form.phone,
                 nature: this.form.nature,
+                type_client: this.form.type_client,
+                seuil_max: this.form.seuil_max,
                 compagnie_id: localStorage.getItem('auth.company_id')
 
             })

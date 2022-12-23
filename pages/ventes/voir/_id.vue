@@ -130,7 +130,16 @@
                     </div> <br>
                     <div class="form-group col-md-6">        
                       <input type="number" class="form-control" placeholder="Entrer le montant à encaisser " v-model="form.montant" id="montant" required>
-                    </div> <br><br>
+                    </div> <br>
+                    <div class="form-group col-md-6">
+                        <select class="form-control" v-model="form.payment">
+                            <option value="">Choississez une méthode de paiement</option>
+                            <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
+                        </select>
+                    </div>
+                    
+                    
+                    <br>
                         
                     <button type="submit" class="btn btn-success" @click.prevent="submit()">Ajouter ...</button>          
                 </form>  <br><br><hr class="trait">
@@ -282,6 +291,7 @@ export default {
             date:  moment().format("YYYY-MM-DD"),
             montant: '',
             phone: '',
+            payment: "ESPECES",
             nature:'',
             compagnie_id: ''
         },
@@ -295,10 +305,12 @@ export default {
         identifiant5: '',
         identifiant6: '',
         identifiant7: '',
+        methodes: ''
       }
     },
 
     mounted(){
+      this.payment()
       this.refresh()
       this.recupFacture()
       this.compagn = localStorage.getItem('auth.company_id');
@@ -306,6 +318,17 @@ export default {
     },
 
     methods: {
+
+          
+        payment(){
+            this.$axios.get('/invoice/payments',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id')
+          }
+          }).then(response =>
+            {
+                // console.log(response); 
+                this.methodes = response.data.data })
+        },
         moment: function () {
           return moment();
         },
@@ -360,6 +383,7 @@ export default {
                 client_id: this.client.id,
                 user_id: this.$auth.user.id,
                 sell_id: this.$route.params.id,
+                payment: this.form.payment,
                 compagnie_id: localStorage.getItem('auth.company_id')
               }).then(response =>{ 
                   // console.log( response ) 

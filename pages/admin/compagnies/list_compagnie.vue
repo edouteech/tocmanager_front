@@ -10,7 +10,7 @@
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
               <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
           </form>
-          <div class="search_result" v-if="this.element_search != ''">
+          <div class="search_result table-responsive" v-if="this.element_search != ''">
             <!-- <div >{{result.name}}</div> -->
             <table class="table table-hover">
               <thead>
@@ -30,6 +30,7 @@
             </table>
           </div><br>
           <!-- <NuxtLink  to="/fournisseurs/add_fournisseur"><button class="custom-btn btn-3"><span>Ajouter nouveau fournisseur</span></button></NuxtLink> -->
+          <div class="table-responsive">
             <table class="table table-hover" v-if="this.element_search == ''">
               <thead>
                 <tr class="table-primary" >
@@ -41,18 +42,21 @@
                 </thead>
               
                 <tbody>
-                  <tr  v-for="(compagnie, i) in compagnies" :key="i" @click="voirCompagnie(compagnie.id)">
+                  <tr  v-for="(compagnie, i) in compagnies" :key="i">
                     <td>{{compagnie.name}}</td>
                     <td>{{compagnie.phone}}</td>
                     <td>{{compagnie.email}}</td>
                     <td class="text-center"><NuxtLink :to="'/admin/compagnies/'+compagnie.id">
                         <button type="button" id="PopoverCustomT-1" class="btn btn-success btn-sm">Details</button></NuxtLink>
+                        <!-- <NuxtLink :to="'/admin/compagnies/'+compagnie.id"> -->
+                          <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" @click.prevent="abonne(compagnie.id)">Abonnement</button>
+                        <!-- </NuxtLink> -->
                     </td>
                   </tr>
                 </tbody>
             </table>
             <p class="text-center"><strong>{{total}} compagnie(s) au total </strong></p><hr class="text-primary">
-        
+          </div>
             <br><br>
         <!-- <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br> -->
             <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
@@ -62,7 +66,8 @@
                 
                 <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
               </ul>
-              <label class="title">Affichage :</label> 
+              <div class="d-flex">
+              <label class="title mt-1">Affichage :</label> 
               <form action="">
               <div class="nombre">
                 <!-- -->
@@ -74,22 +79,26 @@
                 </select>
               </div>
               </form>
+            </div>
             </nav>
      </div><br> 
-    <voirCompagnie :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/>
-    </div>
+    <!-- <voirCompagnie :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/> -->
+    <abonnementModal :compagnie = 'identifiant1' v-show="showModal" @close-modal="showModal = false"/>
+</div>
     
     </template>
     
     <script>
-    import voirCompagnie from './voir_compagnie.vue'
+    import abonnementModal from './abonnementModal.vue'
+    // import voirCompagnie from './voir_compagnie.vue'
     import Sidebar from '../sidebar.vue'
     export default {
       auth: true,
       layout: "empty",
       components: {
         Sidebar,  
-        voirCompagnie
+        // voirCompagnie,
+        abonnementModal
       },
     
       data () {
@@ -128,7 +137,8 @@
                       'Content-Type': 'multipart/form-data'
                   }
                 }
-              ).then(response => {console.log(response);
+              ).then(response => {
+                // console.log(response);
                 if(response.data.status == "success"){
                   this.refresh()
                   alert("L'importation s'est bien effectuée ...");
@@ -148,7 +158,8 @@
                 search: this.element_search
               }
               })
-              .then(response => {console.log(response.data);
+              .then(response => {
+                // console.log(response.data);
               this.results = response.data.data.data 
               
               })
@@ -157,7 +168,8 @@
            deleteCompagnie(id){
               console.log(id);
               this.$axios.delete('/suppliers/' +id)
-              .then(response => {console.log(response.data.data);
+              .then(response => {
+                // console.log(response.data.data);
                 this.refresh()})                 
             },
              
@@ -169,7 +181,7 @@
               })
               .then(response => 
                 {
-                  console.log(response);
+                  // console.log(response);
                   this.total = response.data.data.total;
                   this.compagnies = response.data.data.data
     
@@ -179,29 +191,31 @@
                 })
             },
     
-            voirCompagnie(id){
-                this.showModal = true;
-                this.$axios.get('/admin/compagnies/'+ id,{
-                params: {
-                  compagnie_id: this.$auth.$storage.getUniversal('company_id')
-                }
-              }).then(response => {
-                console.log(response.data.data[0]);
-                 this.identifiant1 = response.data.data[0].name
-                 this.identifiant2 = response.data.data[0].phone
-                 this.identifiant3 = response.data.data[0].email     
-                 }) 
+            // voirCompagnie(id){
+            //     this.showModal = true;
+            //     this.$axios.get('/admin/compagnies/'+ id,{
+            //     params: {
+            //       compagnie_id: this.$auth.$storage.getUniversal('company_id')
+            //     }
+            //   }).then(response => {
+            //     console.log(response.data.data[0]);
+            //      this.identifiant1 = response.data.data[0].name
+            //      this.identifiant2 = response.data.data[0].phone
+            //      this.identifiant3 = response.data.data[0].email     
+            //      }) 
                    
-            },
+            // },
+
+            abonne(id){
+              this.showModal = true
+              this.identifiant1 = id
+            }
         },
     
     }
     </script>
     
     <style scoped>
-    .page{
-        display: flex;    
-    }
     
     .nombre{
       margin: 0 ;
@@ -212,9 +226,9 @@
       font-weight: bold;
     }
     
-    .app-main__outer{
+    /* .app-main__outer{
       overflow: auto;
-    }
+    } */
     
     .fa{
       margin: 0 5px;

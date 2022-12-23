@@ -8,14 +8,22 @@
       <div class="app-main__outer p-5">
         <h4>Liste des ventes effectuées</h4><hr><br>
         <div class="d-flex">
-          <div class="col-md-10">
+          <div class="col-md-10 row">
             <form class="d-flex col-md-7" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
-              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
           </div>
-          <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
+          <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i" class="web-btn"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink>
         </div>
+
+        <div class="mobile-btn mt-4">
+        <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink></div>
+        <div class="range">
+            <input class="form-control" type="date"  v-model="date_debut"  required />  
+            <input  class="form-control" type="date"  v-model="date_fin"  required />  
+            <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
+          </div>  
         <div v-if="this.element_search != ''" class="table-responsive">
           <table class="table table-hover">
               <thead>
@@ -92,7 +100,11 @@
           <form class="d-flex justify-content-end" role="search">
             <!-- <input type="file" id="file" ref="file" @change="handleFileUpload()" />
             <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button> -->
-            <vue-excel-xlsx
+            
+            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'">Exporter en excel</button>
+            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+            
+            <!-- <vue-excel-xlsx
                 class="btn btn-outline-info mx-5"
                 :data="data"
                 :columns="columns"
@@ -101,19 +113,12 @@
                 :sheet-name="'sheetname'"
                 >
                 Exporter
-              </vue-excel-xlsx>
+            </vue-excel-xlsx> -->
           </form><br><br>
-          <nav aria-label="Page navigation example "  class="d-flex" v-if="res_data != null">
-            <ul class="pagination">
-              <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-              <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-              
-              <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-            </ul>
             <form action="">
-                <div class="nombre d-flex">
-                    <label class="title mx-5 my-2"><strong> Affichage:</strong></label> 
-                    <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+                <div class="nombre d-flex my-4 col-md-2">
+                    <label class="title mx-3 my-2"><strong> Affichage:</strong></label> 
+                    <select class="form-control " v-model="form.nombre" required @click.prevent="refresh()">
                         <option disabled value>10</option>
                         <option value="25" >25</option>
                         <option value="50">50</option>
@@ -121,6 +126,13 @@
                     </select>
                 </div>
             </form>
+          <nav aria-label="Page navigation example "  class="d-flex" v-if="res_data != null">
+            <ul class="pagination">
+              <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+              <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+              
+              <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+            </ul>
           </nav>
       </div>
       <br> 
@@ -160,10 +172,10 @@
               <div class="d-flex align-items-end flex-column mb-4" v-if="qr_info != null">
                 <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+qr_info.qrcode" alt="QRcode" />
                 <div class="d-flex align-items-start flex-column mb-4">
-                  <p> <strong>Mecef_counteurs :</strong>{{qr_info.mecef_counteurs}}</p>
-                  <p> <strong>Mecef_nim: </strong>{{qr_info.mecef_nim}}</p>
-                  <p><strong>Mecef_date :</strong> {{qr_info.mecef_date}}</p>
-                  <p><strong>CodeMECeFDGI : </strong>{{qr_info.codeMECeFDGI}}</p>
+                  <div> <strong>Mecef_counteurs :</strong>{{qr_info.mecef_counteurs}}</div>
+                  <div> <strong>Mecef_nim: </strong>{{qr_info.mecef_nim}}</div>
+                  <div><strong>Mecef_date :</strong> {{qr_info.mecef_date}}</div>
+                  <div><strong>CodeMECeFDGI : </strong>{{qr_info.codeMECeFDGI}}</div>
                 </div>
               </div>
           <table  class="total d-flex align-items-end flex-column">
@@ -185,6 +197,8 @@
       </div>
       <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 
+      <exportModal v-show="exportModal" @close-modal="exportModal = false" />  
+      <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" /> 
   <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
          
   <!-- Footer -->
@@ -230,6 +244,8 @@
   
   
   <script>
+  import pdfModal from './pdfModal.vue';
+  import exportModal from './exportModal.vue';
   import deleteModal from './deleteModal.vue';  
   import Impression from './impression.vue';  
   import moment from "moment";
@@ -242,13 +258,16 @@
       Sidebar,
       Userinfo,
       Impression,
-      deleteModal
+      deleteModal,
+      exportModal,
+      pdfModal
     },
      data () {
         return {
           links: [],
           res_data: null,
           showModal: false,
+          exportModal: false,
           identifiant1: '',
           identifiant2: '',
           identifiant3: '',
@@ -278,68 +297,50 @@
           showModalDelete: false,
           element_search: "",
           results: "",
-          columns : [
-            {
-                label: "Date d'édition",
-                field: "date_sell",
-            },
-            {
-                label: "Prix Hors Taxe",
-                field: "amount_ht",
-            },
-            {
-                label: "Taxe",
-                field: "tax",
-            },
-            {
-                label: "Prix TTC",
-                field: "amount_ttc",
-            },
-            {
-                label: "Réduction",
-                field: "discount",
-            },
-            {
-                label: "Net à payer",
-                field: "amount",
-            },
-            {
-                label: "Reste à payer",
-                field: "rest",
-            },
-            {
-                label: "Client_id",
-                field: "client_id",
-            },
-      ],
-      data : [],
+          filtre: "",
+          date_debut: "",
+          date_fin: "",
+          role: "",
+          pdfModal: false,
     }
   },
 
       methods: {
-        async exp(){
-            await this.$axios.get('/sells',{
-                params: {
-                  compagnie_id: localStorage.getItem('auth.company_id'),
-                  is_paginated: 0
-                }
-              }).then(response =>{
-                // console.log(response);
-                this.data = response.data.data
-                })   
+        // async exp(){
+        //     await this.$axios.get('/sells',{
+        //         params: {
+        //           compagnie_id: localStorage.getItem('auth.company_id'),
+        //           is_paginated: 0
+        //         }
+        //       }).then(response =>{
+        //         // console.log(response);
+        //         this.data = response.data.data
+        //         })   
+        // },
+        exp(){
+            this.exportModal = true
         },
+
+        pdf() {
+          this.pdfModal = true
+        },
+
 
         search(){
           this.$axios.get('/sells',{params: {
             compagnie_id: localStorage.getItem('auth.company_id'),
-            search: this.element_search
+            search: this.element_search,
+            date_debut: this.date_debut,
+            date_fin: this.date_fin
           }
           })
           .then(response => {
             // console.log(response.data);
-          this.results = response.data.data.data 
-          this.total = response.data.data.total
-          
+              this.results = response.data.data.data 
+              this.res_data= response.data.data
+              this.total = response.data.data.total
+              let firstE = response.data.data.links.shift()
+              let lastE = response.data.data.links.splice(-1,1);
           })
         },
           deleteVente(id){
@@ -357,11 +358,14 @@
             this.$axios.get('/sells',{params: {
               compagnie_id: localStorage.getItem('auth.company_id'),
               page: page,
-              per_page : this.form.nombre }   
+              per_page : this.form.nombre,
+              date_debut: this.date_debut,
+              date_fin: this.date_fin
+            }   
             })        
             .then(response => 
             {
-              // console.log(response.data.data.data);
+              // console.log(response);
               this.ventes = response.data.data.data
               this.res_data= response.data.data
               this.total = response.data.data.total
@@ -430,12 +434,13 @@
       },
 
       
-    async mounted () {
-      await this.exp()
+    mounted () {
+      // await this.exp()
         this.refresh()
         this.recupClient()
         this.users = this.$auth.$state.user.roles;
         this.compagny = localStorage.getItem('auth.company_id');
+        this.role = localStorage.getItem('auth.roles')
         // console.log(this.$auth)
     }
   }
@@ -453,6 +458,22 @@
   }
   
   
+.range{
+  display: flex;
+  /* border: 1px solid gainsboro; */
+  border-radius: 10px;
+  padding: 1% 2%;
+  margin-bottom: 2%;
+  margin-top: 2%;
+  font-size: 18px;
+
+}
+
+.range input{
+  margin-right: 2%;
+}
+
+
   @media print {
     .navbar {
       display: none !important;
@@ -481,7 +502,7 @@
   }
   .fa{
     margin: 0 5px;
-    font-size: 22px;
+    font-size: 18px;
     cursor: pointer;
   }
   .table{
@@ -591,6 +612,10 @@
     width: 100%;
   }
 
+  
+.mobile-btn{
+  display: none;
+}
 
 
 @media screen and (max-width: 900px) {
@@ -607,5 +632,24 @@
 }
   
   
+@media screen and (max-width: 900px) {
+  .range input{
+    width: 45%;
+  }
+
+  .web-btn{
+    display: none;
+  }
+
+  .mobile-btn{
+    display: block;
+  }
+
+}
+
+.range{
+  margin: 30px 0;
+}
+
   </style>
   

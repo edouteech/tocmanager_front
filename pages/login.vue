@@ -16,7 +16,7 @@
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form>
-          <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+          <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}}
         </div>
           <div class="divider d-flex align-items-center my-4">
@@ -172,8 +172,8 @@ export default {
                                                 if( result.data.data.length == 0){
                                                   this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
                                                   .then(response =>{
-                                                    console.log(response)
-                                                    if( result.data.data.hasEndGrace == false){
+                                                    // console.log(response)
+                                                    if( response.data.data.hasEndGrace == false){
                                                       this.$router.push( '/dashboard',)
                                                     }
                                                     else{
@@ -193,18 +193,34 @@ export default {
                               else{
                                 let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
                                 this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
-                                .then(result =>{
+                                
                                   // console.log(result);
-                                  if( result.data.data.length == 0){
-                                    this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
-                                  }
-                                  else{
-                                    this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                                    this.$auth.setUserToken(response.data.data.original.access_token)         
-                                      .then(response =>{
+                                  // if( result.data.data.length == 0){
+                                  //   this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
+                                  // }
+                                  // else{
+                                  //   this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                                  //   this.$auth.setUserToken(response.data.data.original.access_token)         
+                                  //     .then(response =>{
+                                  //       this.$router.push( '/ventes/vente',)
+                                  //   })
+                                  // }
+                                  .then(result =>{
+                                      if( result.data.data.length == 0){
+                                        this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
+                                        .then(response =>{
+                                          console.log(response)
+                                          if( response.data.data.hasEndGrace == false){
+                                            this.$router.push( '/ventes/vente',)
+                                          }
+                                          else{
+                                            this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
+                                          }
+                                        })
+                                      }
+                                      else{
                                         this.$router.push( '/ventes/vente',)
-                                    })
-                                  }
+                                      }
                                 }) 
                               }
                             // })

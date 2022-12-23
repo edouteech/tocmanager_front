@@ -11,10 +11,15 @@
           <div class="col-md-10">
             <form class="d-flex col-md-7" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
-              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">Rechercher</button>
+              <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
           </div>
+          <NuxtLink  to="/produits/add_produit" v-for="(user, i) in users" :key="i" class="web-btn"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau produit</span></button></NuxtLink>
+      </div>
+
+      <div class="mobile-btn my-4">
           <NuxtLink  to="/produits/add_produit" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau produit</span></button></NuxtLink>
+        
       </div>
 
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
@@ -50,10 +55,12 @@
                 <!-- <td>{{result.stock_min}}</td>
                 <td>{{result.stock_max}}</td> -->
                 <td>{{result.quantity * result.price_sell}}</td>
-                <td><div class="action"  v-for="(user, i) in users" :key="i">
-                  <div @click="voirProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                  <NuxtLink :to="'/produits/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <td>
+                  <div class="action"  v-for="(user, i) in users" :key="i">
+                    <div @click="voirProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    <NuxtLink :to="'/produits/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                    <div @click="deleteProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                    <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de stock" @click="pdfExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download text-success" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>
@@ -90,10 +97,12 @@
                 <!-- <td>{{produit.stock_min}}</td>
                 <td>{{produit.stock_max}}</td> -->
                 <td>{{produit.quantity * produit.price_sell}}</td>
-                <td><div class="action"  v-for="(user, i) in users" :key="i">
-                  <div @click="voirProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-                  <NuxtLink :to="'/produits/'+produit.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <td>
+                  <div class="action"  v-for="(user, i) in users" :key="i">
+                    <div @click="voirProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    <NuxtLink :to="'/produits/'+produit.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                    <div @click="deleteProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                    <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de stock" @click="pdfExporte(produit)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download text-success" aria-hidden="true"></i></div>
                   </div>
                 </td>
               </tr>
@@ -101,32 +110,22 @@
         </table>
         <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
       </div><br><br>
-    <form class="d-flex justify-content-end" role="search">
+    <form class="justify-content-end btn-group" role="search">
       <input type="file" id="file" ref="file" @change="handleFileUpload()" />
-       <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button>
-       <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="exp()">Exporter</button>
-       <button class="btn btn-outline-info mx-4" type="submit" @click.prevent="pdf()">Pdf</button>
+       <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
+       <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+       <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'">Exporter en excel</button>
 
-       <!-- <vue-excel-xlsx
-          class="btn btn-outline-info mx-5"
-          :data="data"
-          :columns="columns"
-          :file-name="'produits'"
-          :file-type="'xlsx'"
-          :sheet-name="'sheetname'"
-          >
-          Exporter
-        </vue-excel-xlsx> -->
-    </form><br><br>
+       <div class="d-flex mt-4">
+          <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()" title="Importer fichier"><i class="fa fa-upload" aria-hidden="true"></i></button>
 
-        <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
-          <ul class="pagination">
-            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-            
-            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-          </ul>
-          <label class="title">Affichage :</label> 
+          <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()" title="Exporter en pdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+
+          <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'" title="Exporter en excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+        </div>
+    </form><br>
+    <div class="d-flex col-md-2 my-4">
+      <label class="title my-2">Affichage</label> 
           <form action="">
           <div class="nombre">
             <!-- -->
@@ -138,17 +137,29 @@
             </select>
           </div>
           </form>
+    </div>
+
+        <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
         </nav>
   </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
-<voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
+<voirProduit :prod_id='identifiant0' :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
-
+<listpdfModal v-show="listModal" @close-modal="listModal = false"/> 
+<pdfModal :prod="id_prod" :prod_name="nom_prod" v-show="pdfModal" @close-modal="pdfModal = false"/>  
 </div>
 
 </template>
 
 <script>
+import listpdfModal from './listpdfModal.vue'
+import pdfModal from './pdfModal.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
 import voirProduit from './voir_produit.vue'
@@ -162,7 +173,9 @@ export default {
     voirProduit,
     Userinfo,
     deleteModal,
-    exportModal
+    exportModal,
+    pdfModal,
+    listpdfModal
   },
 
   data () {
@@ -175,6 +188,7 @@ export default {
       error: null,
       res_data: null,
       showModal: false,
+      identifiant0 : '',
       identifiant1 : "",
       identifiant2 : "",
       identifiant3 : "",
@@ -201,6 +215,11 @@ export default {
       key: "",
       showModalDelete: false,
       exportModal: false,
+      pdfModal: false,
+      id_prod: "",
+      nom_prod:"",
+      role: '',
+      listModal: ""
     }
   },
 
@@ -208,6 +227,8 @@ export default {
       this.refresh()
       this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
+      this.role = localStorage.getItem('auth.roles');
+      
   },
 
   methods: {
@@ -215,11 +236,15 @@ export default {
             this.exportModal = true
         },
 
-        pdf(){
-          this.$axios.get('/products/download',{params: {
-                compagnie_id: localStorage.getItem('auth.company_id')
-              }
-            })
+        pdfExporte(produit){
+          // console.log(produit)
+          this.pdfModal = true,
+          this.id_prod = produit.id
+          this.nom_prod = produit.name
+        },
+
+        pdf() {
+          this.listModal = true
         },
 
        submitFile(){
@@ -334,6 +359,7 @@ export default {
             }
           }).then(response => {
             // console.log(response.data.data[0]);
+            this.identifiant0 = response.data.data[0].id
              this.identifiant2 = response.data.data[0].name
              this.identifiant3 = response.data.data[0].quantity
              this.identifiant4 = response.data.data[0].price_sell      
@@ -393,6 +419,10 @@ export default {
     display: flex;    
 }
 
+.btn-group{
+  display: flex
+}
+
 .nombre{
   margin: 0 ;
 }
@@ -405,8 +435,8 @@ export default {
   overflow: auto;
 }
 .fa{
-  margin: 5px 10px;
-  font-size: 22px;
+  margin: 2px 10px;
+  font-size: 18px;
   cursor: pointer;
 }
 .table{
@@ -532,10 +562,31 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 
 }
 
+.mobile-btn{
+  display: none;
+}
 
-@media screen and (max-width: 700px) {
-  .btn_recherche{
+
+
+@media screen and (max-width: 900px) {
+  /* .btn_recherche{
     display:none;
+  } */
+
+  .mobile-btn{
+    display: block;
+  }
+
+  .web-btn{
+    display: none;
+  }
+
+  .btn-group{
+    display: inline;
+  }
+
+  .btn-group .btn{
+    margin: 10px 0;
   }
 }
 </style>

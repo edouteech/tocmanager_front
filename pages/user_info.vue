@@ -8,10 +8,10 @@
 				<i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
             <!-- First Tier Drop Down -->
             <ul>
-                <li><a href="/mon_profil">Mon profil</a></li>
-                <li><a href="/update_password">Modifier mot de passe</a></li>
+                <li><a href="/mon_profil"><i class="fa fa-user mx-3" aria-hidden="true"></i>Mon profil</a></li>
+                <li><a href="/update_password"><i class="fa fa-key mx-2" aria-hidden="true"></i>Modifier mot de passe</a></li>
 				<!-- <li v-on:click.prevent="change()"><a href="#">Changer de compagnie</a></li> -->
-                <li @click="logout()"><a href="" @click="logout()"><i class='bx bx-log-out'></i>Déconnexion</a></li>
+                <li @click="logout()"><a href="" @click="logout()"><i class="fa fa-sign-out mx-2" aria-hidden="true"></i>Déconnexion</a></li>
             </ul>        
             </li>
         </ul>
@@ -141,13 +141,14 @@ nav ul {
 nav ul li {
 	display:inline-block;
 	background-color: #040404;
+	padding: 10px;
 }
 
 nav a {
 	display:block;
 	padding:0 5px;	
 	color:#FFF;
-	font-size:13px;
+	font-size:14px;
 	line-height: 30px;
 	text-decoration:none;
 }
@@ -160,7 +161,7 @@ nav a:hover {
 nav ul ul {
 	display: none;
 	position: absolute; 
-	top: 35px; /* the height of the main nav */
+	top: 50px; /* the height of the main nav */
 }
 	
 /* Display Dropdowns on Hover */
@@ -173,8 +174,9 @@ nav ul ul li {
 	float:none;
 	display:list-item;
 	position: relative;
-	margin-left: -25%;
+	margin-left: -35%;
 	width: 270px;
+	border-bottom: 1px solid white;
 }
 
 nav ul ul li:hover {

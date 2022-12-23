@@ -45,7 +45,9 @@
                   </tr>
                   
                 </tbody>
-              </table>
+              </table><br>
+              <!-- <button class="btn btn-outline-dark mx-4" type="submit" @click.prevent="pdf()">Télécharger l'état du stock</button> -->
+            
                 <!-- <div class="input-form">					
                    <span class="mode">Catégorie concernée : </span> <span class="resp">{{id}}</span>
                 </div>     <br>
@@ -81,8 +83,29 @@
 <script>
   export default {
     auth:true,
-    props: ['id','nom', 'quantite', 'vente', 'achat', 'min', 'max', 'group'],
+    props: ['prod_id','id','nom', 'quantite', 'vente', 'achat', 'min', 'max', 'group'],
     name: 'voirProduit',
+
+    methods:{
+
+        pdf() {
+          this.$axios.get('/products/'+this.prod_id+'/download', {
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id')
+            },
+            responseType: 'blob',
+            Accept: 'application/pdf'
+          }).then((response) => {
+            // console.log(response);
+            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', this.nom+'_stock.pdf'); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+          })
+        },
+    }
     
 }
 
@@ -100,6 +123,7 @@
   display: flex;
   justify-content: center;
   background-color: #ebebfcda;
+  z-index: 99;
 }
 
 
@@ -122,15 +146,15 @@ tbody tr:last-of-type{
 
 .modaler {
   background-color: white;
-  height: 600px;
+  height: 700px;
   width: 600px;
-  margin-top: 5%;
+  margin-top: 2%;
   padding: 1%;
   border-radius: 20px;
   font-size: 18px;
 }
 .close {
-  margin: 5% 0 0 16px;
+  margin: 2% 0 0 16px;
   cursor: pointer;
 }
 

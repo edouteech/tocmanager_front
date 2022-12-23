@@ -10,7 +10,7 @@
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
               <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
           </form>
-          <div class="search_result" v-if="this.element_search != ''">
+          <div class="search_result table-responsive" v-if="this.element_search != ''">
             <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
@@ -37,6 +37,7 @@
             </table>
           </div><br>
           <!-- <NuxtLink  to="/categorie/add_categorie"><button class="custom-btn btn-3"><span>Ajouter nouvelle catégorie</span></button></NuxtLink> -->
+            <div class="table-responsive">
             <table class="table table-hover" v-if="this.element_search == ''">
               <thead>
                 <tr class="table-primary">
@@ -46,7 +47,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr  v-for="(categorie, i) in categories" :key="i" @click="voirCategorie(categorie.id)">
+                <tr  v-for="(categorie, i) in categories" :key="i">
                   <td>{{categorie.name}}</td>
                   <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
                   <td v-else>---</td>
@@ -61,17 +62,19 @@
               </tbody>
             </table>
             <p class="text-center"><strong>{{total}} catégorie(s) au total </strong></p><hr class="text-primary">
+          </div>
             <br><br> 
             <!-- <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br> -->
-            <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
-              <ul class="pagination">
-                <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-                <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-                
-                <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-              </ul>
-              <label class="title">Affichage :</label> 
-              <form action="">
+            <nav class="page" aria-label="Page navigation example px-8 " v-if="res_data != null">
+          <ul class="pagination">
+            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+            
+            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+          </ul>
+          <div class="d-flex">
+            <label class="title">Affichage :</label> 
+            <form action="">
               <div class="nombre">
                 <!-- -->
                 <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
@@ -81,8 +84,9 @@
                     <option value="10">100</option>
                 </select>
               </div>
-              </form>
-            </nav>
+            </form>
+          </div>
+        </nav>
       </div><br>
      <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' :compagny= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/>  
     

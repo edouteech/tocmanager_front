@@ -2,25 +2,25 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>  
       <div class="alert alert-danger justify-content-center" role="alert" v-if="status == 'error'">
-        {{error}} <br>
-        <div class="error" v-if="errors['name'] != null">{{errors['name']}}</div>
-        <div class="error" v-if="errors['email'] != null">{{errors['email']}}</div>
-        <div class="error" v-if="errors['phone'] != null">{{errors['phone']}}</div>
-        <div class="error" v-if="errors['nature'] != null">{{errors['nature']}}</div>
+        {{error}}
       </div>                    
             <form action="" method="POST"> 
                         <h4>Ajout rapide de client </h4>
-
                 <div class="input-form">					
                     <input type="text" class="form-control" placeholder="Entrer le nom du client " v-model="form.name" autocomplete="off" id="name_cli" required>
-                </div>     
+                </div> 
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['name'] != null">{{errors['name']}}</div>
+                
                 <div class="input-form">        
                   <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
                 </div>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['phone'] != null">{{errors['phone']}}</div>
             
                 <div class="input-form">    
                     <input type="email" class="form-control" placeholder="Entrer l'email du client " v-model="form.email" autocomplete="off" id="email_cli" required>
                 </div>
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['email'] != null">{{errors['email']}}</div>
+
                 <div class="input-form"> 
                    <select v-model="form.nature" class="form-control"  required>
                         <option disabled value="">Choisissez la nature du client</option>
@@ -28,7 +28,18 @@
                         <option value="1">Entreprise</option>
                     </select>
                 </div>
-                <div class="submit-form" @click="$emit('close-modal')">
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['nature'] != null">{{errors['nature']}}</div>
+
+                <div class="input-form"> 
+                   <select v-model="form.type_client" class="form-control"  required>
+                        <option disabled value="">Choisissez le type du client</option>
+                        <option :value="type" v-for="(type, i) in types" :key="i">{{type}}</option>
+                    </select>
+                </div>
+                <div class="input-form" v-if="form.type_client == 'douteux'">    
+                    <input type="number" class="form-control" placeholder="Entrer le seuil de crédit possible" v-model="form.seuil_max" autocomplete="off" id="email_cli" required>
+                </div>
+                <div class="submit-form">
                     <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
                 </div>
                 <!-- <div v-else class="submit-form">
@@ -48,18 +59,32 @@
     auth:true,
     name: 'ajoutModal',
     data () {
-    return{
-        form: {
-            name: '',
-            email: '',
-            phone: '',
-            nature: 0, 
-            compagnie_id: ''
-        },
-        errors: [],
-        error: null,
-        status: '',
-    }
+      return{
+          form: {
+              name: '',
+              email: '',
+              phone: '',
+              nature: 0, 
+              type_client: 'normal',
+              seuil_max: 0,
+              compagnie_id: ''
+          },
+          errors: [],
+          error: null,
+          status: '',
+          types: '',
+      }
+    },
+
+    mounted(){
+        this.$axios.get('/clients/types',{
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+            }
+          }).then(response =>{
+            // console.log(response);
+            this.types = response.data.data
+            })   
     },
 
     methods: {
@@ -69,6 +94,8 @@
               email: this.form.email,
               phone: this.form.phone,
               nature: this.form.nature,
+              type_client: this.form.type_client,
+              seuil_max: this.form.seuil_max,
               compagnie_id: localStorage.getItem('auth.company_id')
             })
             .then(response =>{
@@ -78,14 +105,19 @@
                 this.error = response.data.message
                 console.log(this.error)
                 this.status = response.data.status
-                this.errors = response.data.data
                   if(this.status == 'success'){
                     // alert('Nouveau client ajouté avec succès');
                       this.form.name = '',
                       this.form.phone = '',
                       this.form.email = '',
-                      this.form.nature = '',
+                      this.form.nature = 0,
+                      this.form.seuil_max = 0,
+                      this.form.type_client = 'normal',
                       this.status = response.data.status
+                      this.$emit('close-modal')
+                        this.$toast("Client ajouté !!! ", {
+                            icon: 'fa fa-check-circle',
+                        })
                   }
                   else{
                     // alert("Echec lors de l'ajout du client ! Veuillez réessayer.");
@@ -109,7 +141,7 @@ form {
 .input-form {
     display: flex;
     flex-direction: column-reverse;
-    margin: 1.2em 0;
+    margin-top: 30px;
     height: 50px;
 }
     
@@ -161,14 +193,14 @@ input[type=submit]:hover{
 .modaler {
   text-align: center;
   background-color: white;
-  height: 600px;
+  height: max-content;
   width: 600px;
-  margin-top: 10%;
+  margin-top: 5%;
   padding: 30px 0;
   border-radius: 20px;
 }
 .close {
-  margin: 10% 0 0 0;
+  margin: 5% 0 0 0;
   cursor: pointer;
 }
 

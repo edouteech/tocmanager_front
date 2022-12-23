@@ -35,7 +35,7 @@
   background-color: white;
   height: 500px;
   width: 500px;
-  margin-top: 10%;
+  margin-top: 5%;
   padding: 60px 0;
   border-radius: 20px;
 }

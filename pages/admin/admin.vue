@@ -322,7 +322,8 @@
             this.$axios.post('/stats',{
                   date_debut: this.form.date_debut,
                   date_fin: this.form.date_fin
-            }).then(response => {console.log(response.data);
+            }).then(response => {
+                // console.log(response.data);
     
                this.users  = response.data.data.total_users
                this.suppliers = response.data.data.total_suppliers
@@ -358,7 +359,8 @@
                 this.$axios.post('/stats',{
                   date_debut: this.form.date_debut,
                   date_fin: this.form.date_fin
-            }).then(response => {console.log(response.data);
+            }).then(response => {
+                // console.log(response.data);
     
                this.users  = response.data.data.total_users
                this.suppliers = response.data.data.total_suppliers
@@ -512,4 +514,24 @@
     width:100%;
     transition:800ms ease all;
   }
+
+  @media screen and (max-width: 900px) {
+    .app-main__outer{
+        padding: 3%;
+    }
+
+    .range input{
+    width: 45%;
+    }
+
+    table{
+        font-size: 12px;
+        padding: 15px 20px;
+        white-space: nowrap;
+    }
+
+    .i{
+        font-size: 13px
+    }
+    }
     </style>

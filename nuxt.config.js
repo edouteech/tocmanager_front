@@ -42,6 +42,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/vue-tel-input',
+    { src: '~/plugins/vue-carousel', ssr: false },
     { src: '~/plugins/vue-toastification', ssr: false },
     { src: '~/plugins/vue-excel-xlsx.js', mode: 'client' },
   ],
