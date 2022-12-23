@@ -12,6 +12,9 @@
                 <!-- <ul class="navbar-nav ms-auto mb-2 mb-lg-0"></ul> -->
             <ul class="navbar-nav m-auto mb-2 mb-lg-0">
                 <li class="nav-item">
+                    <NuxtLink to="/landing_page" class="nav-link">Accueil</NuxtLink>
+                </li>
+                <li class="nav-item">
                     <NuxtLink to="/login" class="nav-link">Connexion</NuxtLink>
                 </li>
                 <li class="nav-item">
@@ -19,9 +22,6 @@
                 </li>
                 <li class="nav-item">
                     <NuxtLink to="/abonnement" class="nav-link">Nos offres</NuxtLink>
-                </li>
-                <li class="nav-item">
-                    <NuxtLink to="/landing_page" class="nav-link">Informations</NuxtLink>
                 </li>
                 <!-- <li class="nav-item">
                     <NuxtLink to="/contact" class="nav-link">Contact Us</NuxtLink>

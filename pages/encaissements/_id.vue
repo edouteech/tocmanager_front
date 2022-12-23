@@ -15,6 +15,9 @@
                 <label class="title">Entrer le montant</label>
                 <input type="number" class="form-control" v-model="form.montant" autocomplete="off" required placeholder="10000">
             </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors_montant">
+                {{errors_montant}}
+            </div>
             <!-- <div class="input-form">       
                 <input type="number" placeholder="Entrer le montant " v-model="form.facture" autocomplete="off" required> -->
                 <!-- <select v-model="form.facture" required>
@@ -34,6 +37,9 @@
                     <option v-for="(client, i) in clients" :key="i" :value="client.id">{{client.name}}</option>
                 </select>
                 </div>
+            </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors_client_id">
+                {{errors_client_id}}
             </div>
             <div class="form-group col-md-6">
                 <label class="title">Méthode de paiement</label>
@@ -77,7 +83,9 @@ export default {
             error: null,
             error_champ: [],
             sell_id: '',
-            methodes: ''
+            methodes: '',
+            errors_montant: "",
+            errors_client_id: ""
         }
         },
     mounted() {
@@ -119,12 +127,16 @@ export default {
             .then(response =>{
                 console.log(response)
                 
-                if(response.data.status ='success'){
-                this.$router.push({
-                  path:'/encaissements/list_encaissement',})   
+                if(response.data.status == 'success'){
+                    this.$router.push({path:'/encaissements/list_encaissement',})   
+                  this.$toast('Modiffication éffectuée avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.error = response.data.message
+                    this.errors_montant = response.data.data.montant
+                    this.errors_client = response.data.data.client_id
                 }
             })          
         },
