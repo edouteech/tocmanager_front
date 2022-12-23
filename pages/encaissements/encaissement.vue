@@ -8,7 +8,7 @@
 
 
     <div class="app-main__outer p-5">
-        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
              {{error}}
         </div>
         <h4>Enregistrer un encaissement</h4><hr>
@@ -17,8 +17,8 @@
                 <label class="title">Entrer le montant</label>
                 <input type="number" class="form-control" v-model="form.montant" autocomplete="off" required placeholder="10000">
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.montant">
-                {{errors.montant}}
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors_montant">
+                {{errors_montant}}
             </div>
             <!-- <div class="input-form">       
                 <input type="number" placeholder="Entrer le montant " v-model="form.facture" autocomplete="off" required> -->
@@ -40,8 +40,8 @@
                 </select>
                 </div>
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.client_id">
-                {{errors.client_id}}
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors_client_id">
+                {{errors_client_id}}
             </div>
             <div class="form-group col-md-6">
                 <label class="title">Méthode de paiement</label>
@@ -84,7 +84,9 @@ export default {
             errors: [],
             error: null,
             user:'',
-            methodes:''
+            methodes:'',
+            errors_montant: "",
+            errors_client:""
         }
     },
 
@@ -121,6 +123,8 @@ export default {
                 }
                 else{
                     this.errors = response.data.data
+                    this.errors_montant = response.data.data.montant
+                    this.errors_client = response.data.data.client_id
                     // this.$router.push({path:'/categorie/add_client'});
                 }
              }).catch( err => console.log( err ) )

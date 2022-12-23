@@ -7,7 +7,7 @@
 
     <div class="app-main__outer p-5">
         <h4>Modifier les informations de ce décaissement</h4>
-        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
              {{error}}
         </div>
         <form action="">
@@ -15,13 +15,10 @@
                 <label class="title">Entrer le montant</label>
                 <input type="number" class="form-control" v-model="form.montant" autocomplete="off" required placeholder="10000">
             </div>
-            <!-- <div class="input-form">       
-                <input type="number" placeholder="Entrer le montant " v-model="form.facture" autocomplete="off" required> -->
-                <!-- <select v-model="form.facture" required>
-                    <option disabled value="">Choisissez la facture à encaisser</option>
-                    <option v-for="(vente, i) in ventes" :key="i" :value="facture">{{categorie.name}}</option>
-                </select> -->
-            <!-- </div> -->
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors_montant">
+                {{errors_montant}}
+            </div>
+
             <div class="form-group col-md-6">
                 <label class="title">Entrer la date du décaissement </label>
                 <input type="date" class="form-control" v-model="form.date" autocomplete="off" required >
@@ -35,6 +32,10 @@
                 </select>
                 </div>
             </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors_supplier_id">
+                {{errors_supplier_id}}
+            </div>
+
             <div class="form-group col-md-6">
                 <label class="title">Méthode de paiement</label>
                 <select class="form-control" v-model="form.payment">
@@ -80,7 +81,9 @@ export default {
             error: null,
             errors: [],
             buy_id: '',
-            methodes:''
+            methodes:'',
+            errors_montant: "",
+            errors_supplier_id: ""
         }
         },
     mounted() {
@@ -122,13 +125,17 @@ export default {
             })
             .then(response =>{
                 console.log(response.data);
-                if(response.data.status ='success'){
-                    this.$router.push({
-                    path:'/decaissements/list_decaissement',})
-
+                if(response.data.status == 'success'){
+                    this.$router.push({path:'/decaissements/list_decaissement',})
+                    this.$toast('Modification éffectuée avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
                 }
                 else{
                     this.error = response.data.message
+                    this.errors = response.data.data
+                    this.errors_montant = response.data.data.montant
+                    this.errors_supplier_id = response.data.data_supplier_id
                 }
             })          
         },

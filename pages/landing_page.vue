@@ -12,7 +12,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- <ul class="navbar-nav ms-auto mb-2 mb-lg-0"></ul> -->
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <ul class="navbar-nav  mb-2 mb-lg-0">
                     <li class="nav-item mx-4">
                         <NuxtLink to="" class="nav-link">A propos</NuxtLink>
@@ -354,6 +354,12 @@ export default {
 </script>
 
 <style scoped>
+*{
+    overflow-x: hidden;
+}
+.first-section{
+    overflow: hidden;
+}
 .nav-bar{
     background: #D3D4D6;
 }
@@ -365,9 +371,9 @@ export default {
 .rectangle-oblique{
     position: absolute;
     height: 602.69px;
-    left: 594px;
-    top: 35.67px;
-    width: 55%;
+    left: 534px;
+    top: 70.67px;
+    width: 65%;
     background: linear-gradient(180deg, #2E9DDC 0%, #FFFAFA 100%);
     /* border-radius: 475px; */
     border-top-left-radius: 470px;
@@ -375,6 +381,7 @@ export default {
     border-bottom-right-radius: 470px;
     transform: rotate(-14.07deg);
     z-index: 1;
+    overflow: hidden;
 }
 
 .btn-first-page{
