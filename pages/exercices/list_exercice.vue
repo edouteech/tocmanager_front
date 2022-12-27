@@ -86,10 +86,12 @@
                 <div class="action" v-for="(user, i) in users" :key="i">
                   <NuxtLink :to="'/exercices/voir/' + exercice.id" v-if="compagny == user.pivot.compagnie_id"><i
                       class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
-                  <NuxtLink :to="'/exercices/'+exercice.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                    <!-- <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(fournisseur)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
-                    <div><a :href="'https://api.whatsapp.com/send?phone='+fournisseur.phone+'&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!'"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div>
-                      <div @click="deleteFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div> -->
+                  <NuxtLink :to="'/exercices/' + exercice.id"
+                    v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i
+                      class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteExercice(exercice.id)"
+                    v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i
+                      class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
               </td>
             </tr>
@@ -99,49 +101,22 @@
         <hr class="text-primary">
 
       </div> <br><br>
-      <!-- <form class="btn-group justify-content-end" role="search">
-          <input type="file" id="file" ref="file" @change="handleFileUpload()" /> 
-          <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
-          <button class="btn btn-outline-dark web-btn mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
-          <button class="btn btn-outline-dark web-btn mx-2" type="submit" @click.prevent="exporte()" v-if="role == 'admin'">Exporter en excel</button>
-          <div class="d-flex mt-4">
-            <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()" title="Importer fichier"><i class="fa fa-upload" aria-hidden="true"></i></button>
-    
-            <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()" title="Exporter en pdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
-    
-            <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exporte()" v-if="role == 'admin'" title="Exporter en excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
-          </div>
-        </form><br> -->
-      <!-- <div class="d-flex col-md-2 my-4">
-              <label class="title my-2">Affichage :</label> 
-              <form action="">
-              <div class="nombre">
-                <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                    <option disabled value>10</option>
-                    <option value="25" >25</option>
-                    <option value="50">50</option>
-                    <option value="10">100</option>
-                </select>
-              </div>
-              </form>
-            </div> -->
       <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
         <ul class="pagination">
           <li :class="(res_data.prev_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
               @click="refresh(res_data.current_page - 1)">Précédent</a></li>
           <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a
-              :class="(link.active == true) ? 'page-link active' : 'page-link'" href="#"
-              @click="refresh(link.label)">{{ link.label }}</a></li>
+              :class="(link.active == true) ? 'page-link active' : 'page-link'" href="#" @click="refresh(link.label)">{{
+    link.label
+}}</a></li>
 
           <li :class="(res_data.next_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
               @click="refresh(res_data.current_page + 1)">Suivant</a></li>
         </ul>
       </nav>
     </div><br>
-    <!-- <voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance= 'identifiant5' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
-    <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
-    <exportModal v-show="exportModal" @close-modal="exportModal = false"/> 
-    <stockModal :cli="id_cli" :cli_name="nom_cli" v-show="stockModal" @close-modal="stockModal = false"/>    -->
+    <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
+      @conf="setMessage" />
 
   </div>
 
@@ -150,12 +125,14 @@
 <script>
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
+import deleteModal from './deleteModal.vue'
 export default {
   auth: true,
   layout: "empty",
   components: {
     Sidebar,
-    Userinfo
+    Userinfo,
+    deleteModal
   },
 
   data() {
@@ -168,6 +145,8 @@ export default {
       res_data: null,
       exercices: [],
       compagnie_id: '',
+      showModal: false,
+      showModalDelete: false,
       users: '',
       compagny: '',
       form: {
@@ -175,7 +154,8 @@ export default {
       },
       role: "",
       id_cli: '',
-      nom_cli: ''
+      nom_cli: '',
+      key: ''
     }
   },
   async mounted() {
@@ -188,6 +168,11 @@ export default {
   methods: {
     setMessage() {
       this.refresh()
+    },
+    deleteExercice(id) {
+      this.showModalDelete = true
+      this.key = id
+
     },
 
     refresh(page = 1) {
