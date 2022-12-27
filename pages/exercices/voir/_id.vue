@@ -87,7 +87,7 @@
 <script>
 import Sidebar from '../../sidebar.vue'
 import User_info from "~/pages/user_info.vue";
-import voirEcriture from '../ecritures/voir_ecriture.vue';
+import voirEcriture from '../../ecritures/voir_ecriture.vue';
 export default {
   layout: "voir",
   components: {
