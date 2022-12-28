@@ -57,7 +57,7 @@ export default {
     props: ['ligne_ecritures'],
     name: 'voirFournisseur',
     mounted() {
-        console.log(this.ligne_ecritures)
+        // console.log(this.ligne_ecritures)
     }
 }
 

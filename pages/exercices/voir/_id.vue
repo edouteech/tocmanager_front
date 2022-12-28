@@ -15,9 +15,17 @@
         <p><strong> Période : De {{ start_at }} au {{ end_at }}</strong> </p>
         <p><strong> Statut : {{ status }}</strong> </p>
       </div>
+      
       <h5>
         <p class="text-center">Listes des ecritures de cet exercice</p>
       </h5>
+      <div class="d-flex flex-row-reverse">
+        <div v-for="(user, i) in users" :key="i" class="web-btn"><button @click="addEcriture()"
+            class="custom-btn btn-3"
+            v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1 && status=='actif'"><span>Ajouter
+              écriture</span></button></div>
+      </div>
+      
       <table class="facture table table-hover ">
         <thead>
           <tr class="table-success">
@@ -103,11 +111,13 @@ export default {
       factures: [],
       ecritures: [],
       name_exercice: '',
+      idExercice: '',
       showModal: false,
       start_at: '',
       end_at: '',
       status: '',
-      ligne_ecritures: ''
+      ligne_ecritures: '',
+      users: ''
     }
   },
 
@@ -121,12 +131,13 @@ export default {
           compagnie_id: localStorage.getItem('auth.company_id')
         }
       }).then(response => {
-        console.log(response);
+        // console.log(response);
         this.ecritures = response.data.data.ecritures
         this.name_exercice = response.data.data.name_exercice
         this.start_at = response.data.data.start_at
         this.end_at = response.data.data.end_at
         this.status = response.data.data.status
+        this.idExercice = response.data.data.id
       })
   },
 
@@ -138,15 +149,16 @@ export default {
           compagnie_id: localStorage.getItem('auth.company_id')
         }
       }).then(response => {
-        console.log(response);
+        // console.log(response);
          this.ligne_ecritures = response.data.data.ligne_ecritures
-        //  this.identifiant2 = response.data.data[0].phone
-        //  this.identifiant3 = response.data.data[0].email
-        //  this.identifiant4 = response.data.data[0].nature
-        //  this.identifiant5 = response.data.data[0].balance      
       })
 
     },
+    addEcriture () {
+      this.$router.push({path:'/ecritures/add_ecriture',query: {
+        exercice: this.idExercice
+      }})
+    }
   }
 }
 </script>
