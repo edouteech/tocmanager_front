@@ -15,17 +15,16 @@
         <p><strong> Période : De {{ start_at }} au {{ end_at }}</strong> </p>
         <p><strong> Statut : {{ status }}</strong> </p>
       </div>
-      
+
       <h5>
         <p class="text-center">Listes des ecritures de cet exercice</p>
       </h5>
       <div class="d-flex flex-row-reverse">
-        <div v-for="(user, i) in users" :key="i" class="web-btn"><button @click="addEcriture()"
-            class="custom-btn btn-3"
-            v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1 && status=='actif'"><span>Ajouter
+        <div v-for="(user, i) in users" :key="i" class="web-btn"><button @click="addEcriture()" class="custom-btn btn-3"
+            v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1 && status == 'actif'"><span>Ajouter
               écriture</span></button></div>
       </div>
-      
+
       <table class="facture table table-hover ">
         <thead>
           <tr class="table-success">
@@ -46,12 +45,18 @@
               <div class="action" v-for="(user, i) in users" :key="i">
                 <div @click="voirEcriture(ecriture.id)" v-if="compagny == user.pivot.compagnie_id"><i
                     class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
+                <div @click="deleteEcriture(ecriture.id)"
+                  v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i
+                    class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+
               </div>
             </td>
           </tr>
         </tbody>
       </table>
       <voirEcriture :ligne_ecritures="ligne_ecritures" v-show="showModal" @close-modal="showModal = false" />
+      <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
+      @conf="setMessage" />
     </div>
     <!-- Footer -->
     <footer class="text-center text-lg-start bg-dark text-white">
@@ -96,12 +101,14 @@
 import Sidebar from '../../sidebar.vue'
 import User_info from "~/pages/user_info.vue";
 import voirEcriture from '../../ecritures/voir_ecriture.vue';
+import deleteModal from '../../ecritures/deleteModal.vue';
 export default {
   layout: "voir",
   components: {
     Sidebar,
     User_info,
-    voirEcriture
+    voirEcriture,
+    deleteModal
   },
 
   data() {
@@ -113,6 +120,8 @@ export default {
       name_exercice: '',
       idExercice: '',
       showModal: false,
+      showModalDelete: false,
+      key: '',
       start_at: '',
       end_at: '',
       status: '',
@@ -125,7 +134,15 @@ export default {
     this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem('auth.company_id');
     this.role = localStorage.getItem('auth.roles');
-    this.$axios.get('/exercices/' + this.$route.params.id,
+    this.refresh()
+  },
+
+  methods: {
+    setMessage() {
+      this.refresh()
+    },
+    refresh () {
+      this.$axios.get('/exercices/' + this.$route.params.id,
       {
         params: {
           compagnie_id: localStorage.getItem('auth.company_id')
@@ -139,9 +156,7 @@ export default {
         this.status = response.data.data.status
         this.idExercice = response.data.data.id
       })
-  },
-
-  methods: {
+    },
     voirEcriture(id) {
       this.showModal = true;
       this.$axios.get('/ecritures/' + id, {
@@ -150,14 +165,20 @@ export default {
         }
       }).then(response => {
         // console.log(response);
-         this.ligne_ecritures = response.data.data.ligne_ecritures
+        this.ligne_ecritures = response.data.data.ligne_ecritures
       })
 
     },
-    addEcriture () {
-      this.$router.push({path:'/ecritures/add_ecriture',query: {
-        exercice: this.idExercice
-      }})
+    addEcriture() {
+      this.$router.push({
+        path: '/ecritures/add_ecriture', query: {
+          exercice: this.idExercice
+        }
+      })
+    },
+    deleteEcriture(id) {
+      this.showModalDelete = true
+      this.key = id
     }
   }
 }
