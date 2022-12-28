@@ -48,6 +48,9 @@
                 <div @click="deleteEcriture(ecriture.id)"
                   v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i
                     class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                <NuxtLink :to="'/ecritures/' + ecriture.id"
+                  v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i
+                    class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
 
               </div>
             </td>
@@ -56,7 +59,7 @@
       </table>
       <voirEcriture :ligne_ecritures="ligne_ecritures" v-show="showModal" @close-modal="showModal = false" />
       <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
-      @conf="setMessage" />
+        @conf="setMessage" />
     </div>
     <!-- Footer -->
     <footer class="text-center text-lg-start bg-dark text-white">
@@ -141,21 +144,21 @@ export default {
     setMessage() {
       this.refresh()
     },
-    refresh () {
+    refresh() {
       this.$axios.get('/exercices/' + this.$route.params.id,
-      {
-        params: {
-          compagnie_id: localStorage.getItem('auth.company_id')
-        }
-      }).then(response => {
-        // console.log(response);
-        this.ecritures = response.data.data.ecritures
-        this.name_exercice = response.data.data.name_exercice
-        this.start_at = response.data.data.start_at
-        this.end_at = response.data.data.end_at
-        this.status = response.data.data.status
-        this.idExercice = response.data.data.id
-      })
+        {
+          params: {
+            compagnie_id: localStorage.getItem('auth.company_id')
+          }
+        }).then(response => {
+          // console.log(response);
+          this.ecritures = response.data.data.ecritures
+          this.name_exercice = response.data.data.name_exercice
+          this.start_at = response.data.data.start_at
+          this.end_at = response.data.data.end_at
+          this.status = response.data.data.status
+          this.idExercice = response.data.data.id
+        })
     },
     voirEcriture(id) {
       this.showModal = true;
