@@ -69,8 +69,8 @@
                 </div><br>
 
                 <div class="d-flex">
-                    <div class="form-group1 col-md-4"> Montant: <input class="form-control received" type="tex"
-                            v-model="form.amount" autocomplete="off" required></div>
+                    <!-- <div class="form-group1 col-md-4"> Montant: <input class="form-control received" type="tex"
+                            v-model="form.amount" autocomplete="off" required></div> -->
                     <div class="form-group col-md-6 mx-5">
                         <div class="form-group ">
                             Commentaire
