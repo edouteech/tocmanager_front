@@ -15,15 +15,12 @@
             <h4>Enregistrer un achat</h4><hr>
             <form action="" method="POST">
                 <div class="cadre-haut">             
-                    <div class="ajout-client">                                   
-                        <!-- <select class="form-control" v-model="form.supplier_id">
-                            <option disabled value="">Choisir le fournisseur</option>
-                            <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
-                                {{fournisseur.name}}
-                            </option>                           
-                        </select>       -->
+                    <div class="ajout-client">  
                         <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
-                        <div class="select2-cli" v-if="afficheCli !=0">
+                        <div class="select2-cli" v-if="afficheCli !=0"> 
+                            <div class="close d-flex justify-content-end" @click="go()">
+                                <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
+                            </div>
                             <ul>
                                 <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="">{{acteur.name}}</a></li>
                             </ul>
@@ -196,6 +193,10 @@ export default {
     },
     
     methods: {
+
+        go(){
+            this.afficheCli = 0
+        },
 
         choiceProd(designation,i){
             console.log(i);
@@ -420,6 +421,11 @@ export default {
 .select2-cli a{
     color: #605050;
     text-decoration: none;
+}
+
+.close-img {
+    width: 25px;
+    cursor: pointer;
 }
 
 .select2-cli ul{
