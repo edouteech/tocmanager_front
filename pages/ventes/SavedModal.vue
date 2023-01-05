@@ -5,11 +5,11 @@
             {{error}}
         </div>
       <img class="check" src="/images/eff.jpg" alt="" />
-      <h6>Enregistré!</h6>
+      <h6>Enregistré! </h6>
       <p>La facture a été sauvegardé</p><br>
       <form action="">
         <div class="form-group notify">
-              <strong>Entrer l'email auquel il faut envoyer la facture</strong>
+              <strong>Confirmer l'email auquel il faut envoyer la facture </strong>{{ email_client }}
               <div class="col-md-11 mx-auto row">
                   <div class="col-md-8">
                     <input type="email" class="form-control mx-auto mt-1" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
@@ -21,10 +21,11 @@
           </div><br>
       </form>
         <div class="mt-3">
+          <NuxtLink :to="'/ventes/voir/'+this.identifiant"><button class="btn btn-light">Voir la vente</button></NuxtLink>
           <NuxtLink to="/ventes/list_vente" class="btn btn-warning mx-3">Nouvelle facture</NuxtLink>
           <NuxtLink to="/dashboard"><button class="btn btn-primary">Tableau de bord</button></NuxtLink>
         </div>
-        <div class="mt-3 d-flex col-md-8 mx-auto">
+        <div class="mt-5 d-flex col-md-8 mx-auto">
           <button class="btn btn-dark mx-3" @click.prevent="generatePdf()"><i class="fa fa-print text-primary mx-1" aria-hidden="true"></i>Imprimer facture</button>
           <button class="btn btn-dark" @click.prevent="generateOtherpdf()"><i class="fa fa-print text-primary mx-1" aria-hidden="true"></i>Imprimer ticket</button>
         </div>
@@ -105,7 +106,7 @@ import Impression from './impression.vue';
     data () {
       return{
           form: {
-              email: "",
+              email: this.email_client,
           },
           error: null,
           error_champ: [],
@@ -127,10 +128,6 @@ import Impression from './impression.vue';
           identifiant6: '',
           identifiant7: '',
       }
-    },
-
-    async mounted(){
-      this.form.email = this.email_client
     },
 
     methods:{
@@ -220,9 +217,11 @@ import Impression from './impression.vue';
   height: max-content;
   width: 600px;
   margin-top: 3%;
-  padding: 75px 0;
+  padding: 50px 0;
   border-radius: 20px;
+  /* overflow: auto; */
 }
+
 .close {
   margin: 2% 0 0 16px;
   cursor: pointer;

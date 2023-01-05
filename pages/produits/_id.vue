@@ -33,7 +33,7 @@
 
             <div class="form-group col-md-6">
                 <label class="title">Entrer le code du produit</label>
-                <input  type="text" class="form-control"  v-model="form.code">
+                <input  type="text" class="form-control"  placeholder="CODE" v-model="form.code">
             </div>
             <!-- <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.code">
                 {{errors.code}}

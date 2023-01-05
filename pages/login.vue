@@ -80,7 +80,7 @@ export default {
   },
 
   data() {
-    return {
+    return {  
       error: null,
       showModal: false,
       key: '',

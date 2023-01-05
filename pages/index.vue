@@ -23,11 +23,17 @@
                   </ul>
               </div>
               <div class="d-flex">
-                  <div>
+                  <div v-if="this.$auth.$state.loggedIn == false">
                       <a href="/login"><button class="btn btn-outline-primary btn-offer" >Connexion</button></a>
                   </div>
-                  <div>
+                  <div v-if="this.$auth.$state.loggedIn == false">
                       <a href="/register"><button class="btn btn-outline-primary btn-offer" >Inscription</button></a>
+                  </div>
+                  <div v-if="this.$auth.$state.loggedIn == true && role =='admin' ">
+                      <a href="/dashboard"><button class="btn btn-outline-primary btn-offer" >Tableau de Bord</button></a>
+                  </div>
+                  <div v-if="this.$auth.$state.loggedIn == true">
+                      <a href="/ventes/vente"><button class="btn btn-outline-warning btn-offer" >Vente</button></a>
                   </div>
                   <div><img src="/images/france.png" alt="français" width="30" class="mx-1"></div>/
                   <div><img src="/images/usa.png" alt="anglais" width="35" class="mx-1"></div>
@@ -348,7 +354,18 @@
   <script>
   export default {
       auth: false,
-      layout: 'landing'
+      layout: 'landing',
+      data() {
+        return { 
+            role: ''
+
+        }
+      },
+
+      mounted(){
+        this.role = localStorage.getItem("auth.roles")
+        // console.log(this.$auth)
+      }
   
   }
   </script>

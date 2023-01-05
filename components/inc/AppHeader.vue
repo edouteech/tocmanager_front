@@ -14,14 +14,20 @@
                 <li class="nav-item">
                     <NuxtLink to="/landing_page" class="nav-link">Accueil</NuxtLink>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" v-if="this.$auth.$state.loggedIn != true ">
                     <NuxtLink to="/login" class="nav-link">Connexion</NuxtLink>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" v-if="this.$auth.$state.loggedIn != true ">
                     <NuxtLink to="/register" class="nav-link">Inscription</NuxtLink>
                 </li>
                 <li class="nav-item">
                     <NuxtLink to="/abonnement" class="nav-link">Nos offres</NuxtLink>
+                </li>
+                <li class="nav-item" v-if="this.$auth.$state.loggedIn == true && role =='admin'">
+                    <NuxtLink to="/dashboard" class="nav-link">Tableau de Bord</NuxtLink>
+                </li>
+                <li class="nav-item" v-if="this.$auth.$state.loggedIn == true ">
+                    <NuxtLink to="/ventes/vente" class="nav-link">Effectuer une vente</NuxtLink>
                 </li>
                 <!-- <li class="nav-item">
                     <NuxtLink to="/contact" class="nav-link">Contact Us</NuxtLink>
@@ -53,7 +59,18 @@
 
 <script>
 export default {
-    name: 'AppHeader'
+    name: 'AppHeader',
+    data() {
+        return { 
+            role: ''
+
+        }
+      },
+
+      mounted(){
+        this.role = localStorage.getItem("auth.roles")
+        console.log(this.$auth)
+      }
 
 }
 </script>
