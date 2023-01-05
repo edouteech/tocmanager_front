@@ -13,7 +13,7 @@
         </div>
             <h4>Enregistrer une vente </h4><hr>
             <form action="" method="POST">
-                <div class="cadre-haut">             
+                <div class="cadre-haut" @click.prevent="afficheCli==0">             
                     <div class="ajout-client">                                   
                         <!-- <select class="form-control"  v-model="form.client_id">
                             <option disabled value="">Choisir le client</option>
@@ -140,7 +140,7 @@
     </div>
     
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
-    <SavedModal v-show="showSaved" @close-modal="showSaved = false" :identifiant= 'cli_id'/>
+    <SavedModal v-show="showSaved" @close-modal="showSaved = false" :identifiant= 'cli_id' :recupFacture="facts" :email_client="cli_email"/>
     <produitModal v-show="showProduit" @close-modal="showProduit = false" @prod="setProduit"/>
 
 </div>
@@ -171,6 +171,8 @@ export default {
             amount_error: null,
             message: '',
             cli_id: '',
+            facts: "",
+            cli_email: "",
             showModal: false,
             showSaved: false,
             showProduit: false,
@@ -318,6 +320,8 @@ export default {
                 // console.log(this.form.client_id)
                     if(response.data.status == "success"){
                         this.cli_id = response.data.data.id
+                        this.cli_email = response.data.data.client.email
+                        this.facts = response.data.data
                         this.showSaved = true
                         this.$toast("Enregistrement d'une facture !!! ", {
                             icon: 'fa fa-check-circle',

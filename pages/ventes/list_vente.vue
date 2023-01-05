@@ -199,7 +199,7 @@
 
       <exportModal v-show="exportModal" @close-modal="exportModal = false" />  
       <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" /> 
-  <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
+      <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
          
   <!-- Footer -->
     <footer class="text-center text-lg-start bg-dark text-white">

@@ -13,6 +13,7 @@
     "@nuxtjs/axios": "^5.13.6",
     "chart.js": "^3.8.0",
     "choices.js": "^10.1.0",
+    "console": "^0.7.2",
     "core-js": "^3.19.3",
     "date-fns": "^2.29.2",
     "form-data": "^4.0.0",

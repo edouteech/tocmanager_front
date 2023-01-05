@@ -2,11 +2,11 @@
     <div class="modal-overlay" @click="$emit('close-modal')">
       <div class="modaler text-center py-5" @click.stop>
               <strong>Voulez vous supprimer cette vente ???</strong><br><br>
-              <div class="d-flex" @click="$emit('close-modal')">
+              <div class="d-flex">
                 <button class="btn btn-danger mx-auto" @click.prevent ="sup()">
                         Oui
                 </button>
-                <button class="btn btn-dark mx-auto" >
+                <button class="btn btn-dark mx-auto"  @click="$emit('close-modal')">
                         Non
                 </button>
                </div>
@@ -30,7 +30,8 @@
           }
           }).then(response =>
         //   console.log(response.data.data);
-            this.$emit('conf', { message: this.identifiant})
+            this.$emit('conf', { message: this.identifiant}),
+            this.$emit('close-modal')
             )   
         },
       }

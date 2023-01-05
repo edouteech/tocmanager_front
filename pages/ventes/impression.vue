@@ -8,7 +8,7 @@
               <div class="resp mx-5" @click="$emit('close-modal')">Non</div>
             </div>
       </div>
-      <div class="modaler" @click.stop>
+      <div class="modaler">
             <div class="other_page">
                 <p><strong> Date de la facture : {{date_sell}}</strong> </p>
                 <p><strong> M/Mme {{client.name}}</strong> </p>
@@ -116,7 +116,7 @@
     height: auto;
     width: 800px;
     /* margin-top: 20%; */
-    padding: 30px ;
+    padding: 5% ;
     border-radius: 3px;
     overflow: auto;
   }
