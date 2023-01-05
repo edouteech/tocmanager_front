@@ -167,7 +167,7 @@
           </ul>
         </nav>
   </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
-<voirProduit :prod_id='identifiant0' :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
+<voirProduit :prod_id='identifiant0' :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' :code= 'identifiant9' v-show="showModal" @close-modal="showModal = false"/>
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
 <listpdfModal v-show="listModal" @close-modal="listModal = false"/> 
@@ -216,6 +216,7 @@ export default {
       identifiant6 : "",
       identifiant7 : "",
       identifiant8: '',
+      identifiant9: '',
       produits: [],
       produit: "",
       compagnie_id: "",
@@ -388,13 +389,15 @@ export default {
              this.identifiant5 = response.data.data[0].price_buy
              this.identifiant6 = response.data.data[0].stock_min
              this.identifiant7 = response.data.data[0].stock_max 
-             if(response.data.data[0].category|| response.data.data[0].tax_group ){
+             if(response.data.data[0].category|| response.data.data[0].tax_group || response.data.data[0].code){
               this.identifiant1 = response.data.data[0].category.name
-             this.identifiant8 = response.data.data[0].tax_group 
+              this.identifiant8 = response.data.data[0].tax_group 
+              this.identifiant9 = response.data.data[0].code
              }
              else{
               this.identifiant1 = "Pas de catégorie associée"
               this.identifiant8 = "Relié à aucun groupe"
+              this.identifiant8 = "Pas de code"
              }
             }) 
                
