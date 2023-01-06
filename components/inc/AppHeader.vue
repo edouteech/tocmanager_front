@@ -69,7 +69,7 @@ export default {
 
       mounted(){
         this.role = localStorage.getItem("auth.roles")
-        console.log(this.$auth)
+        // console.log(this.$auth)
       }
 
 }

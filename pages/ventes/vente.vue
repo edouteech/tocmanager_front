@@ -40,16 +40,8 @@
                     <div class="col-md-5 mt-2">
                         <div class="d-flex code_recherche">
                             <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search" @input="searchCode()" @click.prevent="searchCode()">
-                            <!-- <button class="btn btn-outline-success" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button> -->
+                            <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
                         </div>
-                        <!-- <div class="codeSearch-results" v-if="afficheCode !=0">
-                            <div class="close d-flex justify-content-end" @click="gos()">
-                                <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
-                            </div>
-                            <ul>
-                                <li v-for="(code, index) in codes" :key="index" :label="code.name" :value="code.id"  @click.prevent="choiceCli(acteur)"><a href="" >{{acteur.name}}</a>></li>
-                            </ul>
-                        </div> -->
                     </div>                    
                 </div>
 
@@ -304,6 +296,28 @@ export default {
 
         addLine(){
             this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});           
+        },
+
+        async codeAdd(){
+           await this.$axios.get('/products',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                is_paginated: 0
+            }
+            }).then(response => {
+                // console.log(response.data.data);
+                this.produits = response.data.data
+                for(let k = 0; k <= this.produits.length; k++){
+                    if(this.produits[k].code == this.codeProd){
+                        // console.log(this.codeProd);
+                        let codeProdId = this.produits[k].id
+                        let codeProdPrice = this.produits[k].price_sell
+                        this.codeProd = "",
+                        this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 0, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
+                        this.taxChange()
+                        break;
+                    }
+                }
+            }) 
         },
 
         deleteLine(index){

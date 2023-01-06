@@ -122,6 +122,7 @@ export default {
         
         handleFileUpload(event){
           this.selectedFile = event.target.files[0]
+        //   console.log(this.selectedFile)
         },
 
         submit(){          
@@ -155,18 +156,20 @@ export default {
                   let formd = new FormData();
                   formd.append('logo', this.selectedFile);
                   formd.append('compagnie_id', localStorage.getItem('auth.company_id'));
-              await  this.$axios.put('/compagnies/'+this.compagny+'/picture',formd, 
+              await  this.$axios.post('/compagnies/'+this.compagny+'/picture',formd, 
               {
                 params: {
                     compagnie_id: localStorage.getItem('auth.company_id')
                 }
               })   
               .then(response =>{ 
-                console.log(response)
+                // console.log(response)
                 this.$router.push({
                   path:'/update_compagnie',})
                   if(response.data.status == "success"){
                     this.errors="Modifications éffectuées avec succès !!!"
+                    this.selectedFile = null
+                    this.refresh()
                   }
                   else{
                       this.error = "Echec!!! Veuillez réessayer..."
@@ -182,7 +185,7 @@ export default {
           }
           })
             .then(response => {
-                console.log(response.data.data[0] )
+                // console.log(response.data.data[0] )
             let compagnie = response.data.data[0];
             // this.clients = response.data.data
             this.form.name = compagnie.name,
@@ -204,6 +207,10 @@ export default {
 <style scoped>
 .btn-action{
     position: absolute;
+}
+
+.contact-info img{
+    width: 100%;
 }
 @media screen and (max-width: 800px) {
     .contact-info{

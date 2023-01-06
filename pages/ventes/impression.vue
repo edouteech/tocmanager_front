@@ -10,9 +10,17 @@
       </div>
       <div class="modaler">
             <div class="other_page">
-                <p><strong> Date de la facture : {{date_sell}}</strong> </p>
-                <p><strong> M/Mme {{client.name}}</strong> </p>
-                <p><strong>Téléphone : {{client.phone}}</strong> </p>
+              <!-- <div class="d-flex align-items-start flex-column">
+                <strong> Société {{compagn.name}}</strong>
+                <strong> Email: {{compagn.email}}</strong>
+                <strong> Tél: {{compagn.phone}}</strong>
+              </div> -->
+              <div class="d-flex align-items-end flex-column ">
+                <strong> Date de la facture : {{date_sell}}</strong>
+                <strong> M/Mme {{client.name}}</strong>
+                <strong>Téléphone : {{client.phone}}</strong>
+              </div>
+              
                 <br><hr>
                 <div class="d-flex">
                     <div class="py-4 px-2 w-25">Nom du produit</div>
@@ -73,6 +81,9 @@
   </script>
   
 <style scoped>
+.client-info{
+  margin-top: -9%;
+}
 .quiz{
   background-color: white;
   height: 200px;
@@ -116,7 +127,7 @@
     height: auto;
     width: 800px;
     /* margin-top: 20%; */
-    padding: 5% ;
+    padding: 2% 1%;
     border-radius: 3px;
     overflow: auto;
   }

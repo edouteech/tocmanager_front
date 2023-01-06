@@ -47,7 +47,8 @@
           <tbody>
            <tr  v-for="(result, j) in results" :key="j">
               <td>{{result.name}}</td>
-              <td>{{result.category.name}}</td>
+              <td v-if="result.category != null">{{result.category.name}}</td>
+              <td v-else>---</td>
               <td>{{result.quantity}}</td>
               <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(produit.id)"></i></div></td>
                 <td>{{result.price_sell}}</td>
