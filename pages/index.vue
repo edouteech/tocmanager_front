@@ -23,18 +23,18 @@
                   </ul>
               </div>
               <div class="d-flex">
-                  <div v-if="this.$auth.$state.loggedIn == false">
+                  <div>
                       <a href="/login"><button class="btn btn-outline-primary btn-offer" >Connexion</button></a>
                   </div>
-                  <div v-if="this.$auth.$state.loggedIn == false">
+                  <div>
                       <a href="/register"><button class="btn btn-outline-primary btn-offer" >Inscription</button></a>
                   </div>
-                  <div v-if="this.$auth.$state.loggedIn == true && role =='admin' ">
+                  <!-- <div v-if="this.$auth.$state.loggedIn == true && role =='admin' ">
                       <a href="/dashboard"><button class="btn btn-outline-primary btn-offer" >Tableau de Bord</button></a>
                   </div>
                   <div v-if="this.$auth.$state.loggedIn == true">
                       <a href="/ventes/vente"><button class="btn btn-outline-warning btn-offer" >Vente</button></a>
-                  </div>
+                  </div> -->
                   <div><img src="/images/france.png" alt="français" width="30" class="mx-1"></div>/
                   <div><img src="/images/usa.png" alt="anglais" width="35" class="mx-1"></div>
   <!-- <a href="#" onclick="doGTranslate('en|en');return false;" title="English" class="gflag nturl" style="background-position:-0px -0px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="English" /></a><a href="#" onclick="doGTranslate('en|fr');return false;" title="French" class="gflag nturl" style="background-position:-200px -100px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="French" /></a>

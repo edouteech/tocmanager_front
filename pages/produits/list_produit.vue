@@ -389,15 +389,23 @@ export default {
              this.identifiant5 = response.data.data[0].price_buy
              this.identifiant6 = response.data.data[0].stock_min
              this.identifiant7 = response.data.data[0].stock_max 
-             if(response.data.data[0].category|| response.data.data[0].tax_group || response.data.data[0].code){
+             if(response.data.data[0].category){
               this.identifiant1 = response.data.data[0].category.name
-              this.identifiant8 = response.data.data[0].tax_group 
-              this.identifiant9 = response.data.data[0].code
              }
              else{
               this.identifiant1 = "Pas de catégorie associée"
+             }
+             if(response.data.data[0].tax_group){
+              this.identifiant8 = response.data.data[0].tax_group 
+             }
+             else{
               this.identifiant8 = "Relié à aucun groupe"
-              this.identifiant8 = "Pas de code"
+             }
+             if(response.data.data[0].code){
+              this.identifiant9 = response.data.data[0].code
+             }
+             else{
+              this.identifiant9 = "Pas de code"
              }
             }) 
                

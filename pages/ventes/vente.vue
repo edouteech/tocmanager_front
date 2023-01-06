@@ -34,9 +34,23 @@
                     </div>
                 </div> <hr>
                 
-                <div class="add_buttons d-flex"> 
-                    <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                    <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
+                <div class="add_buttons row col-md-12"> 
+                    <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                    <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
+                    <div class="col-md-5 mt-2">
+                        <div class="d-flex code_recherche">
+                            <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search" @input="searchCode()" @click.prevent="searchCode()">
+                            <!-- <button class="btn btn-outline-success" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button> -->
+                        </div>
+                        <!-- <div class="codeSearch-results" v-if="afficheCode !=0">
+                            <div class="close d-flex justify-content-end" @click="gos()">
+                                <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
+                            </div>
+                            <ul>
+                                <li v-for="(code, index) in codes" :key="index" :label="code.name" :value="code.id"  @click.prevent="choiceCli(acteur)"><a href="" >{{acteur.name}}</a>></li>
+                            </ul>
+                        </div> -->
+                    </div>                    
                 </div>
 
                 <div class="commande table-responsive">
@@ -175,6 +189,8 @@ export default {
             clients: [],
             client: "",
             produits: [],
+            codeProd: '',
+            codes: '',
             form:{
                 user_id: '',
                 date_sell: moment().format("YYYY-MM-DDThh:mm"),
@@ -202,6 +218,7 @@ export default {
             acteurs: '',
             afficheCli: 0,
             afficheProd: 0,
+            afficheCode: 0,
             recherche: '',
             echeance: ""
         }
@@ -221,6 +238,10 @@ export default {
 
         go(){
             this.afficheCli = 0
+        },
+
+        gos(){
+            this.afficheCode = 0
         },
 
         choiceProd(designation,i){
@@ -296,6 +317,18 @@ export default {
         
         setProduit(payload) {
             this.recupProduct()
+        },
+
+        searchCode(){
+          this.$axios.get('/products',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            search: this.codeProd
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+              this.codes = response.data.data;
+          })
         },
 
         async submit(){
@@ -483,6 +516,34 @@ export default {
 </script>
 
 <style scoped>
+.codeSearch-results{
+    border: 1px solid ;
+    /* width: 14%; */
+    position: absolute;
+    z-index: 99;
+    background-color: #fefefe;
+}
+
+.codeSearch-results a{
+    color: #605050;
+    text-decoration: none;
+}
+
+.codeSearch-results ul{
+    list-style: none;
+    overflow: auto;
+    padding: 0;
+    height: 200px;
+    text-align: left;
+}
+
+.codeSearch-results li{
+    padding: 2px 10px;
+}
+
+.codeSearch-results li:hover{
+    background-color: rgb(103, 180, 247);
+}
 .select2-cli{
     border: 1px solid ;
     width: 14%;
@@ -553,7 +614,7 @@ export default {
 
 .app-main__outer{
   overflow: auto;
-  margin: 0 5%;
+  margin: 0 2%;
 }
 
 .commande{
@@ -576,7 +637,7 @@ export default {
     margin-top: 9%;
     border: 1px solid #53af57;
     padding: 10px;
-    /* width: 100px; */
+    width: 100px;
     font-size: 10px;
     border-radius: 15px;
     text-align: center;
@@ -617,13 +678,24 @@ export default {
     margin-right: 10px;
 }
 .ajout-article{
-    margin: 4%;
+    /* margin-top: ; */
     text-align: center;
     background-color: rgb(238, 134, 64);
     border-radius: 10px;
     padding: 12px;
     cursor: pointer;
+    width: 350px;
 }
+
+.code_recherche input{
+    height: 45px;
+    margin: 20px 0;
+}
+
+.code_recherche .btn{
+    height: 40px;
+}
+
 
 .modal .input-form {
     display: flex;
