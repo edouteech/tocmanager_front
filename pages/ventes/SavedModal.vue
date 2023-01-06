@@ -143,7 +143,7 @@ import Impression from './impression.vue';
           compagnie_id: localStorage.getItem('auth.company_id')
         })
           .then(response => {
-            console.log(response);
+            // console.log(response);
             if(response.data.status = "success"){
               this.$router.push({path:'/ventes/vente'});
             }

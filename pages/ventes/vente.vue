@@ -397,7 +397,8 @@ export default {
                         this.cli_id = response.data.data.id
                         this.cli_email = response.data.data.client.email
                         this.facts = response.data.data
-                            this.$router.push({path:'/ventes/SavedModal',})
+                            // this.$router.push({path:'/ventes/SavedModal',})
+                            this.showSaved = true
                         this.$toast("Enregistrement d'une facture !!! ", {
                             icon: 'fa fa-check-circle',
                             timeout: 1000,
