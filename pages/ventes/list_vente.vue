@@ -187,16 +187,16 @@
           <table  class="total d-flex align-items-end flex-column">
             <tbody>
               <tr>
-                <td class="p-2">Taxe</td>
-                <td class="py-2 px-5">{{tax}} F CFA</td>
+                <td class="px-2">Taxe</td>
+                <td class=" px-5">{{tax}} F CFA</td>
               </tr>
               <tr>
-                <td class="p-2"><strong>TOTAL</strong></td>
-                <td class="py-2 px-5"><strong>{{montant}} F CFA</strong></td>
+                <td class="px-2"><strong>TOTAL</strong></td>
+                <td class=" px-5"><strong>{{montant}} F CFA</strong></td>
               </tr>
               <tr>
-                <td class="p-2">Montant restant à encaisser</td>
-                <td class="py-2 px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
+                <td class="px-2">Montant restant à encaisser</td>
+                <td class=" px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
               </tr>
             </tbody>
           </table>  <br><br> 

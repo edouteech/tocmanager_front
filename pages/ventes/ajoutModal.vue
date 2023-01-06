@@ -103,7 +103,7 @@
              this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })
             //  console.log( response ) 
                 this.error = response.data.message
-                console.log(this.error)
+                // console.log(this.error)
                 this.status = response.data.status
                   if(this.status == 'success'){
                     // alert('Nouveau client ajouté avec succès');

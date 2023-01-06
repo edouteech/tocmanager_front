@@ -65,11 +65,11 @@
                         <tbody>
                             <tr v-for="(line, index) in form.sell_lines" :key="index">
                                 <td>
-                                    <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
+                                    <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                         <option disabled value="">Choisissez...</option>
                                         <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
-                                    </select> -->
-                                    <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
+                                    </select>
+                                    <!-- <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
                                     <div class="select2-prod" v-if="afficheProd !=0">
                                         <div class="close d-flex justify-content-end" @click="gos()">
                                             <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
@@ -77,7 +77,7 @@
                                         <ul>
                                             <li v-for="(designation, i) in designations" :key="i" :value="designation.id" :data-i="i" :data-index="index"><a href="" @click.prevent="choiceProd(designation,i)">{{designation.name}}</a></li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </td>
                                 <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                                 <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
@@ -306,29 +306,46 @@ export default {
         },
 
         async codeAdd(){
-           await this.$axios.get('/products',{params: {
-                compagnie_id: localStorage.getItem('auth.company_id'),
-                is_paginated: 0
+          await this.$axios.get('/products/search',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            code: this.codeProd
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+            if(response.data.status == "success"){
+                this.codeError= null
+                this.codes = response.data.data;
+                let codeProdId = this.codes.id
+                let codeProdPrice = this.codes.price_sell
+                this.codeProd = "",
+                this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, amount_after_discount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
+                this.reduceAmount()
             }
-            }).then(response => {
-                // console.log(response.data.data);
-                this.produits = response.data.data
-                for(let k = 0; k <= this.produits.length; k++){
-                    if(this.produits[k].code == this.codeProd){
-                        // console.log(this.codeProd);
-                        let codeProdId = this.produits[k].id
-                        let codeProdPrice = this.produits[k].price_sell
-                        this.codeProd = "",
-                        this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 0, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
-                        this.taxChange()
-                        break;
-                    }
-                    else{
-                        this.codeError = "Aucun produit n'a ce code"
-                        break;
-                    }
-                }
-            }) 
+            else{
+                this.codeError = response.data.message
+            }
+          })
+        //    await this.$axios.get('/products',{params: {
+        //         compagnie_id: localStorage.getItem('auth.company_id'),
+        //         is_paginated: 0
+        //     }
+        //     }).then(response => {
+        //         this.produits = response.data.data
+        //         for(let k = 0; k <= this.produits.length; k++){
+        //             if(this.produits[k].code == this.codeProd){
+        //                 let codeProdId = this.produits[k].id
+        //                 let codeProdPrice = this.produits[k].price_sell
+        //                 this.codeProd = "",
+        //                 this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 0, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
+        //                 this.taxChange()
+        //                 break;
+        //             }
+        //             else if(this.produits[k].code != this.codeProd){
+        //                 this.codeError = "Aucun produit n'a ce code"
+        //             }
+        //         }
+        //     }) 
         },
 
         deleteLine(index){
@@ -373,16 +390,17 @@ export default {
               echeance: this.echeance,
               compagnie_id: localStorage.getItem('auth.company_id') 
             }).then(response =>{ 
-                console.log( response ) 
+                // console.log( response ) 
                 this.error = response.data.message
                 // console.log(this.form.client_id)
                     if(response.data.status == "success"){
                         this.cli_id = response.data.data.id
                         this.cli_email = response.data.data.client.email
                         this.facts = response.data.data
-                        this.showSaved = true
+                            this.$router.push({path:'/ventes/SavedModal',})
                         this.$toast("Enregistrement d'une facture !!! ", {
                             icon: 'fa fa-check-circle',
+                            timeout: 1000,
                         })
                     }
                     else{

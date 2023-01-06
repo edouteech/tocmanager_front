@@ -31,19 +31,24 @@
         </div>
       </div>
       <div class="imprim" id="impression">
-        <div class="d-flex align-items-end flex-column">
-            <p><strong> M/Mme {{info_client.name}}</strong> </p>
-            <p><strong> Client {{entreprise.name}}</strong> </p>
-            <p><strong> {{info_client.phone}}</strong> </p>
+        <div class="d-flex align-items-start flex-column">
+            <strong> Société {{entreprise.name}}</strong>
+            <strong> Email: {{entreprise.email}}</strong>
+            <strong> Tél: {{entreprise.phone}}</strong>
+        </div>
+        <div class="d-flex align-items-end flex-column client-info">
+            <strong> M/Mme {{info_client.name}}</strong>
+            <strong> Email: {{info_client.email}}</strong>
+            <strong> Tél: {{info_client.phone}}</strong>
         </div><br>
-        <div class="p-2 mb-2 bg-secondary text-white text-center"><h4>Informations sur la facture</h4></div><br>
-        <div class="">
-          <p><strong>Numéro de la facture : {{fact_id}}</strong> </p>
-          <p><strong> Date de la facture : {{date_fact}}</strong> </p>
-          <p><strong> N° Client : {{info_client.id}}</strong> </p>
+        <div class="p-2 mb-2 bg-secondary text-white text-center"><h4>Informations sur la facture</h4></div>
+        <div class="d-flex align-items-start flex-column">
+          <strong>Numéro de la facture : {{fact_id}}</strong> 
+          <strong> Date de la facture : {{date_fact}}</strong> 
+          <strong> N° Client : {{info_client.id}}</strong> 
         </div>
   
-          <table class="table table-hover facture">
+          <table class="table table-hover facture mt-4">
             <thead>
               <tr class="table-secondary">
                 <th class="py-4">Nom du produit</th>
@@ -74,21 +79,21 @@
           <table  class="total d-flex align-items-end flex-column">
             <tbody>
               <tr>
-                <td class="p-2">Taxe</td>
-                <td class="py-2 px-5">{{tax_fact}} F CFA</td>
+                <td class="px-2">Taxe</td>
+                <td class=" px-5">{{tax_fact}} F CFA</td>
               </tr>
               <tr>
-                <td class="p-2"><strong>TOTAL</strong></td>
-                <td class="py-2 px-5"><strong>{{total}} F CFA</strong></td>
+                <td class="px-2"><strong>TOTAL</strong></td>
+                <td class="px-5"><strong>{{total}} F CFA</strong></td>
               </tr>
               <tr>
-                <td class="p-2">Montant restant à encaisser</td>
-                <td class="py-2 px-5"><strong class="text-warning">{{rest_fact}} F CFA</strong></td>
+                <td class="px-2">Montant restant à encaisser</td>
+                <td class="px-5"><strong class="text-warning">{{rest_fact}} F CFA</strong></td>
               </tr>
             </tbody>
           </table>  <br><br> 
       </div> 
-      <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
+      <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' :compagn= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
 
   </div>
 </template>
@@ -127,6 +132,7 @@ import Impression from './impression.vue';
           identifiant5: '',
           identifiant6: '',
           identifiant7: '',
+          identifiant8: ''
       }
     },
 
@@ -139,7 +145,7 @@ import Impression from './impression.vue';
           .then(response => {
             console.log(response);
             if(response.data.status = "success"){
-              this.$router.push({path:'/ventes/list_vente'});
+              this.$router.push({path:'/ventes/vente'});
             }
             else{
               this.error= response.data.message
@@ -177,11 +183,13 @@ import Impression from './impression.vue';
           this.tax_fact = this.recupFacture.tax
           this.entreprise = this.recupFacture.compagny
           this.facture_qr = this.recupFacture.facture
+          // this.compagn = this.recupFacture.client.compagny
           // this.form.email = this.recupFacture.client.email
       },
 
       async generateOtherpdf(){
           this.showModal = true;
+          // console.log(this.recupFacture);
           // this.id = response.data.data[0].id,
           this.identifiant3 = this.recupFacture.sell_lines,
           this.identifiant1 = moment(this.recupFacture.date_sell).format("D MMM YYYY, h:mm:ss a"),
@@ -189,8 +197,8 @@ import Impression from './impression.vue';
           this.identifiant4 = this.recupFacture.amount,
           this.identifiant5 = this.recupFacture.rest
           this.identifiant6 = this.recupFacture.tax
-          this.compagn = this.recupFacture.client.compagny
           this.identifiant7 = this.recupFacture.facture
+          this.identifiant8 = this.recupFacture.compagny
           }
     }
     
@@ -199,6 +207,9 @@ import Impression from './impression.vue';
 </script>
 
 <style scoped>
+.client-info{
+  margin-top: -10%;
+}
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -268,7 +279,7 @@ p {
           background-color: white;
           height: auto;
           width: 800px;
-          padding: 5% ;
+          padding: 2% 1%;
           border-radius: 3px;
           overflow: auto;
       }

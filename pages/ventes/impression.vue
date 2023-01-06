@@ -10,12 +10,12 @@
       </div>
       <div class="modaler">
             <div class="other_page">
-              <!-- <div class="d-flex align-items-start flex-column">
+              <div class="d-flex align-items-start flex-column">
                 <strong> Société {{compagn.name}}</strong>
                 <strong> Email: {{compagn.email}}</strong>
                 <strong> Tél: {{compagn.phone}}</strong>
-              </div> -->
-              <div class="d-flex align-items-end flex-column ">
+              </div>
+              <div class="d-flex align-items-end flex-column client-info">
                 <strong> Date de la facture : {{date_sell}}</strong>
                 <strong> M/Mme {{client.name}}</strong>
                 <strong>Téléphone : {{client.phone}}</strong>
@@ -23,22 +23,22 @@
               
                 <br><hr>
                 <div class="d-flex">
-                    <div class="py-4 px-2 w-25">Nom du produit</div>
-                    <div class="py-4 px-2 w-25">Quantité </div>
-                    <div class="py-4 px-2 w-25">Prix unitaire </div>
-                    <div class="py-4 px-2 w-25">Total HT</div>
+                    <div class="py-2 px-2 w-25 text-center"><strong>Nom du produit</strong></div>
+                    <div class="py-2 px-2 w-25 text-center"><strong>Quantité </strong></div>
+                    <div class="py-2 px-2 w-25 text-center"><strong>Prix unitaire </strong></div>
+                    <div class="py-2 px-2 w-25 text-center"><strong>Total HT</strong></div>
                 </div>
                 <div class="d-flex" v-for="(facture, j) in factures" :key="j">
-                    <div class="px-2 w-25">{{facture.product.name}}</div>
-                    <div class="px-2 w-25">{{facture.quantity}}</div>
-                    <div class="px-2 w-25">{{facture.price}}</div>
-                    <div class="px-2 w-25">{{facture.amount}} F CFA</div>
-                </div><br><br>
+                    <div class="px-1 w-25 text-center ">{{facture.product.name}}</div>
+                    <div class="px-1 w-25 text-center">{{facture.quantity}}</div>
+                    <div class="px-1 w-25 text-center">{{facture.price}}</div>
+                    <div class="px-1 w-25 text-center">{{facture.amount}} F CFA</div>
+                </div>
                 <hr><br>
-                <div >
-                    <p><strong> Total : {{montant}} F CFA</strong> </p>
-                    <p><strong> Taxe : {{tax}} F CFA</strong> </p>
-                    <p><strong> Montant restant à encaisser : {{rest}} F CFA</strong> </p>
+                <div class="d-flex align-items-start flex-column">
+                    <strong> Total : {{montant}} F CFA</strong>
+                    <span>Taxe : {{tax}} F CFA</span>
+                    <span> Montant restant à encaisser : {{rest}} F CFA</span>
                 </div>
 
                 <div class="text-center" v-if="qr_info != null">
@@ -64,7 +64,7 @@
     export default {
       auth:true,
       name: 'Impression',
-      props: ['date_sell','client', 'factures', 'montant', 'rest', 'tax', 'qr_info'],
+      props: ['date_sell','client', 'factures', 'montant', 'rest', 'tax', 'qr_info', 'compagn'],
       data () {
         return{
             
