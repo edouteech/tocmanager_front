@@ -42,6 +42,9 @@
                             <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search" @input="searchCode()" @click.prevent="searchCode()">
                             <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
                         </div>
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
+                            {{codeError}} 
+                        </div> 
                     </div>                    
                 </div>
 
@@ -62,16 +65,19 @@
                         <tbody>
                             <tr v-for="(line, index) in form.sell_lines" :key="index">
                                 <td>
-                                    <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
+                                    <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                         <option disabled value="">Choisissez...</option>
                                         <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
-                                    </select>
-                                    <!-- <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
+                                    </select> -->
+                                    <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
                                     <div class="select2-prod" v-if="afficheProd !=0">
+                                        <div class="close d-flex justify-content-end" @click="gos()">
+                                            <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
+                                        </div>
                                         <ul>
                                             <li v-for="(designation, i) in designations" :key="i" :value="designation.id" :data-i="i" :data-index="index"><a href="" @click.prevent="choiceProd(designation,i)">{{designation.name}}</a></li>
                                         </ul>
-                                    </div> -->
+                                    </div>
                                 </td>
                                 <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                                 <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
@@ -212,7 +218,8 @@ export default {
             afficheProd: 0,
             afficheCode: 0,
             recherche: '',
-            echeance: ""
+            echeance: "",
+            codeError: null
         }
     },
 
@@ -233,7 +240,7 @@ export default {
         },
 
         gos(){
-            this.afficheCode = 0
+            this.afficheProd = 0
         },
 
         choiceProd(designation,i){
@@ -314,6 +321,10 @@ export default {
                         this.codeProd = "",
                         this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 0, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
                         this.taxChange()
+                        break;
+                    }
+                    else{
+                        this.codeError = "Aucun produit n'a ce code"
                         break;
                     }
                 }
