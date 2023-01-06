@@ -355,17 +355,22 @@
   export default {
       auth: false,
       layout: 'landing',
-      data() {
-        return { 
-            role: ''
+    //   data() {
+    //     return { 
+    //         role: ''
 
-        }
-      },
+    //     }
+    //   },
 
-      mounted(){
-        this.role = localStorage.getItem("auth.roles")
-        // console.log(this.$auth)
-      }
+    //   mounted(){
+    //     this.role = localStorage.getItem("auth.roles")
+    //     // console.log(this.$auth)
+    //   }
+        mounted(){
+            if (this.$auth.loggedIn) {
+                this.$nuxt.$options.router.push("/dashboard")
+            }
+        },
   
   }
   </script>
