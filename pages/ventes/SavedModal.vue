@@ -22,7 +22,7 @@
       </form>
         <div class="mt-3">
           <NuxtLink :to="'/ventes/voir/'+this.identifiant"><button class="btn btn-light">Voir la vente</button></NuxtLink>
-          <NuxtLink to="/ventes/list_vente" class="btn btn-warning mx-3">Nouvelle facture</NuxtLink>
+          <button class="btn btn-warning mx-3" @click.prevent="newVente()">Nouvelle facture</button>
           <NuxtLink to="/dashboard"><button class="btn btn-primary">Tableau de bord</button></NuxtLink>
         </div>
         <div class="mt-5 d-flex col-md-8 mx-auto">
@@ -137,6 +137,10 @@ import Impression from './impression.vue';
     },
 
     methods:{
+      newVente(){
+        window.location.reload()
+      },
+
       submit() {
         this.$axios.post('/sells/'+this.identifiant+'/notify', {
           email:this.form.email,

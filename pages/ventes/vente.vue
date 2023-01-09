@@ -390,7 +390,7 @@ export default {
               echeance: this.echeance,
               compagnie_id: localStorage.getItem('auth.company_id') 
             }).then(response =>{ 
-                // console.log( response ) 
+                console.log( response.data ) 
                 this.error = response.data.message
                 // console.log(this.form.client_id)
                     if(response.data.status == "success"){
@@ -399,10 +399,10 @@ export default {
                         this.facts = response.data.data
                             // this.$router.push({path:'/ventes/SavedModal',})
                             this.showSaved = true
-                        this.$toast("Enregistrement d'une facture !!! ", {
-                            icon: 'fa fa-check-circle',
-                            timeout: 1000,
-                        })
+                        // this.$toast("Enregistrement d'une facture !!! ", {
+                        //     icon: 'fa fa-check-circle',
+                        //     timeout: 1000,
+                        // })
                     }
                     else{
                         this.load = false
