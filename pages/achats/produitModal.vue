@@ -28,6 +28,11 @@
             <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['category_id'] != null">{{errors['category_id']}}</div> -->
 
             <div class="input-form">        
+                <input type="text" placeholder="Entrer le code du produit " v-model="form.code" id="quantite" required>
+            </div>
+            <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['code'] != null">{{errors['code']}}</div> -->
+          
+            <div class="input-form">        
                 <input type="number" placeholder="Entrer la quantité " v-model="form.quantity" id="quantite" required>
             </div>
             <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['quantity'] != null">{{errors['quantity']}}</div>
@@ -78,6 +83,7 @@
         form: {
             category_id: '',
             name: '',
+            code:'',
             tax_group: '',
             quantity: '',
             price_sell:'',
@@ -103,6 +109,7 @@
             await  this.$axios.post('/products',{
               category_id: this.form.category_id,
               name: this.form.name,
+              code: this.form.code,
               quantity: this.form.quantity,
               price_sell: this.form.price_sell,
               tax_group: this.form.tax_group,
@@ -127,7 +134,8 @@
                     this.form.price_buy = '',
                     this.form.stock_min = '',
                     this.form.stock_max = '',
-                    this.form.tax_group = ''
+                    this.form.tax_group = '',
+                    this.form.code = ''
                     this.$emit('close-modal')
                     this.$toast("Produit ajouté !!! ", {
                       icon: 'fa fa-check-circle',

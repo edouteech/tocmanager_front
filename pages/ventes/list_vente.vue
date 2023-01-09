@@ -138,16 +138,22 @@
       <br> 
   
       <div class="imprim" id="impression">
-        <div class="d-flex align-items-end flex-column">
-            <p><strong> M/Mme {{client.name}}</strong> </p>
-            <p><strong> Client {{compagn.name}}</strong> </p>
-            <p><strong> {{client.phone}}</strong> </p>
-        </div><br>
-        <div class="p-2 mb-2 bg-secondary text-white text-center"><h4>Informations sur la facture</h4></div><br>
-        <div class="">
-          <p><strong>Numéro de la facture : {{id}}</strong> </p>
-          <p><strong> Date de la facture : {{date_sell}}</strong> </p>
-          <p><strong> N° Client : {{client.id}}</strong> </p>
+          <div class="d-flex align-items-start flex-column">
+            <strong> Société {{compagn.name}}</strong>
+            <strong> Email: {{compagn.email}}</strong>
+            <strong> Tél: {{compagn.phone}}</strong>
+          </div>
+          <div class="d-flex align-items-end flex-column client-info">
+              <strong> M/Mme {{client.name}}</strong>
+              <strong> Email: {{client.email}}</strong> 
+              <strong> Tél: {{client.phone}}</strong> 
+          </div>
+        <br>
+        <div class="p-2 mb-2 bg-secondary text-white text-center"><h4>Informations sur la facture</h4></div>
+        <div class="d-flex align-items-start flex-column">
+          <strong>Numéro de la facture : {{id}}</strong>
+          <strong> Date de la facture : {{date_sell}}</strong>
+          <strong> N° Client : {{client.id}}</strong>
         </div>
   
           <table class="table table-hover facture">
@@ -181,16 +187,16 @@
           <table  class="total d-flex align-items-end flex-column">
             <tbody>
               <tr>
-                <td class="p-2">Taxe</td>
-                <td class="py-2 px-5">{{tax}} F CFA</td>
+                <td class="px-2">Taxe</td>
+                <td class=" px-5">{{tax}} F CFA</td>
               </tr>
               <tr>
-                <td class="p-2"><strong>TOTAL</strong></td>
-                <td class="py-2 px-5"><strong>{{montant}} F CFA</strong></td>
+                <td class="px-2"><strong>TOTAL</strong></td>
+                <td class=" px-5"><strong>{{montant}} F CFA</strong></td>
               </tr>
               <tr>
-                <td class="p-2">Montant restant à encaisser</td>
-                <td class="py-2 px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
+                <td class="px-2">Montant restant à encaisser</td>
+                <td class=" px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
               </tr>
             </tbody>
           </table>  <br><br> 
@@ -199,7 +205,7 @@
 
       <exportModal v-show="exportModal" @close-modal="exportModal = false" />  
       <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" /> 
-  <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
+      <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' :compagn= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
          
   <!-- Footer -->
     <footer class="text-center text-lg-start bg-dark text-white">
@@ -275,6 +281,7 @@
           identifiant5: '',
           identifiant6: '',
           identifiant7: '',
+          identifiant8: '',
           ventes: [],
           vente: "",
           total: '',
@@ -390,7 +397,7 @@
                 compagnie_id: localStorage.getItem('auth.company_id')
               }
             }).then(response => {
-              // console.log(response);
+              // console.log(response.data.data[0]);
               this.id = response.data.data[0].id,
               this.factures = response.data.data[0].sell_lines,
               this.date_sell = moment(response.data.data[0].date_sell).format("D MMM YYYY, h:mm:ss a"),
@@ -417,7 +424,7 @@
                     compagnie_id: localStorage.getItem('auth.company_id')
                   }
                 }).then(response => {
-                  // console.log(response);
+                  console.log(response.data.data[0]);
                   this.showModal = true;
                   // this.id = response.data.data[0].id,
                   this.identifiant3 = response.data.data[0].sell_lines,
@@ -428,6 +435,7 @@
                   this.identifiant6 = response.data.data[0].tax
                   // this.compagn = response.data.data[0].client.compagny
                   this.identifiant7 = response.data.data[0].facture
+                  this.identifiant8 = response.data.data[0].client.compagny
                 }) 
           }
           
@@ -447,7 +455,9 @@
   </script>
   
   <style scoped>
-
+.client-info{
+  margin-top: -10%;
+}
   .app-main__outer{
     overflow: auto;
     font-size: 14px;
@@ -483,7 +493,7 @@
     }
     .imprim {
          display: block;
-         padding: 5%;
+         padding: 1%;
       }
     /* nav, .trait, .other_page{
       display: none !important;

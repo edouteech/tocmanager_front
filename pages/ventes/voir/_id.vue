@@ -57,7 +57,7 @@
           </tbody>
         </table>  <br><br> 
         <h5><p class="text-center">Listes des produits de la facture</p></h5> -->
-
+      <div class="table-responsive">
         <table class="table table-hover facture">
           <thead>
             <tr class="table-secondary">
@@ -77,9 +77,10 @@
               <td>{{facture.amount_after_discount}} F CFA</td>
             </tr>
           </tbody>
-        </table>  <br><br> 
+        </table>  
+      </div><br><br> 
         
-            <div class="d-flex align-items-end flex-column mb-4" v-if="qrcode != null">
+            <div class="d-flex align-items-end flex-column mb-4 recap" v-if="qrcode != null">
               <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+qrcode" alt="QRcode" />
               <div class="d-flex align-items-start flex-column mb-4">
                 <p> <strong>Mecef_counteurs :</strong>{{qr_info.mecef_counteurs}}</p>
@@ -115,7 +116,8 @@
               <td class="py-2 px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
             </tr>
           </tbody>
-        </table>  <br><br> 
+        </table>  
+      <br><br> 
         
         <hr class="trait">
           <div class="caisse" v-if="rest > 0">
@@ -574,6 +576,12 @@ tbody tr:last-of-type{
 thead tr{
     background-color: transparent;
 }
+
+/* @media screen and (max-width: 900px) {
+  .recap{
+    margin-right: -15%;
+  }
+} */
 
 
 

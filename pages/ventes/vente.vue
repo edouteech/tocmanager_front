@@ -14,20 +14,16 @@
             <h4>Enregistrer une vente </h4><hr>
             <form action="" method="POST">
                 <div class="cadre-haut">             
-                    <div class="ajout-client">                                   
-                        <!-- <select class="form-control"  v-model="form.client_id">
-                            <option disabled value="">Choisir le client</option>
-                            <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
-                                {{client.name}}
-                            </option>                           
-                        </select>   -->
-                        
+                    <div class="ajout-client">  
                         <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
-                        <div class="select2-cli" v-if="afficheCli !=0 ">
-                            <ul>
-                                <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="" >{{acteur.name}}</a></li>
-                            </ul>
-                        </div>
+                            <div class="select2-cli" v-if="afficheCli !=0 "> 
+                                <div class="close d-flex justify-content-end" @click="go()">
+                                    <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
+                                </div>
+                                <ul>
+                                    <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="" >{{acteur.name}}</a></li>
+                                </ul>
+                            </div>
 
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
@@ -38,9 +34,18 @@
                     </div>
                 </div> <hr>
                 
-                <div class="add_buttons d-flex"> 
-                    <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                    <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
+                <div class="add_buttons row col-md-12"> 
+                    <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                    <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
+                    <div class="col-md-5 mt-2">
+                        <div class="d-flex code_recherche">
+                            <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search" @input="searchCode()" @click.prevent="searchCode()">
+                            <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
+                            {{codeError}} 
+                        </div> 
+                    </div>                    
                 </div>
 
                 <div class="commande table-responsive">
@@ -66,6 +71,9 @@
                                     </select>
                                     <!-- <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
                                     <div class="select2-prod" v-if="afficheProd !=0">
+                                        <div class="close d-flex justify-content-end" @click="gos()">
+                                            <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
+                                        </div>
                                         <ul>
                                             <li v-for="(designation, i) in designations" :key="i" :value="designation.id" :data-i="i" :data-index="index"><a href="" @click.prevent="choiceProd(designation,i)">{{designation.name}}</a></li>
                                         </ul>
@@ -140,7 +148,7 @@
     </div>
     
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
-    <SavedModal v-show="showSaved" @close-modal="showSaved = false" :identifiant= 'cli_id'/>
+    <SavedModal v-show="showSaved" @close-modal="showSaved = false" :identifiant= 'cli_id' :recupFacture="facts" :email_client="cli_email"/>
     <produitModal v-show="showProduit" @close-modal="showProduit = false" @prod="setProduit"/>
 
 </div>
@@ -171,12 +179,16 @@ export default {
             amount_error: null,
             message: '',
             cli_id: '',
+            facts: "",
+            cli_email: "",
             showModal: false,
             showSaved: false,
             showProduit: false,
             clients: [],
             client: "",
             produits: [],
+            codeProd: '',
+            codes: '',
             form:{
                 user_id: '',
                 date_sell: moment().format("YYYY-MM-DDThh:mm"),
@@ -204,8 +216,10 @@ export default {
             acteurs: '',
             afficheCli: 0,
             afficheProd: 0,
+            afficheCode: 0,
             recherche: '',
-            echeance: ""
+            echeance: "",
+            codeError: null
         }
     },
 
@@ -220,6 +234,14 @@ export default {
     },
     
     methods: {
+
+        go(){
+            this.afficheCli = 0
+        },
+
+        gos(){
+            this.afficheProd = 0
+        },
 
         choiceProd(designation,i){
             console.log(i);
@@ -283,6 +305,49 @@ export default {
             this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});           
         },
 
+        async codeAdd(){
+          await this.$axios.get('/products/search',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            code: this.codeProd
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+            if(response.data.status == "success"){
+                this.codeError= null
+                this.codes = response.data.data;
+                let codeProdId = this.codes.id
+                let codeProdPrice = this.codes.price_sell
+                this.codeProd = "",
+                this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, amount_after_discount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
+                this.reduceAmount()
+            }
+            else{
+                this.codeError = response.data.message
+            }
+          })
+        //    await this.$axios.get('/products',{params: {
+        //         compagnie_id: localStorage.getItem('auth.company_id'),
+        //         is_paginated: 0
+        //     }
+        //     }).then(response => {
+        //         this.produits = response.data.data
+        //         for(let k = 0; k <= this.produits.length; k++){
+        //             if(this.produits[k].code == this.codeProd){
+        //                 let codeProdId = this.produits[k].id
+        //                 let codeProdPrice = this.produits[k].price_sell
+        //                 this.codeProd = "",
+        //                 this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 0, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
+        //                 this.taxChange()
+        //                 break;
+        //             }
+        //             else if(this.produits[k].code != this.codeProd){
+        //                 this.codeError = "Aucun produit n'a ce code"
+        //             }
+        //         }
+        //     }) 
+        },
+
         deleteLine(index){
         //   console.log(index);
           this.form.sell_lines.splice(index, 1)
@@ -294,6 +359,18 @@ export default {
         
         setProduit(payload) {
             this.recupProduct()
+        },
+
+        searchCode(){
+          this.$axios.get('/products',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            search: this.codeProd
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+              this.codes = response.data.data;
+          })
         },
 
         async submit(){
@@ -313,15 +390,19 @@ export default {
               echeance: this.echeance,
               compagnie_id: localStorage.getItem('auth.company_id') 
             }).then(response =>{ 
-                console.log( response ) 
+                console.log( response.data ) 
                 this.error = response.data.message
                 // console.log(this.form.client_id)
                     if(response.data.status == "success"){
                         this.cli_id = response.data.data.id
-                        this.showSaved = true
-                        this.$toast("Enregistrement d'une facture !!! ", {
-                            icon: 'fa fa-check-circle',
-                        })
+                        this.cli_email = response.data.data.client.email
+                        this.facts = response.data.data
+                            // this.$router.push({path:'/ventes/SavedModal',})
+                            this.showSaved = true
+                        // this.$toast("Enregistrement d'une facture !!! ", {
+                        //     icon: 'fa fa-check-circle',
+                        //     timeout: 1000,
+                        // })
                     }
                     else{
                         this.load = false
@@ -479,6 +560,34 @@ export default {
 </script>
 
 <style scoped>
+.codeSearch-results{
+    border: 1px solid ;
+    /* width: 14%; */
+    position: absolute;
+    z-index: 99;
+    background-color: #fefefe;
+}
+
+.codeSearch-results a{
+    color: #605050;
+    text-decoration: none;
+}
+
+.codeSearch-results ul{
+    list-style: none;
+    overflow: auto;
+    padding: 0;
+    height: 200px;
+    text-align: left;
+}
+
+.codeSearch-results li{
+    padding: 2px 10px;
+}
+
+.codeSearch-results li:hover{
+    background-color: rgb(103, 180, 247);
+}
 .select2-cli{
     border: 1px solid ;
     width: 14%;
@@ -506,6 +615,11 @@ export default {
 
 .select2-cli li:hover{
     background-color: rgb(103, 180, 247);
+}
+
+.close-img {
+    width: 25px;
+    cursor: pointer;
 }
 
 .select2-prod{
@@ -544,7 +658,7 @@ export default {
 
 .app-main__outer{
   overflow: auto;
-  margin: 0 5%;
+  margin: 0 2%;
 }
 
 .commande{
@@ -567,7 +681,7 @@ export default {
     margin-top: 9%;
     border: 1px solid #53af57;
     padding: 10px;
-    /* width: 100px; */
+    width: 100px;
     font-size: 10px;
     border-radius: 15px;
     text-align: center;
@@ -608,13 +722,24 @@ export default {
     margin-right: 10px;
 }
 .ajout-article{
-    margin: 4%;
+    /* margin-top: ; */
     text-align: center;
     background-color: rgb(238, 134, 64);
     border-radius: 10px;
     padding: 12px;
     cursor: pointer;
+    width: 350px;
 }
+
+.code_recherche input{
+    height: 45px;
+    margin: 20px 0;
+}
+
+.code_recherche .btn{
+    height: 40px;
+}
+
 
 .modal .input-form {
     display: flex;

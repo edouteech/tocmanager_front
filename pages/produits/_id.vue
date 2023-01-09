@@ -30,6 +30,15 @@
                 </select>
                 </div>
             </div>
+
+            <div class="form-group col-md-6">
+                <label class="title">Entrer le code du produit</label>
+                <input  type="text" class="form-control"  placeholder="CODE" v-model="form.code">
+            </div>
+            <!-- <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.code">
+                {{errors.code}}
+            </div> -->
+            
             <div class="form-group col-md-6">
                 <label class="title">Entrer la quantité</label>
                 <input  type="number" class="form-control" placeholder="1200" v-model="form.quantity">
@@ -80,6 +89,7 @@ export default {
                 category_id: '',
                 name: '',
                 quantity: '',
+                code: "",
                 price_sell:'',
                 price_buy:'',
                 stock_min:'',
@@ -110,8 +120,9 @@ export default {
         this.form.price_sell = produit.price_sell,
         this.form.price_buy = produit.price_buy,
         this.form.stock_min = produit.stock_min,
-        this.form.stock_max = produit.stock_max
-        this.form.tax_group = produit.tax_group
+        this.form.stock_max = produit.stock_max,
+        this.form.tax_group = produit.tax_group,
+        this.form.code = produit.code
         }
         )
         
@@ -133,6 +144,7 @@ export default {
                 id: this.$route.params.id,
                 category_id: this.form.category_id,
                 name: this.form.name,
+                code: this.form.code,
                 quantity: this.form.quantity,
                 price_sell: this.form.price_sell,
                 price_buy: this.form.price_buy,

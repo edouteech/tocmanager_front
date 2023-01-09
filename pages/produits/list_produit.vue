@@ -47,7 +47,8 @@
           <tbody>
            <tr  v-for="(result, j) in results" :key="j">
               <td>{{result.name}}</td>
-              <td>{{result.category.name}}</td>
+              <td v-if="result.category != null">{{result.category.name}}</td>
+              <td v-else>---</td>
               <td>{{result.quantity}}</td>
               <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(produit.id)"></i></div></td>
                 <td>{{result.price_sell}}</td>
@@ -66,10 +67,26 @@
               </tr>
             </tbody>
         </table>
+        <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
+      
+        <form class="justify-content-end btn-group" role="search">
+          <input type="file" id="file" ref="file" @change="handleFileUpload()" />
+          <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
+          <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+          <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'">Exporter en excel</button>
+
+          <div class="d-flex mt-4">
+              <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()" title="Importer fichier"><i class="fa fa-upload" aria-hidden="true"></i></button>
+
+              <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()" title="Exporter en pdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+
+              <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'" title="Exporter en excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+            </div>
+        </form><br>
       </div>
       
-      <div class="table-responsive">
-        <table class="table table-hover" v-if="this.element_search == ''">
+      <div class="table-responsive" v-if="this.element_search == ''">
+        <table class="table table-hover" >
           <thead>
             <tr class="table-primary">
                     <th>Nom</th>
@@ -109,21 +126,23 @@
             </tbody>
         </table>
         <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
+      
+        <form class="justify-content-end btn-group" role="search">
+          <input type="file" id="file" ref="file" @change="handleFileUpload()" />
+          <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
+          <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+          <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'">Exporter en excel</button>
+
+          <div class="d-flex mt-4">
+              <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()" title="Importer fichier"><i class="fa fa-upload" aria-hidden="true"></i></button>
+
+              <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()" title="Exporter en pdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+
+              <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'" title="Exporter en excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+            </div>
+        </form><br>
       </div><br><br>
-    <form class="justify-content-end btn-group" role="search">
-      <input type="file" id="file" ref="file" @change="handleFileUpload()" />
-       <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
-       <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
-       <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'">Exporter en excel</button>
-
-       <div class="d-flex mt-4">
-          <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()" title="Importer fichier"><i class="fa fa-upload" aria-hidden="true"></i></button>
-
-          <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()" title="Exporter en pdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
-
-          <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'" title="Exporter en excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
-        </div>
-    </form><br>
+    
     <div class="d-flex col-md-2 my-4">
       <label class="title my-2">Affichage</label> 
           <form action="">
@@ -148,7 +167,7 @@
           </ul>
         </nav>
   </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
-<voirProduit :prod_id='identifiant0' :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
+<voirProduit :prod_id='identifiant0' :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' :code= 'identifiant9' v-show="showModal" @close-modal="showModal = false"/>
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
 <listpdfModal v-show="listModal" @close-modal="listModal = false"/> 
@@ -197,6 +216,7 @@ export default {
       identifiant6 : "",
       identifiant7 : "",
       identifiant8: '',
+      identifiant9: '',
       produits: [],
       produit: "",
       compagnie_id: "",
@@ -318,7 +338,10 @@ export default {
           .then(response => {
             // console.log(response.data);
           this.results = response.data.data.data 
-          
+          this.res_data= response.data.data
+          this.total = response.data.data.total;
+          let firstE = response.data.data.links.shift()
+          let lastE = response.data.data.links.splice(-1,1);
           })
         },
         deleteProduit(id){
@@ -366,13 +389,23 @@ export default {
              this.identifiant5 = response.data.data[0].price_buy
              this.identifiant6 = response.data.data[0].stock_min
              this.identifiant7 = response.data.data[0].stock_max 
-             if(response.data.data[0].category|| response.data.data[0].tax_group ){
+             if(response.data.data[0].category){
               this.identifiant1 = response.data.data[0].category.name
-             this.identifiant8 = response.data.data[0].tax_group 
              }
              else{
               this.identifiant1 = "Pas de catégorie associée"
+             }
+             if(response.data.data[0].tax_group){
+              this.identifiant8 = response.data.data[0].tax_group 
+             }
+             else{
               this.identifiant8 = "Relié à aucun groupe"
+             }
+             if(response.data.data[0].code){
+              this.identifiant9 = response.data.data[0].code
+             }
+             else{
+              this.identifiant9 = "Pas de code"
              }
             }) 
                

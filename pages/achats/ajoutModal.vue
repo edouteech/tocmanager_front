@@ -79,7 +79,6 @@
                 this.error = response.data.message
                 this.status = response.data.status
                 // console.log(this.error)
-                this.errors = response.data.data
                   if(this.status == 'success'){
                     // alert('Nouveau client ajouté avec succès');
                       this.form.name = '',

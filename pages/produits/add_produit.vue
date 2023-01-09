@@ -46,6 +46,14 @@
             </div>
 
             <div class="form-group col-md-6">
+                <label class="title">Entrer le code du produit</label>
+                <input  type="text" class="form-control" placeholder="CODE"  v-model="form.code">
+            </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.code">
+                {{errors.code}}
+            </div>
+
+            <div class="form-group col-md-6">
                 <label class="title">Entrer la quantité</label>
                 <input  type="number" class="form-control" placeholder="1200" v-model="form.quantity">
             </div>
@@ -111,6 +119,7 @@ export default {
             form: {
                 category_id: '',
                 name: '',
+                code: '',
                 quantity: '',
                 price_sell:'',
                 price_buy:'',
@@ -135,6 +144,7 @@ export default {
             await  this.$axios.post('/products',{
               category_id: this.form.category_id,
               name: this.form.name,
+              code: this.form.code,
               quantity: this.form.quantity,
               price_sell: this.form.price_sell,
               price_buy: this.form.price_buy,
