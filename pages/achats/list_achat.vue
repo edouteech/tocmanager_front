@@ -114,8 +114,8 @@
           :file-type="'xlsx'" :sheet-name="'sheetname'">
           Exporter
         </vue-excel-xlsx> -->
-        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'">Exporter en excel</button>
-        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'"><i class="fa fa-file-excel-o" aria-hidden="true"></i><span class="text-ajout">Exporter en excel</span></button>
+        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()"><i class="fa fa-file-pdf-o" aria-hidden="true"></i><span class="text-ajout">Exporter en pdf</span></button>
       </form><br><br>
         <form action="">
           <div class="nombre d-flex col-md-2 my-4">
@@ -218,7 +218,7 @@ export default {
         }
       })
         .then(response => {
-          console.log(response);
+          // console.log(response);
           this.results = response.data.data.data
           this.res_data = response.data.data
           this.total = response.data.data.total
@@ -244,7 +244,7 @@ export default {
           date_fin: this.date_fin
         }
       }).then(response => {
-        console.log(response);
+        // console.log(response);
         this.achats = response.data.data.data
         this.res_data = response.data.data
         this.total = response.data.data.total
@@ -259,7 +259,7 @@ export default {
           compagnie_id: localStorage.getItem('auth.company_id')
         }
       }).then(response => {
-        console.log(response.data.data.data);
+        // console.log(response.data.data.data);
         this.fournisseurs = response.data.data.data
       })
     },
@@ -267,7 +267,7 @@ export default {
     voirAchat(id) {
       this.showModal = true;
       this.$axios.get('/buys/' + id).then(response => {
-        console.log(response.data.data[0]);
+        // console.log(response.data.data[0]);
         this.identifiant1 = response.data.data[0].date_buy
         this.identifiant2 = response.data.data[0].supplier_id
         this.identifiant3 = response.data.data[0].amount
@@ -293,6 +293,10 @@ export default {
 </script>
 
 <style scoped>
+nav{
+  overflow: auto;
+}
+
 .app-main__outer {
   overflow: auto;
 }
@@ -313,12 +317,11 @@ export default {
   margin-right: 2%;
 }
 
-
-.fa {
-  margin: 0 5px;
-  font-size: 22px;
-  cursor: pointer;
-}
+.fa{
+    margin: 0 5px;
+    font-size: 18px;
+    cursor: pointer;
+  }
 
 .table {
   margin-top: 2%;
@@ -447,9 +450,9 @@ tbody tr:last-of-type {
 
 
 @media screen and (max-width: 400px) {
-  .action {
+  /* .action {
     padding: 20px 0;
-  }
+  } */
 }
 
   

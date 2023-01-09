@@ -191,6 +191,11 @@ export default {
 </script>
 
 <style scoped>
+
+nav{
+  overflow: auto;
+}
+
 .app-main__outer{
   overflow: auto;
 }

@@ -101,8 +101,8 @@
             <!-- <input type="file" id="file" ref="file" @change="handleFileUpload()" />
             <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button> -->
             
-            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'">Exporter en excel</button>
-            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'"><i class="fa fa-file-excel-o" aria-hidden="true"></i><span class="text-ajout">Exporter en excel</span></button>
+            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()"><i class="fa fa-file-pdf-o" aria-hidden="true"></i><span class="text-ajout">Exporter en pdf</span></button>
             
             <!-- <vue-excel-xlsx
                 class="btn btn-outline-info mx-5"
@@ -455,6 +455,10 @@
   </script>
   
   <style scoped>
+
+  nav{
+    overflow: auto;
+  }
 .client-info{
   margin-top: -10%;
 }

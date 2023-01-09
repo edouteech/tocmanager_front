@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
       <Sidebar />
-      <h3 class="name">Décaissements </h3>
+      <h3 class="name">Décaissements</h3>
       <Userinfo />
     </nav>
 
@@ -305,6 +305,11 @@ export default {
 </script>
 
 <style scoped>
+
+nav{
+  overflow: auto;
+}
+
 .btn-group{
   display: flex;
 }
