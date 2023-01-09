@@ -611,6 +611,10 @@ table{
     font-size: 13px
 }
 
+.text-ajout{
+    display: none;
+}
+
 }
  
 </style>

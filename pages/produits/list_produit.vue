@@ -450,6 +450,11 @@ export default {
 </script>
 
 <style scoped>
+
+nav{
+  overflow: auto;
+}
+
 .page{
     display: flex;    
 }

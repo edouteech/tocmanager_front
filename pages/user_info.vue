@@ -78,6 +78,7 @@ export default {
     border: 1px solid transparent;
     border-radius: 100%;
     cursor: pointer;
+	color: #040404;
 }
 
 i{
@@ -87,7 +88,7 @@ i{
 
 .bas-page .user_name{
     font-size: 12px;
-    padding:  10px;
+    /* padding:  5px; */
     padding-top:  5px;
     color: rgb(246, 245, 245);
     font-weight: bold;

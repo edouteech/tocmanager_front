@@ -301,6 +301,11 @@ export default {
 </script>
 
 <style scoped>
+
+nav{
+  overflow: auto;
+}
+
 .btn-group{
   display: flex;
 }
