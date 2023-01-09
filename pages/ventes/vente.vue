@@ -116,7 +116,12 @@
                 <hr><br>
                 <div class="d-flex">
                     <div class="form-group col-md-2 ">
-                        <strong>Taxe [0 -100]%</strong> <div><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
+                        <div>
+                            <strong>Taxe [0 -100]%</strong> <div><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
+                        </div>
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_tax">
+                                Veuillez ajouter la taxe
+                        </div> 
                     </div>
                     <div class="form-group col-md-3 mx-4">
                         <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
@@ -133,10 +138,7 @@
                             <option value="90">90</option>
                         </select>
                     </div>
-                </div>
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_tax">
-                        Veuillez ajouter la taxe
-                </div>  
+                </div> 
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                     {{amount_error}} 
                 </div> 
@@ -321,6 +323,7 @@ export default {
                 this.codeProd = "",
                 this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, amount_after_discount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
                 this.reduceAmount()
+                this.taxChange()
             }
             else{
                 this.codeError = response.data.message
