@@ -140,7 +140,7 @@
       <div class="imprim" id="impression">
           <div class="d-flex align-items-start flex-column">
             <div class="entreprise-photo mb-2">
-              <img :src="'http://localhost:8000/'+compagn.logo" alt="profil" class="profil" width="70" height="50">
+              <img :src="'https://api.tocmanager.com/'+compagn.logo" alt="profil" class="profil" width="70" height="50">
             </div>
             <strong> Société {{compagn.name}}</strong>
             <strong> Email: {{compagn.email}}</strong>
