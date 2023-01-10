@@ -312,16 +312,15 @@ export default {
     },
 
     mounted(){
+      // console.log(this.$auth)
       this.payment()
       this.refresh()
       this.recupFacture()
       this.compagn = localStorage.getItem('auth.company_id');
-      this.users = this.$auth.$state.user;
+      this.users = this.$auth.$state.user.roles;
     },
 
     methods: {
-
-          
         payment(){
             this.$axios.get('/invoice/payments',{params: {
             compagnie_id: localStorage.getItem('auth.company_id')
@@ -417,7 +416,8 @@ export default {
             params: {
               compagnie_id: localStorage.getItem('auth.company_id')
             }
-          }).then(response => {console.log(response.data.data);
+          }).then(response => {
+            // console.log(response.data.data);
             this.date_sell = response.data.data[0].date_sell,
             this.client = response.data.data[0].client,
             this.montant = response.data.data[0].amount,
@@ -458,7 +458,7 @@ export default {
           }
           })
             .then(response =>{ 
-                console.log( response ) 
+                // console.log( response ) 
                   this.refresh()
                   this.error = response.data.message
                 
@@ -473,9 +473,12 @@ export default {
           })
             .then(response =>{ 
                 console.log( response ) 
+                if(response.status == 'success'){
                   this.refresh()
+                }
+                else{
                   this.error = response.data.message
-                
+                } 
             }).catch( err => console.log( err ) )
 
         },

@@ -139,6 +139,9 @@
   
       <div class="imprim" id="impression">
           <div class="d-flex align-items-start flex-column">
+            <div class="entreprise-photo mb-2">
+              <img :src="'http://localhost:8000/'+compagn.logo" alt="profil" class="profil" width="70" height="50">
+            </div>
             <strong> Société {{compagn.name}}</strong>
             <strong> Email: {{compagn.email}}</strong>
             <strong> Tél: {{compagn.phone}}</strong>
@@ -424,7 +427,7 @@
                     compagnie_id: localStorage.getItem('auth.company_id')
                   }
                 }).then(response => {
-                  console.log(response.data.data[0]);
+                  // console.log(response.data.data[0]);
                   this.showModal = true;
                   // this.id = response.data.data[0].id,
                   this.identifiant3 = response.data.data[0].sell_lines,
