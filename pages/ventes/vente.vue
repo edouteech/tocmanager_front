@@ -262,7 +262,7 @@ export default {
           }
           })
           .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             this.designations = response.data.data 
           
           })
@@ -393,7 +393,7 @@ export default {
               echeance: this.echeance,
               compagnie_id: localStorage.getItem('auth.company_id') 
             }).then(response =>{ 
-                console.log( response.data ) 
+                console.log( response.data.data ) 
                 this.error = response.data.message
                 // console.log(this.form.client_id)
                     if(response.data.status == "success"){

@@ -1,16 +1,19 @@
 <template>
-    <div class="modal-overlay" @click="$emit('close-modal')">
+    <div class="modal-overlay" @click.prevent="$emit('close-modal')">
         
       <div class="quiz">
            <p class="text-center">Voulez vous imprimer en <strong> format ticket de caisse</strong> ???</p><br>
            <div class="d-flex text-center response">
-              <div class="resp mx-5" @click="generatePdf()" >Oui</div>
-              <div class="resp mx-5" @click="$emit('close-modal')">Non</div>
+              <div class="resp mx-5" @click.prevent="generatePdf()" >Oui</div>
+              <div class="resp mx-5" @click.prevent="$emit('close-modal')">Non</div>
             </div>
       </div>
       <div class="modaler">
             <div class="other_page">
               <div class="d-flex align-items-start flex-column">
+                <div class="entreprise-photo mb-2">
+                  <img :src="'http://localhost:8000/'+compagn.logo" alt="profil" class="profil" width="70" height="50">
+                </div>
                 <strong> Société {{compagn.name}}</strong>
                 <strong> Email: {{compagn.email}}</strong>
                 <strong> Tél: {{compagn.phone}}</strong>
@@ -53,7 +56,7 @@
 
             </div>
       </div>
-      <div class="close" @click="$emit('close-modal')">
+      <div class="close" @click.prevent="$emit('close-modal')">
         <img class="close-img" src="/images/fermer.png" alt="" />
       </div>
   
