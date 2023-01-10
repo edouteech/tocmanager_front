@@ -32,7 +32,7 @@
       </div>
       <div class="imprim" id="impression">
         <div class="d-flex align-items-start flex-column">
-            <div class="entreprise-photo mb-2">
+            <div class="entreprise-photo mb-2" v-if="entreprise.logo">
               <img :src="'http://localhost:8000/'+entreprise.logo" alt="profil" class="profil" width="70" height="50">
             </div>
             <strong> Société {{entreprise.name}}</strong>

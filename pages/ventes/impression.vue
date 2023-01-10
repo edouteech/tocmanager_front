@@ -11,7 +11,7 @@
       <div class="modaler">
             <div class="other_page">
               <div class="d-flex align-items-start flex-column">
-                <div class="entreprise-photo mb-2">
+                <div class="entreprise-photo mb-2" v-if="compagn.logo">
                   <img :src="'http://localhost:8000/'+compagn.logo" alt="profil" class="profil" width="70" height="50">
                 </div>
                 <strong> Société {{compagn.name}}</strong>
