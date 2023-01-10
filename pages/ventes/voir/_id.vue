@@ -10,7 +10,7 @@
       
       <div  v-for="(user, i) in users" :key="i">
         <NuxtLink to="/update_compagnie" v-if="compagn == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
-          <button type="submit" class="btn btn-warning mx-5">Compléter les informations de la compagnie</button>
+          <!-- <button type="submit" class="btn btn-warning mx-5">Compléter les informations de la compagnie</button> -->
         </NuxtLink>
 
         <NuxtLink to="" class="text-danger" v-else>Veuillez contacter l'administrateur pour résoudre le problème !!!</NuxtLink>
@@ -19,7 +19,7 @@
 
 
     <div class="app-main__outer p-5">
-      <div class="d-flex">
+      <div class="d-flex align-items-end flex-column">
         <!-- <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Impression A4</span></div> -->
         <!-- <div class="other_print mx-5" @click="generatePdf()"><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Autre format d'impression</span></div> -->
         <button type="submit" class="btn btn-success mx-5" @click.prevent="validerFactureNormalise()" v-if="qr_info != null">Valider la facture normalisée</button>
@@ -27,7 +27,15 @@
       </div>
         <br>
 
-      <div class="d-flex align-items-end flex-column">
+        <div class="d-flex align-items-start flex-column">
+            <div class="entreprise-photo my-3">
+              <img :src="'http://localhost:8000/'+compagny.logo" alt="profil" class="profil" width="70" height="50">
+            </div>
+            <p><strong> Société {{compagny.name}}</strong></p>
+            <p><strong> Email: {{compagny.email}}</strong></p>
+            <p><strong> Tél: {{compagny.phone}}</strong></p>
+          </div>
+          <div class="d-flex align-items-end flex-column client-info">
           <p><strong> M/Mme {{client.name}}</strong> </p>
           <p><strong> Client {{compagny.name}}</strong> </p>
           <p><strong> {{client.phone}}</strong> </p>
@@ -472,7 +480,7 @@ export default {
           }
           })
             .then(response =>{ 
-                console.log( response ) 
+                // console.log( response ) 
                 if(response.status == 'success'){
                   this.refresh()
                 }
@@ -488,6 +496,10 @@ export default {
 </script>
 
 <style scoped>
+.client-info{
+  margin-top: -10%;
+}
+
 .logo-img{
     width: 170px;
 }
