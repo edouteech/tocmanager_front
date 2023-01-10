@@ -10,6 +10,8 @@
       </div>
       <div class="modaler">
             <div class="other_page">
+              <div>
+                
               <div class="d-flex align-items-start flex-column">
                 <div class="entreprise-photo mb-2" v-if="compagn.logo">
                   <img :src="'http://localhost:8000/'+compagn.logo" alt="profil" class="profil" width="70" height="50">
@@ -19,14 +21,15 @@
                 <strong> Tél: {{compagn.phone}}</strong>
               </div>
               <div class="d-flex align-items-end flex-column client-info">
-                <strong> Date de la facture : {{date_sell}}</strong>
+                <strong> Date : {{date_sell}}</strong>
                 <strong> M/Mme {{client.name}}</strong>
                 <strong>Téléphone : {{client.phone}}</strong>
+              </div>
               </div>
               
                 <br><hr>
                 <div class="d-flex">
-                    <div class="py-2 px-2 w-25 text-center"><strong>Nom du produit</strong></div>
+                    <div class="py-2 px-2 w-25 text-center"><strong>Article</strong></div>
                     <div class="py-2 px-2 w-25 text-center"><strong>Quantité </strong></div>
                     <div class="py-2 px-2 w-25 text-center"><strong>Prix unitaire </strong></div>
                     <div class="py-2 px-2 w-25 text-center"><strong>Total HT</strong></div>
@@ -85,7 +88,7 @@
   
 <style scoped>
 .client-info{
-  margin-top: -9%;
+  margin-top: -15%;
 }
 .quiz{
   background-color: white;
@@ -112,6 +115,7 @@
 
   .modaler{
     display: none;
+    font-size: 24px;
   }
   .modal-overlay {
     position: fixed;
