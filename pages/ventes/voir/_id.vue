@@ -481,12 +481,12 @@ export default {
           })
             .then(response =>{ 
                 // console.log( response ) 
-                if(response.status == 'success'){
+                // if(response.status == 'success'){
                   this.refresh()
-                }
-                else{
+                // }
+                // else{
                   this.error = response.data.message
-                } 
+                // } 
             }).catch( err => console.log( err ) )
 
         },
