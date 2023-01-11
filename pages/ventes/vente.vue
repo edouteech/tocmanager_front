@@ -12,6 +12,9 @@
             {{error}} 
         </div>
             <h4>Enregistrer une vente </h4><hr>
+            <!-- <button @click.prevent="test()">
+                Imprimer
+            </button> -->
             <form action="" method="POST">
                 <div class="cadre-haut">             
                     <div class="ajout-client">  
@@ -34,7 +37,7 @@
                     </div>
                 </div> <hr>
                 
-                <div class="add_buttons row col-md-12 "> 
+                <div class="add_buttons row col-md-12 boom"> 
                     <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
                     <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
                     <div class="col-md-5 mt-2">
@@ -94,7 +97,7 @@
                     </div>  
                 </div><br>
                 <br>
-                <div class="d-flex ">
+                <div class="d-flex boom">
                     <div class="form-group1 col-md-3"> 
                         <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                     </div>
@@ -114,7 +117,7 @@
                 </div><br>
  
                 <hr><br>
-                <div class="d-flex ">
+                <div class="d-flex boom">
                     <div class="form-group col-md-2 ">
                         <div>
                             <strong>Taxe [0 -100]%</strong> <div><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
@@ -604,6 +607,19 @@ export default {
 </script>
 
 <style scoped>
+
+
+@media print {
+    .boom, .cadre-haut{
+        display: none !important;
+    }
+    nav{
+        display: none !important;
+    }
+    footer{
+        display: none !important;
+    }
+}
 
 .codeSearch-results{
     border: 1px solid ;
