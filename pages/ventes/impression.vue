@@ -29,22 +29,22 @@
               
                 <br><hr>
                 <div class="d-flex">
-                    <div class="py-2 px-2 w-25 text-center"><strong>Article</strong></div>
-                    <div class="py-2 px-2 w-25 text-center"><strong>Quantité </strong></div>
-                    <div class="py-2 px-2 w-25 text-center"><strong>Prix unitaire </strong></div>
-                    <div class="py-2 px-2 w-25 text-center"><strong>Total HT</strong></div>
+                    <div class="py-2 px-2 colonne_article text-center"><strong>Article</strong></div>
+                    <div class="py-2 px-2 colonne text-center"><strong>Qte </strong></div>
+                    <div class="py-2 px-2 colonne text-center"><strong>P.U. </strong></div>
+                    <div class="py-2 px-2 colonne text-center"><strong>Total HT</strong></div>
                 </div>
                 <div class="d-flex" v-for="(facture, j) in factures" :key="j">
-                    <div class="px-1 w-25 text-center ">{{facture.product.name}}</div>
-                    <div class="px-1 w-25 text-center">{{facture.quantity}}</div>
-                    <div class="px-1 w-25 text-center">{{facture.price}}</div>
-                    <div class="px-1 w-25 text-center">{{facture.amount}} F CFA</div>
+                    <div class="px-1 colonne_article text-center ">{{facture.product.name}}</div>
+                    <div class="px-1 colonne text-center">{{facture.quantity}}</div>
+                    <div class="px-1 colonne text-center">{{facture.price}}</div>
+                    <div class="px-1 colonne text-center">{{facture.amount}} F CFA</div>
                 </div>
                 <hr><br>
-                <div class="d-flex align-items-start flex-column">
+                <div class="d-flex align-items-start flex-column recap_total">
                     <strong> Total : {{montant}} F CFA</strong>
                     <span>Taxe : {{tax}} F CFA</span>
-                    <span> Montant restant à encaisser : {{rest}} F CFA</span>
+                    <span>Reste à payer : {{rest}} F CFA</span>
                 </div>
 
                 <div class="text-center" v-if="qr_info != null">
@@ -87,6 +87,18 @@
   </script>
   
 <style scoped>
+.colonne{
+  width: 20%;
+}
+
+.colonne_article{
+  width: 40%;
+}
+
+.recap_total{
+  font-size: 30px;
+}
+
 .client-info{
   margin-top: -15%;
 }
