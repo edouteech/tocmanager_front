@@ -34,7 +34,7 @@
                     </div>
                 </div> <hr>
                 
-                <div class="add_buttons row col-md-12"> 
+                <div class="add_buttons row col-md-12 "> 
                     <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
                     <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
                     <div class="col-md-5 mt-2">
@@ -94,7 +94,7 @@
                     </div>  
                 </div><br>
                 <br>
-                <div class="d-flex">
+                <div class="d-flex ">
                     <div class="form-group1 col-md-3"> 
                         <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                     </div>
@@ -114,7 +114,7 @@
                 </div><br>
  
                 <hr><br>
-                <div class="d-flex">
+                <div class="d-flex ">
                     <div class="form-group col-md-2 ">
                         <div>
                             <strong>Taxe [0 -100]%</strong> <div><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
@@ -152,7 +152,44 @@
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" :identifiant= 'cli_id' :recupFacture="facts" :email_client="cli_email"/>
     <produitModal v-show="showProduit" @close-modal="showProduit = false" @prod="setProduit"/>
-
+         
+  <!-- Footer -->
+  <footer class="text-center text-lg-start bg-dark text-white">
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
+      <!-- Section: Social media -->
+      <section
+        class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
+      >
+        <!-- Left -->
+        <div class="me-5 d-none d-lg-block">
+          <img src="../../static/images/logo.png" class="logo-img" alt="">
+        </div>
+        <!-- Left -->
+  
+        <!-- Right -->
+        <div>
+          <a href="" class="me-4 text-reset">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="" class="me-4 text-reset">
+            <i class="fab fa-google"></i>
+          </a>
+          <a href="" class="me-4 text-reset">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <!-- Right -->
+      </section>
+      <!-- Section: Social media -->
+  
+  
+      <!-- Copyright -->
+      <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
+        Copyright © 2022 - Tous droits réservés TocManager
+      </div>
+      <!-- Copyright -->
+    </footer>
+  <!-- Footer -->
 </div>
  
 </template>
@@ -165,7 +202,7 @@ import produitModal from './produitModal.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
 export default {
-    layout : 'empty',
+    layout : 'voir',
     auth:true,
     components: {
         Sidebar, 
@@ -236,6 +273,10 @@ export default {
     },
     
     methods: {
+        test(){
+          var fac = document.getElementById('commande')
+              window.print(fac) ;
+        },
 
         go(){
             this.afficheCli = 0
@@ -563,6 +604,7 @@ export default {
 </script>
 
 <style scoped>
+
 .codeSearch-results{
     border: 1px solid ;
     /* width: 14%; */

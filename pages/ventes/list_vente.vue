@@ -24,10 +24,16 @@
             <input  class="form-control" type="date"  v-model="date_fin"  required />  
             <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
           </div>  
+          <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  sup_checkbox !=0">
+              <i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i>
+            </button>
+          </div>
         <div v-if="this.element_search != ''" class="table-responsive">
           <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
+                  <th></th>
                   <th>Date facture</th>
                   <th>Client concerné</th>
                   <!-- <th>Montant HT </th>
@@ -40,6 +46,7 @@
               </thead>
               <tbody>
                 <tr  v-for="(result, i) in results" :key="i">
+                  <td><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" @click.prevent="checkbox(i)"></div></td>
                   <td>{{result.date_sell}}</td>
                   <td>{{result.client.name}}</td>
                   <!-- <td>{{result.amount_ht}}</td>
@@ -64,6 +71,7 @@
           <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
+                  <th></th>
                   <th>Date facture</th>
                   <th>Client concerné</th>
                   <!-- <th>Montant HT </th>
@@ -76,6 +84,7 @@
               </thead>
               <tbody>
                 <tr  v-for="(vente, i) in ventes" :key="i">
+                  <td><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="check" true-value="1" false-value="0" @click.prevent="checkbox(i)"></div></td>
                   <td>{{vente.date_sell}}</td>
                   <td>{{vente.client.name}}</td>
                   <!-- <td>{{vente.amount_ht}}</td>
@@ -242,7 +251,7 @@
   
       <!-- Copyright -->
       <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
-        Copyright © 2022 - Tous droits réservés TocManager-dS
+        Copyright © 2022 - Tous droits réservés TocManager
       </div>
       <!-- Copyright -->
     </footer>
@@ -312,6 +321,8 @@
           date_fin: "",
           role: "",
           pdfModal: false,
+          check: 0,
+          sup_checkbox: 0
     }
   },
 
@@ -327,6 +338,14 @@
         //         this.data = response.data.data
         //         })   
         // },
+
+        checkbox(i){
+          console.log(i)
+          console.log(this.check)
+          this.sup_checkbox = 1
+        },
+
+
         exp(){
             this.exportModal = true
         },
