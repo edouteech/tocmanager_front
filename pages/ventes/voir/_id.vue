@@ -29,7 +29,7 @@
 
         <div class="d-flex align-items-start flex-column">
             <div class="entreprise-photo my-3" v-if="compagny.logo">
-              <img :src="'http://localhost:8000/'+compagny.logo" alt="profil" class="profil" width="70" height="50">
+              <img :src="'https://api.tocmanager.com/'+compagny.logo" alt="profil" class="profil" width="70" height="50">
             </div>
             <p><strong> Société {{compagny.name}}</strong></p>
             <p><strong> Email: {{compagny.email}}</strong></p>
