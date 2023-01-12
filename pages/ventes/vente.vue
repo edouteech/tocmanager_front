@@ -229,7 +229,6 @@ export default {
             clients: [],
             client: "",
             produits: [],
-            codeProd: '',
             codes: '',
             form:{
                 user_id: '',
@@ -261,6 +260,7 @@ export default {
             afficheCode: 0,
             recherche: '',
             echeance: "",
+            codeProd: '',
             codeError: null
         }
     },
