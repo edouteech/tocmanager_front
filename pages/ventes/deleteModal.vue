@@ -30,9 +30,13 @@
           }
           }).then(response =>
         //   console.log(response.data.data);
-            this.$emit('conf', { message: this.identifiant}),
-            this.$emit('close-modal')
-            )   
+            {
+              this.$emit('conf', { message: this.identifiant})
+            if(response.data.status == 'success'){
+                this.$emit('close-modal')
+            }
+            }
+          )   
         },
       }
   
