@@ -40,7 +40,7 @@
 
          refresh(){
           this.$axios
-        .get('/get/client')
+        .get('/get/sells')
         .then(response => 
             {console.log(response);
             }

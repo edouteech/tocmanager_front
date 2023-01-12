@@ -25,8 +25,18 @@
             <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
           </div>  
           <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
-            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  sup_checkbox !=0">
-              <i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i>
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
             </button>
           </div>
         <div v-if="this.element_search != ''" class="table-responsive">
@@ -67,11 +77,12 @@
           </table> 
         <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
         </div>
+        <!-- <div class="form-check"><input class="form-check-input" type="checkbox" v-model="check" true-value="1" false-value="0"></div> -->
         <div v-if="this.element_search == ''" class="table-responsive">
           <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
-                  <th></th>
+                  <th v-if="selection != 0"></th>
                   <th>Date facture</th>
                   <th>Client concerné</th>
                   <!-- <th>Montant HT </th>
@@ -84,7 +95,7 @@
               </thead>
               <tbody>
                 <tr  v-for="(vente, i) in ventes" :key="i">
-                  <td><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="check" true-value="1" false-value="0" @click.prevent="checkbox(i)"></div></td>
+                  <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(vente.id)" :value="vente.id"/></div></td>
                   <td>{{vente.date_sell}}</td>
                   <td>{{vente.client.name}}</td>
                   <!-- <td>{{vente.amount_ht}}</td>
@@ -214,7 +225,7 @@
           </table>  <br><br> 
       </div>
       <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
-
+      <deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/>  
       <exportModal v-show="exportModal" @close-modal="exportModal = false" />  
       <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" /> 
       <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' :compagn= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
@@ -264,6 +275,7 @@
   <script>
   import pdfModal from './pdfModal.vue';
   import exportModal from './exportModal.vue';
+  import deleteMultipleModal from './deleteMultipleModal.vue'; 
   import deleteModal from './deleteModal.vue';  
   import Impression from './impression.vue';  
   import moment from "moment";
@@ -278,7 +290,8 @@
       Impression,
       deleteModal,
       exportModal,
-      pdfModal
+      pdfModal,
+      deleteMultipleModal
     },
      data () {
         return {
@@ -321,8 +334,11 @@
           date_fin: "",
           role: "",
           pdfModal: false,
-          check: 0,
-          sup_checkbox: 0
+          checks: [],
+          sup_checkbox: 0,
+          selection: 0,
+          list_delete: [],
+          showModalMultipleDelete: false
     }
   },
 
@@ -339,10 +355,22 @@
         //         })   
         // },
 
-        checkbox(i){
-          console.log(i)
-          console.log(this.check)
-          this.sup_checkbox = 1
+        multipleSup(){
+          this.showModalMultipleDelete = true
+        },
+
+        selectionner(){
+          this.selection = 1
+        },
+
+        deselectionner(){
+          this.selection = 0
+          this.checks = []
+        },
+
+        checkbox(id){
+          // console.log(id)
+          console.log(this.checks)
         },
 
 
