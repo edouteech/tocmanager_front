@@ -142,7 +142,9 @@ nav ul {
 nav ul li {
 	display:inline-block;
 	background-color: #040404;
-	padding: 10px;
+	padding: 10px 2px;
+	border: 1px solid transparent;
+	border-radius: 10px;
 }
 
 nav a {
@@ -175,8 +177,8 @@ nav ul ul li {
 	float:none;
 	display:list-item;
 	position: relative;
-	margin-left: -35%;
-	width: 270px;
+	margin-left: -45%;
+	width: 240px;
 	border-bottom: 1px solid white;
 }
 

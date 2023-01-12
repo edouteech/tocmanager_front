@@ -292,10 +292,10 @@ p {
           overflow: auto;
       }
     
-    /* footer{
+    footer{
       display: none !important;
     }
-    @page {
+    /* @page {
           margin-left: 0.5in;
           margin-right: 0.5in;
           margin-top: 0;
