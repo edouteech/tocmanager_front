@@ -38,9 +38,22 @@
                     </div>
                 </div> <hr>
                 
-                <div class="add_buttons d-flex"> 
+                <!-- <div class="add_buttons d-flex"> 
                     <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
                     <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
+                </div> -->
+                <div class="add_buttons row col-md-12 boom"> 
+                    <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                    <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
+                    <div class="col-md-5 mt-2">
+                        <div class="d-flex code_recherche">
+                            <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
+                            {{codeError}} 
+                        </div> 
+                    </div>                    
                 </div>
 
                 <div class="commande table-responsive">
@@ -179,7 +192,9 @@ export default {
             designations: '',
             acteurs: '',
             afficheCli: 0,
-            afficheProd: 0
+            afficheProd: 0,
+            codeProd: '',
+            codeError: null
         }
     },
 
@@ -253,7 +268,36 @@ export default {
                 this.methodes = response.data.data })
         },
         addLine(){
-            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});
+            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});
+        },
+
+        async codeAdd(){
+          await this.$axios.get('/products/search',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            code: this.codeProd
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+            if(response.data.status == "success"){
+                this.codeError= null
+                this.codes = response.data.data;
+                let codeProdId = this.codes.id
+                let codeProdPrice = this.codes.price_buy
+                this.codeProd = "",
+                this.form.buy_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});              
+                let sum = 0;
+                for (let j = 0; j < this.form.buy_lines.length; j++) {
+                    sum += this.form.buy_lines[j].amount;
+                }
+
+                this.form.amount = sum 
+            }
+            else{
+                this.codeError = response.data.message
+            }
+          })
+
         },
 
         // deleteLine(){
@@ -514,6 +558,15 @@ export default {
     cursor: pointer;
 }
 
+.code_recherche input{
+    height: 45px;
+    margin: 20px 0;
+}
+
+.code_recherche .btn{
+    height: 40px;
+}
+
 .btn-ajout i{
     font-size: 14px;
 }
@@ -545,12 +598,13 @@ export default {
     margin-right: 10px;
 }
 .ajout-article{
-    margin: 4%;
+    /* margin: 4%; */
     text-align: center;
     background-color: rgb(8, 231, 97);
     border-radius: 10px;
     padding: 12px;
     cursor: pointer;
+    width: 350px;
 }
 
 .modal .input-form {

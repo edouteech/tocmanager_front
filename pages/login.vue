@@ -238,6 +238,10 @@ export default {
 </script>
 
 <style scoped>
+/* .contain{
+  background: #D3D4D6;
+} */
+
 .error-message{
   border: 1px solid transparent;
   color: red;
