@@ -243,7 +243,7 @@
   .bas-page{
       margin-top: 10%;
       display: flex;    
-      border: 1px solid rgb(88, 87, 87);
+      /* border: 1px solid rgb(88, 87, 87); */
       padding: 10px;
   }
   

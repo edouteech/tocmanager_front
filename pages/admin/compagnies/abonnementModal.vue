@@ -32,11 +32,11 @@
   <script>
     export default {
       name: 'abonnementModal',
-      props : ['compagnie'],
+      props : ['compagnie', 'plan_souscris'],
       data () {
         return{
             form: {
-                plan: '',
+                plan: this.plan_souscris,
                 number: ''
             },
             plans: '',
@@ -45,13 +45,8 @@
       },
 
       mounted(){
-        this.$axios.get('/index/plans')        
-        .then(response => 
-        {
-            // console.log(response);
-            this.plans = response.data.data
-
-        })  
+        this.listPlan()
+        this.abonnementEnCours()
       },
       
       methods: {
@@ -63,7 +58,7 @@
           })        
             .then(response => 
             {
-                console.log(response);
+                // console.log(response);
                 if(response.data.status == "success"){
                     this.$router.push({path:'/admin/compagnies/list_compagnie', })
                     this.$toast('Abonnement ajouté !!!', {
@@ -77,6 +72,24 @@
             })  
               
         },
+
+        abonnementEnCours(){
+          this.$axios.get('/compagnie/suscribed/plan/'+this.compagnie)
+              .then(response => 
+                {
+                  console.log(response.data);
+                })
+        },
+
+        listPlan(){
+          this.$axios.get('/index/plans')        
+          .then(response => 
+          {
+              // console.log(response);
+              this.plans = response.data.data
+
+          })  
+        }
       }
   }
   </script>
