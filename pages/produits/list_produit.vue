@@ -25,7 +25,7 @@
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
         {{error}} 
       </div>
-          <!-- <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+          <div class="d-flex justify-content-end mt-3" v-for="(user, i) in users" :key="i">
             <div v-if="selection == 0">
               <button class="btn btn-outline-info" @click.prevent="selectionner()">
                 Sélectionner
@@ -39,7 +39,7 @@
             <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
               <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
             </button>
-          </div> -->
+          </div>
       
       <div class="table-responsive search_result" v-if="this.element_search != ''" >
         <!-- <div >{{result.name}}</div> -->
@@ -521,7 +521,7 @@ export default {
   cursor: pointer;
 }
 .table{
-	margin-top: 5%;
+	margin-top: 2%;
   text-align: center;
 }          
 
