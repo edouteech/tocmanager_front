@@ -333,7 +333,7 @@ export default {
                     payment: this.form.payment,
                     compagnie_id: localStorage.getItem('auth.company_id')
                     }).then(response =>{ 
-                        console.log( response ) 
+                        // console.log( response ) 
                         this.error = response.data.message
                         if(response.data.status == "success"){
                             this.$router.push({path:'/achats/SavedModal',})

@@ -23,12 +23,28 @@
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
         {{error}} 
       </div>
-
+  
+          <!-- <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+            </button>
+          </div> -->
       <div class="table-responsive search_result" v-if="this.element_search != ''">
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
                   <th>Noms</th>
                   <th>Numéros de téléphone</th>
                   <th>Emails </th>
@@ -39,6 +55,7 @@
           </thead>
           <tbody>
            <tr  v-for="(result, j) in results" :key="j">
+                <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
               <td>{{result.name}}</td>
               <td>{{result.phone}}</td>
               <td>{{result.email}}</td>
@@ -63,6 +80,7 @@
         <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
                   <th>Noms</th>
                   <th>Numéros de téléphone</th>
                   <th>Emails </th>
@@ -73,6 +91,7 @@
           </thead>
           <tbody>
            <tr  v-for="(client, i) in clients" :key="i">
+                <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(client.id)" :value="client.id"/></div></td>
               <td>{{client.name}}</td>
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
@@ -128,7 +147,7 @@
       </div>
     </form>
     </div>
-    <nav class="page" aria-label="Page navigation example px-8" v-if="res_data != null">
+    <nav class="page nav" aria-label="Page navigation example px-8" v-if="res_data != null">
       <ul class="pagination">
         <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
         <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
@@ -141,7 +160,7 @@
 <stockModal :cli="id_cli" :cli_name="nom_cli" v-show="stockModal" @close-modal="stockModal = false"/>  
 <voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance="identifiant5" :nature= 'identifiant4' :type= 'type_client' :seuil='seuil_client' v-show="showModal" @close-modal="showModal = false"/>
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/>
-
+<deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/>  
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
 
@@ -154,6 +173,7 @@ import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
+import deleteMultipleModal from './deleteMultipleModal.vue'; 
 export default {
   layout: "empty",
   auth: true,
@@ -163,7 +183,8 @@ export default {
     Userinfo,
     deleteModal,
     exportModal,
-    stockModal
+    stockModal,
+    deleteMultipleModal
   },
    data () {
       return {
@@ -195,7 +216,10 @@ export default {
         role: "",
         id_cli: '',
         nom_cli: '',
-        stockModal: false
+        stockModal: false,
+        checks: [],
+        selection: 0,
+        showModalMultipleDelete: false
       }
     },
 
@@ -208,6 +232,25 @@ export default {
     },
 
     methods: {
+      multipleSup(){
+        this.showModalMultipleDelete = true
+      },
+
+      selectionner(){
+        this.selection = 1
+      },
+
+      deselectionner(){
+        this.selection = 0
+        this.checks = []
+      },
+
+      checkbox(id){
+        // console.log(id)
+        console.log(this.checks)
+      },
+
+
       exporte(){
         this.exportModal = true
       },
@@ -354,7 +397,7 @@ export default {
 
 <style scoped>
 
-nav{
+.nav{
     overflow: auto;
 }
 

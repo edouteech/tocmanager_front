@@ -19,7 +19,7 @@
 
         <div class="mobile-btn mt-4">
         <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink></div>
-        <div class="range">
+          <div class="range">
             <input class="form-control" type="date"  v-model="date_debut"  required />  
             <input  class="form-control" type="date"  v-model="date_fin"  required />  
             <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
@@ -43,7 +43,7 @@
           <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
-                  <th></th>
+                  <th v-if="selection != 0"></th>
                   <th>Date facture</th>
                   <th>Client concerné</th>
                   <!-- <th>Montant HT </th>
@@ -56,7 +56,7 @@
               </thead>
               <tbody>
                 <tr  v-for="(result, i) in results" :key="i">
-                  <td><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" @click.prevent="checkbox(i)"></div></td>
+                  <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
                   <td>{{result.date_sell}}</td>
                   <td>{{result.client.name}}</td>
                   <!-- <td>{{result.amount_ht}}</td>
@@ -334,10 +334,10 @@
           date_fin: "",
           role: "",
           pdfModal: false,
-          checks: [],
           sup_checkbox: 0,
-          selection: 0,
           list_delete: [],
+          checks: [],
+          selection: 0,
           showModalMultipleDelete: false
     }
   },

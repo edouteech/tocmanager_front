@@ -40,8 +40,8 @@
                 </select>
                 </div>
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors_client_id">
-                {{errors_client_id}}
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors_client">
+                {{errors_client}}
             </div>
             <div class="form-group col-md-6">
                 <label class="title">Méthode de paiement</label>
@@ -85,8 +85,8 @@ export default {
             error: null,
             user:'',
             methodes:'',
-            errors_montant: "",
-            errors_client:""
+            errors_montant: null,
+            errors_client: null
         }
     },
 

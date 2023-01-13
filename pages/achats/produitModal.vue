@@ -124,7 +124,7 @@
             this.error = response.data.message
                 // console.log(this.error)
                 this.status = response.data.status
-                this.errors = response.data.data
+                // this.errors = response.data.data
                 if(this.status == 'success'){
                   // alert('Nouveau produit ajouté avec succès');
                     this.form.category_id = '',

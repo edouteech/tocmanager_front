@@ -28,11 +28,26 @@
               encaissement</span></button></NuxtLink>
             
       </div>
-
+          <div class="d-flex justify-content-end mt-3" v-for="(user, i) in users" :key="i">
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+            </button>
+          </div>
       <div v-if="this.element_search != ''" class="table-responsive">
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
               <th>Dates d'encaissement</th>
               <th>Montants</th>
               <th>Clients concernés</th>
@@ -42,6 +57,7 @@
 
           <tbody>
             <tr v-for="(result, i) in results" :key="i">
+                  <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
               <td>{{ result.date }}</td>
               <td>{{ result.montant }}</td>
               <td>{{ result.client.name }}</td>
@@ -68,6 +84,7 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
               <th>Dates d'encaissement</th>
               <th>Montants</th>
               <th>Clients concernés</th>
@@ -77,6 +94,7 @@
 
           <tbody>
             <tr v-for="(encaissement, i) in encaissements" :key="i">
+                  <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(encaissement.id)" :value="encaissement.id"/></div></td>
               <td>{{ encaissement.date }}</td>
               <td>{{ encaissement.montant }}</td>
               <td>{{ encaissement.client.name }}</td>
@@ -126,7 +144,7 @@
             </select>
           </div>
         </form>
-      <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
+      <nav aria-label="Page navigation example " class="d-flex nav" v-if="res_data != null">
         <ul class="pagination">
           <li :class="(res_data.prev_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
               @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -141,7 +159,7 @@
     </div><br>
     <voirEncaissement :montant='identifiant1' :date='identifiant2' :client_id='identifiant3' v-show="showModal"
       @close-modal="showModal = false" />
-
+      <deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/> 
     <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
       @conf="setMessage" />
       <exportModal v-show="exportModal" @close-modal="exportModal = false"/>
@@ -158,6 +176,7 @@ import Userinfo from '../user_info.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
 import pdfModal from './pdfModal.vue'
+  import deleteMultipleModal from './deleteMultipleModal.vue'; 
 export default {
   layout: "empty",
   auth: true,
@@ -167,7 +186,8 @@ export default {
     Userinfo,
     deleteModal,
     exportModal,
-    pdfModal
+    pdfModal,
+    deleteMultipleModal
   },
   data() {
     return {
@@ -193,7 +213,10 @@ export default {
       results: "",
       exportModal: false,
       pdfModal: false,
-      role: ""
+      role: "",
+      checks: [],
+      selection: 0,
+      showModalMultipleDelete: false
     }
   },
 
@@ -205,6 +228,24 @@ export default {
   },
 
   methods: {
+
+        multipleSup(){
+          this.showModalMultipleDelete = true
+        },
+
+        selectionner(){
+          this.selection = 1
+        },
+
+        deselectionner(){
+          this.selection = 0
+          this.checks = []
+        },
+
+        checkbox(id){
+          // console.log(id)
+          console.log(this.checks)
+        },
     exp() {
       this.exportModal = true
     },
@@ -302,7 +343,7 @@ export default {
 
 <style scoped>
 
-nav{
+.nav{
   overflow: auto;
 }
 

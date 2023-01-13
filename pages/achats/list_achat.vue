@@ -29,14 +29,31 @@
           </NuxtLink>
         </div>
         <div class="range">
-            <input class="form-control" type="date"  v-model="date_debut"  required />  
-            <input  class="form-control" type="date"  v-model="date_fin"  required />  
-            <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
-          </div>  
+          <input class="form-control" type="date"  v-model="date_debut"  required />  
+          <input  class="form-control" type="date"  v-model="date_fin"  required />  
+          <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
+        </div>  
+
+        <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+          <div v-if="selection == 0">
+            <button class="btn btn-outline-info" @click.prevent="selectionner()">
+              Sélectionner
+            </button>
+          </div>
+          <div v-else>
+            <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+              Annuler
+            </button>
+          </div>
+          <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+            <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+          </button>
+        </div>
       <div v-if="this.element_search != ''" class="table-responsive">
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+              <th v-if="selection != 0"></th>
               <th>Date facture</th>
               <th>Fournisseur concerné</th>
               <th>Montant facture </th>
@@ -47,6 +64,7 @@
           </thead>
           <tbody>
             <tr v-for="(result, i) in results" :key="i">
+              <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
               <td>{{ result.date_buy }}</td>
               <td>{{ result.supplier.name }}</td>
               <td>{{ result.amount }}</td>
@@ -75,6 +93,7 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+              <th v-if="selection != 0"></th>
               <th>Date facture</th>
               <th>Fournisseur concerné</th>
               <th>Montant de la facture</th>
@@ -84,6 +103,7 @@
           </thead>
           <tbody>
             <tr v-for="(achat, i) in achats" :key="i">
+              <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(achat.id)" :value="achat.id"/></div></td>
               <td>{{ achat.date_buy }}</td>
               <td>{{ achat.supplier.name }}</td>
               <td>{{ achat.amount }}</td>
@@ -128,7 +148,7 @@
             </select>
           </div>
         </form>
-      <nav aria-label="Page navigation example" class="d-flex" v-if="res_data != null">
+      <nav aria-label="Page navigation example" class="d-flex nav" v-if="res_data != null">
         <ul class="pagination">
           <li :class="(res_data.prev_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
               @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -147,12 +167,14 @@
       <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" /> 
     <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
       @conf="setMessage" />
+      <deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/>  
 
   </div>
 
 </template>
 
 <script>
+import deleteMultipleModal from './deleteMultipleModal.vue'; 
 import pdfModal from './pdfModal.vue'
 import exportModal from './exportModal.vue'
 import deleteModal from './deleteModal.vue'
@@ -168,7 +190,8 @@ export default {
     Userinfo,
     deleteModal,
     exportModal,
-    pdfModal
+    pdfModal,
+    deleteMultipleModal
   },
   data() {
     return {
@@ -195,11 +218,33 @@ export default {
       date_debut: "",
       date_fin: "",
       role: "",
-      pdfModal: false
+      pdfModal: false,
+      checks: [],
+      selection: 0,
+      showModalMultipleDelete: false
     }
   },
 
   methods: {
+
+    multipleSup(){
+      this.showModalMultipleDelete = true
+    },
+
+    selectionner(){
+      this.selection = 1
+    },
+
+    deselectionner(){
+      this.selection = 0
+      this.checks = []
+    },
+
+    checkbox(id){
+      // console.log(id)
+      console.log(this.checks)
+    },
+
     exp(){
         this.exportModal = true
     },
@@ -293,7 +338,7 @@ export default {
 </script>
 
 <style scoped>
-nav{
+.nav{
   overflow: auto;
 }
 
