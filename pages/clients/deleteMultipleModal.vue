@@ -1,7 +1,7 @@
 <template>
     <div class="modal-overlay" @click="$emit('close-modal')">
       <div class="modaler text-center py-5" @click.stop>
-              <strong>Voulez vous supprimer ces factures ???</strong><br><br>
+              <strong>Voulez vous supprimer ces clients ???</strong><br><br>
               <div class="d-flex">
                 <button class="btn btn-danger mx-auto" @click.prevent ="sup()">
                         Oui
