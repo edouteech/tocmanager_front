@@ -29,7 +29,7 @@
             <tbody>
                 <tr  v-for="(achat, i) in achats" :key="i">
                     <td>{{achat.date_buy}}</td>
-                    <td v-if="achat.supplier.name">{{achat.supplier.name}}</td>
+                    <td v-if="achat.supplier">{{achat.supplier.name}}</td>
                     <td v-else>--Fournisseur supprimé--</td>
                     <td>{{achat.amount}}</td>
                     <td><div class="action">

@@ -30,7 +30,7 @@
             <tr  v-for="(encaissement, i) in encaissements" :key="i">
                 <td>{{encaissement.date}}</td>
                 <td>{{encaissement.montant}}</td>
-                <td v-if="encaissement.client.name">{{encaissement.client.name}}</td>
+                <td v-if="encaissement.client">{{encaissement.client.name}}</td>
                 <td v-else>--Client supprimé--</td>
                 <td><div class="action">
                     <div class="sup" @click="supEncaissement(encaissement.id)">Supprimer définitivement</div>

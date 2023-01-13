@@ -30,7 +30,7 @@
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td>{{decaissement.date}}</td>
                         <td>{{decaissement.montant}}</td>
-                        <td v-if="decaissement.supplier.name">{{decaissement.supplier.name}}</td>
+                        <td v-if="decaissement.supplier">{{decaissement.supplier.name}}</td>
                         <td v-else>--Fournisseur supprimé--</td>
                         <td><div class="action">
                             <div class="sup" @click="supDecaissement(decaissement.id)">Supprimer définitivement</div>
