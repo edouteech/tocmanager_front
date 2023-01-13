@@ -26,7 +26,7 @@
       methods: {
         sup(){
         //   console.log(this.ids);
-          this.$axios.post('/decaissements/multipleDelete',
+          this.$axios.post('/encaissements/multipleDelete',
             {
               encaissement_ids: this.ids,
               compagnie_id: localStorage.getItem('auth.company_id')
