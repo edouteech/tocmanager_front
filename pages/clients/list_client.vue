@@ -6,7 +6,11 @@
     </nav>
     
     <div class="app-main__outer p-5">
-      <h4>Liste des clients</h4><hr><br><br>
+      <h4>Liste des clients</h4><hr><br>
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
+            {{error}} 
+        </div>
+      <br>
       <div class="d-flex">
           <div class="col-md-10">
             <form class="d-flex col-md-7" role="search">
@@ -20,9 +24,9 @@
         <NuxtLink  to="/clients/add_client" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau client</span></button></NuxtLink>
       </div>
 
-      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
         {{error}} 
-      </div>
+      </div> -->
   
           <div class="d-flex justify-content-end mt-3" v-for="(user, i) in users" :key="i">
             <div v-if="selection == 0">
@@ -33,6 +37,11 @@
             <div v-else>
               <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
                 Annuler
+              </button>
+            </div>
+            <div v-if="defaultNum != 0">
+              <button class="btn btn-outline-dark mx-3" @click.prevent="chooseDefaultClient()">
+                Choisir commme client par défaut
               </button>
             </div>
             <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
@@ -56,7 +65,7 @@
           <tbody>
            <tr  v-for="(result, j) in results" :key="j">
                 <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
-              <td>{{result.name}}</td>
+              <td>{{result.name}}<span v-if="result.client_default == true"><i class="fa fa-star text-success mx-3" aria-hidden="true"></i></span></td>
               <td>{{result.phone}}</td>
               <td>{{result.email}}</td>
               <td class="text-danger">{{result.balance}}</td>
@@ -92,7 +101,7 @@
           <tbody>
            <tr  v-for="(client, i) in clients" :key="i">
                 <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(client.id)" :value="client.id"/></div></td>
-              <td>{{client.name}}</td>
+              <td>{{client.name}}<span v-if="client.client_default == true"><i class="fa fa-star text-success mx-3" aria-hidden="true"></i></span></td>
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
               <td class="text-danger">{{client.balance}}</td>
@@ -219,7 +228,8 @@ export default {
         stockModal: false,
         checks: [],
         selection: 0,
-        showModalMultipleDelete: false
+        showModalMultipleDelete: false,
+        defaultNum: 0
       }
     },
 
@@ -232,22 +242,52 @@ export default {
     },
 
     methods: {
+      chooseDefaultClient(){
+          console.log(this.checks.length)
+        if(this.checks.length == '1'){
+          let default_cli = this.checks[0]
+          this.$axios.put('/clients/'+default_cli+'/default', {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+            }
+          ).then((response) => {
+              console.log(response.data);
+              
+              if(response.data.status == "success"){
+                this.selection = 0
+                this.defaultNum = 0
+                this.checks = []
+                this.refresh()
+                this.$toast('Client par défaut choisi avec succès !!!', {
+                    icon: 'fa fa-check-circle',
+                })
+              }else{
+                this.error = response.data.message
+              }
+            })
+        }
+        else{
+          this.error = "Vous ne pouvez que sélectionner qu'un seul client par défaut"
+        }
+      },
+
       multipleSup(){
         this.showModalMultipleDelete = true
       },
 
       selectionner(){
         this.selection = 1
+        this.defaultNum = 1
       },
 
       deselectionner(){
         this.selection = 0
+        this.defaultNum = 0
         this.checks = []
       },
 
       checkbox(id){
         // console.log(id)
-        console.log(this.checks)
+        // console.log(this.checks)
       },
 
 
@@ -438,7 +478,7 @@ export default {
 
 .fa{
   margin: 0 5px;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
 }
 .table{
