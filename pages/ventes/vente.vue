@@ -18,7 +18,15 @@
             <form action="" method="POST">
                 <div class="cadre-haut">             
                     <div class="ajout-client">  
-                        <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
+                        <v-select 
+                            placeholder="Choississez le client"
+                            v-model="form.client_id"
+                            label="name"
+                            :options="clients"
+                            :reduce="(client) => client.id"
+                            append-to-body
+                        />
+                        <!-- <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
                             <div class="select2-cli" v-if="afficheCli !=0 "> 
                                 <div class="close d-flex justify-content-end" @click="go()">
                                     <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
@@ -26,14 +34,14 @@
                                 <ul>
                                     <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="" >{{acteur.name}}</a></li>
                                 </ul>
-                            </div>
+                            </div> -->
 
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
                         </button>                
                     </div>
                     <div class="facture-date position-absolute end-0">
-                    <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
+                        <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
                     </div>
                 </div> <hr>
                 
@@ -50,7 +58,7 @@
                         </div> 
                     </div>                    
                 </div>
-
+                {{ form.sell_lines }}
                 <div class="commande table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -67,11 +75,21 @@
                         
                         <tbody>
                             <tr v-for="(line, index) in form.sell_lines" :key="index">
-                                <td>
-                                    <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
+                                <td class="table-coll">
+                                    <!-- <v-select v-model="line.product_id" :options="fruits" /> -->
+                                    <v-select 
+                                        placeholder="Choississez..."
+                                        v-model="line.product_id"
+                                        label="name"
+                                        :options="produits"
+                                        :reduce="(produit) => produit.id"
+                                        append-to-body
+                                        @input="productChange"
+                                    />
+                                    <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                         <option disabled value="">Choisissez...</option>
                                         <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
-                                    </select>
+                                    </select> -->
                                     <!-- <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
                                     <div class="select2-prod" v-if="afficheProd !=0">
                                         <div class="close d-flex justify-content-end" @click="gos()">
@@ -82,12 +100,12 @@
                                         </ul>
                                     </div> -->
                                 </td>
-                                <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
-                                <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
-                                <td><div><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
+                                <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
+                                <td class="table-col"><div><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
                                 <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
-                                <td><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
@@ -198,6 +216,8 @@
 </template>
 
 <script>
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 import moment from "moment";
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
@@ -212,11 +232,13 @@ export default {
         ajoutModal, 
         SavedModal,
         produitModal,
-        Userinfo
+        Userinfo,
+        vSelect
     },
 
     data () {
         return{
+            fruits: ['papaye', 'banane', 'pomme', 'mangue', 'citron', 'avocat'],
             load: false,
             amount_error: null,
             message: '',
@@ -565,25 +587,37 @@ export default {
 
 
         productChange(e){
-            if(e.target.options.selectedIndex > -1) {
-                let i = e.target.options[e.target.options.selectedIndex].dataset.i;
-                let index = e.target.options[e.target.options.selectedIndex].dataset.index;
-                let product = this.produits[i];
-                let line = this.form.sell_lines[index]
-                line.price = product.price_sell;
-                line.amount = Number(line.price) * Number(line.quantity);
-                line.amount_after_discount = Number(line.price) * Number(line.quantity);
+            console.log(e);
+            for(let k = 0; k <= this.produits.length; k++){
+                if(this.produits[k].id == e){
+                    let ProdId = this.produits[k].id
+                    let ProdPrice = this.produits[k].price_sell
+                    this.form.sell_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
+                    this.taxChange()
+                    break;
+                }
+                // else if(this.produits[k].code != this.codeProd){
+                //     this.codeError = "Aucun produit n'a ce code"
+                // }
+            }
+            // if(e.target.options.selectedIndex > -1) {
+            //     let i = e.target.options[e.target.options.selectedIndex].dataset.i;
+            //     let index = e.target.options[e.target.options.selectedIndex].dataset.index;
+            //     let product = this.produits[i];
+            //     let line = this.form.sell_lines[index]
+            //     line.price = product.price_sell;
+            //     line.amount = Number(line.price) * Number(line.quantity);
+            //     line.amount_after_discount = Number(line.price) * Number(line.quantity);
                     
                 
-                let sum = 0;
-                for (let j = 0; j < this.form.sell_lines.length; j++) {
-                    sum += this.form.sell_lines[j].amount_after_discount;
-                }
-                this.form.amount_ht = sum;
-                this.form.tax =0
-                this.taxChange()
-                // console.log(sum); 
-            }    
+            //     let sum = 0;
+            //     for (let j = 0; j < this.form.sell_lines.length; j++) {
+            //         sum += this.form.sell_lines[j].amount_after_discount;
+            //     }
+            //     this.form.amount_ht = sum;
+            //     this.form.tax =0
+            //     this.taxChange()
+            // }    
         },
 
         compagnie(){
@@ -619,6 +653,13 @@ export default {
     footer{
         display: none !important;
     }
+}
+
+.table-col{
+    width: 15%;
+}
+.table-cole{
+    width: 10%;
 }
 
 .codeSearch-results{
