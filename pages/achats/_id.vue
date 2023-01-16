@@ -85,7 +85,7 @@
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
                             <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                     -->
                             <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required disabled></td>
-                            <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
+                            <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                         </tr>
                     </tbody>
                 </table>     
@@ -208,18 +208,18 @@ export default {
         },
 
         searchProd(){
-        this.afficheProd =1
-        this.$axios.get('/products',{params: {
-            compagnie_id: localStorage.getItem('auth.company_id'),
-            search: this.element_searchProd,
-            is_paginated: 0
-        }
-        })
-        .then(response => {
-            // console.log(response.data);
-            this.designations = response.data.data 
-        
-        })
+            this.afficheProd =1
+            this.$axios.get('/products',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                search: this.element_searchProd,
+                is_paginated: 0
+            }
+            })
+            .then(response => {
+                // console.log(response.data);
+                this.designations = response.data.data 
+            
+            })
         },
 
 

@@ -86,7 +86,7 @@
                                 <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
                                 <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
                                 <td class="table-col"><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required disabled></td>
-                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger " aria-hidden="true"></i></td>
+                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
                     </table>  

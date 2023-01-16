@@ -101,7 +101,7 @@
                                 <td class="table-col"><div><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
                                 <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
-                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
+                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
                     </table>   
@@ -343,7 +343,7 @@ export default {
                 this.form.amount_ht = vente.amount_ht
                 this.form.amount_ttc = vente.amount_ttc
                 this.form.payment = vente.payment
-                // this.form.amount_received = vente.amount_received
+                this.form.amount_received = vente.amount - vente.rest
             }) 
         },
 
@@ -354,6 +354,13 @@ export default {
         deleteLine(index){
         //   console.log(index);
           this.form.sell_lines.splice(index, 1)
+          let sum = 0;
+            for (let j = 0; j < this.form.sell_lines.length; j++) {
+                sum += this.form.sell_lines[j].amount_after_discount;
+            }
+            this.form.amount_ht = sum;
+            this.form.amount_ttc = sum;
+            this.form.amount =  this.form.amount_ttc;
         },
         
         payment(){
