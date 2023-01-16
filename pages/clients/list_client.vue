@@ -65,7 +65,7 @@
           <tbody>
            <tr  v-for="(result, j) in results" :key="j">
                 <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
-              <td>{{result.name}}<span v-if="result.client_default == true"><i class="fa fa-star text-success mx-3" aria-hidden="true"></i></span></td>
+              <td>{{result.name}}<span v-if="result.default_client == true"><i class="fa fa-star text-success mx-3 cursor-pointer" aria-hidden="true" title="Démettre du fournisseur par défaut" @click.prevent="supDefaultClient(result.id)"></i></span></td>
               <td>{{result.phone}}</td>
               <td>{{result.email}}</td>
               <td class="text-danger">{{result.balance}}</td>
@@ -101,7 +101,7 @@
           <tbody>
            <tr  v-for="(client, i) in clients" :key="i">
                 <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(client.id)" :value="client.id"/></div></td>
-              <td>{{client.name}}<span v-if="client.client_default == true"><i class="fa fa-star text-success mx-3" aria-hidden="true"></i></span></td>
+              <td>{{client.name}}<span v-if="client.default_client == true"><i class="fa fa-star text-success mx-3 cursor-pointer" aria-hidden="true" title="Démettre du client par défaut" @click.prevent="supDefaultClient(client.id)"></i></span></td>
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
               <td class="text-danger">{{client.balance}}</td>
@@ -243,14 +243,14 @@ export default {
 
     methods: {
       chooseDefaultClient(){
-          console.log(this.checks.length)
+          // console.log(this.checks.length)
         if(this.checks.length == '1'){
           let default_cli = this.checks[0]
           this.$axios.put('/clients/'+default_cli+'/default', {
               compagnie_id: localStorage.getItem('auth.company_id'),
             }
           ).then((response) => {
-              console.log(response.data);
+              // console.log(response.data);
               
               if(response.data.status == "success"){
                 this.selection = 0
@@ -268,6 +268,24 @@ export default {
         else{
           this.error = "Vous ne pouvez que sélectionner qu'un seul client par défaut"
         }
+      },
+
+      supDefaultClient(default_client){
+        this.$axios.put('/clients/'+default_client+'/default/unset', {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+            }
+          ).then((response) => {
+              // console.log(response.data);
+              
+              if(response.data.status == "success"){
+                this.refresh()
+                this.$toast('Client par défaut supprimé avec succès !!!', {
+                    icon: 'fa fa-check-circle',
+                })
+              }else{
+                this.error = response.data.message
+              }
+            })
       },
 
       multipleSup(){
