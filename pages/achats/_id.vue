@@ -12,14 +12,21 @@
         <h4>Modifier les informations de cet achat</h4><hr>
         <form action="" method="POST">
             <div class="cadre-haut">             
-                <div class="ajout-client">                                   
-                    
-                    <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
+                <div class="ajout-client">   
+                    <v-select 
+                        placeholder="Choississez le fournisseur"
+                        v-model="form.supplier_id"
+                        label="name"
+                        :options="fournisseurs"
+                        :reduce="(fournisseur) => fournisseur.id"
+                        append-to-body
+                    />
+                    <!-- <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
                     <div class="select2-cli" v-if="afficheCli !=0">
                         <ul>
                             <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="">{{acteur.name}}</a></li>
                         </ul>
-                    </div>         
+                    </div>          -->
                     <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                         <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
                     </button>                
@@ -29,11 +36,20 @@
                 </div>
             </div> <hr>
             
-            <div class="add_buttons d-flex"> 
-                <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
+            
+            <div class="add_buttons row col-md-12 boom"> 
+                <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
+                <div class="col-md-5 mt-2">
+                    <div class="d-flex code_recherche">
+                        <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    </div>
+                    <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
+                        {{codeError}} 
+                    </div> 
+                </div>                    
             </div>
-
             
             <div class="commande">
                 <table class="table table-bordered">
@@ -51,15 +67,24 @@
                     <tbody>
                         <tr v-for="(line, index) in form.buy_lines" :key="index">
                             <td>
-                                <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
+                                <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                     <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
-                                </select>
+                                </select> -->
+                                <v-select 
+                                    placeholder="Choississez..."
+                                    v-model="line.product_id"
+                                    label="name"
+                                    :options="produits"
+                                    :reduce="(produit) => produit.id"
+                                    append-to-body
+                                    @input="productChange"
+                                />
                             </td>
                             <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
+                            <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
                             <td><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
-                            <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                    
-                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required></td>
+                            <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                     -->
+                            <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required disabled></td>
                             <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                         </tr>
                     </tbody>
@@ -94,6 +119,8 @@
 </template>
 
 <script>
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 import moment from "moment";
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
@@ -108,7 +135,8 @@ export default {
         ajoutModal, 
         SavedModal,
         produitModal,
-        Userinfo
+        Userinfo,
+        vSelect
     },
 
     data () {
@@ -139,7 +167,10 @@ export default {
             designations: '',
             acteurs: '',
             afficheCli: 0,
-            afficheProd: 0
+            afficheProd: 0,
+            codeProd: '',
+            codeError: null,
+            codes: ''
         }
     },
 
@@ -192,6 +223,35 @@ export default {
         },
 
 
+        async codeAdd(){
+          await this.$axios.get('/products/search',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            code: this.codeProd
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+            if(response.data.status == "success"){
+                this.codeError= null
+                this.codes = response.data.data;
+                let codeProdId = this.codes.id
+                let codeProdPrice = this.codes.price_buy
+                this.codeProd = "",
+                this.form.buy_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});              
+                let sum = 0;
+                for (let j = 0; j < this.form.buy_lines.length; j++) {
+                    sum += this.form.buy_lines[j].amount;
+                }
+
+                this.form.amount = sum 
+            }
+            else{
+                this.codeError = response.data.message
+            }
+          })
+
+        },
+
         choiceCli(acteur){
             this.element_searchCli = acteur.name
             this.form.supplier_id = acteur.id
@@ -222,12 +282,10 @@ export default {
                 // console.log(response); 
                 this.methodes = response.data.data })
         },
+
+        
         addLine(){
-            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: localStorage.getItem('auth.company_id')});
-        },
-        addLine(){
-            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0});
-            
+            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});
         },
 
         deleteLine(index){
@@ -356,24 +414,16 @@ export default {
         },
 
         productChange(e){
-            if(e.target.options.selectedIndex > -1) {
-                let i = e.target.options[e.target.options.selectedIndex].dataset.i;
-                let index = e.target.options[e.target.options.selectedIndex].dataset.index;
-                let product = this.produits[i];
-                let line = this.form.buy_lines[index]
-                line.price = product.price_buy;
-                line.amount = Number(line.price) * Number(line.quantity);
-                    
-                
-                let sum = 0;
-                for (let j = 0; j < this.form.buy_lines.length; j++) {
-                    sum += this.form.buy_lines[j].amount;
+            for(let k = 0; k <= this.produits.length; k++){
+                if(this.produits[k].id == e){
+                    let ProdId = this.produits[k].id
+                    let ProdPrice = this.produits[k].price_buy
+                    this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
+                    this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1);                  
+                    // this.taxChange()
+                    break;
                 }
-                this.form.amount = sum;
-                // console.log(sum); 
-            }
-
-                
+            }    
         }
    
     },
