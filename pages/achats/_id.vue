@@ -419,8 +419,12 @@ export default {
                     let ProdId = this.produits[k].id
                     let ProdPrice = this.produits[k].price_buy
                     this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
-                    this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1);                  
-                    // this.taxChange()
+                    this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1);  
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount_after_discount;
+                    }
+                    this.form.amount_ht = sum; 
                     break;
                 }
             }    
