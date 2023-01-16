@@ -57,7 +57,7 @@
                         </div> 
                     </div>                    
                 </div>
-                {{ form.sell_lines }}
+                <!-- {{ form.sell_lines }} -->
                 <div class="commande table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -101,7 +101,7 @@
                                 <td class="table-col"><div><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
                                 <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
-                                <td @click="deleteLine(index, line)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
+                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
                     </table>   
@@ -299,7 +299,7 @@ export default {
           }
           })
           .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             this.designations = response.data.data 
           
           })
@@ -333,7 +333,7 @@ export default {
             }
             })
             .then(response => {
-                console.log(response.data.data[0] )
+                // console.log(response.data.data[0] )
                 let vente = response.data.data[0];
                 // this.categories = response.data.data
                 this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-DDThh:mm"),
@@ -354,22 +354,29 @@ export default {
         },
 
         deleteLine(index){
-        //   console.log(index);
-        //   console.log(line)
-        //   console.log(this.form.sell_lines[index]);
-          this.form.sell_lines[index]["_destroy"] = 1
-          this.$forceUpdate()
-        //   supLine.push({destroy: 1})
-          console.log(this.form.sell_lines[index]);
-        //   this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
-        //   this.form.sell_lines.splice(index, 1)
-        //   let sum = 0;
-        //     for (let j = 0; j < this.form.sell_lines.length; j++) {
-        //         sum += this.form.sell_lines[j].amount_after_discount;
-        //     }
-        //     this.form.amount_ht = sum;
-        //     this.form.amount_ttc = sum;
-        //     this.form.amount =  this.form.amount_ttc;
+        //   console.log(this.form.sell_lines[index].id);
+          if(this.form.sell_lines[index].id){
+            this.form.sell_lines[index]["_destroy"] = 1
+            let lineDestroy = this.form.sell_lines[index].amount_after_discount
+            this.$forceUpdate()
+            let sum = 0;
+            for (let j = 0; j < this.form.sell_lines.length; j++) {
+                sum += this.form.sell_lines[j].amount_after_discount;
+            }
+            this.form.amount_ht = sum - lineDestroy;
+            this.form.amount_ttc = sum - lineDestroy;
+            this.form.amount =  this.form.amount_ttc;
+          }
+          else{
+            this.form.sell_lines.splice(index, 1)
+            let sum = 0;
+            for (let j = 0; j < this.form.sell_lines.length; j++) {
+                sum += this.form.sell_lines[j].amount_after_discount;
+            }
+            this.form.amount_ht = sum;
+            this.form.amount_ttc = sum;
+            this.form.amount =  this.form.amount_ttc;
+          }
         },
         
         payment(){
@@ -542,10 +549,14 @@ export default {
                     this.form.sell_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
                     this.form.sell_lines.splice(this.form.sell_lines.length - 2, 1); 
                     let sum = 0;
+                    let lineDestroy = 0
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        if(this.form.sell_lines[j]._destroy){
+                            lineDestroy += this.form.sell_lines[j].amount_after_discount
+                        }
                         sum += this.form.sell_lines[j].amount_after_discount;
                     }
-                    this.form.amount_ht = sum;                  
+                    this.form.amount_ht = sum - lineDestroy;                  
                     this.taxChange()
                     break;
                 }
