@@ -265,6 +265,8 @@ export default {
             echeance: "",
             errors_tax: null,
             errors_amount: null,
+            codeProd: '',
+            codeError: null
         }
     },
 
@@ -335,7 +337,7 @@ export default {
                 let vente = response.data.data[0];
                 // this.categories = response.data.data
                 this.form.date_sell = moment(vente.date_sell).format("YYYY-MM-DDThh:mm"),
-                this.element_searchCli = vente.client.name,
+                this.form.client_id = vente.client.id,
                 this.form.sell_lines = vente.sell_lines,   
                 this.form.tax = vente.tax,
                 this.form.discount = vente.discount,
@@ -382,7 +384,6 @@ export default {
             .then(response => {
                 console.log(response.data.data[0] )
                 let vente = response.data.data[0];
-                if(this.element_searchCli == vente.client.name){
                     this.$axios.put('/sells/' +this.$route.params.id,{
                         id: this.$route.params.id,
                         date_sell: this.form.date_sell,
@@ -393,7 +394,7 @@ export default {
                         amount_ttc: this.form.amount_ttc,
                         amount_received: this.form.amount_received,
                         user_id: this.user,
-                        client_id: vente.client_id,  
+                        client_id: this.form.client_id,  
                         payment: this.form.payment,
                         sell_lines: this.form.sell_lines,
                         compagnie_id: localStorage.getItem('auth.company_id')
@@ -416,42 +417,7 @@ export default {
                             
                         }
                     }).catch( err => console.log( err ) )
-                }else{
-                    this.$axios.put('/sells/' +this.$route.params.id,{
-                        id: this.$route.params.id,
-                        date_sell: this.form.date_sell,
-                        tax: this.form.tax,
-                        discount: this.form.discount,
-                        amount: this.form.amount,
-                        amount_ht: this.form.amount_ht,
-                        amount_ttc: this.form.amount_ttc,
-                        amount_received: this.form.amount_received,
-                        user_id: this.user,
-                        client_id: this.form.client_id,  
-                        payment: this.form.payment,
-                        sell_lines: this.form.sell_lines,
-                        compagnie_id: localStorage.getItem('auth.company_id')
-                    }).then(response =>{ 
-                            // console.log( response ) 
-                            this.error = response.data.message
-                            console.log(this.error)
-                            if(response.data.status == 'success'){
-                                this.$toast("Modification éffectuée  !!! ", {
-                                    icon: 'fa fa-check-circle',
-                                })
-                                this.$router.push({path:'/ventes/list_vente'})
-                            }
-                            else{
-                                this.load = false
-                                this.error = response.data.message
-                                this.errors = response.data.data
-                                this.errors_tax = response.data.data.tax
-                                this.errors_amount = response.data.data.amount
-                                
-                            }
-                    }).catch( err => console.log( err ) )
-                            
-                }
+                
             }) 
                  
         },
