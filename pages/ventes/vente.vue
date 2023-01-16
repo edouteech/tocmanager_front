@@ -592,7 +592,8 @@ export default {
                 if(this.produits[k].id == e){
                     let ProdId = this.produits[k].id
                     let ProdPrice = this.produits[k].price_sell
-                    this.form.sell_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
+                    this.form.sell_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
+                    this.form.sell_lines.splice(this.form.sell_lines.length - 2, 1);                  
                     this.taxChange()
                     break;
                 }
