@@ -12,7 +12,15 @@
         <h4>Modifier les infomations de cette vente</h4><hr>
             <form action="" method="POST">
                 <div class="cadre-haut">             
-                    <div class="ajout-client">                                   
+                    <div class="ajout-client"> 
+                        <v-select 
+                            placeholder="Choississez le client"
+                            v-model="form.client_id"
+                            label="name"
+                            :options="clients"
+                            :reduce="(client) => client.id"
+                            append-to-body
+                        />                                  
                         <!-- <select class="form-control"  v-model="form.client_id">
                             <option disabled value="">Choisir le client</option>
                             <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
@@ -20,12 +28,12 @@
                             </option>                           
                         </select>   -->
                         
-                        <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
+                        <!-- <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
                         <div class="select2-cli" v-if="afficheCli !=0 ">
                             <ul>
                                 <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="" >{{acteur.name}}</a></li>
                             </ul>
-                        </div>
+                        </div> -->
 
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
@@ -36,9 +44,18 @@
                     </div>
                 </div> <hr>
                 
-                <div class="add_buttons d-flex"> 
-                    <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                    <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
+                <div class="add_buttons row col-md-12 boom"> 
+                    <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                    <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
+                    <div class="col-md-5 mt-2">
+                        <div class="d-flex code_recherche">
+                            <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search" @input="searchCode()" @click.prevent="searchCode()">
+                            <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
+                            {{codeError}} 
+                        </div> 
+                    </div>                    
                 </div>
 
                 <div class="commande table-responsive">
@@ -57,11 +74,20 @@
                         
                         <tbody>
                             <tr v-for="(line, index) in form.sell_lines" :key="index">
-                                <td>
-                                    <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
+                                <td class="table-coll">
+                                    <v-select 
+                                        placeholder="Choississez..."
+                                        v-model="line.product_id"
+                                        label="name"
+                                        :options="produits"
+                                        :reduce="(produit) => produit.id"
+                                        append-to-body
+                                        @input="productChange"
+                                    />
+                                    <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                         <option disabled value="">Choisissez...</option>
                                         <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
-                                    </select>
+                                    </select> -->
                                     <!-- <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
                                     <div class="select2-prod" v-if="afficheProd !=0">
                                         <ul>
@@ -69,12 +95,12 @@
                                         </ul>
                                     </div> -->
                                 </td>
-                                <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
-                                <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
-                                <td><div><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
-                                <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
-                                <td><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
+                                <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
+                                <td class="table-col"><div><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
+                                <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
@@ -137,14 +163,52 @@
         
     </div>
     <ajoutModal v-show="showModal" @close-modal="showModal = false"/>
-    <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
+    <SavedModal v-show="showSaved" @close-modal="showSaved = false"/>
     <produitModal v-show="showProduit" @close-modal="showProduit = false"/>
-
+  <!-- Footer -->
+  <footer class="text-center text-lg-start bg-dark text-white">
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
+      <!-- Section: Social media -->
+      <section
+        class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
+      >
+        <!-- Left -->
+        <div class="me-5 d-none d-lg-block">
+          <img src="../../static/images/logo.png" class="logo-img" alt="">
+        </div>
+        <!-- Left -->
+  
+        <!-- Right -->
+        <div>
+          <a href="" class="me-4 text-reset">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="" class="me-4 text-reset">
+            <i class="fab fa-google"></i>
+          </a>
+          <a href="" class="me-4 text-reset">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <!-- Right -->
+      </section>
+      <!-- Section: Social media -->
+  
+  
+      <!-- Copyright -->
+      <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
+        Copyright © 2022 - Tous droits réservés TocManager
+      </div>
+      <!-- Copyright -->
+    </footer>
+  <!-- Footer -->
 </div>
  
 </template>
 
 <script>
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 import moment from "moment";
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
@@ -152,14 +216,15 @@ import produitModal from './produitModal.vue'
 import Sidebar from '../sidebar.vue'
 import User_info from "../user_info.vue";
 export default {
-    layout: "empty",
+    layout: "voir",
     auth:true,
     components: {
     Sidebar,
     ajoutModal,
     SavedModal,
     produitModal,
-    User_info
+    User_info,
+    vSelect
 },
 
     data () {
@@ -283,7 +348,7 @@ export default {
         },
 
         addLine(){
-            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id')});           
+            this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});           
         },
 
         deleteLine(index){
@@ -489,25 +554,35 @@ export default {
 
 
         productChange(e){
-            if(e.target.options.selectedIndex > -1) {
-                let i = e.target.options[e.target.options.selectedIndex].dataset.i;
-                let index = e.target.options[e.target.options.selectedIndex].dataset.index;
-                let product = this.produits[i];
-                let line = this.form.sell_lines[index]
-                line.price = product.price_sell;
-                line.amount = Number(line.price) * Number(line.quantity);
-                line.amount_after_discount = Number(line.price) * Number(line.quantity);
+            
+            for(let k = 0; k <= this.produits.length; k++){
+                if(this.produits[k].id == e){
+                    let ProdId = this.produits[k].id
+                    let ProdPrice = this.produits[k].price_sell
+                    this.form.sell_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
+                    this.form.sell_lines.splice(this.form.sell_lines.length - 2, 1);                  
+                    this.taxChange()
+                    break;
+                }
+            }
+            // if(e.target.options.selectedIndex > -1) {
+            //     let i = e.target.options[e.target.options.selectedIndex].dataset.i;
+            //     let index = e.target.options[e.target.options.selectedIndex].dataset.index;
+            //     let product = this.produits[i];
+            //     let line = this.form.sell_lines[index]
+            //     line.price = product.price_sell;
+            //     line.amount = Number(line.price) * Number(line.quantity);
+            //     line.amount_after_discount = Number(line.price) * Number(line.quantity);
                     
                 
-                let sum = 0;
-                for (let j = 0; j < this.form.sell_lines.length; j++) {
-                    sum += this.form.sell_lines[j].amount_after_discount;
-                }
-                this.form.amount_ht = sum;
-                this.form.tax =0
-                this.taxChange()
-                // console.log(sum); 
-            }    
+            //     let sum = 0;
+            //     for (let j = 0; j < this.form.sell_lines.length; j++) {
+            //         sum += this.form.sell_lines[j].amount_after_discount;
+            //     }
+            //     this.form.amount_ht = sum;
+            //     this.form.tax =0
+            //     this.taxChange()
+            // }    
         },
    
     },
@@ -516,6 +591,43 @@ export default {
 </script>
 
 <style scoped>
+
+
+.table-col{
+    width: 15%;
+}
+.table-cole{
+    width: 10%;
+}
+
+.codeSearch-results{
+    border: 1px solid ;
+    /* width: 14%; */
+    position: absolute;
+    z-index: 99;
+    background-color: #fefefe;
+}
+
+.codeSearch-results a{
+    color: #605050;
+    text-decoration: none;
+}
+
+.codeSearch-results ul{
+    list-style: none;
+    overflow: auto;
+    padding: 0;
+    height: 200px;
+    text-align: left;
+}
+
+.codeSearch-results li{
+    padding: 2px 10px;
+}
+
+.codeSearch-results li:hover{
+    background-color: rgb(103, 180, 247);
+}
 .select2-cli{
     border: 1px solid ;
     width: 14%;
@@ -543,6 +655,11 @@ export default {
 
 .select2-cli li:hover{
     background-color: rgb(103, 180, 247);
+}
+
+.close-img {
+    width: 25px;
+    cursor: pointer;
 }
 
 .select2-prod{
@@ -580,12 +697,12 @@ export default {
 }
 
 .app-main__outer{
-  overflow: auto; 
-  margin: 0 5%;
+  overflow: auto;
+  margin: 0 2%;
 }
 
 .commande{
-    margin: 5% 10%;
+    margin: 5%;
 }
 
 
@@ -600,14 +717,11 @@ export default {
     /* margin-right: 50%; */
 }
 
-
-
-
 .btn-ajout{
     margin-top: 9%;
     border: 1px solid #53af57;
     padding: 10px;
-    /* width: 100px; */
+    width: 100px;
     font-size: 10px;
     border-radius: 15px;
     text-align: center;
@@ -619,15 +733,20 @@ export default {
 .btn-ajout i{
     font-size: 14px;
 }
-.btn-ajout:hover{
-    background-color: #fefefe;
-    color: rgb(0, 0, 0);
-}
+
+
 .facture-date{
     margin-top: 5%;
     font-size: 18px;
     margin-right: 10%;
 }
+
+.btn-ajout:hover{
+    background-color: #fefefe;
+    color: rgb(0, 0, 0);
+}
+
+
 .facture-date .creation{
     text-decoration: underline;
     font-weight: bold;
@@ -643,37 +762,32 @@ export default {
     margin-right: 10px;
 }
 .ajout-article{
-    margin: 4%;
+    /* margin-top: ; */
     text-align: center;
     background-color: rgb(238, 134, 64);
     border-radius: 10px;
     padding: 12px;
     cursor: pointer;
+    width: 350px;
 }
 
-.commande{
-    margin: 50px;
+.code_recherche input{
+    height: 45px;
+    margin: 20px 0;
+}
+
+.code_recherche .btn{
+    height: 40px;
 }
 
 
-form {
-    /* width: 90%; */
-    padding: 30px;
-
-}
 .modal .input-form {
     display: flex;
     flex-direction: column-reverse;
     margin: 1.2em 0;
     height: 50px;
 }
-
-.error{               
-    color: red;
-    margin-bottom: -10%;
-    font-size: 12px;
-}
-        
+     
 
 .modal input {
     padding: 8px;
@@ -722,7 +836,7 @@ input[type=submit] {
     margin: 8px 0;
     border: 1px solid #3c05f1;
     cursor: pointer;
-    width: 40%;
+    width: 60%;
     font-size: 15px;
 }
 
@@ -747,6 +861,8 @@ thead tr{
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(140, 140, 250);
 }
+
+
 
 button {
   margin: 25px;
@@ -815,6 +931,14 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
 }
 
 @media screen and (max-width: 900px) {
+    .select2-cli{
+        width: 57%;
+    }
+
+    .select2-prod{
+        width: 30%;
+    }
+
     .add_buttons{
         margin: 50% 0;
     }
@@ -827,7 +951,7 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
         margin-right: 0;
         margin: 10px 5px;
         border: 1px solid darkblue;
-        padding: 50px ;
+        padding: 5px ;
     }
 
     .facture-date{

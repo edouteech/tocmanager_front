@@ -58,7 +58,7 @@
                         </div> 
                     </div>                    
                 </div>
-                {{ form.sell_lines }}
+                <!-- {{ form.sell_lines }} -->
                 <div class="commande table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -587,7 +587,7 @@ export default {
 
 
         productChange(e){
-            console.log(e);
+            // console.log(e);
             for(let k = 0; k <= this.produits.length; k++){
                 if(this.produits[k].id == e){
                     let ProdId = this.produits[k].id
