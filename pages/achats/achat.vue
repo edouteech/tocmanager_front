@@ -74,7 +74,7 @@
                                         :options="produits"
                                         :reduce="(produit) => produit.id"
                                         append-to-body
-                                        @input="productChange"
+                                        @input="productChange(line.product_id, index)"
                                     />
                                     <!-- <select class="form-control " v-model="line.product_id" id="" @change="productChange">
                                         <option disabled value="">Choisissez...</option> 
@@ -431,14 +431,18 @@ export default {
                 }   
         },
 
-        productChange(e){
+        productChange(IdProduit, IndexSellLines){
             
             for(let k = 0; k <= this.produits.length; k++){
-                if(this.produits[k].id == e){
+                if(this.produits[k].id == IdProduit){
                     let ProdId = this.produits[k].id
                     let ProdPrice = this.produits[k].price_buy
-                    this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
-                    this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1); 
+                    this.form.sell_lines[IndexSellLines].product_id = ProdId
+                    this.form.sell_lines[IndexSellLines].price = ProdPrice
+                    this.form.sell_lines[IndexSellLines].quantity = 1
+                    this.form.sell_lines[IndexSellLines].amount = ProdPrice
+                    // this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
+                    // this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1); 
                     let sum = 0;
                     for (let j = 0; j < this.form.buy_lines.length; j++) {
                         sum += this.form.buy_lines[j].amount_after_discount;
