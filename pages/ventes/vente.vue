@@ -619,6 +619,7 @@ export default {
                     this.form.sell_lines[IndexSellLines].product_id = ProdId
                     this.form.sell_lines[IndexSellLines].price = ProdPrice
                     this.form.sell_lines[IndexSellLines].quantity = 1
+                    this.form.sell_lines[IndexSellLines].discount = 0
                     this.form.sell_lines[IndexSellLines].amount = ProdPrice
                     this.form.sell_lines[IndexSellLines].amount_after_discount = ProdPrice
                     // this.form.sell_lines.splice(this.form.sell_lines.length - 2, 1);  
