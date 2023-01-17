@@ -609,9 +609,8 @@ export default {
 
 
         productChange(IdProduit, IndexSellLines){
-            console.log(IdProduit);
-            console.log(IndexSellLines);
-            
+            // console.log(IdProduit);
+            // console.log(IndexSellLines);
             for(let k = 0; k <= this.produits.length; k++){
                 if(this.produits[k].id == IdProduit){
                     let ProdId = this.produits[k].id
