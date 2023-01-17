@@ -77,7 +77,7 @@
                                     :options="produits"
                                     :reduce="(produit) => produit.id"
                                     append-to-body
-                                    @input="productChange"
+                                    @input="productChange(line.product_id, index)"
                                 />
                             </td>
                             <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
@@ -420,13 +420,18 @@ export default {
                 }   
         },
 
-        productChange(e){
+        productChange(IdProduit, IndexBuyLines){
             for(let k = 0; k <= this.produits.length; k++){
-                if(this.produits[k].id == e){
+                if(this.produits[k].id == IdProduit){
                     let ProdId = this.produits[k].id
                     let ProdPrice = this.produits[k].price_buy
-                    this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
-                    this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1);  
+                    this.form.buy_lines[IndexBuyLines].product_id = ProdId
+                    this.form.buy_lines[IndexBuyLines].price = ProdPrice
+                    this.form.buy_lines[IndexBuyLines].quantity = 1
+                    this.form.buy_lines[IndexBuyLines].discount = 0
+                    this.form.buy_lines[IndexBuyLines].amount = ProdPrice
+                    // this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
+                    // this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1);  
                     let sum = 0;
                     let lineDestroy = 0
                     for (let j = 0; j < this.form.buy_lines.length; j++) {
