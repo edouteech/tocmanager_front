@@ -1,7 +1,7 @@
 <template>
     <div class="modal-overlay" @click="$emit('close-modal')">
       <div class="modaler text-center py-5" @click.stop>
-              <strong>Voulez vous supprimer cette vente ???</strong><br><br>
+              <strong>Voulez vous supprimer ces encaissements ???</strong><br><br>
               <div class="d-flex">
                 <button class="btn btn-danger mx-auto" @click.prevent ="sup()">
                         Oui
@@ -20,23 +20,25 @@
   <script>
     export default {
       auth:true,
-      props: ['identifiant'],
-      name: 'deleteModal',
+      props: ['ids'],
+      name: 'deleteMultipleModal',
 
       methods: {
         sup(){
-            this.$axios.delete('/sells/' +this.identifiant,{params: {
-            compagnie_id: localStorage.getItem('auth.company_id')
-          }
-          }).then(response =>
-        //   console.log(response.data.data);
+        //   console.log(this.ids);
+          this.$axios.post('/encaissements/multipleDelete',
             {
-              this.$emit('conf', { message: this.identifiant})
+              encaissement_ids: this.ids,
+              compagnie_id: localStorage.getItem('auth.company_id')
+            })
+            .then(response => {
+            // console.log(response);
+            this.$emit('conf', { message: this.ids})
             if(response.data.status == 'success'){
                 this.$emit('close-modal')
             }
-            }
-          )   
+            
+          })
         },
       }
   

@@ -6,6 +6,13 @@
       </div>                 
               <form action="" method="POST"> 
                 <h4 class="text-center">Abonnement d'entreprise</h4><br>
+                
+                <div class="alert alert-warning justify-content-center" role="alert"  v-if="this.plan_souscris == 1">
+                  Votre type d'abonnement en cours est la <strong>Formule Basique</strong>
+                </div>
+                <div class="alert alert-warning justify-content-center" role="alert"  v-if="this.plan_souscris == 2">
+                  Votre type d'abonnement en cours est la <strong>Formule Premium</strong>
+                </div>
                 <div class="input-form">					
                     <label class="title">Type d'abonnement</label>
                     <select class="form-control" v-model="form.plan" required>
@@ -32,11 +39,11 @@
   <script>
     export default {
       name: 'abonnementModal',
-      props : ['compagnie'],
+      props : ['compagnie', 'plan_souscris'],
       data () {
         return{
             form: {
-                plan: '',
+                plan: this.plan_souscris,
                 number: ''
             },
             plans: '',
@@ -45,13 +52,8 @@
       },
 
       mounted(){
-        this.$axios.get('/index/plans')        
-        .then(response => 
-        {
-            // console.log(response);
-            this.plans = response.data.data
-
-        })  
+        this.listPlan()
+        this.abonnementEnCours()
       },
       
       methods: {
@@ -63,7 +65,7 @@
           })        
             .then(response => 
             {
-                console.log(response);
+                // console.log(response);
                 if(response.data.status == "success"){
                     this.$router.push({path:'/admin/compagnies/list_compagnie', })
                     this.$toast('Abonnement ajouté !!!', {
@@ -72,11 +74,28 @@
                 }
                 else{
                     this.error = response.data.message
-                    // this.$router.push({path:'/categorie/add_client'});
                 }
             })  
               
         },
+
+        abonnementEnCours(){
+          this.$axios.get('/compagnie/suscribed/plan/'+this.compagnie)
+              .then(response => 
+                {
+                  console.log(response.data);
+                })
+        },
+
+        listPlan(){
+          this.$axios.get('/index/plans')        
+          .then(response => 
+          {
+              // console.log(response);
+              this.plans = response.data.data
+
+          })  
+        }
       }
   }
   </script>

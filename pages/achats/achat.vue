@@ -16,19 +16,14 @@
             <form action="" method="POST">
                 <div class="cadre-haut">             
                     <div class="ajout-client">  
-                        <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
-                        <div class="select2-cli" v-if="afficheCli !=0"> 
-                            <div class="close d-flex justify-content-end" @click="go()">
-                                <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
-                            </div>
-                            <ul>
-                                <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="">{{acteur.name}}</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.supplier_id">
-                        {{errors.supplier_id}}
-                        </div>     -->
+                        <v-select 
+                            placeholder="Choississez le fournisseur"
+                            v-model="form.supplier_id"
+                            label="name"
+                            :options="fournisseurs"
+                            :reduce="(fournisseur) => fournisseur.id"
+                            append-to-body
+                        />
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
                         </button>                
@@ -71,18 +66,27 @@
                         
                         <tbody>
                             <tr v-for="(line, index) in form.buy_lines" :key="index">
-                                <td>
-                                    <select class="form-control " v-model="line.product_id" id="" @change="productChange">
+                                <td class="table-coll">
+                                    <v-select 
+                                        placeholder="Choississez..."
+                                        v-model="line.product_id"
+                                        label="name"
+                                        :options="produits"
+                                        :reduce="(produit) => produit.id"
+                                        append-to-body
+                                        @input="productChange"
+                                    />
+                                    <!-- <select class="form-control " v-model="line.product_id" id="" @change="productChange">
                                         <option disabled value="">Choisissez...</option> 
                                         <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
-                                    </select>
+                                    </select> -->
                                 </td>
-                                <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
-                                <td><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
-                                <!-- <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
-                                <td><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required></td>
-                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger " aria-hidden="true"></i></td>
+                                <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
+                                <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
+                                <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
+                                <td class="table-col"><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required disabled></td>
+                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
                     </table>  
@@ -131,6 +135,8 @@
 </template>
 
 <script>
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 import moment from "moment";
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
@@ -155,7 +161,8 @@ export default {
         ajoutModal, 
         SavedModal,
         produitModal,
-        Userinfo
+        Userinfo,
+        vSelect
     },
 
     data () {
@@ -194,7 +201,8 @@ export default {
             afficheCli: 0,
             afficheProd: 0,
             codeProd: '',
-            codeError: null
+            codeError: null,
+            codes: '',
         }
     },
 
@@ -222,18 +230,18 @@ export default {
         },
 
         searchProd(){
-        this.afficheProd =1
-        this.$axios.get('/products',{params: {
-            compagnie_id: localStorage.getItem('auth.company_id'),
-            search: this.element_searchProd,
-            is_paginated: 0
-        }
-        })
-        .then(response => {
-            // console.log(response.data);
-            this.designations = response.data.data 
-        
-        })
+            this.afficheProd =1
+            this.$axios.get('/products',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                search: this.element_searchProd,
+                is_paginated: 0
+            }
+            })
+            .then(response => {
+                // console.log(response.data);
+                this.designations = response.data.data 
+            
+            })
         },
 
 
@@ -244,18 +252,18 @@ export default {
         },
 
         searchCli(){
-        this.afficheCli =1
-        this.$axios.get('/suppliers',{params: {
-            compagnie_id: localStorage.getItem('auth.company_id'),
-            search: this.element_searchCli,
-            is_paginated: 0
-        }
-        })
-        .then(response => {
-            // console.log(response.data);
-            this.acteurs = response.data.data 
-        
-        })
+            this.afficheCli =1
+            this.$axios.get('/suppliers',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                search: this.element_searchCli,
+                is_paginated: 0
+            }
+            })
+            .then(response => {
+                // console.log(response.data);
+                this.acteurs = response.data.data 
+            
+            })
         },
 
         payment(){
@@ -267,6 +275,8 @@ export default {
                 // console.log(response); 
                 this.methodes = response.data.data })
         },
+
+
         addLine(){
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});
         },
@@ -333,7 +343,7 @@ export default {
                     payment: this.form.payment,
                     compagnie_id: localStorage.getItem('auth.company_id')
                     }).then(response =>{ 
-                        console.log( response ) 
+                        // console.log( response ) 
                         this.error = response.data.message
                         if(response.data.status == "success"){
                             this.$router.push({path:'/achats/SavedModal',})
@@ -413,22 +423,37 @@ export default {
         },
 
         productChange(e){
-            if(e.target.options.selectedIndex > -1) {
-                let i = e.target.options[e.target.options.selectedIndex].dataset.i;
-                let index = e.target.options[e.target.options.selectedIndex].dataset.index;
-                let product = this.produits[i];
-                let line = this.form.buy_lines[index]
-                line.price = product.price_buy;
-                line.amount = Number(line.price) * Number(line.quantity);
+            
+            for(let k = 0; k <= this.produits.length; k++){
+                if(this.produits[k].id == e){
+                    let ProdId = this.produits[k].id
+                    let ProdPrice = this.produits[k].price_buy
+                    this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
+                    this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1); 
+                    let sum = 0;
+                    for (let j = 0; j < this.form.buy_lines.length; j++) {
+                        sum += this.form.buy_lines[j].amount_after_discount;
+                    }
+                    this.form.amount_ht = sum; 
+                    break;
+                }
+            }
+
+            // if(e.target.options.selectedIndex > -1) {
+            //     let i = e.target.options[e.target.options.selectedIndex].dataset.i;
+            //     let index = e.target.options[e.target.options.selectedIndex].dataset.index;
+            //     let product = this.produits[i];
+            //     let line = this.form.buy_lines[index]
+            //     line.price = product.price_buy;
+            //     line.amount = Number(line.price) * Number(line.quantity);
                     
                 
-                let sum = 0;
-                for (let j = 0; j < this.form.buy_lines.length; j++) {
-                    sum += this.form.buy_lines[j].amount;
-                }
-                this.form.amount = sum;
-                // console.log(sum); 
-            }
+            //     let sum = 0;
+            //     for (let j = 0; j < this.form.buy_lines.length; j++) {
+            //         sum += this.form.buy_lines[j].amount;
+            //     }
+            //     this.form.amount = sum;
+            // }
 
                 
         },
@@ -454,6 +479,13 @@ export default {
 </script>
 
 <style scoped>
+
+.table-col{
+    width: 18%;
+}
+.table-cole{
+    width: 12%;
+}
 .select2-cli{
     border: 1px solid ;
     width: 14%;

@@ -16,9 +16,22 @@
           </form> -->
         <br><br>
         <div class="lignes"></div><br>
-            <p class="text-center fsize-3">Nom de la compagnie :<strong class="text-uppercase"> {{compagny}}</strong></p>
-            <p class="text-center fsize-2">Email de la compagnie :<strong> {{email}}</strong></p>
-            <p class="text-center fsize-2">Numéro de téléphone de la compagnie :<strong class="text-uppercase"> {{phone}}</strong></p>
+            <div class="row col-md-12">
+                <div class="col-md-6">
+                    <p class=" fsize-2">Nom de la compagnie :<strong class="text-uppercase"> {{compagny}}</strong></p>
+                    <p class=" fsize-1">Email de la compagnie :<strong> {{email}}</strong></p>
+                    <p class=" fsize-1">Numéro de téléphone de la compagnie :<strong class="text-uppercase"> {{phone}}</strong></p>
+                </div>
+                <div class="col-md-6 trait-abonnement">
+                    <p class=" fsize-2">Type d'abonnement :
+                        <strong class="text-uppercase" v-if="info_abonnement.plan_id == 1">Abonnement mensuel</strong>
+                        <strong class="text-uppercase" v-else>Abonnement annuel</strong>
+                    </p>
+                    <p class=" fsize-1" v-if="info_abonnement.ends_at">Fin abonnement :<strong> {{dateFin_abonnement}}</strong></p>
+                    <p class=" fsize-1" v-else>Fin de la période d'essai :<strong> {{dateFin_essai}}</strong></p>
+                    <!-- <p class=" fsize-1">Numéro de téléphone de la compagnie :<strong class="text-uppercase"> {{phone}}</strong></p> -->
+                </div>
+            </div>
         <div class="lignes"></div><br><br><br><br>
 
         <p class="text-center fsize-2">Liste des utilisateurs de la compagnie</p>
@@ -197,6 +210,7 @@
 
 <script>
 import Sidebar from '../sidebar.vue'
+  import moment from "moment";
 export default {
   auth: true,
   layout: "empty",
@@ -214,34 +228,57 @@ export default {
         compagnie_users: [],
         products: [],
         suppliers: [],
-        users: []
+        users: [],
+        info_abonnement: "",
+        dateFin_abonnement: "",
+        dateFin_essai: ""
     }
+    },
+
+    methods:{
+        recup(){
+            this.$axios.get('/admin/compagnies/'+ this.$route.params.id)
+            .then(response => {
+                // console.log(response.data.data[0]);
+                this.compagny = response.data.data[0].name
+                this.email = response.data.data[0].email
+                this.phone = response.data.data[0].phone
+                this.categories = response.data.data[0].categories
+                this.clients = response.data.data[0].clients
+                this.suppliers = response.data.data[0].suppliers
+                this.products = response.data.data[0].products
+                this.users = response.data.data[0].compagnie_users
+                
+            }) 
+        },
+        
+        abonnement(){
+            this.$axios.get('/index/abonnement/compagnie/'+ this.$route.params.id)
+            .then(response => {
+                console.log(response.data.data);
+                this.info_abonnement = response.data.data[0]
+                this.dateFin_abonnement = moment(response.data.data[0].ends_at).format("D MMM YYYY, h:mm:ss a")
+                this.dateFin_essai = moment(response.data.data[0].trial_ends_at).format("D MMM YYYY, h:mm:ss a")
+                
+            }) 
+        }
     },
     
     mounted(){
-        this.$axios.get('/admin/compagnies/'+ this.$route.params.id)
-        .then(response => {console.log(response.data.data[0]);
-            this.compagny = response.data.data[0].name
-            this.email = response.data.data[0].email
-            this.phone = response.data.data[0].phone
-            this.categories = response.data.data[0].categories
-            this.clients = response.data.data[0].clients
-            this.suppliers = response.data.data[0].suppliers
-            this.products = response.data.data[0].products
-            this.users = response.data.data[0].compagnie_users
-            
-        }) 
+        this.recup()
+        this.abonnement()
     },
 
-    methods: {
-    
-    
-    },
     
 }
 </script>
 
 <style scoped>
+.trait-abonnement{
+    border-left: 2px solid black;
+    margin-bottom: 15px;
+}
+
 li:hover{
     background-color: rgb(207, 237, 247);
 }

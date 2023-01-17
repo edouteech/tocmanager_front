@@ -53,6 +53,7 @@
 </script>
 
 <style scoped>
+
 .reponse{
     display: flex;
     
@@ -65,6 +66,7 @@
     border: 1px solid;
     cursor: pointer;
     margin-left: 30%;
+    border-radius: 10px;
 }
 .no{
     padding: 10px;
@@ -72,6 +74,7 @@
     text-align: center;
     border: 1px solid;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .yes:hover{
@@ -91,18 +94,18 @@
   right: 0;
   display: flex;
   justify-content: center;
-  background-color: transparent;
+  background-color: rgba(239, 239, 239, 0.803);;
 }
 
 .modaler {
   text-align: center;
-  background-color: rgb(253, 167, 121);
+  background-color: rgb(209, 0, 0);;
   height: 250px;
   width: 500px;
   margin-top: 12%;
+  border-radius: 15px;
   padding: 30px 0;
 }
-
 .close {
   margin: 12% 0 0 16px;
   cursor: pointer;

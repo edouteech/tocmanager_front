@@ -23,11 +23,27 @@
       </div>
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
         {{error}} 
-      </div>
+      </div> 
+          <!-- <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+            </button>
+          </div> -->
       <div class="table-responsive search_result" v-if="this.element_search != ''">
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+                <th v-if="selection != 0"></th>
                 <th>Noms de Catégorie</th>
                 <th>Catégories parentes</th>
                 <th>Actions</th>
@@ -35,6 +51,7 @@
           </thead>
           <tbody>
            <tr  v-for="(result, j) in results" :key="j" >
+              <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
               <td>{{result.name}}</td>
               <td v-if="result.parent != null">{{result.parent.name}}</td>
               <td v-else>---</td>
@@ -55,6 +72,7 @@
         <table class="table table-hover" v-if="this.element_search == ''">
             <thead>
               <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
                   <th>Noms de Catégorie</th>
                   <th>Catégories parentes</th>
                   <th>Actions</th>
@@ -62,6 +80,7 @@
             </thead>
             <tbody>
               <tr  v-for="(categorie, i) in categories" :key="i" >
+                <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(categorie.id)" :value="categorie.id"/></div></td>
                 <td>{{categorie.name}}</td>
                 <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
                 <td v-else>---</td>
@@ -103,7 +122,7 @@
             </select>
           </div>
           </form></div>
-        <nav class="d-flex" aria-label="Page navigation example " v-if="res_data != null ">
+        <nav class="d-flex nav" aria-label="Page navigation example " v-if="res_data != null ">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
             <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
@@ -115,7 +134,8 @@
  <!-- <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' :stock= 'identifiant3' :valorisation= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>   -->
  <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
  <exportModal v-show="exportModal" @close-modal="exportModal = false"/>  
- <pdfModal v-show="pdfModal" @close-modal="pdfModal = false"/>  
+ <pdfModal v-show="pdfModal" @close-modal="pdfModal = false"/> 
+      <deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/>   
 </div>
 </template>
 
@@ -126,6 +146,7 @@ import exportModal from './exportModal.vue'
 import voirCategorie from './voir_categorie.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
+  import deleteMultipleModal from './deleteMultipleModal.vue'; 
 export default {
     layout: "empty",
     auth: true,
@@ -135,7 +156,8 @@ export default {
       Userinfo,
       deleteModal,
       exportModal,
-      pdfModal
+      pdfModal,
+      deleteMultipleModal
     },
 
     data () {
@@ -164,7 +186,10 @@ export default {
         showModalDelete: false,
         exportModal: false,
         pdfModal: false,
-        role: ""
+        role: "",
+        checks: [],
+        selection: 0,
+        showModalMultipleDelete: false
                 
                 
       }
@@ -179,6 +204,25 @@ export default {
       pdf(){
        this.pdfModal = true 
       },
+
+      multipleSup(){
+          this.showModalMultipleDelete = true
+      },
+
+      selectionner(){
+        this.selection = 1
+      },
+
+      deselectionner(){
+        this.selection = 0
+        this.checks = []
+      },
+
+      checkbox(id){
+        // console.log(id)
+        console.log(this.checks)
+      },
+
       
       submitFile(){
           let formData = new FormData();
@@ -288,7 +332,7 @@ export default {
 
 <style scoped>
 
-nav{
+.nav{
   overflow: auto;
 }
 

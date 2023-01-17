@@ -5,7 +5,7 @@
         </nav>
     
         <div class="app-main__outer p-5">
-          <h4>Liste des compagnies de la plateforme</h4><br>
+          <h4>Liste des compagnies de la plateforme</h4><hr><br>
           <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
               <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
@@ -59,31 +59,28 @@
           </div>
             <br><br>
         <!-- <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br> -->
-            <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
-              <ul class="pagination">
-                <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-                <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-                
-                <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-              </ul>
-              <div class="d-flex">
-              <label class="title mt-1">Affichage :</label> 
-              <form action="">
-              <div class="nombre">
-                <!-- -->
-                <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                    <option disabled value>10</option>
-                    <option value="25" >25</option>
-                    <option value="50">50</option>
-                    <option value="10">100</option>
-                </select>
-              </div>
-              </form>
-            </div>
-            </nav>
+        <form action="">
+                <div class="nombre d-flex my-4 col-md-2">
+                    <label class="title mx-3 my-2"><strong> Affichage:</strong></label> 
+                    <select class="form-control " v-model="form.nombre" required @click.prevent="refresh()">
+                        <option disabled value>10</option>
+                        <option value="25" >25</option>
+                        <option value="50">50</option>
+                        <option value="10">100</option>
+                    </select>
+                </div>
+            </form>
+          <nav aria-label="Page navigation example "  class="d-flex nav" v-if="res_data != null">
+            <ul class="pagination">
+              <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+              <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+              
+              <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+            </ul>
+          </nav>
      </div><br> 
     <!-- <voirCompagnie :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/> -->
-    <abonnementModal :compagnie = 'identifiant1' v-show="showModal" @close-modal="showModal = false"/>
+    <abonnementModal :compagnie = 'identifiant1' :plan_souscris = 'identifiant2' v-show="showModal" @close-modal="showModal = false"/>
 </div>
     
     </template>
@@ -206,7 +203,14 @@
                    
             // },
 
-            abonne(id){
+            async abonne(id){
+              await this.$axios.get('/compagnie/suscribed/plan/'+id)
+              .then(response => 
+                {
+                  // console.log(response.data);
+                  this.identifiant2 = response.data.data.id
+                })
+        
               this.showModal = true
               this.identifiant1 = id
             }
@@ -217,6 +221,9 @@
     
     <style scoped>
     
+  .nav{
+    overflow: auto;
+  } 
     .nombre{
       margin: 0 ;
     }
@@ -236,7 +243,7 @@
       cursor: pointer;
     }
     .table{
-        margin-top: 5%;
+        margin-top: 2%;
       text-align: center;
     }        
     
