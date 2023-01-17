@@ -20,12 +20,13 @@
                     <div class="ajout-client">  
                         <v-select 
                             placeholder="Choississez le client"
-                            v-model="form.client_id"
+                            v-model="selectedClient"
                             label="name"
                             :options="clients"
                             :reduce="(client) => client.id"
                             append-to-body
                         />
+                          
                         <!-- <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
                             <div class="select2-cli" v-if="afficheCli !=0 "> 
                                 <div class="close d-flex justify-content-end" @click="go()">
@@ -283,7 +284,8 @@ export default {
             recherche: '',
             echeance: "",
             codeProd: '',
-            codeError: null
+            codeError: null,
+            selectedClient: ''
         }
     },
 
@@ -450,6 +452,7 @@ export default {
         },
 
         async submit(){
+            // console.log(this.selectedClient);
             this.load = true
             await  this.$axios.post('/sells',{
               date_sell: this.form.date_sell,
@@ -460,7 +463,7 @@ export default {
               amount_ttc: this.form.amount_ttc,
               amount_received: this.form.amount_received,
               user_id: this.user,
-              client_id: this.form.client_id,  
+              client_id: this.selectedClient,  
               sell_lines: this.form.sell_lines,
               payment: this.form.payment,
               echeance: this.echeance,
@@ -499,7 +502,13 @@ export default {
           }).then(response => {
             // console.log(response.data.data);
             this.clients = response.data.data
-            })
+            for(let k = 0; k <= this.clients.length; k++){
+                if(this.clients[k].default_client == true){
+                    this.selectedClient = this.clients[k].id
+                    break;
+                }
+            }
+          })
         },
 
         recupProduct(){
@@ -521,6 +530,7 @@ export default {
         },
 
         reduceAmount(){
+            this.form.tax = 0
             var red = this.form.discount;
             var percent = red.indexOf("%"); 
             let sum = 0;
@@ -553,7 +563,8 @@ export default {
                 sum += this.form.sell_lines[j].amount_after_discount;
             }
             this.form.amount_ht = sum;
-            this.form.tax =0
+            this.form.discount = 0
+            this.form.tax = 0
             this.taxChange()
                 
         },
@@ -577,6 +588,8 @@ export default {
                     this.form.amount_ht = sum;
                     this.form.amount_ttc = sum;
                     this.form.amount =  this.form.amount_ttc;
+                    this.form.discount = 0
+                    this.form.tax = 0
                     this.taxChange()
                 } 
                 else{
@@ -588,6 +601,8 @@ export default {
                     this.form.amount_ht = sum;
                     this.form.amount_ttc = sum;
                     this.form.amount =  this.form.amount_ttc;
+                    this.form.discount = 0
+                    this.form.tax = 0
                     this.taxChange()
                 }   
         },
@@ -595,6 +610,7 @@ export default {
 
         productChange(e){
             // console.log(e);
+            
             for(let k = 0; k <= this.produits.length; k++){
                 if(this.produits[k].id == e){
                     let ProdId = this.produits[k].id
@@ -605,7 +621,9 @@ export default {
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
                         sum += this.form.sell_lines[j].amount_after_discount;
                     }
-                    this.form.amount_ht = sum;                
+                    this.form.amount_ht = sum; 
+                    this.form.discount = 0
+                    this.form.tax = 0               
                     this.taxChange()
                     break;
                 }

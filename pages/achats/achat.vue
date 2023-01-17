@@ -18,7 +18,7 @@
                     <div class="ajout-client">  
                         <v-select 
                             placeholder="Choississez le fournisseur"
-                            v-model="form.supplier_id"
+                            v-model="selectedFournisseur"
                             label="name"
                             :options="fournisseurs"
                             :reduce="(fournisseur) => fournisseur.id"
@@ -203,6 +203,7 @@ export default {
             codeProd: '',
             codeError: null,
             codes: '',
+            selectedFournisseur: ""
         }
     },
 
@@ -338,7 +339,7 @@ export default {
                     amount: this.form.amount,
                     amount_sent: this.form.amount_sent,
                     user_id: this.user,
-                    supplier_id: this.form.supplier_id,  
+                    supplier_id: this.selectedFournisseur,  
                     buy_lines: this.form.buy_lines,
                     payment: this.form.payment,
                     compagnie_id: localStorage.getItem('auth.company_id')
@@ -370,7 +371,14 @@ export default {
                 }
           }).then(response => {
             // console.log(response.data.data);
-            this.fournisseurs = response.data.data})
+            this.fournisseurs = response.data.data
+            for(let k = 0; k <= this.fournisseurs.length; k++){
+                if(this.fournisseurs[k].default_supplier == true){
+                    this.selectedFournisseur = this.fournisseurs[k].id
+                    break;
+                }
+            }
+          })
         },
 
         recupProduct(){
@@ -380,7 +388,8 @@ export default {
           }
           }).then(response => {
             // console.log(response.data.data);
-            this.produits = response.data.data}) 
+            this.produits = response.data.data
+          }) 
         },
 
         quantityChange(index){
@@ -401,7 +410,7 @@ export default {
             var str = line.discount;
             var percent = str.indexOf("%"); 
 
-                if(percent !== -1){
+                if(percent != -1){
                     var newStr = str.substring(0, str.length - 1);
                     let calculR = calculQ * Number(newStr);
                     let Rprix = calculR / 100
@@ -434,7 +443,7 @@ export default {
                     for (let j = 0; j < this.form.buy_lines.length; j++) {
                         sum += this.form.buy_lines[j].amount_after_discount;
                     }
-                    this.form.amount_ht = sum; 
+                    this.form.amount = sum; 
                     break;
                 }
             }
