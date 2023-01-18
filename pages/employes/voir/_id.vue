@@ -139,14 +139,14 @@
 
 
                         <div class="row" v-if="form.hierachy">
-                            <label class="title">Supérieur hiérarchique</label>
-                            <div class="form-group col-md-6">
+                            <label class="title mt-4">Supérieur hiérarchique</label>
+                            <div class=" col-md-6">
                                 <label class="title">Nom</label>
                                 <input type="text" class="form-control" v-model="form.hierachy.last_name" autocomplete="off" required  placeholder="" disabled>
                             </div>
 
                             
-                            <div class="form-group col-md-6">
+                            <div class=" col-md-6">
                                 <label class="title">Prénom</label>
                                 <input type="text" class="form-control" v-model="form.hierachy.first_name" autocomplete="off" required  placeholder="" disabled>
                             </div>
