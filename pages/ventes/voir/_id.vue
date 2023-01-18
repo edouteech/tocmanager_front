@@ -19,11 +19,13 @@
 
 
     <div class="app-main__outer p-5">
+      
       <div class="d-flex align-items-end flex-column">
         <!-- <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Impression A4</span></div> -->
         <!-- <div class="other_print mx-5" @click="generatePdf()"><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Autre format d'impression</span></div> -->
         <button type="submit" class="btn btn-success mx-5" @click.prevent="validerFactureNormalise()" v-if="qr_info != null">Valider la facture normalisée</button>
         <button type="submit" class="btn btn-primary mx-5" @click.prevent="genererFactureNormalise()" v-else>Générer la facture normalisée</button>
+        <NuxtLink :to="'/ventes/'+this.$route.params.id"><button type="submit" class="btn btn-dark mx-5 my-3">Modifier la vente</button></NuxtLink> 
       </div>
         <br>
 

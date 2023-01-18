@@ -54,7 +54,7 @@
           </div>
 
           <div class="text-center text-lg-start mt-4 pt-2">
-            <button type="button"  @click.prevent="login()" class="btn btn-primary btn-lg"
+            <button type="button" :disabled="load" @click.prevent="login()" class="btn btn-primary btn-lg"
               style="padding-left: 1rem; padding-right: 1rem;">Se connecter</button>
             <p class="small fw-bold mt-2 pt-1 mb-0">Vous n'avez pas de compte ? <NuxtLink to="/register"  class="link-primary px-2">               
                 Inscription
@@ -89,7 +89,8 @@ export default {
         password: ''
       },
       errors:[],
-      role: ''
+      role: '',
+      load: false,
 
     }
   },
@@ -114,6 +115,7 @@ export default {
       
 
       async login() {
+            this.load = true
         if(this.form.password == "00000000"){
             try {
                   let response = await this.$auth.loginWith('local', { data: this.form })
@@ -134,6 +136,7 @@ export default {
               try {
                 let response = await this.$auth.loginWith('local', { data: this.form })
                 this.error = response.data.message
+                  this.load = false
                 // console.log(response)
                 let verification = response.data.data.original.user.email_verified_at
                 this.$auth.$storage.setUniversal('user_id', response.data.data.original.user.id)

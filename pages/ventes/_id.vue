@@ -82,7 +82,7 @@
                                         :options="produits"
                                         :reduce="(produit) => produit.id"
                                         append-to-body
-                                        @input="productChange"
+                                        @input="productChange(line.product_id, index)"
                                     />
                                     <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                         <option disabled value="">Choisissez...</option>
@@ -355,6 +355,8 @@ export default {
 
         deleteLine(index){
         //   console.log(this.form.sell_lines[index].id);
+            this.form.discount = 0
+            this.form.tax = 0
           if(this.form.sell_lines[index].id){
             this.form.sell_lines[index]["_destroy"] = 1
             let lineDestroy = this.form.sell_lines[index].amount_after_discount
@@ -468,26 +470,30 @@ export default {
         },
 
         reduceAmount(){
+            this.form.tax = 0
             var red = this.form.discount;
             var percent = red.indexOf("%"); 
             let sum = 0;
+            let lineDestroy = 0
             for (let j = 0; j < this.form.sell_lines.length; j++) {
+                if(this.form.sell_lines[j]._destroy){
+                    lineDestroy += this.form.sell_lines[j].amount_after_discount
+                }
                 sum += this.form.sell_lines[j].amount_after_discount;
             }
-
+                let tot = sum - lineDestroy
                 if(percent != -1){
                     var newRed = red.substring(0, red.length - 1);
-                    let calcul1 = sum * Number(newRed);
+                    let calcul1 = tot * Number(newRed);
                     let calcul2 = calcul1 / 100
                     this.form.discount = calcul2
-                    this.form.amount = sum - calcul2;
-                    this.form.amount_ht = sum -calcul2
+                    this.form.amount = tot - calcul2;
+                    this.form.amount_ht = tot -calcul2
                 } 
                 else{
                     this.form.discount = red
-                    this.form.amount = sum - red
-                    this.form.amount_ht = sum -red
-
+                    this.form.amount = tot - red
+                    this.form.amount_ht = tot -red
                 }   
         },
 
@@ -496,11 +502,16 @@ export default {
             line.amount = Number(line.price) * Number(line.quantity);
             line.amount_after_discount = Number(line.price) * Number(line.quantity);
             let sum = 0;
+            let lineDestroy = 0
             for (let j = 0; j < this.form.sell_lines.length; j++) {
+                if(this.form.sell_lines[j]._destroy){
+                    lineDestroy += this.form.sell_lines[j].amount_after_discount
+                }
                 sum += this.form.sell_lines[j].amount_after_discount;
             }
-            this.form.amount_ht = sum;
-            this.form.tax =0
+            this.form.amount_ht = sum - lineDestroy;
+            this.form.discount = 0
+            this.form.tax = 0
             this.taxChange()
                 
         },
@@ -518,36 +529,22 @@ export default {
                     let Rprix = calculR / 100
                     line.amount_after_discount = calculQ - Rprix;
                     let sum = 0;
+                    let lineDestroy = 0
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        if(this.form.sell_lines[j]._destroy){
+                            lineDestroy += this.form.sell_lines[j].amount_after_discount
+                        }
                         sum += this.form.sell_lines[j].amount_after_discount;
                     }
-                    this.form.amount_ht = sum;
-                    this.form.amount_ttc = sum;
+                    this.form.amount_ht = sum - lineDestroy;
+                    this.form.amount_ttc = sum - lineDestroy;
                     this.form.amount =  this.form.amount_ttc;
+                    this.form.discount = 0
+                    this.form.tax = 0
                     this.taxChange()
                 } 
                 else{
                     line.amount_after_discount = calculQ - str;
-                    let sum = 0;
-                    for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount_after_discount;
-                    }
-                    this.form.amount_ht = sum;
-                    this.form.amount_ttc = sum;
-                    this.form.amount =  this.form.amount_ttc;
-                    this.taxChange()
-                }   
-        },
-
-
-        productChange(e){
-            
-            for(let k = 0; k <= this.produits.length; k++){
-                if(this.produits[k].id == e){
-                    let ProdId = this.produits[k].id
-                    let ProdPrice = this.produits[k].price_sell
-                    this.form.sell_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
-                    this.form.sell_lines.splice(this.form.sell_lines.length - 2, 1); 
                     let sum = 0;
                     let lineDestroy = 0
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
@@ -556,7 +553,41 @@ export default {
                         }
                         sum += this.form.sell_lines[j].amount_after_discount;
                     }
-                    this.form.amount_ht = sum - lineDestroy;                  
+                    this.form.amount_ht = sum - lineDestroy;
+                    this.form.amount_ttc = sum - lineDestroy;
+                    this.form.amount =  this.form.amount_ttc;
+                    this.form.discount = 0
+                    this.form.tax = 0
+                    this.taxChange()
+                }   
+        },
+
+
+        productChange(IdProduit, IndexSellLines){
+            
+            for(let k = 0; k <= this.produits.length; k++){
+                if(this.produits[k].id == IdProduit){
+                    let ProdId = this.produits[k].id
+                    let ProdPrice = this.produits[k].price_sell
+                    // this.form.sell_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
+                    // this.form.sell_lines.splice(this.form.sell_lines.length - 2, 1); 
+                    this.form.sell_lines[IndexSellLines].product_id = ProdId
+                    this.form.sell_lines[IndexSellLines].price = ProdPrice
+                    this.form.sell_lines[IndexSellLines].quantity = 1
+                    this.form.sell_lines[IndexSellLines].discount = 0
+                    this.form.sell_lines[IndexSellLines].amount = ProdPrice
+                    this.form.sell_lines[IndexSellLines].amount_after_discount = ProdPrice
+                    let sum = 0;
+                    let lineDestroy = 0
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        if(this.form.sell_lines[j]._destroy){
+                            lineDestroy += this.form.sell_lines[j].amount_after_discount
+                        }
+                        sum += this.form.sell_lines[j].amount_after_discount;
+                    }
+                    this.form.amount_ht = sum - lineDestroy;
+                    this.form.discount = 0
+                    this.form.tax = 0                  
                     this.taxChange()
                     break;
                 }

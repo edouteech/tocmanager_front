@@ -58,8 +58,8 @@
                             <th>Désignation</th>
                             <th>Quantité voulue</th>
                             <th>Prix unitaire</th>
-                            <th>Taux de réduction (%)</th>
-                            <th>Taxe appliquée (%)</th>
+                            <th scope="col">Réduction (Prix ou %)</th>
+                            <!-- <th>Taxe appliquée (%)</th> -->
                             <th>Total</th>                     
                         </tr>
                     </thead>
@@ -77,12 +77,12 @@
                                     :options="produits"
                                     :reduce="(produit) => produit.id"
                                     append-to-body
-                                    @input="productChange"
+                                    @input="productChange(line.product_id, index)"
                                 />
                             </td>
                             <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
-                            <td class="table-col"><input class="form-control" type="number" v-model="form.discount" min="0" max="0" autocomplete="off" required></td>
+                                <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
                             <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                     -->
                             <td class="table-col"><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required disabled></td>
                             <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
@@ -188,7 +188,7 @@ export default {
             let achat = response.data.data[0];
             // this.categories = response.data.data
             this.form.date_buy = moment(achat.date_buy).format("YYYY-MM-DDThh:mm"),
-            this.element_searchCli = achat.supplier.name,
+            this.form.supplier_id = achat.supplier.name,
             this.form.buy_lines = achat.buy_lines,   
             this.form.tax = achat.tax,
             this.form.discount = achat.discount,
@@ -298,7 +298,7 @@ export default {
             for (let j = 0; j < this.form.buy_lines.length; j++) {
                 sum += this.form.buy_lines[j].amount;
             }
-            // this.form.amount_ht = sum - lineDestroy;
+            // this.form.amount = sum - lineDestroy;
             // this.form.amount_ttc = sum - lineDestroy;
             this.form.amount =  sum - lineDestroy;
           }
@@ -308,7 +308,7 @@ export default {
             for (let j = 0; j < this.form.buy_lines.length; j++) {
                 sum += this.form.buy_lines[j].amount;
             }
-            // this.form.amount_ht = sum;
+            // this.form.amount = sum;
             // this.form.amount_ttc = sum;
             this.form.amount =  sum - lineDestroy;
           }
@@ -374,52 +374,73 @@ export default {
             let line = this.form.buy_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
             let sum = 0;
+            let lineDestroy = 0
             for (let j = 0; j < this.form.buy_lines.length; j++) {
+                if(this.form.buy_lines[j]._destroy){
+                    lineDestroy += this.form.buy_lines[j].amount
+                }
                 sum += this.form.buy_lines[j].amount;
             }
-            this.form.amount = sum;
+            this.form.amount = sum - lineDestroy;
                 
         },
 
         reduceChange(index){
-            let line = this.form.sell_lines[index]
+            let line = this.form.buy_lines[index]
             let calculQ = Number(line.price) * Number(line.quantity)
             var str = line.discount;
             var percent = str.indexOf("%"); 
 
-                if(percent !== -1){
+                if(percent != -1){
                     var newStr = str.substring(0, str.length - 1);
                     let calculR = calculQ * Number(newStr);
                     let Rprix = calculR / 100
                     line.amount = calculQ - Rprix;
                     let sum = 0;
-                    for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount;
+                    let lineDestroy = 0
+                    for (let j = 0; j < this.form.buy_lines.length; j++) {
+                        if(this.form.buy_lines[j]._destroy){
+                            lineDestroy += this.form.buy_lines[j].amount
+                        }
+                        sum += this.form.buy_lines[j].amount;
                     }
-                    this.form.amount = sum;
+                    this.form.amount = sum - lineDestroy;
                 } 
                 else{
                     line.amount = calculQ - str;
                     let sum = 0;
-                    for (let j = 0; j < this.form.sell_lines.length; j++) {
-                        sum += this.form.sell_lines[j].amount;
+                    let lineDestroy = 0
+                    for (let j = 0; j < this.form.buy_lines.length; j++) {
+                        if(this.form.buy_lines[j]._destroy){
+                            lineDestroy += this.form.buy_lines[j].amount
+                        }
+                        sum += this.form.buy_lines[j].amount;
                     }
-                    this.form.amount = sum;
+                    this.form.amount = sum - lineDestroy;
                 }   
         },
 
-        productChange(e){
+        productChange(IdProduit, IndexBuyLines){
             for(let k = 0; k <= this.produits.length; k++){
-                if(this.produits[k].id == e){
+                if(this.produits[k].id == IdProduit){
                     let ProdId = this.produits[k].id
                     let ProdPrice = this.produits[k].price_buy
-                    this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
-                    this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1);  
+                    this.form.buy_lines[IndexBuyLines].product_id = ProdId
+                    this.form.buy_lines[IndexBuyLines].price = ProdPrice
+                    this.form.buy_lines[IndexBuyLines].quantity = 1
+                    this.form.buy_lines[IndexBuyLines].discount = 0
+                    this.form.buy_lines[IndexBuyLines].amount = ProdPrice
+                    // this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
+                    // this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1);  
                     let sum = 0;
+                    let lineDestroy = 0
                     for (let j = 0; j < this.form.buy_lines.length; j++) {
-                        sum += this.form.buy_lines[j].amount_after_discount;
+                        if(this.form.buy_lines[j]._destroy){
+                            lineDestroy += this.form.buy_lines[j].amount
+                        }
+                        sum += this.form.buy_lines[j].amount;
                     }
-                    this.form.amount_ht = sum; 
+                    this.form.amount = sum - lineDestroy; 
                     break;
                 }
             }    
