@@ -389,7 +389,7 @@
                     release_date: this.form.release_date,
                     workplace: this.form.workplace,
                     department: this.form.department,
-                    position_hield: this.position_hield,
+                    position_hield: this.form.position_hield,
                     reg_number: this.form.reg_number,
                     cnss: this.form.cnss,
                     hierachy_id: this.form.hierachy_id,
