@@ -19,17 +19,17 @@
                             <label class="title">Entrer le nom de l'employé</label>
                             <input type="text" class="form-control" v-model="form.last_name" autocomplete="off" required placeholder="Nom">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.last_name">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.last_name">
                             {{errors.last_name}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group ">
                             <label class="title">Entrer le(s) prénom(s) de l'employé</label>
                             <input type="text" class="form-control" v-model="form.first_name" autocomplete="off" required placeholder="Prénoms">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.first_name">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.first_name">
                             {{errors.first_name}}
-                        </div>
+                        </div> -->
                         
                         <div class="form-group">
                             <div class="form-group ">
@@ -41,49 +41,49 @@
                             </select>
                             </div>
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.sex">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.sex">
                             {{errors.sex}}
-                        </div>
+                        </div> -->
             
                         <div class="form-group ">
                             <label class="title">Entrer le numero de téléphone de l'employé</label>
                             <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
                             {{errors.phone}}
-                        </div>
+                        </div> -->
             
                         <div class="form-group">
                             <label class="title">Entrer l'email de l'employé</label>
                             <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="Email" >
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.email">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.email">
                             {{errors.email}}
-                        </div>
+                        </div> -->
                         
                         <div class="form-group ">
                             <label class="title">Entrer le pays de l'employé</label>
                             <input type="text" class="form-control" v-model="form.country" autocomplete="off" required placeholder="Pays">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.country">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.country">
                             {{errors.country}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group ">
                             <label class="title">Entrer la ville de l'employé</label>
                             <input type="text" class="form-control" v-model="form.city" autocomplete="off" required placeholder="Ville">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.city">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.city">
                             {{errors.city}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group ">
                             <label class="title">Entrer l'adresse de l'employé</label>
                             <input type="text" class="form-control" v-model="form.address" autocomplete="off" required placeholder="Addresse">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.address">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.address">
                             {{errors.address}}
-                        </div>
+                        </div> -->
             
                         <div class="form-group">
                             <div class="form-group ">
@@ -97,25 +97,25 @@
                             </select>
                             </div>
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.marital_status">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.marital_status">
                             {{errors.marital_status}}
-                        </div>
+                        </div> -->
             
                         <div class="form-group">
                             <label class="title">Entrer le nombre d'enfant(s)</label>
                             <input type="number" class="form-control" v-model="form.children_count" autocomplete="off" required  placeholder="" >
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.children_count">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.children_count">
                             {{errors.children_count}}
-                        </div>
+                        </div> -->
                         
                         <div class="form-group ">
                             <label class="title">Entrer le lieu de travail de l'employé</label>
                             <input type="text" class="form-control" v-model="form.workplace" autocomplete="off" required placeholder="Lieu de travail">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.workplace">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.workplace">
                             {{errors.workplace}}
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="col-md-6">
@@ -124,17 +124,17 @@
                             <label class="title">Entrer la date d'embauche de l'employé</label>
                             <input type="datetime-local" class="form-control" v-model="form.hiring_date" autocomplete="off" required placeholder="Pays">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.hiring_date">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.hiring_date">
                             {{errors.hiring_date}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group ">
                             <label class="title">Entrer la date de sortie de l'employé</label>
                             <input type="datetime-local" class="form-control" v-model="form.release_date" autocomplete="off" required placeholder="Pays">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.release_date">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.release_date">
                             {{errors.release_date}}
-                        </div>
+                        </div> -->
 
                         <!-- <div class="form-group ">
                             <label class="title">Entrer le lieu de travail de l'employé</label>
@@ -148,35 +148,35 @@
                             <label class="title">Entrer le département de l'employé</label>
                             <input type="text" class="form-control" v-model="form.department" autocomplete="off" required placeholder="Departement">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.department">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.department">
                             {{errors.department}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group ">
                             <label class="title">Entrer le poste occupé par l'employé</label>
                             <input type="text" class="form-control" v-model="form.position_hield" autocomplete="off" required placeholder="Poste">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.position_hield">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.position_hield">
                             {{errors.position_hield}}
-                        </div>
+                        </div> -->
 
                         
                         <div class="form-group">
                             <label class="title">Entrer le numéro de régistre de l'employé</label>
                             <input type="text" class="form-control" v-model="form.reg_number" autocomplete="off" required  placeholder="Num reg" >
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.reg_number">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.reg_number">
                             {{errors.reg_number}}
-                        </div>
+                        </div> -->
 
                         
                         <div class="form-group">
                             <label class="title">Entrer la référence CNSS de l'employé</label>
                             <input type="text" class="form-control" v-model="form.cnss" autocomplete="off" required  placeholder="CNSS" >
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.cnss">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.cnss">
                             {{errors.cnss}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group ">
                             <label class="title">Supérieur hiérarchique</label>
@@ -189,9 +189,9 @@
                                 append-to-body
                             />
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.hierachy_id">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.hierachy_id">
                             {{errors.hierachy_id}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group ">
                             <label class="title">Type de contrat</label>
@@ -201,33 +201,33 @@
                                     <option value="CDD">CDD</option>
                             </select>
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.contract_kind">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.contract_kind">
                             {{errors.contract_kind}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group">
                             <label class="title">Entrer le nombre d'heures de travail</label>
                             <input type="number" class="form-control" v-model="form.workhour" autocomplete="off" required  placeholder="0" >
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.workhour">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.workhour">
                             {{errors.workhour}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group">
                             <label class="title">Entrer le salaire de base de l'employé</label>
                             <input type="number" class="form-control" v-model="form.base_salary" autocomplete="off" required  placeholder="0" >
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.base_salary">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.base_salary">
                             {{errors.base_salary}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group">
                             <label class="title">Entrer le bonus</label>
                             <input type="number" class="form-control" v-model="form.bonus" autocomplete="off" required  placeholder="0" >
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.bonus">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.bonus">
                             {{errors.bonus}}
-                        </div>
+                        </div> -->
 
                         <div class="form-group ">
                             <label class="title">Entrer un commentaire</label>
@@ -241,9 +241,9 @@
                                 placeholder="Entrer votre commentaire"
                             ></textarea>
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
+                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
                             {{errors.comment}}
-                        </div>
+                        </div> -->
             
                     </div>                    
                 </div>
@@ -374,7 +374,7 @@
             // },
     
             submit(){          
-                this.$axios.put('/employees/' +this.$route.params.id,{
+                this.$axios.put('/employees/'+this.$route.params.id,{
                     last_name: this.form.last_name,
                     first_name: this.form.first_name,
                     email: this.form.email,
