@@ -370,6 +370,11 @@ export default {
           .then(response => {
             // console.log(response.data);
           this.results = response.data.data.data 
+              this.total = response.data.data.total;
+              this.res_data= response.data.data
+              // this.links = response.data.data.links
+              let firstE = response.data.data.links.shift()
+              let lastE = response.data.data.links.splice(-1,1);
           
           })
         },

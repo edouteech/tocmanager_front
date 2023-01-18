@@ -155,8 +155,19 @@ export default {
 
             })
             .then(response =>{
-                this.$router.push({
-                  path:'/clients/list_client',})
+                  this.error = response.data.message
+                    // console.log(this.error)
+    
+                    if(response.data.status == "success"){
+                        this.$router.push({path:'/clients/list_client'});
+                        this.$toast('Modifications éffectuées avec succès !!!', {
+                            icon: 'fa fa-check-circle',
+                        })
+                    }
+                    else{
+                        this.errors = response.data.data
+                        // this.$router.push({path:'/clients/add_client'});
+                    }
             })          
         }
     }

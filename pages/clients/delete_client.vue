@@ -7,6 +7,9 @@
 
     <div class="app-main__outer p-5">
       <h4>Clients supprimés</h4><hr>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
+                {{error}}
+            </div>
       <div class="table-responsive">
        <table class="table table-hover">
           <thead>
@@ -93,7 +96,8 @@ export default {
             total: '',
             form: {
                 nombre: '',
-            }
+            },
+            error: null,
         }
     },   
 
@@ -118,7 +122,16 @@ export default {
             }})               
             .then(response => {console.log(response);
                 this.client = response.data.data
-                this.$router.push({path:'/clients/list_client',})
+                if(response.data.status == "success"){
+                    this.$router.push({path:'/clients/list_client',})
+                    this.$toast('Employé restauré avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
+                }
+                else{
+                    this.error = response.data.message
+                    // this.$router.push({path:'/clients/add_client'});
+                }
                 })         
         },
 

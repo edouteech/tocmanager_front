@@ -1,5 +1,5 @@
 <template>
-    <div>
+<div>
   <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
   <button class="btn btn-primary px-6" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
     <i class="fa fa-bars" aria-hidden="true"></i>
@@ -79,6 +79,7 @@
                       </div>
                   </NuxtLink>
               </li>
+              
               <!-- <li class="nav-item dropdown">
                   <div class="rubrique">
                       <i class="fa fa-list-ul" aria-hidden="true"></i>
@@ -130,6 +131,14 @@
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-briefcase" aria-hidden="true " data-bs-dismiss="offcanvas"></i>
                           <span class="links_name" data-bs-dismiss="offcanvas">Ma compagnie</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+                  <NuxtLink to="/employes/list_employe" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                        <i class="fa fa-users" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Employés de la compagnie</span>
                       </div>
                   </NuxtLink>
               </li>

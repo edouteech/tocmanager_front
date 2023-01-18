@@ -615,13 +615,22 @@ export default {
                 if(this.produits[k].id == IdProduit){
                     let ProdId = this.produits[k].id
                     let ProdPrice = this.produits[k].price_sell
+                    // for (let j = 1; j < this.form.sell_lines.length; j++) {
+                    //     if(IndexSellLines === 0 && this.form.sell_lines[j].product_id === this.form.sell_lines[IndexSellLines].product_id){
+                    //         console.log("if")
+                    //         this.form.sell_lines[j].quantity= this.form.sell_lines[j].quantity + 1
+                    //     }
+                    //     else{
+                    //         console.log("else")
+                            this.form.sell_lines[IndexSellLines].product_id = ProdId
+                            this.form.sell_lines[IndexSellLines].price = ProdPrice
+                            this.form.sell_lines[IndexSellLines].quantity = 1
+                            this.form.sell_lines[IndexSellLines].discount = 0
+                            this.form.sell_lines[IndexSellLines].amount = ProdPrice
+                            this.form.sell_lines[IndexSellLines].amount_after_discount = ProdPrice
+                    //     }
+                    // }
                     // this.form.sell_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
-                    this.form.sell_lines[IndexSellLines].product_id = ProdId
-                    this.form.sell_lines[IndexSellLines].price = ProdPrice
-                    this.form.sell_lines[IndexSellLines].quantity = 1
-                    this.form.sell_lines[IndexSellLines].discount = 0
-                    this.form.sell_lines[IndexSellLines].amount = ProdPrice
-                    this.form.sell_lines[IndexSellLines].amount_after_discount = ProdPrice
                     // this.form.sell_lines.splice(this.form.sell_lines.length - 2, 1);  
                     let sum = 0;
                     for (let j = 0; j < this.form.sell_lines.length; j++) {
