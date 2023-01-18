@@ -37,10 +37,10 @@
                     <td>{{employe.last_name}}</td>
                     <td>{{employe.first_name}}</td>
                     <td>{{employe.phone}}</td>
-                    <td>{{employe.position_field}}</td>
+                    <td>{{employe.position_hield}}</td>
                     <td><div class="action">
-                        <div class="sup" @click="supEmploye(employe.id)">Supprimer définitivement</div>
-                        <div class="restore" @click="restaurerEmploye(employe.id)">Restaurer cet employé</div></div>
+                        <div class="sup" @click="supEmploye(employe.id)">Supprimer</div>
+                        <div class="restore" @click="restaurerEmploye(employe.id)">Restaurer</div></div>
                     </td>
                 </tr>
                 
@@ -118,7 +118,7 @@
         },
     
         methods: {
-            restaurerClient(id){
+            restaurerEmploye(id){
                 // console.log(id);
                 this.$axios.get('/restore/employee/' +id,{
                 params: {
@@ -141,7 +141,7 @@
                 })         
             },
     
-            supClient(id){
+            supEmploye(id){
                 // console.log(id); 
                 this.showModal = true;
                 this.identifiant= id;               
