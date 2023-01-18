@@ -239,7 +239,6 @@ export default {
 
     data () {
         return{
-            fruits: ['papaye', 'banane', 'pomme', 'mangue', 'citron', 'avocat'],
             load: false,
             amount_error: null,
             message: '',

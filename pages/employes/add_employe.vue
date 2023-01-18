@@ -187,7 +187,6 @@
                                 label="last_name"
                                 :options="employes"
                                 :reduce="(employe) => employe.id"
-                                append-to-body
                             />
                         </div>
                         <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.hierachy_id">
@@ -316,13 +315,14 @@
               }
               })
               .then(response => {
-                // console.log(response.data);
-              this.employes = response.data.data 
+                console.log(response.data.data);
+                this.employes = response.data.data 
               })
         },
     
         methods: {
             async submit(){
+                console.log(this.form.hierachy_id);
                 await  this.$axios.post('/employees',{
                     last_name: this.form.last_name,
                     first_name: this.form.first_name,

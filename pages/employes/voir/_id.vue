@@ -137,12 +137,24 @@
                             {{errors.workplace}}
                         </div> -->
 
-                        <div class="form-group ">
+
+                        <div class="row" v-if="form.hierachy">
                             <label class="title">Supérieur hiérarchique</label>
-                            <select class="form-control" v-model="form.hierachy_id" disabled>
-                                    <option disabled value="">Choisissez...</option>
-                                    <option :value="employe.id" v-for="(employe, i) in employes" :key="i">{{employe.name}}</option>
-                            </select>
+                            <div class="form-group col-md-6">
+                                <label class="title">Nom</label>
+                                <input type="text" class="form-control" v-model="form.hierachy.last_name" autocomplete="off" required  placeholder="" disabled>
+                            </div>
+
+                            
+                            <div class="form-group col-md-6">
+                                <label class="title">Prénom</label>
+                                <input type="text" class="form-control" v-model="form.hierachy.first_name" autocomplete="off" required  placeholder="" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group " v-else>
+                            <label class="title">Supérieur hiérarchique</label>
+                            <input type="text" class="form-control" v-model="form.aucun" autocomplete="off" required  placeholder="" disabled>
                         </div>
 
                         <div class="row">
@@ -269,6 +281,8 @@
                     reg_number: '',
                     cnss: '',
                     hierachy_id: '',
+                    hierachy: "",
+                    aucun: 'Relié à aucun supérieur hiérarchique',
                     contract_kind: '',
                     workhour: '',
                     base_salary: '',
@@ -317,7 +331,7 @@
                     }
                 })
                 .then(response => {
-                    // console.log(response.data.data )
+                    console.log(response.data.data )
                     let employe = response.data.data;
                     this.form.last_name = employe.last_name
                     this.form.first_name= employe.first_name 
@@ -337,6 +351,7 @@
                     this.form.reg_number = employe.reg_number
                     this.form.cnss = employe.reg_number
                     this.form.hierachy_id = employe.hierachy_id
+                    this.form.hierachy = employe.hierachy
                     this.form.contract_kind = employe.contract_kind
                     this.form.workhour = employe.workhour
                     this.form.base_salary = employe.base_salary
