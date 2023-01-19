@@ -169,13 +169,9 @@
     </template>
     
     <script>
-    // import stockModal from './stockModal.vue'
-    // import voirClient from './voir_client.vue'
     import Sidebar from '../sidebar.vue'
     import Userinfo from '../user_info.vue'
     import deleteModal from './deleteModal.vue'
-    // import exportModal from './exportModal.vue'
-    // import deleteMultipleModal from './deleteMultipleModal.vue'; 
     export default {
       layout: "empty",
       auth: true,

@@ -145,6 +145,19 @@
                 </NuxtLink>
             </div>
        
+            <div class="col-md-6 col-xl-3">
+                <NuxtLink to="/conges/delete_conge" >
+                <div class="card mb-3 widget-content bg-secondary text-white">
+                    <div class="widget-content-outer">
+                        <div class="widget-content-wrapper p-5">
+                            <div class="widget-content-left">
+                                <div class="widget-heading fsize-2">Congés supprimés</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </NuxtLink>
+            </div>
               
         </div><hr>
         <!-- <div class="cases">
