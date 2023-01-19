@@ -38,11 +38,11 @@
                         <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.tranche">{{errors.tranche}}</div>   
                         
                         
-                        <div class="input-form">
+                        <!-- <div class="input-form">
                             <label class="title">Montant restant</label>					
                             <input type="number" class="form-control" placeholder="Entrer le montant" v-model="form.rest" autocomplete="off" id="name_four" required>
                         </div>  
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.rest">{{errors.rest}}</div>   
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.rest">{{errors.rest}}</div>    -->
                         
                         <div class="input-form">       
                             <label class="title" for="date_start">Date d'enregistrement du Prêt</label> 
@@ -128,12 +128,12 @@
                 date_loan: this.form.date_loan,
                 employee_id: this.form.employee_id,
                 tranche: this.form.tranche,
-                rest: this.form.rest,
+                // rest: this.form.rest,
                 user_id: this.user,
                 compagnie_id: localStorage.getItem('auth.company_id')
               })
               .then(response =>{
-                this.$emit('conf', { message: this.form.name })
+                this.$emit('conf', { message: this.form.amount })
                   console.log( response ) 
                   this.error = response.data.message
                   this.status = response.data.status
