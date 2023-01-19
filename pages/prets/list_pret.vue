@@ -345,7 +345,7 @@
               })
               .then(response => 
                 {
-                  console.log(response.data);
+                //   console.log(response.data);
                   this.prets = response.data.data.data
                   this.res_data= response.data.data
                   this.total = response.data.data.total;

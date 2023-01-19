@@ -126,7 +126,7 @@
                 amount: this.form.amount,
                 date_limit: this.form.date_limit,
                 date_loan: this.form.date_loan,
-                employee_id: this.form.date_start,
+                employee_id: this.form.employee_id,
                 tranche: this.form.tranche,
                 rest: this.form.rest,
                 user_id: this.user,
@@ -134,19 +134,19 @@
               })
               .then(response =>{
                 this.$emit('conf', { message: this.form.name })
-                  // console.log( response ) 
+                  console.log( response ) 
                   this.error = response.data.message
                   this.status = response.data.status
                     if(this.status == 'success'){
                         this.status = response.data.status
-                        this.$emit('close-modal')
-                        this.$toast("Congé ajouté !!! ", {
+                        this.$router.push({path:'/prets/list_pret'});
+                        this.$toast("Pret ajouté !!! ", {
                         icon: 'fa fa-check-circle',
                     })
                     }
                     else{
                       this.status = response.data.status
-                        this.errors = response.data.data
+                      this.errors = response.data.data
                     }
                }).catch( err => console.log( err ) )
               
