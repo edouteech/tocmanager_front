@@ -19,6 +19,7 @@
                       <th>Numéros de téléphone</th>
                       <th>Emails</th>
                       <th>Pays</th>
+                      <th>Dates de création</th>
                       <!-- <th>Actions</th> -->
                   </tr>
               </thead>
@@ -28,6 +29,7 @@
                   <td>{{result.phone}}</td>
                   <td>{{result.email}}</td>
                   <td>{{result.country}}</td>
+                  <td>{{result.created_at}}</td>
                 </tr>
               </tbody>
             </table>
@@ -40,6 +42,7 @@
                       <th>Numéros de téléphone</th>
                       <th>Emails</th>
                       <th>Pays</th>
+                      <th>Dates de création</th>
                       <!-- <th>Actions</th> -->
                   </tr>
               </thead>
@@ -50,6 +53,7 @@
                   <td>{{profil.phone}}</td>
                   <td>{{profil.email}}</td>
                   <td>{{profil.country}}</td>
+                  <td>{{profil.created_at}}</td>
                 </tr>
               </tbody>
             </table>
@@ -132,7 +136,7 @@
               })        
               .then(response => 
                 {
-                  console.log(response.data.data.data);
+                  // console.log(response.data.data.data);
                   this.profils = response.data.data.data
                   this.res_data= response.data.data
                   this.total = response.data.data.total
@@ -146,7 +150,8 @@
                 search: this.element_search
               }
               })
-              .then(response => {console.log(response.data);
+              .then(response => {
+                // console.log(response.data);
               this.results = response.data.data.data 
               
               })
@@ -154,7 +159,8 @@
     
             voirProfil(id){
                 this.showModal = true;
-                this.$axios.get('users/'+ id).then(response => {console.log(response.data.data[0]);
+                this.$axios.get('users/'+ id).then(response => {
+                  // console.log(response.data.data[0]);
                  this.identifiant1 = response.data.data[0].name
                  this.identifiant2 = response.data.data[0].phone
                  this.identifiant3 = response.data.data[0].email

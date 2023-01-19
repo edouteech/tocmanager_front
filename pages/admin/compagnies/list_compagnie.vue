@@ -18,6 +18,8 @@
                         <th>Noms</th>
                         <th>Numéros de téléphone</th>
                         <th>Emails</th>
+                        <th>Dates de création</th>
+                        <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -25,6 +27,13 @@
                   <td>{{result.name}}</td>
                   <td>{{result.phone}}</td>
                   <td>{{result.email}}</td>
+                  <td>{{result.created_at}}</td>
+                    <td class="text-center"><NuxtLink :to="'/admin/compagnies/'+result.id">
+                        <button type="button" id="PopoverCustomT-1" class="btn btn-success btn-sm">Details</button></NuxtLink>
+                        <!-- <NuxtLink :to="'/admin/results/'+result.id"> -->
+                          <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" @click.prevent="abonne(result.id)">Abonnement</button>
+                        <!-- </NuxtLink> -->
+                    </td>
                 </tr>
               </tbody>
             </table>
@@ -37,6 +46,7 @@
                         <th>Noms</th>
                         <th>Numéros de téléphone</th>
                         <th>Emails</th>
+                        <th>Dates de création</th>
                         <th>Actions</th>
                   </tr>
                 </thead>
@@ -46,6 +56,7 @@
                     <td>{{compagnie.name}}</td>
                     <td>{{compagnie.phone}}</td>
                     <td>{{compagnie.email}}</td>
+                    <td>{{compagnie.created_at}}</td>
                     <td class="text-center"><NuxtLink :to="'/admin/compagnies/'+compagnie.id">
                         <button type="button" id="PopoverCustomT-1" class="btn btn-success btn-sm">Details</button></NuxtLink>
                         <!-- <NuxtLink :to="'/admin/compagnies/'+compagnie.id"> -->
