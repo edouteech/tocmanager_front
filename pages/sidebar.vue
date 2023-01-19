@@ -142,6 +142,14 @@
                       </div>
                   </NuxtLink>
               </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+                  <NuxtLink to="/conges/list_conge" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                        <i class="fa fa-calendar" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Congés des Employés</span>
+                      </div>
+                  </NuxtLink>
+              </li>
               <!-- <li>
                   <NuxtLink to="/compagnies/list_compagnie">
                       <div class="rubrique">

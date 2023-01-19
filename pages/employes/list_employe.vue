@@ -6,7 +6,7 @@
         </nav>
         
         <div class="app-main__outer p-5">
-          <h4>Liste des Employés</h4><hr><br>
+          <h4>Liste des Employés de l'entreprise</h4><hr><br>
           <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
                 {{error}} 
             </div>
@@ -277,7 +277,6 @@
                 responseType: 'blob',
                 Accept: 'application/pdf'
               }).then((response) => {
-                // console.log(response);
                 const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
                 const link = document.createElement('a');
                 link.href = url;
@@ -336,7 +335,7 @@
 
 
             search(){
-              this.$axios.get('/clients',{params: {
+              this.$axios.get('/employees',{params: {
                 compagnie_id: localStorage.getItem('auth.company_id'),
                 search: this.element_search
               }
