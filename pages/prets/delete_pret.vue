@@ -29,7 +29,8 @@
                         <tbody>
                             <tr  v-for="(pret, i) in prets" :key="i"
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td>{{pret.employee.first_name}} {{pret.employee.last_name}}</td>
+                                <td v-if="pret.employee">{{pret.employee.first_name}} {{pret.employee.last_name}}</td>
+                                <td v-else>---</td>
                                 <td>{{pret.amount}}</td>
                                 <td>{{pret.date_loan}}</td>                         
                                 <td><div class="action">
