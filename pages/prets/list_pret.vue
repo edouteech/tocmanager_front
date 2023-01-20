@@ -67,7 +67,8 @@
                   <!-- <td>{{result.date_loan}}</td> -->
                     <td>
                       <div class="action"  v-for="(user, i) in users" :key="i">
-                        <NuxtLink :to="'/prets/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-dark" aria-hidden="true"></i></NuxtLink>
+                        <div @click="voirPret(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                        <!-- <NuxtLink :to="'/prets/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-dark" aria-hidden="true"></i></NuxtLink> -->
                         <NuxtLink :to="'/prets/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                         <div @click="deletePret(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                         <!-- <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de stock" @click="pdfExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download text-success" aria-hidden="true"></i></div> -->
@@ -120,7 +121,8 @@
                   <!-- <td>{{pret.date_loan}}</td> -->
                     <td>
                       <div class="action"  v-for="(user, i) in users" :key="i">
-                        <NuxtLink :to="'/prets/voir/'+pret.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-dark" aria-hidden="true"></i></NuxtLink>
+                        <div @click="voirPret(pret.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                        <!-- <NuxtLink :to="'/prets/voir/'+pret.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-dark" aria-hidden="true"></i></NuxtLink> -->
                         <NuxtLink :to="'/prets/'+pret.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                         <div @click="deletePret(pret.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                         <!-- <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de stock" @click="pdfExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download text-success" aria-hidden="true"></i></div> -->
@@ -171,6 +173,7 @@
               </ul>
             </nav>
       </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
+<voirPret :employee='identifiant1'  :amount= 'identifiant2' :tranche= 'identifiant3' :date_loan= 'identifiant4' :date_limit= 'identifiant5' :rest= 'identifiant6' v-show="showModal" @close-modal="showModal = false"/>
     <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
     <!-- <AddcongeModal v-show="congeModal" @close-modal="congeModal = false" @conf="setMessage"/>   -->
     </div>
@@ -179,7 +182,7 @@
     
     <script>
     import deleteModal from './deleteModal.vue'
-    // import AddcongeModal from './addCongeModal.vue'
+    import voirPret from './voir_pret.vue'
     import Sidebar from '../sidebar.vue'
     import Userinfo from '../user_info.vue'
     export default {
@@ -189,11 +192,17 @@
         Sidebar,  
         Userinfo,
         deleteModal,
-        // AddcongeModal,
+        voirPret
       },
     
       data () {
         return {
+          identifiant1: '',
+          identifiant2: '',
+          identifiant3: '',
+          identifiant4: '',
+          identifiant5: '',
+          identifiant6: '',
           total: '',
           file: '',
           element_search: '',
@@ -204,7 +213,6 @@
           showModal: false,
           congeModal: false,
           prets: [],
-          produit: "",
           compagnie_id: "",
           users: '',
           compagny: '',
@@ -345,7 +353,7 @@
               })
               .then(response => 
                 {
-                //   console.log(response.data);
+                  // console.log(response.data.data.data);
                   this.prets = response.data.data.data
                   this.res_data= response.data.data
                   this.total = response.data.data.total;
@@ -355,7 +363,41 @@
               )
             },
             
-    
+            voirPret(id){
+                this.showModal = true;
+                this.$axios.get('loans/'+ id,{
+                params: {
+                  compagnie_id: localStorage.getItem('auth.company_id')
+                }
+              }).then(response => {
+                // console.log(response.data.data[0]);
+                let preteur = response.data.data
+                this.identifiant1 = preteur.employee
+                this.identifiant2 = preteur.amount
+                this.identifiant3 = preteur.tranche
+                this.identifiant4 = preteur.date_loan    
+                this.identifiant6 = preteur.rest 
+                if(preteur.date_limit){  
+                  this.identifiant5 = preteur.date_limit
+                }
+                else{
+                  this.identifiant5 = "----"
+                }
+                // if(response.data.data[0].tax_group){
+                //   this.identifiant8 = response.data.data[0].tax_group 
+                // }
+                // else{
+                //   this.identifiant8 = "Relié à aucun groupe"
+                // }
+                // if(response.data.data[0].code){
+                //   this.identifiant9 = response.data.data[0].code
+                // }
+                // else{
+                //   this.identifiant9 = "Pas de code"
+                // }
+                }) 
+                  
+            },
             
         },
        

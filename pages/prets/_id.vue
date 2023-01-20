@@ -38,11 +38,11 @@
                         <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.tranche">{{errors.tranche}}</div>   
                         
                         
-                        <div class="input-form">
+                        <!-- <div class="input-form">
                             <label class="title">Montant restant</label>					
                             <input type="number" class="form-control" placeholder="Entrer le montant" v-model="form.rest" autocomplete="off" id="name_four" required disabled>
                         </div>  
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.rest">{{errors.rest}}</div>   
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.rest">{{errors.rest}}</div>    -->
                         
                         <div class="input-form">       
                             <label class="title" for="date_start">Date d'enregistrement du Prêt</label> 

@@ -159,6 +159,19 @@
                 </NuxtLink>
             </div>
               
+            <div class="col-md-6 col-xl-3">
+                <NuxtLink to="/prets/delete_pret" >
+                <div class="card mb-3 widget-content bg-secondary text-white">
+                    <div class="widget-content-outer">
+                        <div class="widget-content-wrapper p-5">
+                            <div class="widget-content-left">
+                                <div class="widget-heading fsize-2">Prêts supprimés</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </NuxtLink>
+            </div>
         </div><hr>
         <!-- <div class="cases">
             <NuxtLink to="/achats/delete_achat" class="case">      
