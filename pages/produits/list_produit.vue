@@ -66,7 +66,7 @@
               <td v-if="result.category != null">{{result.category.name}}</td>
               <td v-else>---</td>
               <td>{{result.quantity}}</td>
-              <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(produit.id)"></i></div></td>
+              <td class="controler"><div class="replace"><input :id="'real_quantity_'+result.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(result.id)"></i></div></td>
                 <td>{{result.price_sell}}</td>
                 <td>{{result.price_buy}}</td>
                 <!-- <td>{{result.stock_min}}</td>
@@ -476,10 +476,12 @@ export default {
                 stock_max: produit.stock_max,
                 tax_group: produit.tax_group,
                 compagnie_id: localStorage.getItem('auth.company_id')
-            }).then(response =>{console.log(response)
+            }).then(response =>{
+              // console.log(response)
               // console.log(this.name0)
             this.refresh()
             document.getElementById(input_btn).value = ''
+            this.element_search = ""
             })  
           })                   
         }
