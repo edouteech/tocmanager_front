@@ -148,7 +148,7 @@
                 amount: this.form.amount,
                 date_limit: this.form.date_limit,
                 date_loan: this.form.date_loan,
-                employee_id: this.form.date_start,
+                employee_id: this.form.employee_id,
                 tranche: this.form.tranche,
                 rest: this.form.rest,
                 user_id: this.user,
