@@ -12,6 +12,9 @@
                 <NuxtLink :to="'/employes/'+modify" v-if=" compagny == user.pivot.compagnie_id"><button type="submit" class="btn btn-outline-success">Modifier les informations</button></NuxtLink>
             </div>
             <form action=""><hr>
+                <div class="col-md-3 mx-auto">
+                    <img src="../../../static/images/user.png" alt="" width="300" height="300">
+                </div>
                 <div class="row p-3">
                     <div class="col-md-6">
                         <div class="title-row">Informations personnelles</div>
@@ -204,6 +207,65 @@
                             ></textarea>
                         </div>
                 </div>
+                <br><br><hr><br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="title-row">Congés</div>
+                        <div>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr class="table-success">
+                                        <th>Désignations</th>
+                                        <th>Nombres de jours</th>
+                                        <th>Débuts</th>
+                                        <th>Fins</th>
+                                        <th>Détails</th>
+                                        
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(vacation, i) in vacations" :key="i" >
+                                    <td v-if="vacation.name">{{ vacation.name }}</td>
+                                    <td v-else>---</td>
+                                    <td v-if="vacation.days_count">{{ vacation.days_count }}</td>
+                                    <td v-else>---</td>
+                                    <td>{{vacation.date_start}}</td>
+                                    <td>{{vacation.date_end}}</td>
+                                    <td class="text-center"><NuxtLink :to="'/conges/voir/'+vacation.id"><i class="fa fa-eye cursor-pointer" aria-hidden="true"></i></NuxtLink></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="title-row">Prets</div>
+                        <div>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr class="table-danger">
+                                        <th>Dates de pret</th>
+                                        <th>Montants</th>
+                                        <th>Tranches</th>
+                                        <th>Reste à payer</th>
+                                        <th>Dates limites</th>
+                                        
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(loan, i) in loans" :key="i" >
+                                    <td>{{ loan.date_loan }}</td>
+                                    <td>{{ loan.amount }}</td>
+                                    <td>{{ loan.tranche }}</td>
+                                    <td>{{loan.rest}}</td>
+                                    <td v-if="loan.date_limit">{{loan.date_limit}}</td>
+                                    <td v-else>---</td>
+                                    <!-- <td><NuxtLink :to="'/prets/voir/'+loan.id"><i class="fa fa-eye cursor-pointer" aria-hidden="true"></i></NuxtLink></td> -->
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </form>
     
         </div>
@@ -292,6 +354,8 @@
                     compagnie_id: ''
                 },
                 employes: "",
+                loans: '',
+                vacations: '',
                 users: "",
                 employe: "",
                 modify: ""
@@ -299,7 +363,7 @@
         },
     
         mounted(){
-            this.modify =this.$route.params.id
+          this.modify =this.$route.params.id
           this.users = this.$auth.$state.user.roles;
           this.compagny = localStorage.getItem('auth.company_id');
           this.recupEmploye()
@@ -357,6 +421,8 @@
                     this.form.base_salary = employe.base_salary
                     this.form.bonus = employe.bonus
                     this.form.comment = employe.comment
+                    this.loans = employe.loans
+                    this.vacations = employe.vacations
                     
                 })
     
