@@ -38,7 +38,7 @@
             </div>
             <div v-if="defaultNum != 0">
               <button class="btn btn-outline-dark mx-3" @click.prevent="chooseDefaultClient()">
-                Choisir commme client par défaut
+                Choisir commme fournisseur par défaut
               </button>
             </div>
             <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
