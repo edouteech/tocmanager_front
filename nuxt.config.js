@@ -24,19 +24,18 @@ export default {
       { 
         rel: 'stylesheet', 
         href: '/css/custom.css', 
-      }
+      },
     ],
     script: [
       { 
         src: '/js/bootstrap.bundle.min.js', 
         type: 'text/javascript',
-      }
+      },
     ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins

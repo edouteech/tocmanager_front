@@ -13,10 +13,9 @@
           </div>
           <div class="row">
             <div class="col-md-4">
-                <!-- <v-calendar 
-                    :events="events"
-                    >
-                </v-calendar> -->
+                <v-dalendar
+                    />
+
             </div>
             <div class="col-md-8">
                 <div>
@@ -113,19 +112,7 @@
             users: '',
             role: '',
             compagny: '',
-            events: [
-                {
-                start: new Date(),
-                end: new Date(),
-                title: 'Event 1',
-                },
-                {
-                start: new Date(),
-                end: new Date(),
-                title: 'Event 2',
-                },
-            ],
-            eventColor: 'purple'
+            // range:{}
         }
       },
     
