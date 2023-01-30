@@ -27,7 +27,7 @@
               <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.name" required
                 placeholder="Entrer votre nom" /></div>      
                 
-              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.name">
+              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.name">
                   {{errors.name[0]}}
               </div>
             </div>
@@ -38,7 +38,7 @@
               <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
                 placeholder="Entrer une addresse email valide" /></div>     
                 
-              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.email">
+              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.email">
                   {{errors.email[0]}}
               </div> 
             </div>
@@ -50,7 +50,7 @@
               <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
                 placeholder="Entrer un mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click.prevent="changer()"></i></span></div>   
                 
-              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.password">
+              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.password">
                   {{errors.password[0]}}
               </div>
             </div>
@@ -61,7 +61,7 @@
               <input type="password" id="password1" class="form-control form-control-lg" v-model="form.password_confirmation"
                 placeholder="Entrer un mot de passe"/><span><i class="fa fa-eye px-2" id="eyes" @click.prevent="change()"></i></span></div> 
               
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.password_confirmation">
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.password_confirmation">
                   {{errors.password_confirmation[0]}}
                 </div>  
             </div>
@@ -70,7 +70,7 @@
               <span class="fa fa-mobile px-2"></span> <label class="form-label">Téléphone</label>
               <div class="input-field"><vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> </div>     
             
-              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
+              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.phone">
                 {{errors.phone[0]}}
               </div>
             </div>
