@@ -68,7 +68,7 @@
 
             <div class="form-outline mb-4">
               <span class="fa fa-mobile px-2"></span> <label class="form-label">Téléphone</label>
-              <div class="input-field"><vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> </div>     
+              <div class="input-field"><vue-tel-input class="form-control form-control-sm" v-model="form.phone" autocomplete="off"></vue-tel-input> </div>     
             
               <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.phone">
                 {{errors.phone[0]}}
