@@ -446,7 +446,7 @@ export default {
                     // this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1); 
                     let sum = 0;
                     for (let j = 0; j < this.form.buy_lines.length; j++) {
-                        sum += this.form.buy_lines[j].amount_after_discount;
+                        sum += this.form.buy_lines[j].amount;
                     }
                     this.form.amount = sum; 
                     break;
