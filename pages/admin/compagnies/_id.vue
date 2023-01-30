@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Compagnies </h3>
+          <Sidebar /><h3 class="name_side">Compagnies </h3>
         </nav>
     
         <div class="app-main__outer p-5">

@@ -1,7 +1,7 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-    <Sidebar /><h3 class="name">Abonnement </h3>
+    <Sidebar /><h3 class="name_side">Abonnement </h3>
     <Userinfo />
     </nav>
   

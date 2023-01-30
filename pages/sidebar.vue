@@ -153,8 +153,16 @@
               <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
                   <NuxtLink to="/prets/list_pret" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
-                        <i class="fa fa-money" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                        <i class="fa fa-balance-scale" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
                           <span class="links_name" data-bs-dismiss="offcanvas">Prêts des Employés</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+                  <NuxtLink to="/paies/list_paie" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                        <i class="fa fa-money" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Bulletins de paie</span>
                       </div>
                   </NuxtLink>
               </li>

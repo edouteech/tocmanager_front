@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Tableau De Bord </h3>
+      <Sidebar /><h3 class="name_side">Tableau De Bord </h3>
     </nav>
 
     <div class="contenu">
