@@ -47,7 +47,7 @@
                 </button>
             </div> -->
     
-              <div class="table-responsive search_result" v-if="this.element_search == ''">
+              <div class="table-responsive search_result" v-if="this.element_search != ''">>
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-dark">
@@ -85,7 +85,7 @@
               </div>
         
               
-              <div class="table-responsive">
+              <div class="table-responsive" v-if="this.element_search == ''">
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-dark">
