@@ -13,242 +13,180 @@
             </div>
 
             <form action="">
-                <div class="row p-3">
-                    <div class="col-md-6">
-                        <div class="title-row">Informations personnelles de l'employe</div>
+                <div class="p-3">
+                    <div class="col-md-7 mx-auto">
+                        <div class="title-row">Generalites</div>
                         <div class="form-group ">
-                            <label class="title">Entrer le nom de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.last_name" autocomplete="off" required placeholder="Nom">
+                            <label class="title">Entrer la date de début de paie</label>
+                            <input type="datetime-local" class="form-control" v-model="form.date_start" autocomplete="off" required placeholder="Pays">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.last_name">
-                            {{errors.last_name}}
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if=" errors && errors.date_start">
+                            {{errors.date_start}}
                         </div>
 
                         <div class="form-group ">
-                            <label class="title">Entrer le(s) prénom(s) de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.first_name" autocomplete="off" required placeholder="Prénoms">
+                            <label class="title">Entrer la date de date de paie</label>
+                            <input type="datetime-local" class="form-control" v-model="form.date_end" autocomplete="off" required placeholder="Pays">
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.first_name">
-                            {{errors.first_name}}
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="form-group ">
-                            <label class="title">Sexe de l'employé</label>
-                            <select class="form-control" v-model="form.sex">
-                                    <option disabled value="">Choisissez...</option>
-                                    <option value="M">Masculin</option>
-                                    <option value="F">Féminin</option>
-                            </select>
-                            </div>
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.sex">
-                            {{errors.sex}}
-                        </div>
-            
-                        <div class="form-group ">
-                            <label class="title">Entrer le numero de téléphone de l'employé</label>
-                            <vue-tel-input class="form-control form-control-sm" v-model="form.phone" aria-autocomplete="off"></vue-tel-input> 
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
-                            {{errors.phone}}
-                        </div>
-            
-                        <div class="form-group">
-                            <label class="title">Entrer l'email de l'employé</label>
-                            <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="Email" >
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.email">
-                            {{errors.email}}
-                        </div>
-                        
-                        <div class="form-group ">
-                            <label class="title">Entrer le pays de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.country" autocomplete="off" required placeholder="Pays">
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.country">
-                            {{errors.country}}
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.date_end">
+                            {{errors.date_end}}
                         </div>
 
                         <div class="form-group ">
-                            <label class="title">Entrer la ville de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.city" autocomplete="off" required placeholder="Ville">
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.city">
-                            {{errors.city}}
-                        </div>
-
-                        <div class="form-group ">
-                            <label class="title">Entrer l'adresse de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.address" autocomplete="off" required placeholder="Addresse">
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.address">
-                            {{errors.address}}
-                        </div>
-            
-                        <div class="form-group">
-                            <div class="form-group ">
-                            <label class="title">Situation matrimoniale de l'employé</label>
-                            <select class="form-control" v-model="form.marital_status">
-                                    <option disabled value="">Choisissez...</option>
-                                    <option value="Célibataire">Célibataire</option>
-                                    <option value="Marié(e)">Marié(e)</option>
-                                    <option value="Divorcé(e)">Divorcé(e)</option>
-                                    <option value="Veuf(ve)">Veuf(ve)</option>
-                            </select>
-                            </div>
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.marital_status">
-                            {{errors.marital_status}}
-                        </div>
-            
-                        <div class="form-group">
-                            <label class="title">Entrer le nombre d'enfant(s)</label>
-                            <input type="number" class="form-control" v-model="form.children_count" autocomplete="off" required  placeholder="0" >
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.children_count">
-                            {{errors.children_count}}
-                        </div>
-                        
-                        <div class="form-group ">
-                            <label class="title">Entrer le lieu de travail de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.workplace" autocomplete="off" required placeholder="Lieu de travail">
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.workplace">
-                            {{errors.workplace}}
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="title-row">Informations supplementaires</div>
-                        <div class="form-group ">
-                            <label class="title">Entrer la date d'embauche de l'employé</label>
-                            <input type="datetime-local" class="form-control" v-model="form.hiring_date" autocomplete="off" required placeholder="Pays">
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.hiring_date">
-                            {{errors.hiring_date}}
-                        </div>
-
-                        <div class="form-group ">
-                            <label class="title">Entrer la date de sortie de l'employé</label>
-                            <input type="datetime-local" class="form-control" v-model="form.release_date" autocomplete="off" required placeholder="Pays">
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.release_date">
-                            {{errors.release_date}}
-                        </div>
-
-                        <!-- <div class="form-group ">
-                            <label class="title">Entrer le lieu de travail de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.workplace" autocomplete="off" required placeholder="Pays">
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.workplace">
-                            {{errors.workplace}}
-                        </div> -->
-
-                        <div class="form-group ">
-                            <label class="title">Entrer le département de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.department" autocomplete="off" required placeholder="Departement">
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.department">
-                            {{errors.department}}
-                        </div>
-
-                        <div class="form-group ">
-                            <label class="title">Entrer le poste occupé par l'employé</label>
-                            <input type="text" class="form-control" v-model="form.position_hield" autocomplete="off" required placeholder="Poste">
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.position_hield">
-                            {{errors.position_hield}}
-                        </div>
-
-                        
-                        <div class="form-group">
-                            <label class="title">Entrer le numéro de régistre de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.reg_number" autocomplete="off" required  placeholder="Num reg" >
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.reg_number">
-                            {{errors.reg_number}}
-                        </div>
-
-                        
-                        <div class="form-group">
-                            <label class="title">Entrer la référence CNSS de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.cnss" autocomplete="off" required  placeholder="CNSS" >
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.cnss">
-                            {{errors.cnss}}
-                        </div>
-
-                        <div class="form-group ">
-                            <label class="title">Supérieur hiérarchique</label>
+                            <label class="title">Employé concerné</label>
                             <v-select 
-                                placeholder="Choississez le supérieur"
-                                v-model="form.hierachy_id"
+                                placeholder="Choississez l'employé"
+                                v-model="form.employee_id"
                                 label="last_name"
                                 :options="employes"
                                 :reduce="(employe) => employe.id"
+                                @input="choix(form.employee_id)"
                             />
                         </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.hierachy_id">
-                            {{errors.hierachy_id}}
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.employee_id">
+                            {{errors.employee_id}}
+                        </div>
+                    </div> 
+                    <br><br>
+                    <div class="col">
+                    <div class="title-row ">Informations de paie</div>
+                        <div class="table-responsive">
+                            <button class="btn btn-outline-success" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                            <table class="table table-bordered paie">
+                                <thead>
+                                    <tr>
+                                        <!-- <th rowspan="2" class="col_percen">N°</th> -->
+                                        <th rowspan="2" class="col_percents">Désignation</th>
+                                        <th rowspan="2" class="col_percent">Nombre</th>
+                                        <th rowspan="2" class="col_percente">Base</th>  
+                                        <th colspan="3">Part salariale</th>
+                                        <th colspan="2">Part patronale</th>                    
+                                    </tr>
+                                    <tr>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percen">Gain</th>
+                                        <th class="col_percent">Retenue</th>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percent">Retenue</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <tr v-for="(ligne, index) in form.lignes" :key="index">
+                                        <!-- <td></td> -->
+                                        <td>
+                                            <input class="form-control" type="text"  autocomplete="off"  v-model="ligne.designation">
+                                        </td>
+                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="ligne.nombre" @change="NumberChange(index)"></td> 
+                                        <td v-if="ligne.designation == 'SALAIRE DE BASE MENSUEL'"><input class="form-control" type="number" autocomplete="off" disabled v-model="ligne.base_salary"></td>
+                                        <td v-else><input class="form-control" type="number" autocomplete="off" v-model="ligne.base_salary"></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="ligne.part_salariale.taux" @change="NumberChange(index)"></td>
+                                        <td><div><input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_salariale.gain"></div></td>         
+                                        <td>
+                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_salariale.retenue"> -->
+                                        </td>       
+                                        <td>
+                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_patronale.taux"> -->
+                                        </td>     
+                                        <td>
+                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_patronale.retenue"> -->
+                                        </td>
+                                        <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer sup" aria-hidden="true"></i></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>   
+                        </div><br>
+                    </div> 
+                    
+                    <br>
+                    <div class="title-row">Recapitulatif</div>
+                    <div class="d-flex align-items-end">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Cumuls</th>
+                                        <th rowspan="2">Salaire brut</th>
+                                        <th rowspan="2">Charges salariales</th>
+                                        <th rowspan="2">Charges patronales</th>  
+                                        <th rowspan="2">Avantages en nature</th>
+                                        <th rowspan="2">Net imposable</th>   
+                                        <th rowspan="2">Heures travaillées</th> 
+                                        <th rowspan="2">Heures supplémentaires</th>   
+                                        <th></th>
+                                        <th class="mx-2">NET A PAYER</th>               
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="2"><strong>Période</strong>
+                                            <strong>Année</strong>
+                                        </td>
+                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="form.brut_salary" disabled></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="mx-2"></td>
+                                    </tr>
+                                </tbody>
+                            </table>   
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-end">
+                        <div class="col-md-6 table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Compteurs</th>
+                                        <th rowspan="2">Pris</th>
+                                        <th rowspan="2">Restant</th>
+                                        <th rowspan="2">Acquis</th>               
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Congés <br> 
+                                            Repos compensateur</strong> 
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table> 
                         </div>
 
-                        <div class="form-group ">
-                            <label class="title">Type de contrat</label>
-                            <select class="form-control" v-model="form.contract_kind" >
-                                    <option disabled value="">Choisissez...</option>
-                                    <option value="CDI">CDI</option>
-                                    <option value="CDD">CDD</option>
-                            </select>
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.contract_kind">
-                            {{errors.contract_kind}}
+                        <!-- <div class="col-md-3">
+                            <strong>Dates de congés</strong>
+                            <div></div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="title">Entrer le nombre d'heures de travail</label>
-                            <input type="number" class="form-control" v-model="form.workhour" autocomplete="off" required  placeholder="0" >
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.workhour">
-                            {{errors.workhour}}
-                        </div>
-
-                        <div class="form-group">
-                            <label class="title">Entrer le salaire de base de l'employé</label>
-                            <input type="number" class="form-control" v-model="form.base_salary" autocomplete="off" required  placeholder="0" >
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.base_salary">
-                            {{errors.base_salary}}
-                        </div>
-
-                        <div class="form-group">
-                            <label class="title">Entrer le bonus</label>
-                            <input type="number" class="form-control" v-model="form.bonus" autocomplete="off" required  placeholder="0" >
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.bonus">
-                            {{errors.bonus}}
-                        </div>
-
-                        <div class="form-group ">
-                            <label class="title">Entrer un commentaire</label>
-                            <textarea
-                                v-model="form.comment"
-                                name="comment"
-                                id="comment"
-                                cols="30"
-                                rows="3"
-                                class="form-control"
-                                placeholder="Entrer votre commentaire"
-                            ></textarea>
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
-                            {{errors.comment}}
-                        </div>
-            
-                    </div>                    
+                        <div class="col-md-4">
+                            <div class="row">
+                                    <div class="col-md-8">ABSENCES INJUST</div>
+                                    <div class="col-md-4"></div>
+                            </div>
+                            <div class="row">
+                                    <div class="col-md-8">ABSENCES PAYEES</div>
+                                    <div class="col-md-4"></div>
+                            </div>
+                            <div class="row">
+                                    <div class="col-md-8">ABSENCES TOTALES</div>
+                                    <div class="col-md-4"></div>
+                            </div>
+                        </div> -->
+                    </div>
                 </div>
-                <div class="col-md-6 mx-auto">
-                    <button type="submit" class="btn btn-outline-primary col-md-12 p-3 " v-on:click.prevent="submit()">Enregistrer les informations de l'employé</button>
+                <div class="col-md-6 mx-auto mt-4">
+                    <button type="submit" class="btn btn-outline-primary col-md-12 p-3 " v-on:click.prevent="submit()" :disabled="load">Valider la fiche de paie</button>
                 </div>
             </form>
 
@@ -274,101 +212,235 @@
         data () {
             return{
                 form: {
-                    last_name: '',
-                    first_name: '',
-                    email: '',
-                    phone: '',
-                    sex: '',
-                    country: '',
-                    city: '',
-                    address: '',
-                    // workplace: '',
-                    marital_status: '',
-                    children_count: "",
-                    hiring_date: '',
-                    release_date: '',
-                    workplace: '',
-                    department: '',
-                    position_hield: '',
-                    reg_number: '',
-                    cnss: '',
-                    hierachy_id: '',
-                    contract_kind: '',
-                    workhour: '',
-                    base_salary: '',
+                    date_start: '',
+                    date_end: '',
+                    employee_id: '',
+                    brut_salary: '',
+                    lignes: [],
+                    ipts: '',
+                    net_salary: '',
+                    brut_salary: '',
+                    hour_salary: '',
+                    total_hours: '',
+                    sup_hours: '',
+                    hours: '',
                     bonus: '',
+                    contributions: '',
+                    retained: '',
+                    employee_cotisation: '',
+                    company_cotisation: '',
                     comment: '',
-                    user_id:'',
-                    compagnie_id: ''
+                    
                 },
+                load: false,
                 employes: "",
+                employe_concerne: "",
                 types: '',
-                errors: [],
+                errors: null,
                 error: null,
+                heures_sup: ''
             }
         },
     
         mounted(){
-              this.$axios.get('/employees',{params: {
+            this.$axios.get('/employees',{params: {
                 compagnie_id: localStorage.getItem('auth.company_id'),
                 is_paginated: 0
-              }
-              })
-              .then(response => {
-                console.log(response.data.data);
-                this.employes = response.data.data 
-              })
+                }
+            })
+            .then(response => {
+            // console.log(response.data.data);
+            this.employes = response.data.data 
+            })
         },
     
         methods: {
-            async submit(){
-                console.log(this.form.hierachy_id);
-                await  this.$axios.post('/employees',{
-                    last_name: this.form.last_name,
-                    first_name: this.form.first_name,
-                    email: this.form.email,
-                    phone: this.form.phone,
-                    sex: this.form.sex,
-                    country: this.form.country,
-                    city: this.form.city,
-                    address: this.form.address,
-                    marital_status: this.form.marital_status,
-                    children_count: this.form.children_count,
-                    hiring_date: this.form.hiring_date,
-                    release_date: this.form.release_date,
-                    workplace: this.form.workplace,
-                    department: this.form.department,
-                    position_hield: this.form.position_hield,
-                    reg_number: this.form.reg_number,
-                    cnss: this.form.cnss,
-                    hierachy_id: this.form.hierachy_id,
-                    contract_kind: this.form.contract_kind,
-                    workhour: this.form.workhour,
-                    base_salary: this.form.base_salary,
-                    bonus: this.form.bonus,
-                    comment: this.form.comment,
-                    user_id: localStorage.getItem('auth.user_id'),
-                    compagnie_id: localStorage.getItem('auth.company_id')
-                }).then(response =>{ 
-                    // console.log( response ) 
-                    this.error = response.data.message
-                    // console.log(this.error)
+
+            async choix(id_employe){
+                this.$axios.get('/employees/'+ id_employe,{
+                    params: {
+                        compagnie_id: localStorage.getItem('auth.company_id')
+                    }
+                })
+                .then(response => {
+                    // console.log(response.data.data);
+                    this.employe_concerne = response.data.data 
+                    let salaire = this.employe_concerne.base_salary
+                    
+                    if(this.form.lignes.length > 0){
+                        this.form.lignes[0].base_salary = salaire
+                    }
+                    else{
+                        this.form.lignes.unshift(
+                        {
+                            designation: "SALAIRE DE BASE MENSUEL", 
+                            nombre: 1, 
+                            base_salary: salaire, 
+                            part_salariale: {
+                                taux: 100,
+                                gain: "",
+                            }, 
+                        });
+
+                        this.form.lignes.push(
+                            {
+                                designation: "HEURES SUP 112%", 
+                                nombre: 0, 
+                                base_salary: 3000, 
+                                part_salariale: {
+                                    taux: 100,
+                                    gain: "",
+                                }, 
+                            },
+                            {
+                                designation: "HEURES SUP 135%", 
+                                nombre: 0, 
+                                base_salary: 5000, 
+                                part_salariale: {
+                                    taux: 100,
+                                    gain: "",
+                                }, 
+                            },
+                            {
+                                designation: "HEURES SUP 150%", 
+                                nombre: 0, 
+                                base_salary: 7000, 
+                                part_salariale: {
+                                    taux: 100,
+                                    gain: "",
+                                }, 
+                            },
+                            {
+                                designation: "HEURES SUP 200%", 
+                                nombre: 0, 
+                                base_salary: 10000, 
+                                part_salariale: {
+                                    taux: 100,
+                                    gain: "",
+                                }, 
+                            }
+                        );  
+                    }
+                    let sum= 0;
+                    for (let j = 0; j < this.form.lignes.length; j++) {
+                        this.form.lignes[j].part_salariale.gain = (this.form.lignes[j].nombre * this.form.lignes[j].base_salary * this.form.lignes[j].part_salariale.taux)/100;
+                        sum += this.form.lignes[j].part_salariale.gain;
+                    }
+                        this.form.brut_salary = sum
+                })
+            },
+
+            NumberChange(index){
+                let ligne = this.form.lignes[index]
+                // ligne.part_salariale.taux = 100
+                ligne.part_salariale.gain = (Number(ligne.nombre) * ligne.base_salary * ligne.part_salariale.taux)/100;
+                let sum= 0;
+                for (let j = 0; j < this.form.lignes.length; j++) {
+                    sum += this.form.lignes[j].part_salariale.gain;
+                }
+                    this.form.brut_salary = sum
+            },
+
+
+            // TauxChange(index){
+            //     let ligne = this.form.lignes[index]
+            //     ligne.part_salariale.gain = (Number(ligne.nombre) * ligne.base_salary * ligne.part_salariale.taux)/100;
+            // },
+
+            deleteLine(index){
+                this.form.lignes.splice(index, 1)
+                let sum= 0;
+                for (let j = 0; j < this.form.lignes.length; j++) {
+                    sum += this.form.lignes[j].part_salariale.gain;
+                }
+                    this.form.brut_salary = sum
+            },
+
+
+            LigneChange(){
+                console.log(e);
+                if(e.target) {
+                    console.log("ok");
+                    // let i = e.target.options[e.target.options.selectedIndex].dataset.i;
+                    // let index = e.target.options[e.target.options.selectedIndex].dataset.index;
+                    // let product = this.produits[i];
+                    // let line = this.form.sell_lines[index]
+                    // line.price = product.price_sell;
+                    // line.amount = Number(line.price) * Number(line.quantity);
+                    // line.amount_after_discount = Number(line.price) * Number(line.quantity);
+                        
+                    
+                    // let sum = 0;
+                    // for (let j = 0; j < this.form.sell_lines.length; j++) {
+                    //     sum += this.form.sell_lines[j].amount_after_discount;
+                    // }
+                    // this.form.amount_ht = sum;
+                    // this.form.tax =0
+                    // this.taxChange()
+                } 
+                else{
+                    console.log("no");
+                }
+            },
+
     
+            addLine(){
+                this.form.lignes.push(
+                    {
+                        designation: "", 
+                        nombre: 0, 
+                        base_salary: "", 
+                        part_salariale: {
+                            taux: "",
+                            gain: "",
+                            // retenue: ""
+                        }, 
+                        // part_patronale: {
+                        //     taux: "",
+                        //     retenue: ""
+                        // }, 
+                    });           
+            },
+
+            async submit(){
+                this.load = true
+                this.form.lignes.shift()
+                console.log(this.form.lignes);
+                console.log(this.employe_concerne.base_salary);
+            await  this.$axios.post('/payslips',{
+              date_start: this.form.date_start,
+              date_end: this.form.date_end,
+              employee_id: this.form.employee_id,
+              base_salary: this.employe_concerne.base_salary,
+            //   ipts: this.form.ipts,
+            //   net_salary: this.form.net_salary,
+              brut_salary: this.form.brut_salary,
+            //   hour_salary: this.form.hour_salary,
+              total_hours: this.form.total_hours,  
+              sup_hours: this.form.lignes,
+              hours: this.form.hours,
+            //   bonus: this.form.bonus,
+              contributions: this.form.contributions,
+              retained: this.form.retained,
+            //   employee_cotisation: this.form.employee_cotisation,
+            //   company_cotisation: this.form.company_cotisation,
+              comment: this.form.comment,
+              compagnie_id: localStorage.getItem('auth.company_id') 
+            }).then(response =>{ 
+                console.log( response.data ) 
+                this.error = response.data.message
                     if(response.data.status == "success"){
-                        this.$router.push({path:'/employes/list_employe'});
-                        this.$toast('Nouvel employé ajouté avec succès !!!', {
+                        this.$toast("Fiche de paie enregistré !!! ", {
                             icon: 'fa fa-check-circle',
                         })
                     }
                     else{
+                        this.load = false
                         this.errors = response.data.data
-                        // this.$router.push({path:'/clients/add_client'});
                     }
-                })
-                .catch( error => console.log( error ) )
-                    //  console.log(this.form.name)                
-            },
-    
+                
+            }).catch( err => console.log( err ) )
+            }
             
         },
       
@@ -376,6 +448,22 @@
     </script>
     
     <style scoped>
+    .col_percent{
+        width: 10%;
+    }
+
+    .col_percente{
+        width: 13%;
+    }
+
+    .col_percen{
+        width: 13%;
+    }
+
+    .col_percents{
+        width: 24%;
+    }
+
     .title-row{
         margin: 15px 0;
         border: 2px dotted rgb(236, 236, 236);
@@ -399,9 +487,6 @@
         margin: 1% 0;
     }
     
-    .btn{
-        margin-top: 5%;
-    }
     
     .app-main__outer{
       overflow: auto;
@@ -413,9 +498,21 @@
       cursor: pointer;
     }
     .table{
-        margin-top: 5%;
+        margin-top: 2%;
+        text-align: center;
+        justify-content: center;
+        font-size: 13px;
     
-    }      
+    }    
+    
+    .sup{
+        font-size: 12px;
+    }
+
+    .paie input{
+        font-size: 14px;
+    }
+
     input::placeholder {
         font-size: 15px;
         opacity: 0.5;
