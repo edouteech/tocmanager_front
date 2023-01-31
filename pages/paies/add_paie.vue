@@ -78,8 +78,8 @@
                                             <input class="form-control" type="text"  autocomplete="off"  v-model="ligne.designation">
                                         </td>
                                         <td><input class="form-control" type="number"  autocomplete="off"  v-model="ligne.nombre" @change="NumberChange(index)"></td> 
-                                        <td v-if="ligne.designation == 'SALAIRE DE BASE MENSUEL'"><input class="form-control" type="number" autocomplete="off" disabled v-model="ligne.base_salary"></td>
-                                        <td v-else><input class="form-control" type="number" autocomplete="off" v-model="ligne.base_salary"></td>
+                                        <td v-if="ligne.designation == 'SALAIRE DE BASE MENSUEL'"><input class="form-control" type="number" autocomplete="off" disabled v-model="ligne.base"></td>
+                                        <td v-else><input class="form-control" type="number" autocomplete="off" v-model="ligne.base"></td>
                                         <td><input class="form-control" type="number"  autocomplete="off"  v-model="ligne.part_salariale.taux" @change="NumberChange(index)"></td>
                                         <td><div><input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_salariale.gain"></div></td>         
                                         <td>
@@ -268,14 +268,14 @@
                     let salaire = this.employe_concerne.base_salary
                     
                     if(this.form.lignes.length > 0){
-                        this.form.lignes[0].base_salary = salaire
+                        this.form.lignes[0].base = salaire
                     }
                     else{
                         this.form.lignes.unshift(
                         {
                             designation: "SALAIRE DE BASE MENSUEL", 
                             nombre: 1, 
-                            base_salary: salaire, 
+                            base: salaire, 
                             part_salariale: {
                                 taux: 100,
                                 gain: "",
@@ -286,7 +286,7 @@
                             {
                                 designation: "HEURES SUP 112%", 
                                 nombre: 0, 
-                                base_salary: 3000, 
+                                base: 3000, 
                                 part_salariale: {
                                     taux: 100,
                                     gain: "",
@@ -295,7 +295,7 @@
                             {
                                 designation: "HEURES SUP 135%", 
                                 nombre: 0, 
-                                base_salary: 5000, 
+                                base: 5000, 
                                 part_salariale: {
                                     taux: 100,
                                     gain: "",
@@ -304,7 +304,7 @@
                             {
                                 designation: "HEURES SUP 150%", 
                                 nombre: 0, 
-                                base_salary: 7000, 
+                                base: 7000, 
                                 part_salariale: {
                                     taux: 100,
                                     gain: "",
@@ -313,7 +313,7 @@
                             {
                                 designation: "HEURES SUP 200%", 
                                 nombre: 0, 
-                                base_salary: 10000, 
+                                base: 10000, 
                                 part_salariale: {
                                     taux: 100,
                                     gain: "",
@@ -323,7 +323,7 @@
                     }
                     let sum= 0;
                     for (let j = 0; j < this.form.lignes.length; j++) {
-                        this.form.lignes[j].part_salariale.gain = (this.form.lignes[j].nombre * this.form.lignes[j].base_salary * this.form.lignes[j].part_salariale.taux)/100;
+                        this.form.lignes[j].part_salariale.gain = (this.form.lignes[j].nombre * this.form.lignes[j].base * this.form.lignes[j].part_salariale.taux)/100;
                         sum += this.form.lignes[j].part_salariale.gain;
                     }
                         this.form.brut_salary = sum
@@ -333,7 +333,7 @@
             NumberChange(index){
                 let ligne = this.form.lignes[index]
                 // ligne.part_salariale.taux = 100
-                ligne.part_salariale.gain = (Number(ligne.nombre) * ligne.base_salary * ligne.part_salariale.taux)/100;
+                ligne.part_salariale.gain = (Number(ligne.nombre) * ligne.base * ligne.part_salariale.taux)/100;
                 let sum= 0;
                 for (let j = 0; j < this.form.lignes.length; j++) {
                     sum += this.form.lignes[j].part_salariale.gain;
@@ -344,7 +344,7 @@
 
             // TauxChange(index){
             //     let ligne = this.form.lignes[index]
-            //     ligne.part_salariale.gain = (Number(ligne.nombre) * ligne.base_salary * ligne.part_salariale.taux)/100;
+            //     ligne.part_salariale.gain = (Number(ligne.nombre) * ligne.base * ligne.part_salariale.taux)/100;
             // },
 
             deleteLine(index){
@@ -389,7 +389,7 @@
                     {
                         designation: "", 
                         nombre: 0, 
-                        base_salary: "", 
+                        base: "", 
                         part_salariale: {
                             taux: "",
                             gain: "",
@@ -404,9 +404,7 @@
 
             async submit(){
                 this.load = true
-                this.form.lignes.shift()
-                console.log(this.form.lignes);
-                console.log(this.employe_concerne.base_salary);
+                this.heures_sup = this.form.lignes.filter(ligne => ligne.designation !== "SALAIRE DE BASE MENSUEL")
             await  this.$axios.post('/payslips',{
               date_start: this.form.date_start,
               date_end: this.form.date_end,
@@ -417,7 +415,7 @@
               brut_salary: this.form.brut_salary,
             //   hour_salary: this.form.hour_salary,
               total_hours: this.form.total_hours,  
-              sup_hours: this.form.lignes,
+              sup_hours: this.heures_sup,
               hours: this.form.hours,
             //   bonus: this.form.bonus,
               contributions: this.form.contributions,
@@ -430,6 +428,7 @@
                 console.log( response.data ) 
                 this.error = response.data.message
                     if(response.data.status == "success"){
+                    this.$router.push({path:'/paies/list_paie'});
                         this.$toast("Fiche de paie enregistré !!! ", {
                             icon: 'fa fa-check-circle',
                         })
