@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-expand-lg  nav-bar appheader">
           <div class="container">
-              <NuxtLink to="/login">
+              <NuxtLink to="/">
                   <img src="/images/logo.png" class="logo-img" alt="">
               </NuxtLink>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
