@@ -313,7 +313,7 @@ export default {
         },
 
         choiceProd(designation,i){
-            console.log(i);
+            // console.log(i);
             let line = this.form.sell_lines[i]
             this.element_searchProd = designation.name
             line.product_id = designation.id
