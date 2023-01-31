@@ -359,7 +359,7 @@
                   }
                   })
                   .then(response => {
-                    // console.log(response.data);
+                    console.log(response.data);
                   this.paies = response.data.data.data 
                   this.total = response.data.data.total;
                   this.res_data= response.data.data
