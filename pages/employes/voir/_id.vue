@@ -395,7 +395,7 @@
                     }
                 })
                 .then(response => {
-                    console.log(response.data.data )
+                    // console.log(response.data.data )
                     let employe = response.data.data;
                     this.form.last_name = employe.last_name
                     this.form.first_name= employe.first_name 
