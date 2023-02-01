@@ -173,6 +173,16 @@
                                         <td>{{cotisation.part_patronale.taux}}</td>     
                                         <td>{{cotisation.part_patronale.retenue}}</td>
                                     </tr>
+                                    <!-- <tr v-for="(patronal_retain, j) in form.patronal_retains" :key="j">
+                                        <td>{{ patronal_retain.designation }}</td>
+                                        <td></td> 
+                                        <td>{{patronal_retain.base}}</td>
+                                        <td></td>
+                                        <td></td>         
+                                        <td></td>       
+                                        <td>{{patronal_retain.part_patronale.taux}}</td>     
+                                        <td>{{patronal_retain.part_patronale.retenue}}</td>
+                                    </tr> -->
                                 </tbody>
                             </table>   
                         </div><br>
@@ -343,7 +353,9 @@
                     date_end: '',
                     employee_id: '',
                     lignes: [],
-                    contributions: []
+                    contributions: [],
+                    retains: [],
+                    cotisations: []
                 },
                 employe: "",
                 employe_concerne: "",
@@ -369,6 +381,8 @@
                     this.employe = response.data.data
                     this.form.lignes = this.employe.sup_hours
                     this.form.contributions = this.employe.contributions
+                    this.form.retains = this.employe.retained
+                    this.form.cotisations = this.employe.patronal_retained
                     let salaire = this.employe.base_salary
                     this.form.lignes.unshift(
                         {
