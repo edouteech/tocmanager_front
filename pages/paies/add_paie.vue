@@ -77,20 +77,14 @@
                                         <td>
                                             <input class="form-control" type="text"  autocomplete="off"  v-model="ligne.designation">
                                         </td>
-                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="ligne.nombre" @change="NumberChange(index)"></td> 
+                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="ligne.nombre" @change="LigneChange(index)"></td> 
                                         <td v-if="ligne.designation == 'SALAIRE DE BASE MENSUEL'"><input class="form-control" type="number" autocomplete="off" disabled v-model="ligne.base"></td>
-                                        <td v-else><input class="form-control" type="number" autocomplete="off" v-model="ligne.base"></td>
-                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="ligne.part_salariale.taux" @change="NumberChange(index)"></td>
+                                        <td v-else><input class="form-control" type="number" autocomplete="off" v-model="ligne.base" disabled></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="ligne.part_salariale.taux" disabled></td>
                                         <td><div><input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_salariale.gain"></div></td>         
-                                        <td>
-                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_salariale.retenue"> -->
-                                        </td>       
-                                        <td>
-                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_patronale.taux"> -->
-                                        </td>     
-                                        <td>
-                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_patronale.retenue"> -->
-                                        </td>
+                                        <td></td>       
+                                        <td></td>     
+                                        <td></td>
                                         <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer sup" aria-hidden="true"></i></td>
                                     </tr>
 
@@ -102,7 +96,7 @@
                     <div class="col">
                     <div class="title-row ">Contributions</div>
                         <div class="table-responsive">
-                            <button class="btn btn-outline-success" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                            <button class="btn btn-outline-success" @click.prevent="addContributions()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                             <table class="table table-bordered paie">
                                 <thead>
                                     <tr>
@@ -128,10 +122,10 @@
                                         <td>
                                             <input class="form-control" type="text"  autocomplete="off" placeholder="INDEMNITE" v-model="contribution.designation">
                                         </td>
-                                        <td><input class="form-control" type="number"  autocomplete="off" v-model="contribution.nombre" @change="NumberChange(i)"></td> 
+                                        <td><input class="form-control" type="number"  autocomplete="off" v-model="contribution.nombre" @change="ContributionChange(i)"></td> 
                                         <!-- <td v-if="contribution.designation == 'SALAIRE DE BASE MENSUEL'"><input class="form-control" type="number" autocomplete="off" disabled v-model="contribution.base"></td> -->
-                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="875" v-model="contribution.base" @change="NumberChange(i)"></td>
-                                        <td><input class="form-control" type="number"  autocomplete="off" placeholder="100" v-model="contribution.part_salariale.taux" @change="NumberChange(i)"></td>
+                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="875" v-model="contribution.base" @change="ContributionChange(i)"></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off" placeholder="100" v-model="contribution.part_salariale.taux" @change="ContributionChange(i)"></td>
                                         <td><div><input class="form-control" type="number"  autocomplete="off" disabled v-model="contribution.part_salariale.gain"></div></td>         
                                         <td>
                                             <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="contribution.part_salariale.retenue"> -->
@@ -150,7 +144,95 @@
                         </div><br>
                     </div> 
                     <br>
-                    <div class="title-row">Recapitulatif</div>
+
+                    
+                    <div class="col">
+                    <div class="title-row ">Retenues salariales</div>
+                        <div class="table-responsive">
+                            <button class="btn btn-outline-success" @click.prevent="addRetain()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                            <table class="table table-bordered paie">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" class="col_percents">Désignation</th>
+                                        <th rowspan="2" class="col_percent">Nombre</th>
+                                        <th rowspan="2" class="col_percente">Base</th>  
+                                        <th colspan="3">Part salariale</th>
+                                        <th colspan="2">Part patronale</th>                    
+                                    </tr>
+                                    <tr>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percent">Gain</th>
+                                        <th class="col_percen">Retenue</th>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percent">Retenue</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <tr v-for="(retain, j) in form.retains" :key="j">
+                                        <td>
+                                            <input class="form-control" type="text"  autocomplete="off" placeholder="RETENUE" v-model="retain.designation">
+                                        </td>
+                                        <td></td>
+                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="875" v-model="retain.base" disabled></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off" placeholder="100" v-model="retain.part_salariale.taux" @change="RetainChange(j)"></td>
+                                        <td></td>       
+                                        <td><input class="form-control" type="number"  autocomplete="off" disabled v-model="retain.part_salariale.retenue"></td>     
+                                        <td></td>
+                                        <td></td>
+                                        <td @click="deleteRetain(j)"><i class="fa fa-trash-o text-danger cursor-pointer sup" aria-hidden="true"></i></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>   
+                        </div><br>
+                    </div> 
+                    <br>
+
+                    <div class="col">
+                    <div class="title-row ">Retenues patronales</div>
+                        <div class="table-responsive">
+                            <button class="btn btn-outline-success" @click.prevent="addCotisation()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                            <table class="table table-bordered paie">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" class="col_percents">Désignation</th>
+                                        <th rowspan="2" class="col_percent">Nombre</th>
+                                        <th rowspan="2" class="col_percente">Base</th>  
+                                        <th colspan="3">Part salariale</th>
+                                        <th colspan="2">Part patronale</th>                    
+                                    </tr>
+                                    <tr>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percent">Gain</th>
+                                        <th class="col_percen">Retenue</th>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percent">Retenue</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <tr v-for="(cotisation, k) in form.cotisations" :key="k">
+                                        <td>
+                                            <input class="form-control" type="text"  autocomplete="off" placeholder="COTISATION" v-model="cotisation.designation">
+                                        </td>
+                                        <td></td>
+                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="875" v-model="cotisation.base" disabled></td>
+                                        <td></td>
+                                        <td></td>       
+                                        <td></td>     
+                                        <td><input class="form-control" type="number"  autocomplete="off" placeholder="100" v-model="cotisation.part_patronale.taux" @change="CotisationChange(k)"></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off" disabled v-model="cotisation.part_patronale.retenue"></td>
+                                        <td @click="deleteCotisation(k)"><i class="fa fa-trash-o text-danger cursor-pointer sup" aria-hidden="true"></i></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>   
+                        </div><br>
+                    </div> 
+                    <br>
+
+                    <div class="titles-row">Recapitulatif</div>
                     <div class="d-flex align-items-end">
                         <div class="table-responsive">
                             <table class="table table-bordered">
@@ -171,10 +253,19 @@
                                 
                                 <tbody>
                                     <tr>
-                                        <td rowspan="2"><strong>Période</strong>
-                                            <strong>Année</strong>
-                                        </td>
+                                        <td><strong>Période</strong></td>
                                         <td><input class="form-control" type="number"  autocomplete="off"  v-model="form.brut_salary" disabled></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="form.employee_cotisation" disabled></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="form.company_cotisation" disabled></td>
+                                        <td></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="form.net_salary" disabled></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="mx-2"><input class="form-control" type="number"  autocomplete="off"  v-model="form.net_salary" disabled></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Année</strong></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -182,7 +273,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td class="mx-2"></td>
+                                        <td></td>
                                     </tr>
                                 </tbody>
                             </table>   
@@ -275,8 +366,9 @@
                     sup_hours: '',
                     hours: '',
                     bonus: '',
+                    retains: [],
+                    cotisations: [],
                     contributions: [],
-                    retained: '',
                     employee_cotisation: '',
                     company_cotisation: '',
                     comment: '',
@@ -316,6 +408,7 @@
                     // console.log(response.data.data);
                     this.employe_concerne = response.data.data 
                     let salaire = this.employe_concerne.base_salary
+                    let unit_hour = Math.floor(salaire / 173)
                     
                     if(this.form.lignes.length > 0){
                         this.form.lignes[0].base = salaire
@@ -336,36 +429,36 @@
                             {
                                 designation: "HEURES SUP 112%", 
                                 nombre: 0, 
-                                base: 3000, 
+                                base: unit_hour, 
                                 part_salariale: {
-                                    taux: 100,
+                                    taux: 112,
                                     gain: "",
                                 }, 
                             },
                             {
                                 designation: "HEURES SUP 135%", 
                                 nombre: 0, 
-                                base: 5000, 
+                                base: unit_hour, 
                                 part_salariale: {
-                                    taux: 100,
+                                    taux: 135,
                                     gain: "",
                                 }, 
                             },
                             {
                                 designation: "HEURES SUP 150%", 
                                 nombre: 0, 
-                                base: 7000, 
+                                base: unit_hour, 
                                 part_salariale: {
-                                    taux: 100,
+                                    taux: 150,
                                     gain: "",
                                 }, 
                             },
                             {
                                 designation: "HEURES SUP 200%", 
                                 nombre: 0, 
-                                base: 10000, 
+                                base: unit_hour, 
                                 part_salariale: {
-                                    taux: 100,
+                                    taux: 200,
                                     gain: "",
                                 }, 
                             }
@@ -377,92 +470,201 @@
                         sum += this.form.lignes[j].part_salariale.gain;
                     }
                         this.form.brut_salary = sum
+                        this.form.net_salary = sum
                 })
             },
 
-            NumberChange(index){
+            LigneChange(index){
                 let ligne = this.form.lignes[index]
-                // ligne.part_salariale.taux = 100
-                ligne.part_salariale.gain = (Number(ligne.nombre) * ligne.base * ligne.part_salariale.taux)/100;
-                let sum= 0;
+                ligne.part_salariale.gain = Math.floor((Number(ligne.nombre) * ligne.base * ligne.part_salariale.taux)/100);
+                let sum_lignes= 0;
                 for (let j = 0; j < this.form.lignes.length; j++) {
-                    sum += this.form.lignes[j].part_salariale.gain;
+                    sum_lignes += this.form.lignes[j].part_salariale.gain;
+                }
+
+                let sum_contributions= 0;
+                for (let j = 0; j < this.form.contributions.length; j++) {
+                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                }
+
+                let sum_retains= 0;
+                for (let j = 0; j < this.form.retains.length; j++) {
+                    sum_retains += this.form.retains[j].part_salariale.retenue;
+                }
+
+                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.employee_cotisation = sum_retains
+                    this.form.net_salary = this.form.brut_salary
+            },
+
+            
+            ContributionChange(index){
+                this.form.retains = []
+                this.form.cotisations = []
+                let sum_lignes= 0;
+                for (let j = 0; j < this.form.lignes.length; j++) {
+                    sum_lignes += this.form.lignes[j].part_salariale.gain;
                 }
 
                 let contribution = this.form.contributions[index]
-                // ligne.part_salariale.taux = 100
-                contribution.part_salariale.gain = (Number(contribution.nombre) * contribution.base * contribution.part_salariale.taux)/100;
-                let sum1= 0;
+                contribution.part_salariale.gain = Math.floor((Number(contribution.nombre) * contribution.base * contribution.part_salariale.taux)/100);
+                let sum_contributions= 0;
                 for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum1 += this.form.contributions[j].part_salariale.gain;
+                    sum_contributions += this.form.contributions[j].part_salariale.gain;
                 }
-                    this.form.brut_salary = sum + sum1
+
+                let sum_retains= 0;
+                for (let j = 0; j < this.form.retains.length; j++) {
+                    sum_retains += this.form.retains[j].part_salariale.retenue;
+                }
+                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.employee_cotisation = sum_retains
+                    this.form.net_salary = this.form.brut_salary
             },
 
+            
+            RetainChange(index){
+                this.form.cotisations = []
+                let sum_lignes= 0;
+                for (let j = 0; j < this.form.lignes.length; j++) {
+                    sum_lignes += this.form.lignes[j].part_salariale.gain;
+                }
 
-            // TauxChange(index){
-            //     let ligne = this.form.lignes[index]
-            //     ligne.part_salariale.gain = (Number(ligne.nombre) * ligne.base * ligne.part_salariale.taux)/100;
-            // },
+                let sum_contributions= 0;
+                for (let j = 0; j < this.form.contributions.length; j++) {
+                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                }
+
+                let retain = this.form.retains[index]
+                retain.part_salariale.retenue = Math.floor((retain.base * retain.part_salariale.taux)/100);
+                let sum_retains= 0;
+                for (let j = 0; j < this.form.retains.length; j++) {
+                    sum_retains += this.form.retains[j].part_salariale.retenue;
+                }
+                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.employee_cotisation = sum_retains
+                    this.form.net_salary = this.form.brut_salary - sum_retains
+            },
+
+            
+            
+            
+            CotisationChange(index){
+                let sum_lignes= 0;
+                for (let j = 0; j < this.form.lignes.length; j++) {
+                    sum_lignes += this.form.lignes[j].part_salariale.gain;
+                }
+
+                let sum_contributions= 0;
+                for (let j = 0; j < this.form.contributions.length; j++) {
+                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                }
+
+                let sum_retains= 0;
+                for (let j = 0; j < this.form.retains.length; j++) {
+                    sum_retains += this.form.retains[j].part_salariale.retenue;
+                }
+
+                let cotisation = this.form.cotisations[index]
+                cotisation.part_patronale.retenue = Math.floor((cotisation.base * cotisation.part_patronale.taux)/100);
+                let sum_cotisations= 0;
+                for (let j = 0; j < this.form.cotisations.length; j++) {
+                    sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                }
+                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.employee_cotisation = sum_retains
+                    this.form.company_cotisation = sum_cotisations
+            },
+            
 
             deleteLine(index){
                 this.form.lignes.splice(index, 1)
-                let sum= 0;
+                let sum_lignes= 0;
                 for (let j = 0; j < this.form.lignes.length; j++) {
-                    sum += this.form.lignes[j].part_salariale.gain;
+                    sum_lignes += this.form.lignes[j].part_salariale.gain;
+                }
+
+                let sum_retains= 0;
+                for (let j = 0; j < this.form.retains.length; j++) {
+                    sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
                 
-                let sum1= 0;
+                let sum_contributions= 0;
                 for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum1 += this.form.contributions[j].part_salariale.gain;
+                    sum_contributions += this.form.contributions[j].part_salariale.gain;
                 }   
-                    this.form.brut_salary = sum + sum1
+                    this.form.brut_salary = (sum_lignes + sum_contributions)
             },
 
             
             deleteContribution(index){
-                let sum= 0;
+                let sum_lignes= 0;
                 for (let j = 0; j < this.form.lignes.length; j++) {
-                    sum += this.form.lignes[j].part_salariale.gain;
+                    sum_lignes += this.form.lignes[j].part_salariale.gain;
+                }
+                
+                let sum_retains= 0;
+                for (let j = 0; j < this.form.retains.length; j++) {
+                    sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
                 
                 this.form.contributions.splice(index, 1)
-                let sum1= 0;
+                let sum_contributions= 0;
                 for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum1 += this.form.contributions[j].part_salariale.gain;
+                    sum_contributions += this.form.contributions[j].part_salariale.gain;
                 }   
-                    this.form.brut_salary = sum + sum1
+                    this.form.brut_salary = (sum_lignes + sum_contributions)
             },
 
-
-            LigneChange(){
-                console.log(e);
-                if(e.target) {
-                    console.log("ok");
-                    // let i = e.target.options[e.target.options.selectedIndex].dataset.i;
-                    // let index = e.target.options[e.target.options.selectedIndex].dataset.index;
-                    // let product = this.produits[i];
-                    // let line = this.form.sell_lines[index]
-                    // line.price = product.price_sell;
-                    // line.amount = Number(line.price) * Number(line.quantity);
-                    // line.amount_after_discount = Number(line.price) * Number(line.quantity);
-                        
-                    
-                    // let sum = 0;
-                    // for (let j = 0; j < this.form.sell_lines.length; j++) {
-                    //     sum += this.form.sell_lines[j].amount_after_discount;
-                    // }
-                    // this.form.amount_ht = sum;
-                    // this.form.tax =0
-                    // this.taxChange()
-                } 
-                else{
-                    console.log("no");
+            
+            deleteRetain(index){
+                let sum_lignes= 0;
+                for (let j = 0; j < this.form.lignes.length; j++) {
+                    sum_lignes += this.form.lignes[j].part_salariale.gain;
                 }
+                
+                this.form.retains.splice(index, 1)
+                let sum_retains= 0;
+                for (let j = 0; j < this.form.retains.length; j++) {
+                    sum_retains += this.form.retains[j].part_salariale.retenue;
+                }
+                
+                let sum_contributions= 0;
+                for (let j = 0; j < this.form.contributions.length; j++) {
+                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                }   
+                    this.form.brut_salary = (sum_lignes + sum_contributions)
             },
+
+            
+            deleteCotisation(index){
+                let sum_lignes= 0;
+                for (let j = 0; j < this.form.lignes.length; j++) {
+                    sum_lignes += this.form.lignes[j].part_salariale.gain;
+                }
+                
+                let sum_retains= 0;
+                for (let j = 0; j < this.form.retains.length; j++) {
+                    sum_retains += this.form.retains[j].part_salariale.retenue;
+                }
+                
+                let sum_contributions= 0;
+                for (let j = 0; j < this.form.contributions.length; j++) {
+                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                } 
+                
+                this.form.cotisations.splice(index, 1)
+                let sum_cotisations= 0;
+                for (let j = 0; j < this.form.cotisations.length; j++) {
+                    sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                }
+                    this.form.brut_salary = (sum_lignes + sum_contributions)
+            },
+
+
 
     
-            addLine(){
+            addContributions(){
                 this.form.contributions.push(
                     {
                         designation: "", 
@@ -471,38 +673,59 @@
                         part_salariale: {
                             taux: "",
                             gain: "",
-                            // retenue: ""
                         }, 
-                        // part_patronale: {
-                        //     taux: "",
-                        //     retenue: ""
-                        // }, 
                     });           
             },
 
+            
+            addRetain(){
+                this.form.retains.push(
+                    {
+                        designation: "", 
+                        base: this.form.brut_salary, 
+                        part_salariale: {
+                            taux: "",
+                            retenue: ""
+                        }, 
+                    });           
+            },
+
+            addCotisation(){
+                this.form.cotisations.push(
+                    {
+                        designation: "", 
+                        base: this.form.brut_salary, 
+                        part_patronale: {
+                            taux: "",
+                            retenue: ""
+                        }, 
+                    });           
+            },
+
+
             async submit(){
-                console.log(this.form.contributions);
                 this.load = true
                 this.heures_sup = this.form.lignes.filter(ligne => ligne.designation !== "SALAIRE DE BASE MENSUEL")
-            await  this.$axios.post('/payslips',{
-              date_start: this.form.date_start,
-              date_end: this.form.date_end,
-              employee_id: this.form.employee_id,
-              base_salary: this.employe_concerne.base_salary,
-            //   ipts: this.form.ipts,
-            //   net_salary: this.form.net_salary,
-              brut_salary: this.form.brut_salary,
-            //   hour_salary: this.form.hour_salary,
-              total_hours: this.form.total_hours,  
-              sup_hours: this.heures_sup,
-              hours: this.form.hours,
-            //   bonus: this.form.bonus,
-              contributions: this.form.contributions,
-              retained: this.form.retained,
-            //   employee_cotisation: this.form.employee_cotisation,
-            //   company_cotisation: this.form.company_cotisation,
-              comment: this.form.comment,
-              compagnie_id: localStorage.getItem('auth.company_id') 
+              await  this.$axios.post('/payslips',{
+                date_start: this.form.date_start,
+                date_end: this.form.date_end,
+                employee_id: this.form.employee_id,
+                base_salary: this.employe_concerne.base_salary,
+                //   ipts: this.form.ipts,
+                net_salary: this.form.net_salary,
+                brut_salary: this.form.brut_salary,
+                //   hour_salary: this.form.hour_salary,
+                total_hours: this.form.total_hours,  
+                sup_hours: this.heures_sup,
+                hours: this.form.hours,
+                //   bonus: this.form.bonus,
+                contributions: this.form.contributions,
+                retained: this.form.retains,
+                patronal_retained: this.form.cotisations,
+                employee_cotisation: this.form.employee_cotisation,
+                company_cotisation: this.form.company_cotisation,
+                comment: this.form.comment,
+                compagnie_id: localStorage.getItem('auth.company_id') 
             }).then(response =>{ 
                 console.log( response.data ) 
                 this.error = response.data.message
@@ -550,6 +773,17 @@
         font-weight: 700;
         text-transform: uppercase;
         background-color: rgb(236, 236, 236);
+    }
+
+    
+    .titles-row{
+        margin: 15px 0;
+        border: 2px dotted rgb(205, 255, 205);
+        text-align: center;
+        padding: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        background-color: rgb(205, 255, 205);
     }
 
     /* form{
