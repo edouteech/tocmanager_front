@@ -49,9 +49,9 @@
                     </div> 
                     <br><br>
                     <div class="col">
-                    <div class="title-row ">Informations de paie</div>
+                    <div class="title-row ">Informations generales de paie</div>
                         <div class="table-responsive">
-                            <button class="btn btn-outline-success" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                            <!-- <button class="btn btn-outline-success" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button> -->
                             <table class="table table-bordered paie">
                                 <thead>
                                     <tr>
@@ -99,6 +99,56 @@
                         </div><br>
                     </div> 
                     
+                    <div class="col">
+                    <div class="title-row ">Contributions</div>
+                        <div class="table-responsive">
+                            <button class="btn btn-outline-success" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                            <table class="table table-bordered paie">
+                                <thead>
+                                    <tr>
+                                        <!-- <th rowspan="2" class="col_percen">N°</th> -->
+                                        <th rowspan="2" class="col_percents">Désignation</th>
+                                        <th rowspan="2" class="col_percent">Nombre</th>
+                                        <th rowspan="2" class="col_percente">Base</th>  
+                                        <th colspan="3">Part salariale</th>
+                                        <th colspan="2">Part patronale</th>                    
+                                    </tr>
+                                    <tr>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percen">Gain</th>
+                                        <th class="col_percent">Retenue</th>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percent">Retenue</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <tr v-for="(contribution, i) in form.contributions" :key="i">
+                                        <!-- <td></td> -->
+                                        <td>
+                                            <input class="form-control" type="text"  autocomplete="off" placeholder="INDEMNITE" v-model="contribution.designation">
+                                        </td>
+                                        <td><input class="form-control" type="number"  autocomplete="off" v-model="contribution.nombre" @change="NumberChange(i)"></td> 
+                                        <!-- <td v-if="contribution.designation == 'SALAIRE DE BASE MENSUEL'"><input class="form-control" type="number" autocomplete="off" disabled v-model="contribution.base"></td> -->
+                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="875" v-model="contribution.base" @change="NumberChange(i)"></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off" placeholder="100" v-model="contribution.part_salariale.taux" @change="NumberChange(i)"></td>
+                                        <td><div><input class="form-control" type="number"  autocomplete="off" disabled v-model="contribution.part_salariale.gain"></div></td>         
+                                        <td>
+                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="contribution.part_salariale.retenue"> -->
+                                        </td>       
+                                        <td>
+                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="contribution.part_patronale.taux"> -->
+                                        </td>     
+                                        <td>
+                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="contribution.part_patronale.retenue"> -->
+                                        </td>
+                                        <td @click="deleteContribution(i)"><i class="fa fa-trash-o text-danger cursor-pointer sup" aria-hidden="true"></i></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>   
+                        </div><br>
+                    </div> 
                     <br>
                     <div class="title-row">Recapitulatif</div>
                     <div class="d-flex align-items-end">
@@ -225,7 +275,7 @@
                     sup_hours: '',
                     hours: '',
                     bonus: '',
-                    contributions: '',
+                    contributions: [],
                     retained: '',
                     employee_cotisation: '',
                     company_cotisation: '',
@@ -338,7 +388,15 @@
                 for (let j = 0; j < this.form.lignes.length; j++) {
                     sum += this.form.lignes[j].part_salariale.gain;
                 }
-                    this.form.brut_salary = sum
+
+                let contribution = this.form.contributions[index]
+                // ligne.part_salariale.taux = 100
+                contribution.part_salariale.gain = (Number(contribution.nombre) * contribution.base * contribution.part_salariale.taux)/100;
+                let sum1= 0;
+                for (let j = 0; j < this.form.contributions.length; j++) {
+                    sum1 += this.form.contributions[j].part_salariale.gain;
+                }
+                    this.form.brut_salary = sum + sum1
             },
 
 
@@ -353,7 +411,27 @@
                 for (let j = 0; j < this.form.lignes.length; j++) {
                     sum += this.form.lignes[j].part_salariale.gain;
                 }
-                    this.form.brut_salary = sum
+                
+                let sum1= 0;
+                for (let j = 0; j < this.form.contributions.length; j++) {
+                    sum1 += this.form.contributions[j].part_salariale.gain;
+                }   
+                    this.form.brut_salary = sum + sum1
+            },
+
+            
+            deleteContribution(index){
+                let sum= 0;
+                for (let j = 0; j < this.form.lignes.length; j++) {
+                    sum += this.form.lignes[j].part_salariale.gain;
+                }
+                
+                this.form.contributions.splice(index, 1)
+                let sum1= 0;
+                for (let j = 0; j < this.form.contributions.length; j++) {
+                    sum1 += this.form.contributions[j].part_salariale.gain;
+                }   
+                    this.form.brut_salary = sum + sum1
             },
 
 
@@ -385,7 +463,7 @@
 
     
             addLine(){
-                this.form.lignes.push(
+                this.form.contributions.push(
                     {
                         designation: "", 
                         nombre: 0, 
@@ -403,6 +481,7 @@
             },
 
             async submit(){
+                console.log(this.form.contributions);
                 this.load = true
                 this.heures_sup = this.form.lignes.filter(ligne => ligne.designation !== "SALAIRE DE BASE MENSUEL")
             await  this.$axios.post('/payslips',{
@@ -510,6 +589,7 @@
 
     .paie input{
         font-size: 14px;
+        text-transform: uppercase;
     }
 
     input::placeholder {
