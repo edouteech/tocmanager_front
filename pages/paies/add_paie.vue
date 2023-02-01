@@ -174,7 +174,7 @@
                                             <input class="form-control" type="text"  autocomplete="off" placeholder="RETENUE" v-model="retain.designation">
                                         </td>
                                         <td></td>
-                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="875" v-model="retain.base" disabled></td>
+                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="875" v-model="retain.base" disabled></td>                 
                                         <td><input class="form-control" type="number"  autocomplete="off" placeholder="100" v-model="retain.part_salariale.taux" @change="RetainChange(j)"></td>
                                         <td></td>       
                                         <td><input class="form-control" type="number"  autocomplete="off" disabled v-model="retain.part_salariale.retenue"></td>     
@@ -358,7 +358,7 @@
                     employee_id: '',
                     brut_salary: '',
                     lignes: [],
-                    ipts: '',
+                    irppts: '',
                     net_salary: '',
                     brut_salary: '',
                     hour_salary: '',
@@ -425,6 +425,16 @@
                             }, 
                         });
 
+                        this.form.irppts = this.employe_concerne.irppts
+                        this.form.retains.unshift(
+                        {
+                            designation: "IRPPTS", 
+                            part_salariale: {
+                                retenue: this.employe_concerne.irppts
+                            }, 
+                        });
+
+
                         this.form.lignes.push(
                             {
                                 designation: "HEURES SUP 112%", 
@@ -469,8 +479,14 @@
                         this.form.lignes[j].part_salariale.gain = (this.form.lignes[j].nombre * this.form.lignes[j].base * this.form.lignes[j].part_salariale.taux)/100;
                         sum += this.form.lignes[j].part_salariale.gain;
                     }
+                    
+                    let sum_retains= 0;
+                    for (let j = 0; j < this.form.retains.length; j++) {
+                        sum_retains += this.form.retains[j].part_salariale.retenue;
+                    }
                         this.form.brut_salary = sum
                         this.form.net_salary = sum
+                        this.form.employee_cotisation = sum_retains
                 })
             },
 
@@ -687,8 +703,9 @@
                             taux: "",
                             retenue: ""
                         }, 
-                    });           
+                    });        
             },
+
 
             addCotisation(){
                 this.form.cotisations.push(
@@ -704,6 +721,7 @@
 
 
             async submit(){
+                console.log(this.form.irrpts);
                 this.load = true
                 this.heures_sup = this.form.lignes.filter(ligne => ligne.designation !== "SALAIRE DE BASE MENSUEL")
               await  this.$axios.post('/payslips',{
@@ -711,7 +729,7 @@
                 date_end: this.form.date_end,
                 employee_id: this.form.employee_id,
                 base_salary: this.employe_concerne.base_salary,
-                //   ipts: this.form.ipts,
+                ipts: this.form.irppts,
                 net_salary: this.form.net_salary,
                 brut_salary: this.form.brut_salary,
                 //   hour_salary: this.form.hour_salary,
