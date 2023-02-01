@@ -425,15 +425,7 @@
                             }, 
                         });
 
-                        this.form.irppts = this.employe_concerne.irppts
-                        this.form.retains.unshift(
-                        {
-                            designation: "IRPPTS", 
-                            part_salariale: {
-                                retenue: this.employe_concerne.irppts
-                            }, 
-                        });
-
+                        this.addIrppts()
 
                         this.form.lignes.push(
                             {
@@ -490,6 +482,18 @@
                 })
             },
 
+            addIrppts(){
+                this.form.irppts = this.employe_concerne.irppts
+                this.form.retains.unshift(
+                {
+                    designation: "IRPPTS", 
+                    part_salariale: {
+                        retenue: this.employe_concerne.irppts
+                    }, 
+                });
+            },
+
+
             LigneChange(index){
                 let ligne = this.form.lignes[index]
                 ligne.part_salariale.gain = Math.floor((Number(ligne.nombre) * ligne.base * ligne.part_salariale.taux)/100);
@@ -516,6 +520,7 @@
             
             ContributionChange(index){
                 this.form.retains = []
+                this.addIrppts()
                 this.form.cotisations = []
                 let sum_lignes= 0;
                 for (let j = 0; j < this.form.lignes.length; j++) {
