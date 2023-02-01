@@ -139,15 +139,39 @@
                                         <td>{{ligne.base}}</td>
                                         <td>{{ligne.part_salariale.taux}}</td>
                                         <td>{{ligne.part_salariale.gain}}</td>         
-                                        <td>
-                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_salariale.retenue"> -->
-                                        </td>       
-                                        <td>
-                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_patronale.taux"> -->
-                                        </td>     
-                                        <td>
-                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="ligne.part_patronale.retenue"> -->
-                                        </td>
+                                        <td></td>       
+                                        <td></td>     
+                                        <td></td>
+                                    </tr>
+                                    <tr v-for="(contribution, index) in form.contributions" :key="index">
+                                        <td>{{ contribution.designation }}</td>
+                                        <td>{{contribution.nombre}}</td> 
+                                        <td>{{contribution.base}}</td>
+                                        <td>{{contribution.part_salariale.taux}}</td>
+                                        <td>{{contribution.part_salariale.gain}}</td>         
+                                        <td></td>       
+                                        <td></td>     
+                                        <td></td>
+                                    </tr>
+                                    <tr v-for="(retain, j) in form.retains" :key="j">
+                                        <td>{{ retain.designation }}</td>
+                                        <td></td> 
+                                        <td>{{retain.base}}</td>
+                                        <td>{{retain.part_salariale.taux}}</td>
+                                        <td></td>         
+                                        <td>{{retain.part_salariale.retenue}}</td>       
+                                        <td></td>     
+                                        <td></td>
+                                    </tr>
+                                    <tr v-for="(cotisation, j) in form.cotisations" :key="j">
+                                        <td>{{ cotisation.designation }}</td>
+                                        <td></td> 
+                                        <td>{{cotisation.base}}</td>
+                                        <td></td>
+                                        <td></td>         
+                                        <td></td>       
+                                        <td>{{cotisation.part_patronale.taux}}</td>     
+                                        <td>{{cotisation.part_patronale.retenue}}</td>
                                     </tr>
                                 </tbody>
                             </table>   
@@ -156,7 +180,7 @@
                     
                     <br>
                     <div class="title-row">Recapitulatif</div>
-                    <div class="d-flex align-items-end">
+                    <div class="d-flex align-items-end" v-if="employe">
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -178,14 +202,14 @@
                                     <tr>
                                         <td><strong>Période</strong></td>
                                         <td>{{ employe.brut_salary }}</td>
+                                        <td>{{ employe.employee_cotisation }}</td>
+                                        <td>{{ employe.company_cotisation }}</td>
+                                        <td></td>
+                                        <td>{{ employe.net_salary }}</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td class="mx-2"></td>
+                                        <td class="mx-2">{{ employe.net_salary }}</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Année</strong></td>
@@ -318,7 +342,8 @@
                     date_start: '',
                     date_end: '',
                     employee_id: '',
-                    lignes: []
+                    lignes: [],
+                    contributions: []
                 },
                 employe: "",
                 employe_concerne: "",
@@ -343,6 +368,7 @@
                     console.log(response.data.data)
                     this.employe = response.data.data
                     this.form.lignes = this.employe.sup_hours
+                    this.form.contributions = this.employe.contributions
                     let salaire = this.employe.base_salary
                     this.form.lignes.unshift(
                         {
