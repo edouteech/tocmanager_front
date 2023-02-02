@@ -225,7 +225,7 @@
                                         <td><strong>Année</strong></td>
                                         <td>{{ infos.total_brut_salary }}</td>
                                         <td>{{ infos.total_salary_charge }}</td>
-                                        <td>{{ infos.patronal_charge }}</td>
+                                        <td>{{ infos.total_patronal_charge }}</td>
                                         <td></td>
                                         <td>{{ infos.total_net_salary }}</td>
                                         <td></td>
@@ -382,7 +382,7 @@
                 })
                 .then(response => {
                     // console.log(response.data.data)
-                    this.id_employe = response.data.data.id
+                    this.id_employe = response.data.data.employee.id
                     this.$axios.get('/employees/'+ this.id_employe +'/salary',{
                         params: {
                         compagnie_id: localStorage.getItem('auth.company_id')
