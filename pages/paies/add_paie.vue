@@ -264,7 +264,7 @@
                                         <td></td>
                                         <td class="mx-2"><input class="form-control" type="number"  autocomplete="off"  v-model="form.net_salary" disabled></td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                         <td><strong>Année</strong></td>
                                         <td></td>
                                         <td></td>
@@ -274,7 +274,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>   
                         </div>
