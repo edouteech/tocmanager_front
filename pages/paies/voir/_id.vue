@@ -364,25 +364,35 @@
                 types: '',
                 errors: [],
                 error: null,
+                id_employe: ''
             }
         },
     
-        mounted(){
+         mounted(){
             this.refresh()
             this.infoAnnee()
         },
     
         methods: {
-            infoAnnee() {
-                this.$axios.get('/employees/'+ this.$route.params.id +'/salary',{
+            async infoAnnee() {
+                await this.$axios.get('/payslips/'+ this.$route.params.id,{
                     params: {
                     compagnie_id: localStorage.getItem('auth.company_id')
                     }
                 })
                 .then(response => {
                     // console.log(response.data.data)
-                    this.infos = response.data.data[0]
-                })          
+                    this.id_employe = response.data.data.id
+                    this.$axios.get('/employees/'+ this.id_employe +'/salary',{
+                        params: {
+                        compagnie_id: localStorage.getItem('auth.company_id')
+                        }
+                    })
+                    .then(response => {
+                        // console.log(response.data.data)
+                        this.infos = response.data.data[0]
+                    })  
+                })
             },
 
 
@@ -395,6 +405,7 @@
                 .then(response => {
                     // console.log(response.data.data)
                     this.employe = response.data.data
+                    this.id_employe = this.employe.id
                     this.form.lignes = this.employe.sup_hours
                     this.form.contributions = this.employe.contributions
                     this.form.retains = this.employe.retained
