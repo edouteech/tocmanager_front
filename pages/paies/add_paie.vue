@@ -18,15 +18,15 @@
                         <div class="title-row">Generalites</div>
                         <div class="form-group ">
                             <label class="title">Entrer la date de début de paie</label>
-                            <input type="datetime-local" class="form-control" v-model="form.date_start" autocomplete="off" required placeholder="Pays">
+                            <input type="date" class="form-control" v-model="form.date_start" autocomplete="off" required placeholder="Pays">
                         </div>
                         <div class="alert alert-danger justify-content-center" role="alert" v-if=" errors && errors.date_start">
                             {{errors.date_start}}
                         </div>
 
                         <div class="form-group ">
-                            <label class="title">Entrer la date de date de paie</label>
-                            <input type="datetime-local" class="form-control" v-model="form.date_end" autocomplete="off" required placeholder="Pays">
+                            <label class="title">Entrer la date de fin de paie</label>
+                            <input type="date" class="form-control" v-model="form.date_end" autocomplete="off" required placeholder="Pays">
                         </div>
                         <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.date_end">
                             {{errors.date_end}}
