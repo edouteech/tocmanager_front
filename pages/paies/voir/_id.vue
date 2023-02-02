@@ -364,7 +364,8 @@
                 types: '',
                 errors: [],
                 error: null,
-                id_employe: ''
+                id_employe: '',
+                date_facture: ''
             }
         },
     
@@ -382,10 +383,12 @@
                 })
                 .then(response => {
                     // console.log(response.data.data)
+                    this.date_facture = response.data.data.date_start
                     this.id_employe = response.data.data.employee.id
                     this.$axios.get('/employees/'+ this.id_employe +'/salary',{
                         params: {
-                        compagnie_id: localStorage.getItem('auth.company_id')
+                            compagnie_id: localStorage.getItem('auth.company_id'),
+                            date: this.date_facture
                         }
                     })
                     .then(response => {
