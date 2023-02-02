@@ -73,10 +73,10 @@
                       <td>
                         <div class="action" v-for="(user, i) in users" :key="i">
                           <NuxtLink :to="'/paies/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></NuxtLink>
-                          <NuxtLink :to="'/paies/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                          <!-- <NuxtLink :to="'/paies/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink> -->
                           <!-- <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
                           <div><a :href="'https://api.whatsapp.com/send?phone='+result.phone+'&text=Salut%0AJe%20souhaite%20en%20savoir%20plus%20sur%20votre%20offre%20d%27emploi!'"><i class="fa-brands fa-whatsapp fa text-success"></i></a></div> -->
-                          <div @click="deletePaie(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
+                          <!-- <div @click="deletePaie(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div> -->
                         </div>
                       </td>
                     </tr>
@@ -359,7 +359,7 @@
                   }
                   })
                   .then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                   this.paies = response.data.data.data 
                   this.total = response.data.data.total;
                   this.res_data= response.data.data
