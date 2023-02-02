@@ -219,18 +219,19 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td class="mx-2">{{ employe.net_salary }}</td>
+                                        <td class="mx-2"><b>{{ employe.net_salary }}</b></td>
                                     </tr>
-                                    <tr>
+                                    <tr v-if="infos">
                                         <td><strong>Année</strong></td>
+                                        <td>{{ infos.total_brut_salary }}</td>
+                                        <td>{{ infos.total_salary_charge }}</td>
+                                        <td>{{ infos.patronal_charge }}</td>
+                                        <td></td>
+                                        <td>{{ infos.total_net_salary }}</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <!-- <td>{{ infos.total_net_salary }}</td> -->
                                     </tr>
                                 </tbody>
                             </table>   
@@ -359,6 +360,7 @@
                 },
                 employe: "",
                 employe_concerne: "",
+                infos: "",
                 types: '',
                 errors: [],
                 error: null,
@@ -367,9 +369,23 @@
     
         mounted(){
             this.refresh()
+            this.infoAnnee()
         },
     
         methods: {
+            infoAnnee() {
+                this.$axios.get('/employees/'+ this.$route.params.id +'/salary',{
+                    params: {
+                    compagnie_id: localStorage.getItem('auth.company_id')
+                    }
+                })
+                .then(response => {
+                    // console.log(response.data.data)
+                    this.infos = response.data.data[0]
+                })          
+            },
+
+
             refresh() {
                 this.$axios.get('/payslips/'+ this.$route.params.id,{
                     params: {
@@ -377,7 +393,7 @@
                     }
                 })
                 .then(response => {
-                    console.log(response.data.data)
+                    // console.log(response.data.data)
                     this.employe = response.data.data
                     this.form.lignes = this.employe.sup_hours
                     this.form.contributions = this.employe.contributions
