@@ -19,7 +19,7 @@
                     <img src="./../static/images/enter11.png" alt="profil" class="profil mt-5" />
                   </div>
                   <div class="contact-info mt-5" v-else>
-                    <img :src="'http://localhost:8000/'+logo" alt="profil" class="profil mt-5">
+                    <img :src="$config.webURL + logo" alt="profil" class="profil mt-5">
                     <!-- <img src="./../static/images/enter11.png" alt="profil" class="profil mt-5" /> -->
                   </div>
                   <div class="form-outline mt-4">
