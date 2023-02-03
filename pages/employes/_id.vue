@@ -163,7 +163,7 @@
                         
                         <div class="form-group">
                             <label class="title">Entrer le numéro de régistre de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.reg_number" autocomplete="off" required  placeholder="Num reg" >
+                            <input type="number" class="form-control" v-model="form.reg_number" autocomplete="off" required  placeholder="Num reg" >
                         </div>
                         <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.reg_number">
                             {{errors.reg_number}}
@@ -172,7 +172,7 @@
                         
                         <div class="form-group">
                             <label class="title">Entrer la référence CNSS de l'employé</label>
-                            <input type="text" class="form-control" v-model="form.cnss" autocomplete="off" required  placeholder="CNSS" >
+                            <input type="number" class="form-control" v-model="form.cnss" autocomplete="off" required  placeholder="CNSS" >
                         </div>
                         <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.cnss">
                             {{errors.cnss}}
