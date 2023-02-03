@@ -5,7 +5,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer py-5 px-2 px-2">
+    <div class="app-main__outer py-3 px-2 px-2">
       <h4 class="mx-4">Mon profil</h4><hr><br>
         <div class="row">
             <div class="col-lg-5 col-md-12 img">
