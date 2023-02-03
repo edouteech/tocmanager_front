@@ -20,7 +20,7 @@
                                     <p class="text-uppercase" v-if="employe.compagnie.phone">TEL: {{ employe.compagnie.phone }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-uppercase"><b>N° CNSS: <span></span></b></p>
+                                    <p class="text-uppercase" v-if="employe.compagnie.cnss"><b>N° CNSS: <span>{{employe.compagnie.cnss }}</span></b></p>
                                     <p class="text-uppercase"><b>NUMERO IFU: <span></span></b></p>
                                     <p class="text-uppercase"><b>RCCM: <span v-if="employe.compagnie.rccm">{{ employe.compagnie.rccm }}</span></b></p>
                                 </div>
