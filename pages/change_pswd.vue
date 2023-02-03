@@ -4,7 +4,7 @@
           <h3 class="name">Mot de Passe </h3>
         </nav>
     
-        <div class="app-main__outer p-5">
+        <div class="app-main__outer py-5">
             <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
                 {{error}} 
             </div>

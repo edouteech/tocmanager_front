@@ -4,7 +4,7 @@
           <Sidebar /><h3 class="name_side">Compagnies </h3>
         </nav>
     
-        <div class="app-main__outer p-5">
+        <div class="app-main__outer py-5">
           <h4>Liste des compagnies de la plateforme</h4><hr><br>
           <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >

@@ -18,7 +18,7 @@
     </div>
 
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5">
       
       <div class="d-flex align-items-end flex-column">
         <!-- <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Impression A4</span></div> -->

@@ -5,7 +5,7 @@
           <User_info />
         </nav>
     
-        <div class="app-main__outer p-5">  
+        <div class="app-main__outer py-5">  
             <h4 class="text-center title_voir">Informations générales de l'employé</h4>
             <div class="d-flex align-items-end flex-column" v-for="(user, i) in users" :key="i" >        
                 <!-- <NuxtLink to="/employes/add_employe" v-if=" compagny == user.pivot.compagnie_id"><button type="submit" class="btn btn-outline-primary">Ajouter un employé</button></NuxtLink> -->

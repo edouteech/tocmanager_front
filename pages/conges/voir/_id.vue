@@ -5,7 +5,7 @@
           <Userinfo />
         </nav>
     
-        <div class="app-main__outer p-5">
+        <div class="app-main__outer py-5">
           <h4>Informations sur le congé</h4><hr><br>
 
           <div class="d-flex align-items-end">

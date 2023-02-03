@@ -5,7 +5,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5">
         <h4>Modifier les droits d'accès de cet utilisateur</h4>
         <form action="">
             <div class="form-group col-md-6">

@@ -5,7 +5,7 @@
       <User_info />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5">
 
       <h4>Encaissements supprimés</h4><hr>
       <div class="table-responsive">

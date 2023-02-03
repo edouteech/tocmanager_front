@@ -598,10 +598,10 @@ export default {
 .name_side{
     display: none;
 }
-
+/* 
 .app-main__outer{
     padding: 3%;
-}
+} */
 
 .range input{
   width: 45%;
