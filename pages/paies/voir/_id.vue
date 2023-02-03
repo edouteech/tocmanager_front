@@ -143,12 +143,12 @@
                                         <td></td>     
                                         <td></td>
                                     </tr>
-                                    <tr v-for="(contribution, index) in form.contributions" :key="index">
-                                        <td>{{ contribution.designation }}</td>
-                                        <td>{{contribution.nombre}}</td> 
-                                        <td>{{contribution.base}}</td>
-                                        <td>{{contribution.part_salariale.taux}}</td>
-                                        <td>{{contribution.part_salariale.gain}}</td>         
+                                    <tr v-for="(bonus, index) in form.Bonus" :key="index">
+                                        <td>{{ bonus.designation }}</td>
+                                        <td>{{bonus.nombre}}</td> 
+                                        <td>{{bonus.base}}</td>
+                                        <td>{{bonus.part_salariale.taux}}</td>
+                                        <td>{{bonus.part_salariale.gain}}</td>         
                                         <td></td>       
                                         <td></td>     
                                         <td></td>
@@ -354,7 +354,7 @@
                     date_end: '',
                     employee_id: '',
                     lignes: [],
-                    contributions: [],
+                    Bonus: [],
                     retains: [],
                     cotisations: []
                 },
@@ -410,7 +410,7 @@
                     this.employe = response.data.data
                     this.id_employe = this.employe.id
                     this.form.lignes = this.employe.sup_hours
-                    this.form.contributions = this.employe.contributions
+                    this.form.Bonus = this.employe.bonus
                     this.form.retains = this.employe.retained
                     this.form.cotisations = this.employe.patronal_retained
                     let salaire = this.employe.base_salary
