@@ -9,7 +9,7 @@
     </nav>
 
         <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">  
-            <div class="app-main__outer py-5">
+            <div class="app-main__outer py-5 px-2">
                 <div class="app-main__inner">
                     <div class="app-page-title">
                         <div class="page-title-wrapper">

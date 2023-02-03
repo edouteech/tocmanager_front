@@ -6,7 +6,7 @@
         </nav>
     
     
-        <div class="app-main__outer py-5">
+        <div class="app-main__outer py-5 px-2">
             <h4>Informations sur le bulletin de paie</h4><hr>
             <form action="">
                 <div class="p-3">

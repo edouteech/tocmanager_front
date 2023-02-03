@@ -6,7 +6,7 @@
     </nav>
 
 
-    <div class="app-main__outer py-5">
+    <div class="app-main__outer py-5 px-2">
         <h4>Enregistrer un nouveau client</h4>
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
             {{error}}

@@ -6,7 +6,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer py-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des achats éffectués</h4>
       <hr><br>
       <div class="d-flex">

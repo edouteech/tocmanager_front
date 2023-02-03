@@ -4,7 +4,7 @@
           <Sidebar /><h3 class="name_side">Produits </h3>
         </nav>
     
-        <div class="app-main__outer py-5">
+        <div class="app-main__outer py-5 px-2">
           <h4>Liste des produits de la plateforme</h4><hr><br>
           <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >

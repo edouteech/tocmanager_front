@@ -5,7 +5,7 @@
           <User_info />
         </nav>
     
-        <div class="app-main__outer py-5">
+        <div class="app-main__outer py-5 px-2">
           <h4>Prêts supprimés</h4><hr>
             <div class="table-responsive">
                 <table class="table table-hover">
