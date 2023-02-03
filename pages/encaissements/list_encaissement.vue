@@ -6,7 +6,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer py-3 px-2">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des encaissements</h4>
       <hr><br><br>
       <div class="d-flex">

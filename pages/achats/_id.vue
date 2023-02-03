@@ -8,7 +8,7 @@
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
       {{error}} <br>
     </div>
-    <div class="app-main__outer py-3 px-2">
+    <div class="app-main__outer py-5 px-2">
         <h4>Modifier les informations de cet achat</h4><hr>
         <form action="" method="POST">
             <div class="cadre-haut">             

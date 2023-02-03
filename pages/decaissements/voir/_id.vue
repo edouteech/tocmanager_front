@@ -10,7 +10,7 @@
       <div class="error" v-if="errors['parent_id'] != null">{{errors['parent_id']}}</div>
     </div>
 
-    <div class="app-main__outer py-3 px-2">
+    <div class="app-main__outer py-5 px-2">
          <h4>Informations sur le décaissement</h4><hr><br><br><br>
          <table class="table table-hover">
             <thead>

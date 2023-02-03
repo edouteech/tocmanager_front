@@ -5,7 +5,7 @@
       <User_info />
     </nav>
 
-    <div class="app-main__outer py-3 px-2">  
+    <div class="app-main__outer py-5 px-2">  
       <div class="d-flex align-items-end flex-column">
         <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Imprimer</span></div>
         <NuxtLink :to="'/achats/'+this.$route.params.id"><button type="submit" class="btn btn-dark mt-3 mb-5">Modifier l'achat</button></NuxtLink> 

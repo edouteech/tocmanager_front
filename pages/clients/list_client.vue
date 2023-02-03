@@ -5,7 +5,7 @@
       <Userinfo />
     </nav>
     
-    <div class="app-main__outer py-3 px-2">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des clients</h4><hr><br>
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}} 
