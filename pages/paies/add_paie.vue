@@ -94,9 +94,9 @@
                     </div> 
                     
                     <div class="col">
-                    <div class="title-row ">Contributions</div>
+                    <div class="title-row ">Bonus</div>
                         <div class="table-responsive">
-                            <button class="btn btn-outline-success" @click.prevent="addContributions()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                            <button class="btn btn-outline-success" @click.prevent="addBonus()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                             <table class="table table-bordered paie">
                                 <thead>
                                     <tr>
@@ -117,26 +117,26 @@
                                 </thead>
                                 
                                 <tbody>
-                                    <tr v-for="(contribution, i) in form.contributions" :key="i">
+                                    <tr v-for="(bonus, i) in form.Bonus" :key="i">
                                         <!-- <td></td> -->
                                         <td>
-                                            <input class="form-control" type="text"  autocomplete="off" placeholder="INDEMNITE" v-model="contribution.designation">
+                                            <input class="form-control" type="text"  autocomplete="off" placeholder="INDEMNITE" v-model="bonus.designation">
                                         </td>
-                                        <td><input class="form-control" type="number"  autocomplete="off" v-model="contribution.nombre" @change="ContributionChange(i)"></td> 
-                                        <!-- <td v-if="contribution.designation == 'SALAIRE DE BASE MENSUEL'"><input class="form-control" type="number" autocomplete="off" disabled v-model="contribution.base"></td> -->
-                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="875" v-model="contribution.base" @change="ContributionChange(i)"></td>
-                                        <td><input class="form-control" type="number"  autocomplete="off" placeholder="100" v-model="contribution.part_salariale.taux" @change="ContributionChange(i)"></td>
-                                        <td><div><input class="form-control" type="number"  autocomplete="off" disabled v-model="contribution.part_salariale.gain"></div></td>         
+                                        <td><input class="form-control" type="number"  autocomplete="off" v-model="bonus.nombre" @change="BonusChange(i)"></td> 
+                                        <!-- <td v-if="bonus.designation == 'SALAIRE DE BASE MENSUEL'"><input class="form-control" type="number" autocomplete="off" disabled v-model="bonus.base"></td> -->
+                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="875" v-model="bonus.base" @change="BonusChange(i)"></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off" placeholder="100" v-model="bonus.part_salariale.taux" @change="BonusChange(i)"></td>
+                                        <td><div><input class="form-control" type="number"  autocomplete="off" disabled v-model="bonus.part_salariale.gain"></div></td>         
                                         <td>
-                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="contribution.part_salariale.retenue"> -->
+                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="bonus.part_salariale.retenue"> -->
                                         </td>       
                                         <td>
-                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="contribution.part_patronale.taux"> -->
+                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="bonus.part_patronale.taux"> -->
                                         </td>     
                                         <td>
-                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="contribution.part_patronale.retenue"> -->
+                                            <!-- <input class="form-control" type="number"  autocomplete="off" disabled v-model="bonus.part_patronale.retenue"> -->
                                         </td>
-                                        <td @click="deleteContribution(i)"><i class="fa fa-trash-o text-danger cursor-pointer sup" aria-hidden="true"></i></td>
+                                        <td @click="deleteBonus(i)"><i class="fa fa-trash-o text-danger cursor-pointer sup" aria-hidden="true"></i></td>
                                     </tr>
 
                                 </tbody>
@@ -365,10 +365,9 @@
                     total_hours: '',
                     sup_hours: '',
                     hours: '',
-                    bonus: '',
                     retains: [],
                     cotisations: [],
-                    contributions: [],
+                    Bonus: [],
                     employee_cotisation: '',
                     company_cotisation: '',
                     comment: '',
@@ -502,9 +501,9 @@
                     sum_lignes += this.form.lignes[j].part_salariale.gain;
                 }
 
-                let sum_contributions= 0;
-                for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                let sum_Bonus= 0;
+                for (let j = 0; j < this.form.Bonus.length; j++) {
+                    sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 }
 
                 let sum_retains= 0;
@@ -512,33 +511,33 @@
                     sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
 
-                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.brut_salary = (sum_lignes + sum_Bonus)
                     this.form.employee_cotisation = sum_retains
                     this.form.net_salary = this.form.brut_salary
             },
 
             
-            ContributionChange(index){
+            BonusChange(index){
                 this.form.retains = []
                 this.addIrppts()
-                this.form.cotisations = []
+                this.form.Bonus = []
                 let sum_lignes= 0;
                 for (let j = 0; j < this.form.lignes.length; j++) {
                     sum_lignes += this.form.lignes[j].part_salariale.gain;
                 }
 
-                let contribution = this.form.contributions[index]
-                contribution.part_salariale.gain = Math.floor((Number(contribution.nombre) * contribution.base * contribution.part_salariale.taux)/100);
-                let sum_contributions= 0;
-                for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                let bonus = this.form.Bonus[index]
+                bonus.part_salariale.gain = Math.floor((Number(bonus.nombre) * bonus.base * bonus.part_salariale.taux)/100);
+                let sum_Bonus= 0;
+                for (let j = 0; j < this.form.Bonus.length; j++) {
+                    sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 }
 
                 let sum_retains= 0;
                 for (let j = 0; j < this.form.retains.length; j++) {
                     sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
-                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.brut_salary = (sum_lignes + sum_Bonus)
                     this.form.employee_cotisation = sum_retains
                     this.form.net_salary = this.form.brut_salary
             },
@@ -551,9 +550,9 @@
                     sum_lignes += this.form.lignes[j].part_salariale.gain;
                 }
 
-                let sum_contributions= 0;
-                for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                let sum_Bonus= 0;
+                for (let j = 0; j < this.form.Bonus.length; j++) {
+                    sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 }
 
                 let retain = this.form.retains[index]
@@ -562,7 +561,7 @@
                 for (let j = 0; j < this.form.retains.length; j++) {
                     sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
-                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.brut_salary = (sum_lignes + sum_Bonus)
                     this.form.employee_cotisation = sum_retains
                     this.form.net_salary = this.form.brut_salary - sum_retains
             },
@@ -576,9 +575,9 @@
                     sum_lignes += this.form.lignes[j].part_salariale.gain;
                 }
 
-                let sum_contributions= 0;
-                for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                let sum_Bonus= 0;
+                for (let j = 0; j < this.form.Bonus.length; j++) {
+                    sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 }
 
                 let sum_retains= 0;
@@ -592,7 +591,7 @@
                 for (let j = 0; j < this.form.cotisations.length; j++) {
                     sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
                 }
-                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.brut_salary = (sum_lignes + sum_Bonus)
                     this.form.employee_cotisation = sum_retains
                     this.form.company_cotisation = sum_cotisations
             },
@@ -610,15 +609,15 @@
                     sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
                 
-                let sum_contributions= 0;
-                for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                let sum_Bonus= 0;
+                for (let j = 0; j < this.form.Bonus.length; j++) {
+                    sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 }   
-                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.brut_salary = (sum_lignes + sum_Bonus)
             },
 
             
-            deleteContribution(index){
+            deleteBonus(index){
                 let sum_lignes= 0;
                 for (let j = 0; j < this.form.lignes.length; j++) {
                     sum_lignes += this.form.lignes[j].part_salariale.gain;
@@ -629,12 +628,12 @@
                     sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
                 
-                this.form.contributions.splice(index, 1)
-                let sum_contributions= 0;
-                for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                this.form.Bonus.splice(index, 1)
+                let sum_Bonus= 0;
+                for (let j = 0; j < this.form.Bonus.length; j++) {
+                    sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 }   
-                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.brut_salary = (sum_lignes + sum_Bonus)
             },
 
             
@@ -650,11 +649,11 @@
                     sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
                 
-                let sum_contributions= 0;
-                for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                let sum_Bonus= 0;
+                for (let j = 0; j < this.form.Bonus.length; j++) {
+                    sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 }   
-                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.brut_salary = (sum_lignes + sum_Bonus)
             },
 
             
@@ -669,9 +668,9 @@
                     sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
                 
-                let sum_contributions= 0;
-                for (let j = 0; j < this.form.contributions.length; j++) {
-                    sum_contributions += this.form.contributions[j].part_salariale.gain;
+                let sum_Bonus= 0;
+                for (let j = 0; j < this.form.Bonus.length; j++) {
+                    sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 } 
                 
                 this.form.cotisations.splice(index, 1)
@@ -679,14 +678,14 @@
                 for (let j = 0; j < this.form.cotisations.length; j++) {
                     sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
                 }
-                    this.form.brut_salary = (sum_lignes + sum_contributions)
+                    this.form.brut_salary = (sum_lignes + sum_Bonus)
             },
 
 
 
     
-            addContributions(){
-                this.form.contributions.push(
+            addBonus(){
+                this.form.Bonus.push(
                     {
                         designation: "", 
                         nombre: 0, 
@@ -742,7 +741,7 @@
                 sup_hours: this.heures_sup,
                 hours: this.form.hours,
                 //   bonus: this.form.bonus,
-                contributions: this.form.contributions,
+                bonus: this.form.Bonus,
                 retained: this.form.retains,
                 patronal_retained: this.form.cotisations,
                 employee_cotisation: this.form.employee_cotisation,
