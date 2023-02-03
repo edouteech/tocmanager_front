@@ -5,7 +5,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer py-5 px-2">
+    <div class="app-main__outer py-3 px-2">
          <h4>Modifier les informations de cette catégorie</h4>
        <form action="">
             <div class="form-group col-md-6">
