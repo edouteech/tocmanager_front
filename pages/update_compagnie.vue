@@ -60,6 +60,11 @@
                             placeholder="Entrer le numéro IFU" /></div>      
                         </div>
                         <div class="form-outline mb-4">
+                        <span class="fa fa-sort-numeric-desc px-2"></span><label class="form-label">Numéro CNSS</label>
+                        <div class="input-field"><input type="number" class="form-control form-control-lg" v-model="form.cnss" required
+                            placeholder="Entrer le numéro CNSS" /></div>      
+                        </div>
+                        <div class="form-outline mb-4">
                         <span class="fa fa-exchange px-2"></span><label class="form-label">Régistre de commerce</label>
                         <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.registre" required
                             placeholder="Entrer le régistre" /></div>      
@@ -103,6 +108,7 @@ export default {
                 registre: '',
                 address: '',
                 token: '',
+                cnss: ''
 
             },
             error_message: "",
@@ -134,6 +140,7 @@ export default {
             register_number: this.form.ifu,
             rccm : this.form.registre,
             address:this.form.address,
+            cnss: this.form.cnss,
             mecef_token: this.form.token,
             compagnie_id: localStorage.getItem('auth.company_id')
             })
@@ -192,6 +199,7 @@ export default {
             this.form.phone = compagnie.phone,
             this.form.email = compagnie.email,
             this.form.ifu = compagnie.register_number,
+            this.form.cnss = compagnie.cnss,
             this.form.address = compagnie.address,
             this.form.registre = compagnie.rccm,
             this.form.token = compagnie.mecef_token,
