@@ -753,7 +753,7 @@
                 this.error = response.data.message
                     if(response.data.status == "success"){
                     this.$router.push({path:'/paies/list_paie'});
-                        this.$toast("Fiche de paie enregistré !!! ", {
+                        this.$toast("Fiche de paie enregistrée !!! ", {
                             icon: 'fa fa-check-circle',
                         })
                     }

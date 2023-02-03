@@ -408,7 +408,7 @@
                 .then(response => {
                     // console.log(response.data.data)
                     this.employe = response.data.data
-                    this.id_employe = this.employe.id
+                    // this.id_employe = this.employe.id
                     this.form.lignes = this.employe.sup_hours
                     this.form.Bonus = this.employe.bonus
                     this.form.retains = this.employe.retained
