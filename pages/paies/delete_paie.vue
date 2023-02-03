@@ -33,10 +33,11 @@
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td>{{paie.date_start}}</td>
                 <td>{{paie.date_end}}</td>
-                <td>{{paie.employee.last_name}} {{paie.employee.first_name}}</td>
+                <td v-if="paie.employee">{{paie.employee.last_name}} {{paie.employee.first_name}}</td>
+                <td v-else>-----</td>
                 <td><div class="action">
                     <div class="sup" @click="supPaie(paie.id)">Supprimer définitivement</div>
-                    <div class="restore" @click="restaurerPaie(paie.id)">Restaurer ce client</div></div>
+                    <div class="restore" @click="restaurerPaie(paie.id)">Restaurer</div></div>
                 </td>
             </tr>
             
