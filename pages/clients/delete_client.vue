@@ -105,7 +105,8 @@ export default {
          this.$axios.get('/get/clients',{ params: {
             compagnie_id: localStorage.getItem('auth.company_id'),
             per_page : this.form.nombre} })       
-        .then(response => {console.log(response);
+        .then(response => {
+            // console.log(response);
             this.clients = response.data.data.data
             this.res_data= response.data.data
             this.total = response.data.data.total;
@@ -115,12 +116,13 @@ export default {
 
     methods: {
         restaurerClient(id){
-            console.log(id);
+            // console.log(id);
             this.$axios.get('/restore/client/' +id,{
             params: {
               compagnie_id: localStorage.getItem('auth.company_id')
             }})               
-            .then(response => {console.log(response);
+            .then(response => {
+                // console.log(response);
                 this.client = response.data.data
                 if(response.data.status == "success"){
                     this.$router.push({path:'/clients/list_client',})
@@ -136,7 +138,7 @@ export default {
         },
 
         supClient(id){
-            console.log(id); 
+            // console.log(id); 
             this.showModal = true;
             this.identifiant= id;
             // this.$axios.delete('/destroy/client/' +id)      
