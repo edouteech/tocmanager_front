@@ -518,9 +518,9 @@
 
             
             BonusChange(index){
+                this.form.cotisations = []
                 this.form.retains = []
                 this.addIrppts()
-                this.form.Bonus = []
                 let sum_lignes= 0;
                 for (let j = 0; j < this.form.lignes.length; j++) {
                     sum_lignes += this.form.lignes[j].part_salariale.gain;
