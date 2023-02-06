@@ -465,19 +465,31 @@
                             }
                         );  
                     }
-                    let sum= 0;
+                    let sum_lignes= 0;
                     for (let j = 0; j < this.form.lignes.length; j++) {
                         this.form.lignes[j].part_salariale.gain = (this.form.lignes[j].nombre * this.form.lignes[j].base * this.form.lignes[j].part_salariale.taux)/100;
-                        sum += this.form.lignes[j].part_salariale.gain;
+                        sum_lignes += this.form.lignes[j].part_salariale.gain;
                     }
                     
                     let sum_retains= 0;
                     for (let j = 0; j < this.form.retains.length; j++) {
                         sum_retains += this.form.retains[j].part_salariale.retenue;
                     }
-                        this.form.brut_salary = sum
-                        this.form.net_salary = sum
+
+                    let sum_Bonus= 0;
+                    for (let j = 0; j < this.form.Bonus.length; j++) {
+                        sum_Bonus += this.form.Bonus[j].part_salariale.gain;
+                    }
+
+                    let sum_cotisations= 0;
+                    for (let j = 0; j < this.form.cotisations.length; j++) {
+                        sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                    }
+                    
+                        this.form.brut_salary = (sum_lignes + sum_Bonus)
                         this.form.employee_cotisation = sum_retains
+                        this.form.company_cotisation = sum_cotisations
+                        this.form.net_salary = this.form.brut_salary - sum_retains
                 })
             },
 
@@ -485,7 +497,7 @@
                 this.form.irppts = this.employe_concerne.irppts
                 this.form.retains.unshift(
                 {
-                    designation: "IRPPTS", 
+                    designation: "IRPP/TS", 
                     part_salariale: {
                         retenue: this.employe_concerne.irppts
                     }, 
@@ -511,16 +523,22 @@
                     sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
 
-                    this.form.brut_salary = (sum_lignes + sum_Bonus)
-                    this.form.employee_cotisation = sum_retains
-                    this.form.net_salary = this.form.brut_salary
+                let sum_cotisations= 0;
+                for (let j = 0; j < this.form.cotisations.length; j++) {
+                    sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                }
+                    
+                        this.form.brut_salary = (sum_lignes + sum_Bonus)
+                        this.form.employee_cotisation = sum_retains
+                        this.form.company_cotisation = sum_cotisations
+                        this.form.net_salary = this.form.brut_salary - sum_retains
             },
 
             
             BonusChange(index){
-                this.form.cotisations = []
-                this.form.retains = []
-                this.addIrppts()
+                // this.form.cotisations = []
+                // this.form.retains = []
+                // this.addIrppts()
                 let sum_lignes= 0;
                 for (let j = 0; j < this.form.lignes.length; j++) {
                     sum_lignes += this.form.lignes[j].part_salariale.gain;
@@ -537,14 +555,22 @@
                 for (let j = 0; j < this.form.retains.length; j++) {
                     sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
-                    this.form.brut_salary = (sum_lignes + sum_Bonus)
-                    this.form.employee_cotisation = sum_retains
-                    this.form.net_salary = this.form.brut_salary
+
+                
+                let sum_cotisations= 0;
+                for (let j = 0; j < this.form.cotisations.length; j++) {
+                    sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                }
+                                    
+                        this.form.brut_salary = (sum_lignes + sum_Bonus)
+                        this.form.employee_cotisation = sum_retains
+                        this.form.company_cotisation = sum_cotisations
+                        this.form.net_salary = this.form.brut_salary - sum_retains
             },
 
             
             RetainChange(index){
-                this.form.cotisations = []
+                // this.form.cotisations = []
                 let sum_lignes= 0;
                 for (let j = 0; j < this.form.lignes.length; j++) {
                     sum_lignes += this.form.lignes[j].part_salariale.gain;
@@ -561,9 +587,16 @@
                 for (let j = 0; j < this.form.retains.length; j++) {
                     sum_retains += this.form.retains[j].part_salariale.retenue;
                 }
-                    this.form.brut_salary = (sum_lignes + sum_Bonus)
-                    this.form.employee_cotisation = sum_retains
-                    this.form.net_salary = this.form.brut_salary - sum_retains
+                    
+                let sum_cotisations= 0;
+                for (let j = 0; j < this.form.cotisations.length; j++) {
+                    sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                }
+                                    
+                        this.form.brut_salary = (sum_lignes + sum_Bonus)
+                        this.form.employee_cotisation = sum_retains
+                        this.form.company_cotisation = sum_cotisations
+                        this.form.net_salary = this.form.brut_salary - sum_retains
             },
 
             
@@ -594,6 +627,7 @@
                     this.form.brut_salary = (sum_lignes + sum_Bonus)
                     this.form.employee_cotisation = sum_retains
                     this.form.company_cotisation = sum_cotisations
+                    this.form.net_salary = this.form.brut_salary - sum_retains
             },
             
 
@@ -613,7 +647,16 @@
                 for (let j = 0; j < this.form.Bonus.length; j++) {
                     sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 }   
+
+                let sum_cotisations= 0;
+                for (let j = 0; j < this.form.cotisations.length; j++) {
+                    sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                }
+                    
                     this.form.brut_salary = (sum_lignes + sum_Bonus)
+                    this.form.employee_cotisation = sum_retains
+                    this.form.company_cotisation = sum_cotisations
+                    this.form.net_salary = this.form.brut_salary - sum_retains
             },
 
             
@@ -633,7 +676,15 @@
                 for (let j = 0; j < this.form.Bonus.length; j++) {
                     sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 }   
+                let sum_cotisations= 0;
+                for (let j = 0; j < this.form.cotisations.length; j++) {
+                    sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                }
+                
                     this.form.brut_salary = (sum_lignes + sum_Bonus)
+                    this.form.employee_cotisation = sum_retains
+                    this.form.company_cotisation = sum_cotisations
+                    this.form.net_salary = this.form.brut_salary - sum_retains
             },
 
             
@@ -653,7 +704,15 @@
                 for (let j = 0; j < this.form.Bonus.length; j++) {
                     sum_Bonus += this.form.Bonus[j].part_salariale.gain;
                 }   
+                let sum_cotisations= 0;
+                for (let j = 0; j < this.form.cotisations.length; j++) {
+                    sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                }
+                
                     this.form.brut_salary = (sum_lignes + sum_Bonus)
+                    this.form.employee_cotisation = sum_retains
+                    this.form.company_cotisation = sum_cotisations
+                    this.form.net_salary = this.form.brut_salary - sum_retains
             },
 
             
@@ -678,13 +737,19 @@
                 for (let j = 0; j < this.form.cotisations.length; j++) {
                     sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
                 }
+                
                     this.form.brut_salary = (sum_lignes + sum_Bonus)
+                    this.form.employee_cotisation = sum_retains
+                    this.form.company_cotisation = sum_cotisations
+                    this.form.net_salary = this.form.brut_salary - sum_retains
             },
 
 
 
     
             addBonus(){
+                // this.form.retains = []
+                // this.form.cotisations = []
                 this.form.Bonus.push(
                     {
                         designation: "", 
@@ -694,7 +759,31 @@
                             taux: "",
                             gain: "",
                         }, 
-                    });           
+                    });        
+                    let sum_lignes= 0;
+                    for (let j = 0; j < this.form.lignes.length; j++) {
+                        sum_lignes += this.form.lignes[j].part_salariale.gain;
+                    }
+
+                    let sum_Bonus= 0;
+                    for (let j = 0; j < this.form.Bonus.length; j++) {
+                        sum_Bonus += this.form.Bonus[j].part_salariale.gain;
+                    }
+
+                    let sum_retains= 0;
+                    for (let j = 0; j < this.form.retains.length; j++) {
+                        sum_retains += this.form.retains[j].part_salariale.retenue;
+                    }
+                    
+                    let sum_cotisations= 0;
+                    for (let j = 0; j < this.form.cotisations.length; j++) {
+                        sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                    }
+                    
+                        this.form.brut_salary = (sum_lignes + sum_Bonus)
+                        this.form.employee_cotisation = sum_retains
+                        this.form.company_cotisation = sum_cotisations
+                        this.form.net_salary = this.form.brut_salary - sum_retains 
             },
 
             
@@ -707,7 +796,31 @@
                             taux: "",
                             retenue: ""
                         }, 
-                    });        
+                    }); 
+                let sum_lignes= 0;
+                for (let j = 0; j < this.form.lignes.length; j++) {
+                    sum_lignes += this.form.lignes[j].part_salariale.gain;
+                }
+
+                let sum_Bonus= 0;
+                for (let j = 0; j < this.form.Bonus.length; j++) {
+                    sum_Bonus += this.form.Bonus[j].part_salariale.gain;
+                }
+
+                let sum_retains= 0;
+                for (let j = 0; j < this.form.retains.length; j++) {
+                    sum_retains += this.form.retains[j].part_salariale.retenue;
+                }
+             
+                let sum_cotisations= 0;
+                for (let j = 0; j < this.form.cotisations.length; j++) {
+                    sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                }
+                    
+                        this.form.brut_salary = (sum_lignes + sum_Bonus)
+                        this.form.employee_cotisation = sum_retains
+                        this.form.company_cotisation = sum_cotisations
+                        this.form.net_salary = this.form.brut_salary - sum_retains       
             },
 
 
@@ -720,7 +833,31 @@
                             taux: "",
                             retenue: ""
                         }, 
-                    });           
+                    });    
+                let sum_lignes= 0;
+                for (let j = 0; j < this.form.lignes.length; j++) {
+                    sum_lignes += this.form.lignes[j].part_salariale.gain;
+                }
+
+                let sum_Bonus= 0;
+                for (let j = 0; j < this.form.Bonus.length; j++) {
+                    sum_Bonus += this.form.Bonus[j].part_salariale.gain;
+                }
+
+                let sum_retains= 0;
+                for (let j = 0; j < this.form.retains.length; j++) {
+                    sum_retains += this.form.retains[j].part_salariale.retenue;
+                }
+                    
+                let sum_cotisations= 0;
+                for (let j = 0; j < this.form.cotisations.length; j++) {
+                    sum_cotisations += this.form.cotisations[j].part_patronale.retenue;
+                }
+                    
+                        this.form.brut_salary = (sum_lignes + sum_Bonus)
+                        this.form.employee_cotisation = sum_retains
+                        this.form.company_cotisation = sum_cotisations
+                        this.form.net_salary = this.form.brut_salary - sum_retains         
             },
 
 
