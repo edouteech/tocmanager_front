@@ -862,7 +862,7 @@
 
 
             async submit(){
-                console.log(this.form.irrpts);
+                // console.log(this.form.Bonus);
                 this.load = true
                 this.heures_sup = this.form.lignes.filter(ligne => ligne.designation !== "SALAIRE DE BASE MENSUEL")
               await  this.$axios.post('/payslips',{
