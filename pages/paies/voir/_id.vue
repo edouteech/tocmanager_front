@@ -439,6 +439,9 @@
 
     
   @media print {
+    /* *{
+        margin: 0;
+    } */
     .navbar, .impres {
       display: none !important;
     }
@@ -448,8 +451,8 @@
     }
     
     @page {
-          margin-left: 0.5in;
-          margin-right: 0.5in;
+          margin-left: 0;
+          margin-right: 0;
           margin-top: 0;
           margin-bottom: 0;
     }
