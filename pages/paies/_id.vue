@@ -44,6 +44,20 @@
                         <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.employee_id">
                             {{errors.employee_id}}
                         </div>
+
+                        
+                        <div class="form-group ">
+                            <label class="title">Entrer un commentaire</label>
+                            <textarea
+                                v-model="form.comment"
+                                name="comment"
+                                id="comment"
+                                cols="30"
+                                rows="3"
+                                class="form-control"
+                                placeholder="Entrer un commentaire"
+                            ></textarea>
+                        </div>
                     </div> 
                     <br><br>
                     <div class="col">
@@ -358,7 +372,8 @@
                     lignes: [],
                     Bonus: [],
                     retains: [],
-                    cotisations: []
+                    cotisations: [],
+                    comment: ''
                 },
                 employe: "",
                 employe_concerne: "",
@@ -397,6 +412,7 @@
                     this.employe_concerne = this.fiche.employee
                     this.form.cotisations = this.fiche.patronal_retained
                     this.form.brut_salary = this.fiche.brut_salary
+                    this.form.comment = this.fiche.comment
                     this.form.employee_cotisation = this.fiche.employee_cotisation
                     this.form.company_cotisation = this.fiche.company_cotisation
                     this.form.net_salary = this.fiche.net_salary
@@ -894,10 +910,10 @@
 
 
             async submit(){
-                console.log("ok");
+                // console.log("ok");
                 this.load = true
                 this.heures_sup = this.form.lignes.filter(ligne => ligne.designation !== "SALAIRE DE BASE MENSUEL")
-              await  this.$axios.put('/payslips',{
+              await  this.$axios.put('/payslips/'+this.$route.params.id,{
                 date_start: this.form.date_start,
                 date_end: this.form.date_end,
                 employee_id: this.form.employee_id,

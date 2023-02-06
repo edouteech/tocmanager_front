@@ -46,6 +46,20 @@
                         <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.employee_id">
                             {{errors.employee_id}}
                         </div>
+
+                        
+                        <div class="form-group ">
+                            <label class="title">Entrer un commentaire</label>
+                            <textarea
+                                v-model="form.comment"
+                                name="comment"
+                                id="comment"
+                                cols="30"
+                                rows="3"
+                                class="form-control"
+                                placeholder="Entrer un commentaire"
+                            ></textarea>
+                        </div>
                     </div> 
                     <br><br>
                     <div class="col">
