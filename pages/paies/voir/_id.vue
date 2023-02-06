@@ -7,7 +7,7 @@
     
     
         <div class="app-main__outer py-5 px-2">
-            <h4>Informations sur le bulletin de paie</h4><hr>
+            <h4 class="impres">Informations sur le bulletin de paie</h4><hr class="impres">
             <form action="">
                 <div class="p-3">
                     <div class="row entete" v-if="employe">
@@ -286,7 +286,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 mx-auto">
+                <div class="col-md-6 mx-auto impres">
                     <button class="btn btn-outline-dark col-md-12 p-3 " v-on:click.prevent="imprim()">Imprimer Fiche de paie</button>
                 </div>
             </form>
@@ -439,7 +439,7 @@
 
     
   @media print {
-    .navbar {
+    .navbar, .impres {
       display: none !important;
     }
    
@@ -447,6 +447,12 @@
       display: none !important;
     }
     
+    @page {
+          margin-left: 0.5in;
+          margin-right: 0.5in;
+          margin-top: 0;
+          margin-bottom: 0;
+    }
   }
 
     .compagnie img{
