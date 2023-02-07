@@ -7,6 +7,7 @@
     
         <div class="app-main__outer py-5 px-2">
           <h4>Congés des employés</h4><hr><br>
+          <v-calendar></v-calendar>
           <div class="d-flex">
               <div class="col-md-10">
                 <form class="d-flex col-md-7" role="search">
