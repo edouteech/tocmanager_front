@@ -1009,7 +1009,7 @@
                 ipts: this.form.irppts,
                 net_salary: this.form.net_salary,
                 brut_salary: this.form.brut_salary,
-                //   hour_salary: this.form.hour_salary,
+                loans: this.form.loans,
                 total_hours: this.form.total_hours,  
                 sup_hours: this.heures_sup,
                 hours: this.form.hours,
