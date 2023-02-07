@@ -24,7 +24,7 @@
                   </div>
                   <div class="form-outline mt-4">
                         <span class="fa fa-file-image-o px-2"></span><label class="form-label">Importer logo de la compagnie</label>
-                        <div class="input-field d-flex"><input type="file" @change="handleFileUpload" size="70" name="file" ref="file" class="input_file_style_file" /><button class="btn btn-outline-success" type="submit" @click.prevent="Logo()"><i class="fa fa-download" aria-hidden="true"></i></button> </div>   
+                        <div class="input-field d-flex"><input type="file" @change="handleFileUpload" size="70" name="file" ref="file" class="input_file_style_file" /><button class="btn btn-outline-success" type="submit" @click.prevent="Logo()"><i class="fa fa-floppy-o mx-1" aria-hidden="true"></i>Enregistrer</button> </div>   
                           
                     </div>
                 </div>
