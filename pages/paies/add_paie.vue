@@ -457,6 +457,7 @@
         methods: {
 
             async choix(id_employe){
+                this.form.loans = []
                 this.$axios.get('/employees/'+ id_employe,{
                     params: {
                         compagnie_id: localStorage.getItem('auth.company_id')

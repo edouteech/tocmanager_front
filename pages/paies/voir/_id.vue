@@ -176,7 +176,7 @@
                                         <td>{{cotisation.part_patronale.retenue}}</td>
                                     </tr>
                                     <tr v-for="(loan, k) in form.loans" :key="k">
-                                        <td>{{loan.designation}}</td>
+                                        <td>PRET</td>
                                         <td></td>
                                         <td>{{loan.total}}</td>
                                         <td></td>

@@ -259,8 +259,8 @@
                                     </tr>
                                     <tr>
                                         <th class="col_percent">Taux</th>
-                                        <th class="col_percent">Gain</th>
-                                        <th class="col_percen">Retenue</th>
+                                        <th class="col_percen">Gain</th>
+                                        <th class="col_percent">Retenue</th>
                                         <th class="col_percent">Taux</th>
                                         <th class="col_percent">Retenue</th>
                                     </tr>
@@ -268,9 +268,10 @@
                                 
                                 <tbody>
                                     <tr v-for="(loan, k) in form.loans" :key="k">
-                                        <td><input class="form-control" type="text" autocomplete="off" placeholder="" v-model="loan.designation" disabled></td>
+                                        <td>PRET</td>
                                         <td></td>
-                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="" v-model="loan.total" disabled></td>
+                                        <td v-if="loan.total"><input class="form-control" type="number" autocomplete="off" placeholder="" v-model="loan.total" disabled></td>
+                                        <td v-else></td>
                                         <td></td>
                                         <td></td>       
                                         <td><input class="form-control" type="number"  autocomplete="off" disabled v-model="loan.amount"></td>     
@@ -283,7 +284,7 @@
                         </div><br>
                     </div> 
                     <br>
-                    
+
                     <div class="titles-row">Recapitulatif</div>
                     <div class="d-flex align-items-end">
                         <div class="table-responsive">
@@ -500,6 +501,7 @@
                 this.form.retains = []
                 this.form.cotisations = []
                 this.form.Bonus = []
+                this.form.loans = []
                 this.$axios.get('/employees/'+ id_employe,{
                     params: {
                         compagnie_id: localStorage.getItem('auth.company_id')
