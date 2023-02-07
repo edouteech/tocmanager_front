@@ -175,16 +175,16 @@
                                         <td>{{cotisation.part_patronale.taux}}</td>     
                                         <td>{{cotisation.part_patronale.retenue}}</td>
                                     </tr>
-                                    <!-- <tr v-for="(patronal_retain, j) in form.patronal_retains" :key="j">
-                                        <td>{{ patronal_retain.designation }}</td>
-                                        <td></td> 
-                                        <td>{{patronal_retain.base}}</td>
+                                    <tr v-for="(loan, k) in form.loans" :key="k">
+                                        <td>{{loan.designation}}</td>
                                         <td></td>
-                                        <td></td>         
+                                        <td>{{loan.total}}</td>
+                                        <td></td>
                                         <td></td>       
-                                        <td>{{patronal_retain.part_patronale.taux}}</td>     
-                                        <td>{{patronal_retain.part_patronale.retenue}}</td>
-                                    </tr> -->
+                                        <td>{{loan.amount}}</td>     
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
                                 </tbody>
                             </table>   
                         </div><br>
@@ -200,11 +200,12 @@
                                         <th rowspan="2">Cumuls</th>
                                         <th rowspan="2">Salaire brut</th>
                                         <th rowspan="2">Charges salariales</th>
-                                        <th rowspan="2">Charges patronales</th>  
-                                        <th rowspan="2">Avantages en nature</th>
+                                        <th rowspan="2">Charges patronales</th> 
+                                        <th rowspan="2">Somme des Tranches de prets en cours</th>
+                                        <!-- <th rowspan="2">Avantages en nature</th> -->
                                         <th rowspan="2">Net imposable</th>   
-                                        <th rowspan="2">Heures travaillées</th> 
-                                        <th rowspan="2">Heures supplémentaires</th>   
+                                        <!-- <th rowspan="2">Heures travaillées</th>  -->
+                                        <!-- <th rowspan="2">Heures supplémentaires</th>    -->
                                         <th></th>
                                         <th class="mx-2">NET A PAYER</th>               
                                     </tr>
@@ -216,10 +217,11 @@
                                         <td>{{ employe.brut_salary }}</td>
                                         <td>{{ employe.employee_cotisation }}</td>
                                         <td>{{ employe.company_cotisation }}</td>
-                                        <td></td>
+                                        <td>{{ sum_prets }}</td>
+                                        <!-- <td></td> -->
                                         <td>{{ employe.net_salary }}</td>
-                                        <td></td>
-                                        <td></td>
+                                        <!-- <td></td>
+                                        <td></td> -->
                                         <td></td>
                                         <td class="mx-2"><b>{{ employe.net_salary }}</b></td>
                                     </tr>
@@ -358,8 +360,11 @@
                     lignes: [],
                     Bonus: [],
                     retains: [],
-                    cotisations: []
+                    cotisations: [],
+                    loans: []
                 },
+                prets: [],
+                sum_prets: '',
                 employe: "",
                 employe_concerne: "",
                 infos: "",
@@ -415,6 +420,7 @@
                     this.form.Bonus = this.employe.bonus
                     this.form.retains = this.employe.retained
                     this.form.cotisations = this.employe.patronal_retained
+                    this.form.loans = this.employe.payslip_loans
                     let salaire = this.employe.base_salary
                     this.form.lignes.unshift(
                         {
@@ -426,6 +432,11 @@
                                 gain: salaire,
                             }, 
                         });
+                    let sum_prets= 0;
+                    for (let j = 0; j < this.form.loans.length; j++) {
+                        sum_prets += this.form.loans[j].amount;
+                    }
+                    this.sum_prets = sum_prets
                 })          
             },
 

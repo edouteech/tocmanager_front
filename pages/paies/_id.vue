@@ -244,6 +244,46 @@
                     </div> 
                     <br>
 
+                    <div class="col">
+                    <div class="title-row ">Prets en cours </div>
+                        <div class="table-responsive">
+                            <!-- <button class="btn btn-outline-success" @click.prevent="addCotisation()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button> -->
+                            <table class="table table-bordered paie">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" class="col_percents">Désignation</th>
+                                        <th rowspan="2" class="col_percent">Nombre</th>
+                                        <th rowspan="2" class="col_percente">Montants du pret</th>  
+                                        <th colspan="3">Part salariale</th>
+                                        <th colspan="2">Part patronale</th>                    
+                                    </tr>
+                                    <tr>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percent">Gain</th>
+                                        <th class="col_percen">Retenue</th>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percent">Retenue</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <tr v-for="(loan, k) in form.loans" :key="k">
+                                        <td><input class="form-control" type="text" autocomplete="off" placeholder="" v-model="loan.designation" disabled></td>
+                                        <td></td>
+                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="" v-model="loan.total" disabled></td>
+                                        <td></td>
+                                        <td></td>       
+                                        <td><input class="form-control" type="number"  autocomplete="off" disabled v-model="loan.amount"></td>     
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>   
+                        </div><br>
+                    </div> 
+                    <br>
+                    
                     <div class="titles-row">Recapitulatif</div>
                     <div class="d-flex align-items-end">
                         <div class="table-responsive">
@@ -253,11 +293,12 @@
                                         <th rowspan="2">Cumuls</th>
                                         <th rowspan="2">Salaire brut</th>
                                         <th rowspan="2">Charges salariales</th>
-                                        <th rowspan="2">Charges patronales</th>  
-                                        <th rowspan="2">Avantages en nature</th>
+                                        <th rowspan="2">Charges patronales</th> 
+                                        <th rowspan="2">Somme des Tranches de prets en cours</th>
+                                        <!-- <th rowspan="2">Avantages en nature</th> -->
                                         <th rowspan="2">Net imposable</th>   
-                                        <th rowspan="2">Heures travaillées</th> 
-                                        <th rowspan="2">Heures supplémentaires</th>   
+                                        <!-- <th rowspan="2">Heures travaillées</th>  -->
+                                        <!-- <th rowspan="2">Heures supplémentaires</th>    -->
                                         <th></th>
                                         <th class="mx-2">NET A PAYER</th>               
                                     </tr>
@@ -269,10 +310,11 @@
                                         <td><input class="form-control" type="number"  autocomplete="off"  v-model="form.brut_salary" disabled></td>
                                         <td><input class="form-control" type="number"  autocomplete="off"  v-model="form.employee_cotisation" disabled></td>
                                         <td><input class="form-control" type="number"  autocomplete="off"  v-model="form.company_cotisation" disabled></td>
-                                        <td></td>
+                                        <td><input class="form-control" type="number"  autocomplete="off"  v-model="sum_prets" disabled></td>
+                                        <!-- <td></td> -->
                                         <td><input class="form-control" type="number"  autocomplete="off"  v-model="form.net_salary" disabled></td>
-                                        <td></td>
-                                        <td></td>
+                                        <!-- <td></td>
+                                        <td></td> -->
                                         <td></td>
                                         <td class="mx-2"><input class="form-control" type="number"  autocomplete="off"  v-model="form.net_salary" disabled></td>
                                     </tr>
@@ -373,8 +415,11 @@
                     Bonus: [],
                     retains: [],
                     cotisations: [],
-                    comment: ''
+                    comment: '',
+                    loans: []
                 },
+                prets: [],
+                sum_prets: '',
                 employe: "",
                 employe_concerne: "",
                 infos: "",
@@ -416,6 +461,7 @@
                     this.form.employee_cotisation = this.fiche.employee_cotisation
                     this.form.company_cotisation = this.fiche.company_cotisation
                     this.form.net_salary = this.fiche.net_salary
+                    this.form.loans = this.fiche.payslip_loans
                     let salaire = this.fiche.base_salary
                     this.form.lignes.unshift(
                         {
@@ -428,6 +474,11 @@
                             }, 
                         }
                     );
+                    let sum_prets= 0;
+                    for (let j = 0; j < this.form.loans.length; j++) {
+                        sum_prets += this.form.loans[j].amount;
+                    }
+                    this.sum_prets = sum_prets
                 }) 
             },
 
@@ -459,7 +510,42 @@
                     this.employe_concerne = response.data.data 
                     let salaire = this.employe_concerne.base_salary
                     let unit_hour = Math.floor(salaire / 173)
+                    this.prets = this.employe_concerne.loans
+
+                    for (let j = 0; j < this.prets.length; j++) {
+                        if(this.prets[j].rest >= this.prets[j].tranche ){ 
+                            this.form.loans.push(
+                                {
+                                    designation: "PRET", 
+                                    nombre: '', 
+                                    total: this.prets[j].amount, 
+                                    amount: this.prets[j].tranche, 
+                                    employee_loan_id: this.prets[j].id, 
+                                    compagnie_id: localStorage.getItem('auth.company_id')
+
+                                })
+                        }
+
+                        else if(this.prets[j].rest < this.prets[j].tranche  && this.prets[j].rest > 0){
+                            this.form.loans.push(
+                                {
+                                    designation: "PRET", 
+                                    nombre: '', 
+                                    total: this.prets[j].amount, 
+                                    amount: this.prets[j].rest, 
+                                    employee_loan_id: this.prets[j].id, 
+                                    compagnie_id: localStorage.getItem('auth.company_id')
+
+                                })
+                        }
+                    }
                     
+                    let sum_prets= 0;
+                    for (let j = 0; j < this.form.loans.length; j++) {
+                        sum_prets += this.form.loans[j].amount;
+                    }
+                    this.sum_prets = sum_prets
+
                         this.form.lignes.unshift(
                         {
                             designation: "SALAIRE DE BASE MENSUEL", 
@@ -536,7 +622,7 @@
                         this.form.brut_salary = (sum_lignes + sum_Bonus)
                         this.form.employee_cotisation = sum_retains
                         this.form.company_cotisation = sum_cotisations
-                        this.form.net_salary = this.form.brut_salary - sum_retains
+                        this.form.net_salary = this.form.brut_salary - sum_retains- this.sum_prets
                 })
             },
 
@@ -579,7 +665,7 @@
                         this.form.brut_salary = (sum_lignes + sum_Bonus)
                         this.form.employee_cotisation = sum_retains
                         this.form.company_cotisation = sum_cotisations
-                        this.form.net_salary = this.form.brut_salary - sum_retains
+                        this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets
             },
 
             
@@ -612,7 +698,7 @@
                         this.form.brut_salary = (sum_lignes + sum_Bonus)
                         this.form.employee_cotisation = sum_retains
                         this.form.company_cotisation = sum_cotisations
-                        this.form.net_salary = this.form.brut_salary - sum_retains
+                        this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets
             },
 
             
@@ -643,7 +729,7 @@
                         this.form.brut_salary = (sum_lignes + sum_Bonus)
                         this.form.employee_cotisation = sum_retains
                         this.form.company_cotisation = sum_cotisations
-                        this.form.net_salary = this.form.brut_salary - sum_retains
+                        this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets
             },
 
             
@@ -674,7 +760,7 @@
                     this.form.brut_salary = (sum_lignes + sum_Bonus)
                     this.form.employee_cotisation = sum_retains
                     this.form.company_cotisation = sum_cotisations
-                    this.form.net_salary = this.form.brut_salary - sum_retains
+                    this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets
             },
             
 
@@ -703,7 +789,7 @@
                     this.form.brut_salary = (sum_lignes + sum_Bonus)
                     this.form.employee_cotisation = sum_retains
                     this.form.company_cotisation = sum_cotisations
-                    this.form.net_salary = this.form.brut_salary - sum_retains
+                    this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets
             },
 
             
@@ -731,7 +817,7 @@
                     this.form.brut_salary = (sum_lignes + sum_Bonus)
                     this.form.employee_cotisation = sum_retains
                     this.form.company_cotisation = sum_cotisations
-                    this.form.net_salary = this.form.brut_salary - sum_retains
+                    this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets
             },
 
             
@@ -759,7 +845,7 @@
                     this.form.brut_salary = (sum_lignes + sum_Bonus)
                     this.form.employee_cotisation = sum_retains
                     this.form.company_cotisation = sum_cotisations
-                    this.form.net_salary = this.form.brut_salary - sum_retains
+                    this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets
             },
 
             
@@ -788,7 +874,7 @@
                     this.form.brut_salary = (sum_lignes + sum_Bonus)
                     this.form.employee_cotisation = sum_retains
                     this.form.company_cotisation = sum_cotisations
-                    this.form.net_salary = this.form.brut_salary - sum_retains
+                    this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets
             },
 
 
@@ -831,7 +917,7 @@
                         this.form.brut_salary = (sum_lignes + sum_Bonus)
                         this.form.employee_cotisation = sum_retains
                         this.form.company_cotisation = sum_cotisations
-                        this.form.net_salary = this.form.brut_salary - sum_retains 
+                        this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets
             },
 
             
@@ -868,7 +954,7 @@
                         this.form.brut_salary = (sum_lignes + sum_Bonus)
                         this.form.employee_cotisation = sum_retains
                         this.form.company_cotisation = sum_cotisations
-                        this.form.net_salary = this.form.brut_salary - sum_retains       
+                        this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets      
             },
 
 
@@ -905,7 +991,7 @@
                         this.form.brut_salary = (sum_lignes + sum_Bonus)
                         this.form.employee_cotisation = sum_retains
                         this.form.company_cotisation = sum_cotisations
-                        this.form.net_salary = this.form.brut_salary - sum_retains         
+                        this.form.net_salary = this.form.brut_salary - sum_retains - this.sum_prets         
             },
 
 

@@ -270,7 +270,7 @@
                                 
                                 <tbody>
                                     <tr v-for="(loan, k) in form.loans" :key="k">
-                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="" v-model="loan.designation" disabled></td>
+                                        <td><input class="form-control" type="text" autocomplete="off" placeholder="" v-model="loan.designation" disabled></td>
                                         <td></td>
                                         <td><input class="form-control" type="number" autocomplete="off" placeholder="" v-model="loan.total" disabled></td>
                                         <td></td>
@@ -463,26 +463,44 @@
                     }
                 })
                 .then(response => {
-                    console.log(response.data.data);
+                    // console.log(response.data.data);
                     this.employe_concerne = response.data.data 
                     let salaire = this.employe_concerne.base_salary
                     this.prets = this.employe_concerne.loans
                     let unit_hour = Math.floor(salaire / 173)
                     
                     
-                    let sum_prets= 0;
                     for (let j = 0; j < this.prets.length; j++) {
-                        this.form.loans.push(
-                            {
-                                designation: "PRET", 
-                                nombre: '', 
-                                total: this.prets[j].amount, 
-                                amount: this.prets[j].tranche, 
-                                employee_loan_id: this.prets[j].id, 
-                                compagnie_id: localStorage.getItem('auth.company_id')
+                        if(this.prets[j].rest >= this.prets[j].tranche ){ 
+                            this.form.loans.push(
+                                {
+                                    designation: "PRET", 
+                                    nombre: '', 
+                                    total: this.prets[j].amount, 
+                                    amount: this.prets[j].tranche, 
+                                    employee_loan_id: this.prets[j].id, 
+                                    compagnie_id: localStorage.getItem('auth.company_id')
 
-                            })
-                        sum_prets += this.prets[j].tranche;
+                                })
+                        }
+
+                        else if(this.prets[j].rest < this.prets[j].tranche  && this.prets[j].rest > 0){
+                            this.form.loans.push(
+                                {
+                                    designation: "PRET", 
+                                    nombre: '', 
+                                    total: this.prets[j].amount, 
+                                    amount: this.prets[j].rest, 
+                                    employee_loan_id: this.prets[j].id, 
+                                    compagnie_id: localStorage.getItem('auth.company_id')
+
+                                })
+                        }
+                    }
+                    
+                    let sum_prets= 0;
+                    for (let j = 0; j < this.form.loans.length; j++) {
+                        sum_prets += this.form.loans[j].amount;
                     }
                     this.sum_prets = sum_prets
 
