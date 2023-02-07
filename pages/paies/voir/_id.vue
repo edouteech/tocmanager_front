@@ -12,7 +12,9 @@
                 <div class="p-3">
                     <div class="row entete" v-if="employe">
                         <div class="col-md-6 compagnie">
-                            <img :src="'http://localhost:8000/'+employe.compagnie.logo" alt="profil" v-if="employe.compagnie.logo">
+                            <div class="compagnie-img">
+                                <img :src="'http://localhost:8000/'+employe.compagnie.logo" alt="profil" v-if="employe.compagnie.logo">
+                            </div>
                             <div class="cadre_compagnie">
                                 <p class="text-uppercase"><b>{{ employe.compagnie.name }}</b></p>
                                 <div>
@@ -458,9 +460,13 @@
     }
   }
 
-    .compagnie img{
+    .compagnie-img{
         width: 100%;
-        margin-bottom: 2px;
+        height: 100px;
+    }
+
+    .compagnie img{
+        max-height: 90px;
     }
 
     .cadre_compagnie, .cadre_employe{
