@@ -245,6 +245,46 @@
                         </div><br>
                     </div> 
                     <br>
+                    
+                    <div class="col">
+                    <div class="title-row ">Prets en cours </div>
+                        <div class="table-responsive">
+                            <!-- <button class="btn btn-outline-success" @click.prevent="addCotisation()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button> -->
+                            <table class="table table-bordered paie">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" class="col_percents">Désignation</th>
+                                        <th rowspan="2" class="col_percent">Nombre</th>
+                                        <th rowspan="2" class="col_percente">Montants du pret</th>  
+                                        <th colspan="3">Part salariale</th>
+                                        <th colspan="2">Part patronale</th>                    
+                                    </tr>
+                                    <tr>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percent">Gain</th>
+                                        <th class="col_percen">Retenue</th>
+                                        <th class="col_percent">Taux</th>
+                                        <th class="col_percent">Retenue</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <tr v-for="(loan, k) in form.loans" :key="k">
+                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="" v-model="loan.designation" disabled></td>
+                                        <td></td>
+                                        <td><input class="form-control" type="number" autocomplete="off" placeholder="" v-model="loan.total" disabled></td>
+                                        <td></td>
+                                        <td></td>       
+                                        <td><input class="form-control" type="number"  autocomplete="off" disabled v-model="loan.amount"></td>     
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>   
+                        </div><br>
+                    </div> 
+                    <br>
 
                     <div class="titles-row">Recapitulatif</div>
                     <div class="d-flex align-items-end">
@@ -387,6 +427,7 @@
                     employee_cotisation: '',
                     company_cotisation: '',
                     comment: '',
+                    loans: []
                     
                 },
                 prets: [],
@@ -431,6 +472,16 @@
                     
                     let sum_prets= 0;
                     for (let j = 0; j < this.prets.length; j++) {
+                        this.form.loans.push(
+                            {
+                                designation: "PRET", 
+                                nombre: '', 
+                                total: this.prets[j].amount, 
+                                amount: this.prets[j].tranche, 
+                                employee_loan_id: this.prets[j].id, 
+                                compagnie_id: localStorage.getItem('auth.company_id')
+
+                            })
                         sum_prets += this.prets[j].tranche;
                     }
                     this.sum_prets = sum_prets
@@ -904,7 +955,7 @@
                 total_hours: this.form.total_hours,  
                 sup_hours: this.heures_sup,
                 hours: this.form.hours,
-                //   bonus: this.form.bonus,
+                loans: this.form.loans,
                 bonus: this.form.Bonus,
                 retained: this.form.retains,
                 patronal_retained: this.form.cotisations,
