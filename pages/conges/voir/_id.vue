@@ -12,10 +12,8 @@
               <NuxtLink :to="'/conges/'+identifiant" v-for="(user, i) in users" :key="i" class="web-btn"><button class="btn btn-outline-dark" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><span>Modifier les informations</span></button></NuxtLink>
           </div>
           <div class="row">
-            <div class="col-md-4">
-                <v-dalendar
-                    />
-
+            <div class="col-md-4 p-5" v-if="range.start">
+              <v-date-picker v-model="range" is-range/>
             </div>
             <div class="col-md-8">
                 <div>
@@ -40,7 +38,7 @@
                         </tr>
                         <tr>
                             <td>Employé valideur du congé</td>
-                            <td v-if="conge.vacationer">{{conge.authorizer.first_name}} {{conge.authorizer.last_name}}</td>
+                            <td v-if="conge.authorizer">{{conge.authorizer.first_name}} {{conge.authorizer.last_name}}</td>
                             <td v-else>----</td>
                         </tr>
                         <tr>
@@ -91,6 +89,7 @@
     <script>
     // import VCalendar from 'v-calendar'
     // import 'v-calendar/lib/v-calendar.min.css'
+    import moment from "moment";
     import Sidebar from '../../sidebar.vue'
     import Userinfo from '../../user_info.vue'
     export default {
@@ -112,11 +111,15 @@
             users: '',
             role: '',
             compagny: '',
-            // range:{}
+            range: {
+              start: "",
+              end: ""
+            }
         }
       },
     
       mounted () {
+        // console.log(new Date(2020, 0, 1));
           this.refresh()
           this.identifiant = this.$route.params.id
           this.users = this.$auth.$state.user.roles;
@@ -133,9 +136,13 @@
                     compagnie_id: localStorage.getItem('auth.company_id')
                     }
               }).then(response => {
-                // console.log(response.data.data[0]);
+                // console.log(response.data.data);
                 this.conge = response.data.data
                 this.conge_comment = response.data.data.comment
+                this.range = {
+                  start: moment(this.conge.date_start).format("YYYY-MM-D"),
+                  end: moment(this.conge.date_end).format("YYYY-MM-D")
+                }
                 }) 
             },
             
@@ -167,9 +174,7 @@
       margin: 0.5% 2% 0 10%;
       font-weight: bold;
     }
-    .app-main__outer{
-      overflow: auto;
-    }
+
     .fa{
       margin: 2px 10px;
       font-size: 18px;
