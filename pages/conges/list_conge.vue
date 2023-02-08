@@ -248,7 +248,7 @@
             .then(response => 
               {
                 // console.log(response.data);
-                this.conges = response.data.data.data
+                this.conges = response.data.data
                     for (let j = 0; j < this.conges.length; j++) {
                       this.attributes.push(
                         {
