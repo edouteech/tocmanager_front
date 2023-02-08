@@ -105,6 +105,18 @@ export default {
   build: {
     transpile: [
       'defu'
-    ]
-  }
+    ],
+    
+    postcss: {
+      plugins: {
+        'postcss-preset-env': {
+          stage: 0,
+          autoprefixer: {
+            grid: true
+          }
+        }
+      }
+    }
+  },
+  
 }
