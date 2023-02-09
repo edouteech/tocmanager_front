@@ -134,8 +134,6 @@ export default {
             })
             .then(response =>{
                 // console.log(response)
-                this.$router.push({
-                  path:'/update_compagnie',})
                   if(response.data.status == "success"){
                     this.$toast('Compagnie modfiée !!!', {
                             icon: 'fa fa-check-circle',
