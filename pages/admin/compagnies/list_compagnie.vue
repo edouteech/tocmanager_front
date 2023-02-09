@@ -33,6 +33,8 @@
                         <!-- <NuxtLink :to="'/admin/results/'+result.id"> -->
                           <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" @click.prevent="abonne(result.id)">Abonnement</button>
                         <!-- </NuxtLink> -->
+                        <NuxtLink :to="'/admin/compagnies/edit/'+result.id"><button type="button" class="btn btn-dark"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></NuxtLink>
+                        <button type="button" class="btn btn-danger" @click="deleteCompagnie(result.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                     </td>
                 </tr>
               </tbody>
@@ -62,6 +64,8 @@
                         <!-- <NuxtLink :to="'/admin/compagnies/'+compagnie.id"> -->
                           <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm" @click.prevent="abonne(compagnie.id)">Abonnement</button>
                         <!-- </NuxtLink> -->
+                        <NuxtLink :to="'/admin/compagnies/edit/'+compagnie.id"><button type="button" class="btn btn-dark"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></NuxtLink>
+                        <button type="button" class="btn btn-danger" @click="deleteCompagnie(compagnie.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                     </td>
                   </tr>
                 </tbody>
@@ -90,7 +94,7 @@
             </ul>
           </nav>
      </div><br> 
-    <!-- <voirCompagnie :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/> -->
+     <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
     <abonnementModal :compagnie = 'identifiant1' :plan_souscris = 'identifiant2' v-show="showModal" @close-modal="showModal = false"/>
 </div>
     
@@ -98,19 +102,21 @@
     
     <script>
     import abonnementModal from './abonnementModal.vue'
-    // import voirCompagnie from './voir_compagnie.vue'
+    import deleteModal from './deleteModal.vue'
     import Sidebar from '../sidebar.vue'
     export default {
       auth: true,
       layout: "empty",
       components: {
         Sidebar,  
-        // voirCompagnie,
+        deleteModal,
         abonnementModal
       },
     
       data () {
         return {
+          showModalDelete: false,
+          key: '',
           total: '',
           file: '',
           element_search: '',
@@ -173,14 +179,13 @@
               })
             },
         
-           deleteCompagnie(id){
-              console.log(id);
-              this.$axios.delete('/suppliers/' +id)
-              .then(response => {
-                // console.log(response.data.data);
-                this.refresh()})                 
+           
+            deleteCompagnie(id){ 
+              this.showModalDelete = true
+                this.key = id       
             },
              
+
             refresh(page=1){
               this.$axios.get('/admin/compagnies',{params: {
                 page: page,
@@ -197,6 +202,11 @@
                   let firstE = response.data.data.links.shift()
                   let lastE = response.data.data.links.splice(-1,1);
                 })
+            },
+
+            
+            setMessage(){
+              this.refresh()
             },
     
             // voirCompagnie(id){
@@ -250,7 +260,7 @@
     
     .fa{
       margin: 0 5px;
-      font-size: 22px;
+      font-size: 15px;
       cursor: pointer;
     }
     .table{
