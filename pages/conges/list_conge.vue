@@ -8,15 +8,15 @@
       <div class="app-main__outer py-5 px-2">
         <h4>Congés des employés</h4><hr><br>
 
-        <!-- <div class="d-flex">
-            <div class="col-md-10">
+        <div class="d-flex my-3">
+            <!-- <div class="col-md-10">
               <form class="d-flex col-md-7" role="search">
                 <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
                 <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
               </form>
-            </div>
+            </div> -->
             <div v-for="(user, i) in users" :key="i" class="web-btn"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1" @click.prevent="congeModal= true"><span>Enregistrer un congé</span></button></div>
-        </div> -->
+        </div>
   
         <div class="mobile-btn my-4">
             <div v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1" @click.prevent="congeModal= true"><span>Enregistrer un congé</span></button></div>
@@ -36,15 +36,16 @@
           >
             <template v-slot:day-content="{ day, attributes }">
               <div class="flex flex-col h-full z-10 overflow-hidden">
-                <span class="day-label text-sm text-gray-900">{{ day.day }}</span>
+                <span class="day-label text-sm text-gray-900" >{{ day.day }}</span>
                 <div class="flex-grow overflow-y-auto overflow-x-auto">
                   <p
                     v-for="attr in attributes"
                     :key="attr.key"
                     class="text-xs leading-tight rounded-sm p-1 mt-0 mb-1 text-primary text-center"
                     :class="attr.customData.class"
+                    title="Cliquez pour voir les détails"
                   >
-                  <NuxtLink :to="'/conges/voir/'+attr.key" class="agenda">
+                  <NuxtLink :to="'/conges/voir/'+attr.key" class="agenda d-flex justify-content-top">
                     {{ attr.customData.title }}
                   </NuxtLink>
                   </p>
@@ -254,11 +255,31 @@
                         {
                           key: this.conges[j].id,
                           customData: {
-                            title: 'Début de congé de ' + this.conges[j].vacationer.first_name + ' '+ this.conges[j].vacationer.last_name,
+                            title: 'Début congé de ' + this.conges[j].vacationer.first_name + ' '+ this.conges[j].vacationer.last_name,
                             class: 'bg-success rounded text-light px-1 py-2 mx-1',
                           },
                           dates: moment(this.conges[j].date_start).format("YYYY-MM-D"),
-                        }
+                        },
+                        {
+                          key: this.conges[j].id,
+                          highlight: "green",
+                          customData: {
+                            // title: 'Congé de ' + this.conges[j].vacationer.first_name + ' '+ this.conges[j].vacationer.last_name,
+                            // class: 'bg-success rounded text-light px-1 py-2 mx-1',
+                          },
+                          dates: {start: moment(this.conges[j].date_start).format("YYYY-MM-D"), end:moment(this.conges[j].date_end).format("YYYY-MM-D")},
+                        },
+                        {
+                          key: this.conges[j].id,
+                          customData: {
+                            title: 'Fin congé de ' + this.conges[j].vacationer.first_name + ' '+ this.conges[j].vacationer.last_name,
+                            class: 'bg-success rounded text-light px-1 py-2 mx-1',
+                          },
+                          // popover: {
+                          //   label: "sdfd",
+                          // },
+                          dates: moment(this.conges[j].date_end).format("YYYY-MM-D"),
+                        },
                       )
                     }
 
@@ -457,7 +478,7 @@
 .agenda{
   color: white;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 10px;
   cursor: pointer;
 }
   .nav{
