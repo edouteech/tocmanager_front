@@ -20,7 +20,7 @@
                       <th>Emails</th>
                       <th>Pays</th>
                       <th>Dates de création</th>
-                      <!-- <th>Actions</th> -->
+                      <th>Actions</th>
                   </tr>
               </thead>
               <tbody>
@@ -30,6 +30,10 @@
                   <td>{{result.email}}</td>
                   <td>{{result.country}}</td>
                   <td>{{result.created_at}}</td>
+                  <td class="text-center">
+                      <NuxtLink :to="'/admin/users/'+result.id"><button type="button" class="btn btn-dark"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></NuxtLink>
+                      <button type="button" class="btn btn-danger" @click="deleteUser(result.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -43,7 +47,7 @@
                       <th>Emails</th>
                       <th>Pays</th>
                       <th>Dates de création</th>
-                      <!-- <th>Actions</th> -->
+                      <th>Actions</th>
                   </tr>
               </thead>
             
@@ -54,6 +58,10 @@
                   <td>{{profil.email}}</td>
                   <td>{{profil.country}}</td>
                   <td>{{profil.created_at}}</td>
+                  <td class="text-center">
+                      <NuxtLink :to="'/admin/users/'+profil.id"><button type="button" class="btn btn-dark"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></NuxtLink>
+                      <button type="button" class="btn btn-danger" @click="deleteUser(profil.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -80,13 +88,15 @@
             </ul>
           </nav>
         </div><br><br>
-    
-    <voirProfil :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :pays= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
+
+        <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
+        <voirProfil :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :pays= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
     </div>
     
     </template>
     
     <script>
+    import deleteModal from './deleteModal.vue'
     import voirProfil from './voir_profil.vue'
     import Sidebar from '../sidebar.vue'
     export default {
@@ -94,11 +104,14 @@
         auth: true,
         components: {
           Sidebar,  
-          voirProfil
+          voirProfil,
+          deleteModal
         },
     
         data () {
             return {
+              key: '',
+              showModalDelete: false,
               element_search: '',
               results: [],
               links: [],
@@ -121,14 +134,17 @@
           this.refresh()
         },
         methods: {
-    
-            deleteProfil(id){
-              console.log(id);
-              this.$axios.delete('/users/' +id)         
-              .then(response => {console.log(response.data.data);
-                this.refresh()})                            
-            },
             
+            deleteUser(id){ 
+               this.showModalDelete = true
+                this.key = id       
+            },
+
+            setMessage(){
+              this.refresh()
+            },
+
+
             refresh(page=1){
               this.$axios.get('/admin/users',{params: {
                 page: page,
@@ -183,7 +199,7 @@
   } 
     .fa{
       margin: 0 5px;
-      font-size: 22px;
+      font-size: 15px;
       cursor: pointer;
     }
     .table{
