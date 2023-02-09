@@ -123,7 +123,7 @@ export default {
 
         submit(){          
             this.$axios.put('/compagnies/'+this.$route.params.id, {
-            id: this.compagny,
+            id: this.$route.params.id,
             name: this.form.name,
             phone: this.form.phone,
             email: this.form.email,
