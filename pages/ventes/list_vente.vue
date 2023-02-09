@@ -442,12 +442,12 @@
 
           
           TriFactures(trie){
-            console.log(trie);
+            // console.log(trie);
             if(trie == "toutes"){
               this.refresh()
             }
-            else{
-              this.$axios.get('/sells',{params: {
+            else if(trie == "false"){
+              this.$axios.get('/sells/filter',{params: {
                 compagnie_id: localStorage.getItem('auth.company_id'),
                 page: 1,
                 is_invoiced: false
@@ -455,7 +455,24 @@
               })        
               .then(response => 
               {
-                console.log(response);
+                // console.log(response);
+                this.ventes = response.data.data.data
+                this.res_data= response.data.data
+                this.total = response.data.data.total
+                let firstE = response.data.data.links.shift()
+                let lastE = response.data.data.links.splice(-1,1);
+              })  
+            }
+            else if(trie == "true"){
+              this.$axios.get('/sells/filter',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                page: 1,
+                is_invoiced: true
+              }   
+              })        
+              .then(response => 
+              {
+                // console.log(response);
                 this.ventes = response.data.data.data
                 this.res_data= response.data.data
                 this.total = response.data.data.total
