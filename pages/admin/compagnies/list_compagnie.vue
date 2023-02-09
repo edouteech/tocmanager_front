@@ -194,7 +194,7 @@
               })
               .then(response => 
                 {
-                  // console.log(response);
+                  console.log(response.data.data);
                   this.total = response.data.data.total;
                   this.compagnies = response.data.data.data
     
@@ -225,10 +225,10 @@
             // },
 
             async abonne(id){
-              await this.$axios.get('/compagnie/suscribed/plan/'+id)
+              await this.$axios.get('/compagnie/suscribed/plan/'+ id)
               .then(response => 
                 {
-                  // console.log(response.data);
+                  console.log(response.data);
                   this.identifiant2 = response.data.data.id
                 })
         

@@ -9,9 +9,6 @@
             <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
                 {{error}} 
             </div>
-            <div class="alert alert-success justify-content-center" role="alert" v-if="errors != null">
-                {{errors}} 
-            </div>
             <div class="row">
                 <!-- <div class="col-lg-5 col-md-12 img mt-5">
                   <div class="contact-info mt-5" v-if="logo == null">
@@ -33,13 +30,19 @@
                         <div class="form-outline mb-4">
                             <span class="fa fa-briefcase px-2"></span><label class="form-label">Nom de la compagnie</label>
                             <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.name" required
-                                placeholder="Entrer votre nom" /></div>      
+                                placeholder="Entrer votre nom" />
+                            </div>      
                         </div>
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
                             <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
-                                placeholder="Entrer une addresse email valide" /></div>      
+                                placeholder="Entrer une addresse email valide" />
+                            </div>     
+                            
+                            <div class="alert alert-success justify-content-center" role="alert" v-if="errors && errors.email">
+                                {{errors.email}} 
+                            </div> 
                         </div>
 
                         <div class="form-outline mb-4">
@@ -133,7 +136,7 @@ export default {
             mecef_token: this.form.token,
             })
             .then(response =>{
-                // console.log(response)
+                console.log(response)
                   if(response.data.status == "success"){
                     this.$toast('Compagnie modfiée !!!', {
                             icon: 'fa fa-check-circle',
@@ -141,6 +144,7 @@ export default {
                         this.$router.push({path:'/admin/compagnies/list_compagnie'})
                   }
                   else{
+                    this.errors = response.data.data
                       this.error = "Echec!!! Veuillez réessayer..."
                       
                   }
