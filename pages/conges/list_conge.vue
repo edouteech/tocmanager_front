@@ -99,7 +99,7 @@
                 <td v-if="result.authorizer">{{result.authorizer.last_name}} {{result.authorizer.first_name}}</td>
                 <td v-else>---</td>
                   <td>
-                    <div class="action"  v-for="(user, i) in users" :key="i">
+                    <div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                       <NuxtLink :to="'/conges/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-dark" aria-hidden="true"></i></NuxtLink>
                       <NuxtLink :to="'/conges/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                       <div @click="deleteConge(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -139,7 +139,7 @@
                 <td v-if="conge.authorizer">{{conge.authorizer.last_name}} {{conge.authorizer.first_name}}</td>
                 <td v-else>---</td>
                   <td>
-                    <div class="action"  v-for="(user, i) in users" :key="i">
+                    <div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                       <NuxtLink :to="'/conges/voir/'+conge.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-dark" aria-hidden="true"></i></NuxtLink>
                       <NuxtLink :to="'/conges/'+conge.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                       <div @click="deleteConge(conge.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>

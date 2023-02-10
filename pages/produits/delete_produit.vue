@@ -36,7 +36,7 @@
                             <td>{{produit.quantity}}</td>
                             <td>{{produit.price_sell}}</td>
                             <td>{{produit.price_buy}}</td>                         
-                            <td><div class="action">
+                            <td><div class="action d-flex aligns-items-center justify-content-center">
                                 <div class="sup" @click="supProduit(produit.id)">Supprimer définitivement</div>
                                 <div class="restore" @click="restaurerProduit(produit.id)">Restaurer ce produit</div></div>
                             </td>

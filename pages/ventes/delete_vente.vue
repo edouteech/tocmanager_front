@@ -32,7 +32,7 @@
                 <td v-if="vente.client">{{vente.client.name}}</td>
                 <td v-else>--Client supprimé--</td>
                 <td>{{vente.amount}}</td>
-                <td><div class="action">
+                <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div class="sup" @click="supVente(vente.id)">Supprimer définitivement</div>
                     <div class="restore" @click="restaurerVente(vente.id)">Restaurer cette facture</div></div>
                 </td>

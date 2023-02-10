@@ -32,7 +32,7 @@
                 <td>{{encaissement.montant}}</td>
                 <td v-if="encaissement.client">{{encaissement.client.name}}</td>
                 <td v-else>--Client supprimé--</td>
-                <td><div class="action">
+                <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div class="sup" @click="supEncaissement(encaissement.id)">Supprimer définitivement</div>
                     <div class="restore" @click="restaurerEncaissement(encaissement.id)">Restaurer cet encaissement</div></div>
                 </td>

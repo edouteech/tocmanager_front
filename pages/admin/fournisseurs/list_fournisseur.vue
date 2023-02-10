@@ -31,7 +31,7 @@
                   <td>{{result.balance}}</td>
                   <td>{{result.nature}}</td>
                   <td>{{result.compagny.name}}</td>
-                  <!-- <td><div class="action">
+                  <!-- <td><div class="action d-flex aligns-items-center justify-content-center">
                       <div @click="voirFournisseur(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                       <NuxtLink :to="'/fournisseurs/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                       <div @click="deleteFournisseur(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -63,7 +63,7 @@
                     <td>{{fournisseur.balance}}</td>
                     <td>{{fournisseur.nature}}</td>
                     <td>{{fournisseur.compagny.name}}</td>
-                    <!-- <td><div class="action">
+                    <!-- <td><div class="action d-flex aligns-items-center justify-content-center">
                       <div @click="voirFournisseur(fournisseur.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                       <NuxtLink :to="'/fournisseurs/'+fournisseur.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                       <div @click="deleteFournisseur(fournisseur.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>

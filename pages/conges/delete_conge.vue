@@ -37,7 +37,7 @@
                     <td v-else>---</td>
                     <td v-if="conge.days_count">{{conge.days_count}}</td>
                     <td v-else>---</td>
-                    <td><div class="action">
+                    <td><div class="action d-flex aligns-items-center justify-content-center">
                         <div class="sup" @click="supConge(conge.id)">Supprimer</div>
                         <div class="restore" @click="restaurerConge(conge.id)">Restaurer</div></div>
                     </td>

@@ -67,7 +67,7 @@
               <td>{{result.email}}</td>
               <td>{{result.balance}}</td>
               <td>{{result.nature}}</td>
-              <td><div class="action"  v-for="(user, i) in users" :key="i">
+              <td><div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                   <div @click="voirFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/fournisseurs/'+result.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
@@ -102,7 +102,7 @@
                 <td>{{fournisseur.email}}</td>
                 <td>{{fournisseur.balance}}</td>
                 <td>{{fournisseur.nature}}</td>
-                <td><div class="action"  v-for="(user, i) in users" :key="i">
+                <td><div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                   <div @click="voirFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/fournisseurs/'+fournisseur.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(fournisseur)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>

@@ -38,7 +38,7 @@
                     <td>{{employe.first_name}}</td>
                     <td>{{employe.phone}}</td>
                     <td>{{employe.position_hield}}</td>
-                    <td><div class="action">
+                    <td><div class="action d-flex aligns-items-center justify-content-center">
                         <div class="sup" @click="supEmploye(employe.id)">Supprimer</div>
                         <div class="restore" @click="restaurerEmploye(employe.id)">Restaurer</div></div>
                     </td>

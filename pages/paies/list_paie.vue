@@ -71,7 +71,7 @@
                       <td>{{result.brut_salary}}</td>
                       <td>{{result.net_salary}}</td>
                       <td>
-                        <div class="action" v-for="(user, i) in users" :key="i">
+                        <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                           <NuxtLink :to="'/paies/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></NuxtLink>
                           <NuxtLink :to="'/paies/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                           <div @click="deletePaie(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -107,7 +107,7 @@
                       <td>{{paie.brut_salary}}</td>
                       <td>{{paie.net_salary}}</td>
                       <td>
-                        <div class="action" v-for="(user, i) in users" :key="i">
+                        <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                           <NuxtLink :to="'/paies/voir/'+paie.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></NuxtLink>
                           <NuxtLink :to="'/paies/'+paie.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                           <div @click="deletePaie(paie.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>

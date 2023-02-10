@@ -35,7 +35,7 @@
                 <td>{{paie.date_end}}</td>
                 <td v-if="paie.employee">{{paie.employee.last_name}} {{paie.employee.first_name}}</td>
                 <td v-else>-----</td>
-                <td><div class="action">
+                <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div class="sup" @click="supPaie(paie.id)">Supprimer définitivement</div>
                     <div class="restore" @click="restaurerPaie(paie.id)">Restaurer</div></div>
                 </td>

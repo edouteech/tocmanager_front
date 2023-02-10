@@ -26,7 +26,7 @@
                   <td v-if="result.parent != null">{{result.parent.name}}</td>
                   <td v-else>---</td>
                   <td>{{result.compagny.name}}</td>
-                  <!-- <td><div class="action">
+                  <!-- <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div @click="voirCategorie(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/categorie/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteCategorie(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -52,7 +52,7 @@
                   <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
                   <td v-else>---</td>
                   <td>{{categorie.compagny.name}}</td>
-                  <!-- <td><div class="action">
+                  <!-- <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div @click="voirCategorie(categorie.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/categorie/'+categorie.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteCategorie(categorie.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>

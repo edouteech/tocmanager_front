@@ -24,7 +24,7 @@
                   <td>{{result.phone}}</td>
                   <td>{{result.balance}}</td>
                   <td>{{result.nature}}</td>
-                  <!-- <td><div class="action">
+                  <!-- <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -51,7 +51,7 @@
                   <td>{{client.phone}}</td>
                   <td>{{client.balance}}</td>
                   <td>{{client.nature}}</td>
-                  <td><div class="action">
+                  <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>

@@ -66,7 +66,7 @@
                   <td v-else>---</td>
                   <!-- <td>{{result.date_loan}}</td> -->
                     <td>
-                      <div class="action"  v-for="(user, i) in users" :key="i">
+                      <div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                         <div @click="voirPret(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                         <!-- <NuxtLink :to="'/prets/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-dark" aria-hidden="true"></i></NuxtLink> -->
                         <NuxtLink :to="'/prets/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
@@ -120,7 +120,7 @@
                   <td v-else>---</td>
                   <!-- <td>{{pret.date_loan}}</td> -->
                     <td>
-                      <div class="action"  v-for="(user, i) in users" :key="i">
+                      <div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                         <div @click="voirPret(pret.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                         <!-- <NuxtLink :to="'/prets/voir/'+pret.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-dark" aria-hidden="true"></i></NuxtLink> -->
                         <NuxtLink :to="'/prets/'+pret.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>

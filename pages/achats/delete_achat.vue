@@ -32,7 +32,7 @@
                     <td v-if="achat.supplier">{{achat.supplier.name}}</td>
                     <td v-else>--Fournisseur supprimé--</td>
                     <td>{{achat.amount}}</td>
-                    <td><div class="action">
+                    <td><div class="action d-flex aligns-items-center justify-content-center">
                         <div class="sup" @click="supAchat(achat.id)">Supprimer définitivement</div>
                         <div class="restore" @click="restaurerAchat(achat.id)">Restaurer cette facture</div></div>
                     </td>

@@ -60,10 +60,10 @@
           </div>
           <div class="row col-md-12 mt-2" v-if="choixNumber != 0">
             <div class="col-md-2"><input type="checkbox" checked/>Noms</div>
-            <div class="col-md-2"><input type="checkbox" v-model="choix_phone"/>Téléphone</div>
-            <div class="col-md-2"><input type="checkbox" v-model="choix_email"/>Emails</div>
-            <div class="col-md-2"><input type="checkbox" v-model="choix_balance"/>Balance</div>
-            <div class="col-md-2"><input type="checkbox" v-model="choix_nature"/>Nature</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_phone" @change="choicePhone()"/>Téléphone</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_email" @change="choiceEmail()"/>Emails</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_balance" @change="choiceBalance()"/>Balance</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_nature" @change="choiceNature()"/>Nature</div>
             <!-- <div><input type="checkbox" v-model="choix_name"/></div>
             <div><input type="checkbox" v-model="choix_name"/></div> -->
           </div>
@@ -74,10 +74,10 @@
             <tr class="table-primary">
                   <th v-if="selection != 0"></th>
                   <th>Noms</th>
-                  <th>Numéros de téléphone</th>
-                  <th>Emails </th>
-                  <th>Balance </th>
-                  <th>Nature</th>
+                  <th v-if="choix_phone == 1">Numéros de téléphone</th>
+                  <th v-if="choix_email == 1">Emails </th>
+                  <th v-if="choix_balance == 1">Balance </th>
+                  <th v-if="choix_nature == 1">Nature</th>
                   <th>Actions</th>
             </tr>
           </thead>
@@ -85,11 +85,11 @@
            <tr  v-for="(result, j) in results" :key="j">
                 <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
               <td>{{result.name}}<span v-if="result.default_client == true"><i class="fa fa-star text-success mx-3 cursor-pointer" aria-hidden="true" title="Démettre du fournisseur par défaut" @click.prevent="supDefaultClient(result.id)"></i></span></td>
-              <td>{{result.phone}}</td>
-              <td>{{result.email}}</td>
-              <td class="text-danger">{{result.balance}}</td>
-              <td>{{result.nature}}</td>
-              <td><div class="action" v-for="(user, i) in users" :key="i">
+              <td v-if="choix_phone == 1">{{result.phone}}</td>
+              <td v-if="choix_email == 1">{{result.email}}</td>
+              <td class="text-danger" v-if="choix_balance == 1">{{result.balance}}</td>
+              <td v-if="choix_nature == 1">{{result.nature}}</td>
+              <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                 <div @click="voirClient(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
@@ -110,10 +110,10 @@
             <tr class="table-primary">
                   <th v-if="selection != 0"></th>
                   <th>Noms</th>
-                  <th v-if="choix_phone == true">Numéros de téléphone</th>
-                  <th v-if="choix_email == true">Emails </th>
-                  <th v-if="choix_balance == true">Balance </th>
-                  <th v-if="choix_nature == true">Nature</th>
+                  <th v-if="choix_phone == 1">Numéros de téléphone</th>
+                  <th v-if="choix_email == 1">Emails </th>
+                  <th v-if="choix_balance == 1">Balance </th>
+                  <th v-if="choix_nature == 1">Nature</th>
                   <th>Actions</th>
             </tr>
           </thead>
@@ -121,11 +121,11 @@
            <tr  v-for="(client, i) in clients" :key="i">
               <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(client.id)" :value="client.id"/></div></td>
               <td>{{client.name}}<span v-if="client.default_client == true"><i class="fa fa-star text-success mx-3 cursor-pointer" aria-hidden="true" title="Démettre du client par défaut" @click.prevent="supDefaultClient(client.id)"></i></span></td>
-              <td v-if="choix_phone == true">{{client.phone}}</td>
-              <td v-if="choix_email == true">{{client.email}}</td>
-              <td class="text-danger" v-if="choix_balance == true">{{client.balance}}</td>
-              <td v-if="choix_nature == true">{{client.nature}}</td>
-              <td><div class="action" v-for="(user, i) in users" :key="i">
+              <td v-if="choix_phone == 1">{{client.phone}}</td>
+              <td v-if="choix_email == 1">{{client.email}}</td>
+              <td class="text-danger" v-if="choix_balance == 1">{{client.balance}}</td>
+              <td v-if="choix_nature == 1">{{client.nature}}</td>
+              <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                 <div @click="voirClient(client.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+client.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(client)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
@@ -251,17 +251,20 @@ export default {
         defaultNum: 0, 
         choixNumber: 0,
         choix_name: '',
-        choix_phone: null,
-        choix_email:  null,
-        choix_balance: null,
-        choix_nature: null
+        choix_phone: 1,
+        choix_email:  1,
+        choix_balance: 1,
+        choix_nature: 1
 
       }
     },
 
     async mounted () {
       await this.exp()
-      this.defaultVal()
+      this.defaultPhone()
+      this.defaultEmail()
+      this.defaultBalance()
+      this.defaultNature()
       this.refresh()
       this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
@@ -276,23 +279,110 @@ export default {
 
       fin(){
         this.choixNumber = 0
-        this.choice()
+        // this.choice()
       },
 
-      defaultVal(){
-        this.choix_name = localStorage.getItem('auth.choix_name')
+      defaultPhone(){
         this.choix_phone = localStorage.getItem('auth.choix_phone')
-        this.choix_email = localStorage.getItem('auth.choix_email')
-        this.choix_balance = localStorage.getItem('auth.choix_balance')
-        this.choix_nature = localStorage.getItem('auth.choix_nature')
+        if(localStorage.getItem('auth.choix_phone') == 1){
+          this.choix_phone = true
+        }
+        else{
+          this.choix_phone = false
+        }
       },
+
+
+      choicePhone(){
+          if(this.choix_phone == true){
+            this.choix_phone = 1
+            this.$auth.$storage.setUniversal('choix_phone', this.choix_phone)
+            this.defaultPhone()
+          }
+          else{
+            this.choix_phone = 0
+            this.$auth.$storage.setUniversal('choix_phone', this.choix_phone)
+            this.defaultPhone()
+          }
+      },
+      
+      defaultEmail(){
+        this.choix_email = localStorage.getItem('auth.choix_email')
+        if(localStorage.getItem('auth.choix_email') == 1){
+          this.choix_email = true
+        }
+        else{
+          this.choix_email = false
+        }
+      },
+
+      choiceEmail(){
+          if(this.choix_email == true){
+            this.choix_email = 1
+            this.$auth.$storage.setUniversal('choix_email', this.choix_email)
+            this.defaultEmail()
+          }
+          else{
+            this.choix_email = 0
+            this.$auth.$storage.setUniversal('choix_email', this.choix_email)
+            this.defaultEmail()
+          }
+      },
+
+      
+      defaultBalance(){
+        this.choix_balance = localStorage.getItem('auth.choix_balance')
+        if(localStorage.getItem('auth.choix_balance') == 1){
+          this.choix_balance = true
+        }
+        else{
+          this.choix_balance = false
+        }
+      },
+      choiceBalance(){
+        if(this.choix_balance == true){
+            this.choix_balance = 1
+            this.$auth.$storage.setUniversal('choix_balance', this.choix_balance)
+            this.defaultBalance()
+          }
+          else{
+            this.choix_balance = 0
+            this.$auth.$storage.setUniversal('choix_balance', this.choix_balance)
+            this.defaultBalance()
+          }
+      },
+
+      
+      defaultNature(){
+        this.choix_nature = localStorage.getItem('auth.choix_nature')
+        if(localStorage.getItem('auth.choix_nature') == 1){
+          this.choix_nature = true
+        }
+        else{
+          this.choix_nature = false
+        }
+      },
+      choiceNature(){
+          if(this.choix_nature == true){
+            this.choix_nature = 1
+            this.$auth.$storage.setUniversal('choix_nature', this.choix_nature)
+            this.defaultNature()
+          }
+          else{
+            this.choix_nature = 0
+            this.$auth.$storage.setUniversal('choix_nature', this.choix_nature)
+            this.defaultNature()
+          }
+        
+      },
+
 
       choice(){
-          this.$auth.$storage.setUniversal('choix_name', this.choix_name)
-          this.$auth.$storage.setUniversal('choix_phone', this.choix_phone)
-          this.$auth.$storage.setUniversal('choix_email', this.choix_email)
-          this.$auth.$storage.setUniversal('choix_balance', this.choix_balance)
-          this.$auth.$storage.setUniversal('choix_nature', this.choix_nature)
+          // this.$auth.$storage.setUniversal('choix_name', this.choix_name)
+          this.choicePhone()
+          this.choiceEmail()
+          this.choiceBalance()
+          this.choiceNature()
       },
 
       chooseDefaultClient(){

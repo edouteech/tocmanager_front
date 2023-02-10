@@ -55,7 +55,7 @@
               <td>{{result.name}}</td>
               <td v-if="result.parent != null">{{result.parent.name}}</td>
               <td v-else>---</td>
-              <td><div class="action" v-for="(user, i) in users" :key="i">
+              <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                 <NuxtLink :to="'/categorie/voir'+result.id" class="text-black" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
                 <NuxtLink :to="'/categorie/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div @click="deleteCategorie(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -84,7 +84,7 @@
                 <td>{{categorie.name}}</td>
                 <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
                 <td v-else>---</td>
-                <td><div class="action" v-for="(user, i) in users" :key="i">
+                <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                   <NuxtLink :to="'/categorie/voir/'+categorie.id" class="text-black" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></NuxtLink>
                   <NuxtLink :to="'/categorie/'+categorie.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                   <div @click="deleteCategorie(categorie.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>

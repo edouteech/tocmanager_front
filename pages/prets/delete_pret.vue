@@ -33,7 +33,7 @@
                                 <td v-else>---</td>
                                 <td>{{pret.amount}}</td>
                                 <td>{{pret.date_loan}}</td>                         
-                                <td><div class="action">
+                                <td><div class="action d-flex aligns-items-center justify-content-center">
                                     <div class="sup" @click="supPret(pret.id)">Supprimer</div>
                                     <div class="restore" @click="restaurerPret(pret.id)">Restaurer</div></div>
                                 </td>
