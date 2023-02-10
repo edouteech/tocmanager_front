@@ -35,6 +35,16 @@
         </div>  
 
         <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+            <div v-if="choixNumber == 0">
+              <button class="btn btn-outline-success mx-2" @click.prevent="choisir()">
+                A afficher
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-success mx-2" @click.prevent="fin()">
+                Enregistrer
+              </button>
+            </div>
           <div v-if="selection == 0">
             <button class="btn btn-outline-info" @click.prevent="selectionner()">
               Sélectionner
@@ -49,15 +59,24 @@
             <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
           </button>
         </div>
+          <div class="row col-md-12 mt-2" v-if="choixNumber != 0">
+            <div class="col-md-2"><input type="checkbox" checked/>Dates</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_acteur" @change="choiceActeur()"/>Fournisseurs</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_montant" @change="choiceMontant()"/>Montants Factures</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_rest" @change="choiceRest()"/>Restes à payer</div>
+            <!-- <div class="col-md-2"><input type="checkbox" v-model="choix_nature" @change="choiceNature()"/>Nature</div> -->
+            <!-- <div><input type="checkbox" v-model="choix_name"/></div>
+            <div><input type="checkbox" v-model="choix_name"/></div> -->
+          </div>
       <div v-if="this.element_search != ''" class="table-responsive">
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
               <th v-if="selection != 0"></th>
-              <th>Date facture</th>
-              <th>Fournisseur concerné</th>
-              <th>Montant facture </th>
-              <th>Montant restant à payer </th>
+              <th>Dates factures</th>
+              <th v-if="choix_acteur == 1">Fournisseurs concernés</th>
+              <th v-if="choix_montant == 1">Montants factures </th>
+              <th v-if="choix_rest == 1">Montants restants à payer </th>
               <!-- <th>Moyen de paiement</th> -->
               <th>Actions</th>
             </tr>
@@ -66,9 +85,9 @@
             <tr v-for="(result, i) in results" :key="i">
               <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
               <td>{{ result.date_buy }}</td>
-              <td>{{ result.supplier.name }}</td>
-              <td>{{ result.amount }}</td>
-              <td>{{ result.rest }}</td>
+              <td v-if="choix_acteur == 1">{{ result.supplier.name }}</td>
+              <td v-if="choix_montant == 1">{{ result.amount }}</td>
+              <td v-if="choix_rest == 1">{{ result.rest }}</td>
               <!-- <td>{{result.payment}}</td> -->
               <td>
                 <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
@@ -94,10 +113,11 @@
           <thead>
             <tr class="table-primary">
               <th v-if="selection != 0"></th>
-              <th>Date facture</th>
-              <th>Fournisseur concerné</th>
-              <th>Montant de la facture</th>
-              <th>Montant restant à payer </th>
+              <th>Dates factures</th>
+              <th v-if="choix_acteur == 1">Fournisseurs concernés</th>
+              <th v-if="choix_montant == 1">Montants factures </th>
+              <th v-if="choix_rest == 1">Montants restants à payer </th>
+              <!-- <th>Moyen de paiement</th> -->
               <th>Actions</th>
             </tr>
           </thead>
@@ -105,9 +125,9 @@
             <tr v-for="(achat, i) in achats" :key="i">
               <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(achat.id)" :value="achat.id"/></div></td>
               <td>{{ achat.date_buy }}</td>
-              <td>{{ achat.supplier.name }}</td>
-              <td>{{ achat.amount }}</td>
-              <td>{{ achat.rest }}</td>
+              <td v-if="choix_acteur == 1">{{ achat.supplier.name }}</td>
+              <td v-if="choix_montant == 1">{{ achat.amount }}</td>
+              <td v-if="choix_rest == 1">{{ achat.rest }}</td>
               <td>
                 <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                   <NuxtLink :to="'/achats/voir/' + achat.id" v-if="compagny == user.pivot.compagnie_id"><i
@@ -123,7 +143,7 @@
             </tr>
           </tbody>
         </table>
-        <p class="text-center"><strong>{{ total }} factures au total </strong></p>
+        <p class="text-center"><strong>{{ total }} facture (s) au total </strong></p>
         <hr class="text-primary">
       </div>
       <br><br>
@@ -221,12 +241,96 @@ export default {
       pdfModal: false,
       checks: [],
       selection: 0,
-      showModalMultipleDelete: false
+      showModalMultipleDelete: false,
+      choixNumber: 0,
+      choix_acteur: 1,
+      choix_montant: 1,
+      choix_rest:  1,
     }
   },
 
   methods: {
 
+    choisir(){
+      this.choixNumber = 1
+    },
+
+    fin(){
+      this.choixNumber = 0
+      // this.choice()
+    },
+    
+    defaultActeur(){
+        this.choix_acteur = localStorage.getItem('auth.choix_acteur')
+        if(localStorage.getItem('auth.choix_acteur') == 1){
+          this.choix_acteur = true
+        }
+        else{
+          this.choix_acteur = false
+        }
+      },
+
+
+      choiceActeur(){
+          if(this.choix_acteur == true){
+            this.choix_acteur = 1
+            this.$auth.$storage.setUniversal('choix_acteur', this.choix_acteur)
+            this.defaultActeur()
+          }
+          else{
+            this.choix_acteur = 0
+            this.$auth.$storage.setUniversal('choix_acteur', this.choix_acteur)
+            this.defaultActeur()
+          }
+      },
+      
+      defaultMontant(){
+        this.choix_montant = localStorage.getItem('auth.choix_montant')
+        if(localStorage.getItem('auth.choix_montant') == 1){
+          this.choix_montant = true
+        }
+        else{
+          this.choix_montant = false
+        }
+      },
+
+      choiceMontant(){
+          if(this.choix_montant == true){
+            this.choix_montant = 1
+            this.$auth.$storage.setUniversal('choix_montant', this.choix_montant)
+            this.defaultMontant()
+          }
+          else{
+            this.choix_montant = 0
+            this.$auth.$storage.setUniversal('choix_montant', this.choix_montant)
+            this.defaultMontant()
+          }
+      },
+
+      
+      defaultRest(){
+        this.choix_rest = localStorage.getItem('auth.choix_rest')
+        if(localStorage.getItem('auth.choix_rest') == 1){
+          this.choix_rest = true
+        }
+        else{
+          this.choix_rest = false
+        }
+      },
+      choiceRest(){
+        if(this.choix_rest == true){
+            this.choix_rest = 1
+            this.$auth.$storage.setUniversal('choix_rest', this.choix_rest)
+            this.defaultRest()
+          }
+          else{
+            this.choix_rest = 0
+            this.$auth.$storage.setUniversal('choix_rest', this.choix_rest)
+            this.defaultRest()
+          }
+      },
+
+      
     multipleSup(){
       this.showModalMultipleDelete = true
     },
@@ -329,6 +433,9 @@ export default {
 
   async mounted() {
     this.refresh()
+    this.defaultActeur()
+    this.defaultMontant()
+    this.defaultRest()
     this.recupFournisseur()
     this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem('auth.company_id');
