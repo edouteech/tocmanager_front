@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay"  @click="$emit('close-modal')">
     <div class="modaler" @click.stop>
-      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}}
         </div>
       <img class="check" src="/images/eff.jpg" alt="" />
@@ -151,8 +151,8 @@ import Impression from './impression.vue';
         })
           .then(response => {
             // console.log(response);
-            if(response.data.status = "success"){
-              this.$router.push({path:'/ventes/vente'});
+            if(response.data.status == "success"){
+              this.$router.push({path:'/ventes/list_vente'});
             }
             else{
               this.error= response.data.message
