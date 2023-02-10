@@ -25,6 +25,17 @@
             <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
           </div>  
           <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+            <div v-if="choixNumber == 0">
+              <button class="btn btn-outline-success mx-2" @click.prevent="choisir()">
+                A afficher
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-success mx-2" @click.prevent="fin()">
+                Enregistrer
+              </button>
+            </div>
+
             <div v-if="selection == 0">
               <button class="btn btn-outline-info" @click.prevent="selectionner()">
                 Sélectionner
@@ -39,18 +50,28 @@
               <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
             </button>
           </div>
+          <div class="row col-md-12 mt-2" v-if="choixNumber != 0">
+            <div class="col-md-2"><input type="checkbox" checked/>Dates</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_acteur" @change="choiceActeur()"/>Clients</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_montant" @change="choiceMontant()"/>Montants Factures</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_rest" @change="choiceRest()"/>Restes à payer</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_paiement" @change="choicePaiement()"/>Moyens de Paiement</div>
+            <!-- <div class="col-md-2"><input type="checkbox" v-model="choix_nature" @change="choiceNature()"/>Nature</div> -->
+            <!-- <div><input type="checkbox" v-model="choix_name"/></div>
+            <div><input type="checkbox" v-model="choix_name"/></div> -->
+          </div>
         <div v-if="this.element_search != ''" class="table-responsive">
           <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
                   <th v-if="selection != 0"></th>
                   <th>Date facture</th>
-                  <th>Client concerné</th>
+                  <th v-if="choix_acteur == 1">Clients concernés</th>
                   <!-- <th>Montant HT </th>
                   <th>Montant TTC </th> -->
-                  <th>Net à payer </th>
-                  <th>Montant du</th>
-                  <th>Moyen de paiement</th>
+                  <th v-if="choix_montant == 1">Net à payer </th>
+                  <th v-if="choix_rest == 1">Montant du</th>
+                  <th v-if="choix_paiement == 1">Moyen de paiement</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -58,12 +79,12 @@
                 <tr  v-for="(result, i) in results" :key="i">
                   <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
                   <td>{{result.date_sell}}</td>
-                  <td>{{result.client.name}}</td>
+                  <td v-if="choix_acteur == 1">{{result.client.name}}</td>
                   <!-- <td>{{result.amount_ht}}</td>
                   <td>{{result.amount_ttc}}</td> -->
-                  <td>{{result.amount}}</td>
-                  <td class="text-danger">{{result.rest}}</td>
-                  <td>{{result.payment}}</td>
+                  <td v-if="choix_montant == 1">{{result.amount}}</td>
+                  <td class="text-danger" v-if="choix_rest == 1">{{result.rest}}</td>
+                  <td v-if="choix_paiement == 1">{{result.payment}}</td>
                   <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                         <NuxtLink :to="'/ventes/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
                         <div class="cursor-pointer" @click.prevent="print(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
@@ -84,12 +105,12 @@
                 <tr class="table-primary">
                   <th v-if="selection != 0"></th>
                   <th>Date facture</th>
-                  <th>Client concerné</th>
+                  <th v-if="choix_acteur == 1">Clients concernés</th>
                   <!-- <th>Montant HT </th>
                   <th>Montant TTC </th> -->
-                  <th>Net à payer </th>
-                  <th>Montant du</th>
-                  <th>Moyen de paiement</th>
+                  <th v-if="choix_montant == 1">Net à payer </th>
+                  <th v-if="choix_rest == 1">Montant du</th>
+                  <th v-if="choix_paiement == 1">Moyen de paiement</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -97,12 +118,12 @@
                 <tr  v-for="(vente, i) in ventes" :key="i">
                   <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(vente.id)" :value="vente.id"/></div></td>
                   <td>{{vente.date_sell}}</td>
-                  <td>{{vente.client.name}}</td>
+                  <td v-if="choix_acteur == 1">{{vente.client.name}}</td>
                   <!-- <td>{{vente.amount_ht}}</td>
                   <td>{{vente.amount_ttc}}</td> -->
-                  <td>{{vente.amount}}</td>
-                  <td class="text-danger">{{vente.rest}}</td>
-                  <td>{{vente.payment}}</td>
+                  <td v-if="choix_montant == 1">{{vente.amount}}</td>
+                  <td class="text-danger" v-if="choix_rest == 1">{{vente.rest}}</td>
+                  <td v-if="choix_paiement == 1">{{vente.payment}}</td>
                   <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                         <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
                         <div class="cursor-pointer" @click.prevent="print(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
@@ -338,22 +359,117 @@
           list_delete: [],
           checks: [],
           selection: 0,
-          showModalMultipleDelete: false
+          showModalMultipleDelete: false,
+          choixNumber: 0,
+          choix_acteur: 1,
+          choix_montant: 1,
+          choix_rest:  1,
+          choix_paiement: 1
     }
   },
 
       methods: {
-        // async exp(){
-        //     await this.$axios.get('/sells',{
-        //         params: {
-        //           compagnie_id: localStorage.getItem('auth.company_id'),
-        //           is_paginated: 0
-        //         }
-        //       }).then(response =>{
-        //         // console.log(response);
-        //         this.data = response.data.data
-        //         })   
-        // },
+       
+    choisir(){
+      this.choixNumber = 1
+    },
+
+    fin(){
+      this.choixNumber = 0
+      // this.choice()
+    },
+    
+    defaultActeur(){
+        this.choix_acteur = localStorage.getItem('auth.choix_acteur')
+        if(localStorage.getItem('auth.choix_acteur') == 1){
+          this.choix_acteur = true
+        }
+        else{
+          this.choix_acteur = false
+        }
+      },
+
+
+      choiceActeur(){
+          if(this.choix_acteur == true){
+            this.choix_acteur = 1
+            this.$auth.$storage.setUniversal('choix_acteur', this.choix_acteur)
+            this.defaultActeur()
+          }
+          else{
+            this.choix_acteur = 0
+            this.$auth.$storage.setUniversal('choix_acteur', this.choix_acteur)
+            this.defaultActeur()
+          }
+      },
+      
+      defaultMontant(){
+        this.choix_montant = localStorage.getItem('auth.choix_montant')
+        if(localStorage.getItem('auth.choix_montant') == 1){
+          this.choix_montant = true
+        }
+        else{
+          this.choix_montant = false
+        }
+      },
+
+      choiceMontant(){
+          if(this.choix_montant == true){
+            this.choix_montant = 1
+            this.$auth.$storage.setUniversal('choix_montant', this.choix_montant)
+            this.defaultMontant()
+          }
+          else{
+            this.choix_montant = 0
+            this.$auth.$storage.setUniversal('choix_montant', this.choix_montant)
+            this.defaultMontant()
+          }
+      },
+
+      
+      defaultRest(){
+        this.choix_rest = localStorage.getItem('auth.choix_rest')
+        if(localStorage.getItem('auth.choix_rest') == 1){
+          this.choix_rest = true
+        }
+        else{
+          this.choix_rest = false
+        }
+      },
+      choiceRest(){
+        if(this.choix_rest == true){
+            this.choix_rest = 1
+            this.$auth.$storage.setUniversal('choix_rest', this.choix_rest)
+            this.defaultRest()
+          }
+          else{
+            this.choix_rest = 0
+            this.$auth.$storage.setUniversal('choix_rest', this.choix_rest)
+            this.defaultRest()
+          }
+      },
+
+      defaultPaiement(){
+        this.choix_paiement = localStorage.getItem('auth.choix_paiement')
+        if(localStorage.getItem('auth.choix_paiement') == 1){
+          this.choix_paiement = true
+        }
+        else{
+          this.choix_paiement = false
+        }
+      },
+      choicePaiement(){
+        if(this.choix_paiement == true){
+            this.choix_paiement = 1
+            this.$auth.$storage.setUniversal('choix_paiement', this.choix_paiement)
+            this.defaultPaiement()
+          }
+          else{
+            this.choix_paiement = 0
+            this.$auth.$storage.setUniversal('choix_paiement', this.choix_paiement)
+            this.defaultPaiement()
+          }
+      },
 
         multipleSup(){
           this.showModalMultipleDelete = true
@@ -496,6 +612,10 @@
       // await this.exp()
         this.refresh()
         this.recupClient()
+        this.defaultActeur()
+        this.defaultMontant()
+        this.defaultRest()
+        this.defaultPaiement()
         this.users = this.$auth.$state.user.roles;
         this.compagny = localStorage.getItem('auth.company_id');
         this.role = localStorage.getItem('auth.roles')
