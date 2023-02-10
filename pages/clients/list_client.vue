@@ -279,7 +279,6 @@ export default {
 
       fin(){
         this.choixNumber = 0
-        // this.choice()
       },
 
       defaultPhone(){
