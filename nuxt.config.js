@@ -104,8 +104,15 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: [
+      'defu'
+    ],
   },
   generate: {
     fallback: '404.html'
+  },
+
+  publicRuntimeConfig: {
+    webURL: "https://api.tocmanager.com/"
   },
 }

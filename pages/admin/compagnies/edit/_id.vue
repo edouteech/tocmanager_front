@@ -1,47 +1,48 @@
 <template >
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Ma Compagnie </h3>
-          <Userinfo />
+          <Sidebar /><h3 class="name">Compagnies</h3>
         </nav>
         
         <div class="app-main__outer p-5">
-          <h4>Informations relatives à ma compagnie</h4><hr>
+          <h4>Modifier les informations relatives à cette compagnie</h4><hr>
             <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
                 {{error}} 
             </div>
-            <div class="alert alert-success justify-content-center" role="alert" v-if="errors != null">
-                {{errors}} 
-            </div>
             <div class="row">
-                <div class="col-lg-5 col-md-12 img mt-5">
+                <!-- <div class="col-lg-5 col-md-12 img mt-5">
                   <div class="contact-info mt-5" v-if="logo == null">
-                    <img src="./../static/images/enter11.png" alt="profil" class="profil mt-5" />
+                    <img src="" alt="profil" class="profil mt-5" />
                   </div>
                   <div class="contact-info mt-5" v-else>
                     <img :src="$config.webURL + logo" alt="profil" class="profil mt-5">
-                    <!-- <img src="./../static/images/enter11.png" alt="profil" class="profil mt-5" /> -->
                   </div>
                   <div class="form-outline mt-4">
                         <span class="fa fa-file-image-o px-2"></span><label class="form-label">Importer logo de la compagnie</label>
                         <div class="input-field d-flex"><input type="file" @change="handleFileUpload" size="70" name="file" ref="file" class="input_file_style_file" /><button class="btn btn-outline-success" type="submit" @click.prevent="Logo()"><i class="fa fa-download" aria-hidden="true"></i></button> </div>   
                           
                     </div>
-                </div>
+                </div> -->
       
-                <div class="col-lg-6 col-md-12 mt-2 ml-5">
+                <div class="col-lg-8 mx-auto mt-2 ">
                     <form action="" method="POST" class="px-5">
-                        <span class="text-center"><strong>Modifier les informations de la compagnie</strong></span>	<br><br>
+                        <!-- <span class="text-center"><strong>Modifications</strong></span>	<br><br> -->
                         <div class="form-outline mb-4">
                             <span class="fa fa-briefcase px-2"></span><label class="form-label">Nom de la compagnie</label>
                             <div class="input-field"><input type="text" class="form-control form-control-lg" v-model="form.name" required
-                                placeholder="Entrer votre nom" /></div>      
+                                placeholder="Entrer votre nom" />
+                            </div>      
                         </div>
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
                             <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
-                                placeholder="Entrer une addresse email valide" /></div>      
+                                placeholder="Entrer une addresse email valide" />
+                            </div>     
+                            
+                            <div class="alert alert-success justify-content-center" role="alert" v-if="errors && errors.email">
+                                {{errors.email}} 
+                            </div> 
                         </div>
 
                         <div class="form-outline mb-4">
@@ -81,13 +82,11 @@
 </template>
 
 <script>
-import Sidebar from './sidebar.vue'
-import Userinfo from './user_info.vue'
+import Sidebar from '../../sidebar.vue'
 export default {
     layout: "empty",
     components: {
     Sidebar,
-    Userinfo
     },
     data () {
         return{
@@ -126,8 +125,8 @@ export default {
         },
 
         submit(){          
-            this.$axios.put('/compagnies/'+this.compagny, {
-            id: this.compagny,
+            this.$axios.put('/compagnies/'+this.$route.params.id, {
+            id: this.$route.params.id,
             name: this.form.name,
             phone: this.form.phone,
             email: this.form.email,
@@ -135,16 +134,17 @@ export default {
             rccm : this.form.registre,
             address:this.form.address,
             mecef_token: this.form.token,
-            compagnie_id: localStorage.getItem('auth.company_id')
             })
             .then(response =>{
                 console.log(response)
-                this.$router.push({
-                  path:'/update_compagnie',})
                   if(response.data.status == "success"){
-                    this.errors="Modifications éffectuées avec succès !!!"
+                    this.$toast('Compagnie modfiée !!!', {
+                            icon: 'fa fa-check-circle',
+                        })
+                        this.$router.push({path:'/admin/compagnies/list_compagnie'})
                   }
                   else{
+                    this.errors = response.data.data
                       this.error = "Echec!!! Veuillez réessayer..."
                       
                   }
@@ -180,10 +180,7 @@ export default {
 
 
         refresh(){
-            this.$axios.get('/compagnies/'+ this.compagny,{params: {
-            compagnie_id: localStorage.getItem('auth.company_id')
-          }
-          })
+            this.$axios.get('/compagnies/'+ this.$route.params.id)
             .then(response => {
                 // console.log(response.data.data[0] )
             let compagnie = response.data.data[0];

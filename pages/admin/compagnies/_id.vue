@@ -22,7 +22,7 @@
                     <p class=" fsize-1">Email de la compagnie :<strong> {{email}}</strong></p>
                     <p class=" fsize-1">Numéro de téléphone de la compagnie :<strong class="text-uppercase"> {{phone}}</strong></p>
                 </div>
-                <div class="col-md-6 trait-abonnement">
+                <div class="col-md-6 trait-abonnement" v-if="info_abonnement">
                     <p class=" fsize-2">Type d'abonnement :
                         <strong class="text-uppercase" v-if="info_abonnement.plan_id == 1">Abonnement mensuel</strong>
                         <strong class="text-uppercase" v-else>Abonnement annuel</strong>
@@ -255,7 +255,7 @@ export default {
         abonnement(){
             this.$axios.get('/index/abonnement/compagnie/'+ this.$route.params.id)
             .then(response => {
-                console.log(response.data.data);
+                // console.log(response.data.data);
                 this.info_abonnement = response.data.data[0]
                 this.dateFin_abonnement = moment(response.data.data[0].ends_at).format("D MMM YYYY, h:mm:ss a")
                 this.dateFin_essai = moment(response.data.data[0].trial_ends_at).format("D MMM YYYY, h:mm:ss a")

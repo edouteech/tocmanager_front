@@ -38,6 +38,14 @@
             <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
               <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
             </button>
+            <div class="col-md-3 mx-2">
+              <select class="form-control" v-model="trie" @change="TriFactures(trie)"> 
+                <option disabled value="">Trier par...</option>
+                <option value="toutes">Toutes les factures</option>   
+                <option value="true">Factures normalisées</option>  
+                <option value="false">Factures non normalisées</option>                                      
+            </select>
+            </div>
           </div>
         <div v-if="this.element_search != ''" class="table-responsive">
           <table class="table table-hover">
@@ -160,7 +168,7 @@
       <div class="imprim" id="impression">
           <div class="d-flex align-items-start flex-column">
             <div class="entreprise-photo mb-2" v-if="compagn.logo">
-              <img :src="'https://api.tocmanager.com/'+compagn.logo" alt="profil" class="profil" width="70" height="50">
+              <img :src="$config.webURL + compagn.logo" alt="profil" class="profil" width="70" height="50">
             </div>
             <strong> Société {{compagn.name}}</strong>
             <strong> Email: {{compagn.email}}</strong>
@@ -295,6 +303,7 @@
     },
      data () {
         return {
+          trie: "",
           links: [],
           res_data: null,
           showModal: false,
@@ -429,6 +438,48 @@
               let firstE = response.data.data.links.shift()
               let lastE = response.data.data.links.splice(-1,1);
             })  
+          },
+
+          
+          TriFactures(trie){
+            // console.log(trie);
+            if(trie == "toutes"){
+              this.refresh()
+            }
+            else if(trie == "false"){
+              this.$axios.get('/sells/filter',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                page: 1,
+                is_invoiced: false
+              }   
+              })        
+              .then(response => 
+              {
+                // console.log(response);
+                this.ventes = response.data.data.data
+                this.res_data= response.data.data
+                this.total = response.data.data.total
+                let firstE = response.data.data.links.shift()
+                let lastE = response.data.data.links.splice(-1,1);
+              })  
+            }
+            else if(trie == "true"){
+              this.$axios.get('/sells/filter',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                page: 1,
+                is_invoiced: true
+              }   
+              })        
+              .then(response => 
+              {
+                // console.log(response);
+                this.ventes = response.data.data.data
+                this.res_data= response.data.data
+                this.total = response.data.data.total
+                let firstE = response.data.data.links.shift()
+                let lastE = response.data.data.links.splice(-1,1);
+              })  
+            }
           },
   
           recupClient(){
