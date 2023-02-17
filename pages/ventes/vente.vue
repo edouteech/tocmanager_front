@@ -388,9 +388,16 @@ export default {
                 let codeProdId = this.codes.id
                 let codeProdPrice = this.codes.price_sell
                 this.codeProd = "",
-                this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, amount_after_discount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
-                this.reduceAmount()
-                this.taxChange()
+                this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, amount_after_discount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
+                this.form.discount = 0;  
+                this.form.tax = 0;  
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount_after_discount;
+                    }
+                    this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
             }
             else{
                 this.codeError = response.data.message
@@ -512,17 +519,26 @@ export default {
 
         recupProduct(){
             this.$axios.get('/products',{params: {
-            compagnie_id: localStorage.getItem('auth.company_id'),
-            is_paginated: 0
-          }
-          }).then(response => {
-            // console.log(response.data.data);
-            this.produits = response.data.data}) 
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                is_paginated: 0
+            }
+            }).then(response => {
+                // console.log(response.data.data);
+                let prods = response.data.data
+                for (let j = 0; j < prods.length; j++) {
+                    if(prods[j].quantity == 0){
+                        prods[j].disabled = true 
+                        console.log(prods[j]);
+                    }
+                }
+                this.produits = prods
+                console.log(this.produits);
+            }) 
         },
+
 
         taxChange(){
             var pourcentage = this.form.tax / 100;
-            // this.form.tax = pourcentage
             var taxe = this.form.amount_ht * pourcentage
             this.form.amount_ttc = this.form.amount_ht + taxe;
             this.form.amount = this.form.amount_ht + taxe
