@@ -145,6 +145,35 @@
         </table>
         <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
       
+        <div class="table-responsive col-md-6 mx-auto my-4">
+          <table class="table table-hover" >
+          <thead>
+            <tr class="table-dark">
+                <th>RECAPITULATIF</th>
+                <th>VALEURS</th>
+            </tr>
+          </thead>
+          
+            <tbody>
+              <tr>
+                <td>Quantité totale de produit</td>
+                <td>100</td>
+              </tr>
+              <tr>
+                <td>Valorisation totale</td>
+                <td>10000</td>
+              </tr>
+              <tr>
+                <td>Cout total</td>
+                <td>1000</td>
+              </tr>
+              <tr>
+                <td>Bénéfice total</td>
+                <td>10000</td>
+              </tr>
+            </tbody>
+        </table>
+        </div>
         <form class="justify-content-end btn-group" role="search">
           <input type="file" id="file" ref="file" @change="handleFileUpload()" />
           <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
