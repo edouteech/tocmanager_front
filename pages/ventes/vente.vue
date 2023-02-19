@@ -26,16 +26,6 @@
                             :reduce="(client) => client.id"
                             append-to-body
                         />
-                          
-                        <!-- <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
-                            <div class="select2-cli" v-if="afficheCli !=0 "> 
-                                <div class="close d-flex justify-content-end" @click="go()">
-                                    <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
-                                </div>
-                                <ul>
-                                    <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="" >{{acteur.name}}</a></li>
-                                </ul>
-                            </div> -->
 
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
@@ -59,7 +49,7 @@
                         </div> 
                     </div>                    
                 </div>
-                <!-- {{ form.sell_lines }} -->
+                
                 <div class="commande table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -83,10 +73,16 @@
                                         v-model="line.product_id"
                                         label="name"
                                         :options="produits"
+                                        :selectable="(produit) => produit.quantity > 0"
                                         :reduce="(produit) => produit.id"
                                         append-to-body
                                         @input="productChange(line.product_id, index)"
-                                    />
+                                    >
+                                        <template #option="{ name, code, quantity }" style="background-color: blue;">
+                                            
+                                        <div :style="(quantity<=0)?'color: red;':''" >{{ name }} [{{quantity}}] ({{ code }})</div>
+                                        </template>
+                                    </v-select>
                                     <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
                                         <option disabled value="">Choisissez...</option>
                                         <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
@@ -515,10 +511,11 @@ export default {
             this.$axios.get('/products',{params: {
             compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
-          }
-          }).then(response => {
+        }
+        }).then(response => {
             // console.log(response.data.data);
-            this.produits = response.data.data}) 
+            this.produits = response.data.data
+        }) 
         },
 
         taxChange(){
@@ -1065,5 +1062,6 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
         margin: 0;
     }
 }
+
 </style>
 
