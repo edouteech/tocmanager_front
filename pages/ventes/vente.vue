@@ -83,21 +83,10 @@
                                         <div :style="(quantity<=0)?'color: red;':''" >{{ name }} [{{quantity}}] ({{ code }})</div>
                                         </template>
                                     </v-select>
-                                    <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
-                                        <option disabled value="">Choisissez...</option>
-                                        <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
-                                    </select> -->
-                                    <!-- <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
-                                    <div class="select2-prod" v-if="afficheProd !=0">
-                                        <div class="close d-flex justify-content-end" @click="gos()">
-                                            <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
-                                        </div>
-                                        <ul>
-                                            <li v-for="(designation, i) in designations" :key="i" :value="designation.id" :data-i="i" :data-index="index"><a href="" @click.prevent="choiceProd(designation,i)">{{designation.name}}</a></li>
-                                        </ul>
-                                    </div> -->
                                 </td>
-                                <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                                <td class="table-cole">
+                                    <input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index, line.product_id)" required>
+                                </td>
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
                                 <td class="table-col"><div><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
@@ -106,7 +95,10 @@
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
-                    </table>   
+                    </table>
+                    <div class="alert alert-danger justify-content-center" role="alert" v-if="quantityError">
+                        {{quantityError}} 
+                    </div>   
                     <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_amount">
                         Veuillez ajouter une ligne de vente
                     </div>  
@@ -281,7 +273,9 @@ export default {
             echeance: "",
             codeProd: '',
             codeError: null,
-            selectedClient: ''
+            selectedClient: '',
+            prodQ: '',
+            quantityError: null
         }
     },
 
@@ -551,18 +545,31 @@ export default {
                 }   
         },
 
-        quantityChange(index){
-            let line = this.form.sell_lines[index]
-            line.amount = Number(line.price) * Number(line.quantity);
-            line.amount_after_discount = Number(line.price) * Number(line.quantity);
-            let sum = 0;
-            for (let j = 0; j < this.form.sell_lines.length; j++) {
-                sum += this.form.sell_lines[j].amount_after_discount;
+        quantityChange(index, prod){
+            this.quantityError = null
+            for(let k = 0; k <= this.produits.length; k++){
+                if(this.produits[k].id == prod){
+                    this.prodQ = this.produits[k].quantity
+                    break;
+                }
             }
-            this.form.amount_ht = sum;
-            this.form.discount = 0
-            this.form.tax = 0
-            this.taxChange()
+            // console.log(this.prodQ);
+            let line = this.form.sell_lines[index]
+            if(Number(line.quantity) <= this.prodQ){
+                line.amount = Number(line.price) * Number(line.quantity);
+                line.amount_after_discount = Number(line.price) * Number(line.quantity);
+                let sum = 0;
+                for (let j = 0; j < this.form.sell_lines.length; j++) {
+                    sum += this.form.sell_lines[j].amount_after_discount;
+                }
+                this.form.amount_ht = sum;
+                this.form.discount = 0
+                this.form.tax = 0
+                this.taxChange()
+            }
+            else{
+                this.quantityError = "Cette quantité est supérieure à la quantité en stock !"
+            }
                 
         },
 
