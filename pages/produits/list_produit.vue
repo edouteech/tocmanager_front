@@ -120,7 +120,7 @@
             </thead>
           
             <tbody>
-              <tr  v-for="(produit, i) in produits" :key="i">
+              <tr  v-for="(produit, i) in produits" :key="i" :class="{ 'col-ligne': produit.quantity == 0 }">
                   <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(produit.id)" :value="produit.id"/></div></td>
                 <td>{{produit.name}}</td>
                 <td v-if="produit.category != null">{{produit.category.name}}</td>
@@ -145,7 +145,7 @@
         </table>
         <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
       
-        <div class="table-responsive col-md-6 mx-auto my-4">
+        <div class="table-responsive col-md-6 mx-auto my-4" v-if="stats">
           <table class="table table-hover" >
           <thead>
             <tr class="table-dark">
@@ -157,19 +157,19 @@
             <tbody>
               <tr>
                 <td>Quantité totale de produit</td>
-                <td>100</td>
+                <td>{{stats.sum_quantity}}</td>
               </tr>
               <tr>
                 <td>Valorisation totale</td>
-                <td>10000</td>
+                <td>{{stats.valorisation}}</td>
               </tr>
               <tr>
                 <td>Cout total</td>
-                <td>1000</td>
+                <td>{{stats.total_cost}}</td>
               </tr>
               <tr>
                 <td>Bénéfice total</td>
-                <td>10000</td>
+                <td>{{stats.profit}}</td>
               </tr>
             </tbody>
         </table>
@@ -292,11 +292,13 @@ export default {
       listModal: "",
       checks: [],
       selection: 0,
-      showModalMultipleDelete: false
+      showModalMultipleDelete: false,
+      stats: ''
     }
   },
 
   mounted () {
+      this.prodStats()
       this.refresh()
       this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
@@ -305,6 +307,18 @@ export default {
   },
 
   methods: {
+    
+        prodStats(){
+          this.$axios.get('/products/stats',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+            this.stats = response.data.data
+          })
+        },
+
         multipleSup(){
           this.showModalMultipleDelete = true
         },
@@ -415,6 +429,8 @@ export default {
           let lastE = response.data.data.links.splice(-1,1);
           })
         },
+
+
         deleteProduit(id){
           this.showModalDelete = true
             this.key = id    
@@ -522,7 +538,9 @@ export default {
 </script>
 
 <style scoped>
-
+.col-ligne{
+  background-color: rgb(251, 200, 200);
+}
 .nav{
   overflow: auto;
 }
