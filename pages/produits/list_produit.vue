@@ -145,30 +145,22 @@
         </table>
         <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
       
-        <div class="table-responsive col-md-6 mx-auto my-4" v-if="stats">
-          <table class="table table-hover" >
+        <div class="table-responsive" v-if="stats">
+          <table class="table table-hover other_table" >
           <thead>
             <tr class="table-dark">
-                <th>RECAPITULATIF</th>
-                <th>VALEURS</th>
+                <th>Quantité totale de produit</th>
+                <th>Valorisation totale</th>
+                <th>Cout total</th>
+                <th>Bénéfice total</th>
             </tr>
           </thead>
           
             <tbody>
               <tr>
-                <td>Quantité totale de produit</td>
                 <td>{{stats.sum_quantity}}</td>
-              </tr>
-              <tr>
-                <td>Valorisation totale</td>
                 <td>{{stats.valorisation}}</td>
-              </tr>
-              <tr>
-                <td>Cout total</td>
                 <td>{{stats.total_cost}}</td>
-              </tr>
-              <tr>
-                <td>Bénéfice total</td>
                 <td>{{stats.profit}}</td>
               </tr>
             </tbody>
@@ -569,6 +561,11 @@ export default {
   font-size: 18px;
   cursor: pointer;
 }
+
+.other_table{
+	margin-top: 0%;
+}
+
 .table{
 	margin-top: 2%;
   text-align: center;
