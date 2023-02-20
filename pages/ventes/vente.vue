@@ -85,7 +85,14 @@
                                     </v-select>
                                 </td>
                                 <td class="table-cole">
-                                    <input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index, line.product_id)" required>
+                                    <div class="d-flex"> 
+                                        <div class="col-md-11">
+                                            <input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index, line.product_id)" required>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <span class="quantity_erreur" v-if="quantityError"><i class="fa fa-ban text-danger" aria-hidden="true" title="Cette quantité est supérieure à la quantité en stock !"></i></span>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
@@ -686,7 +693,9 @@ export default {
 </script>
 
 <style scoped>
-
+.quantity_erreur {
+  cursor: pointer;
+}
 
 @media print {
     .boom, .cadre-haut{
