@@ -8,7 +8,7 @@
           <Sidebar /><h3 class="name">Compagnies </h3>
         </nav>
     
-        <div class="app-main__outer p-5">
+        <div class="app-main__outer py-5 px-2">
           <h4>Informations de la compagnie</h4><br>
           <!-- <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >

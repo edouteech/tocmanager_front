@@ -5,7 +5,7 @@
       <User_info />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Produits supprimés</h4><hr>
         <div class="table-responsive">
             <table class="table table-hover">
@@ -36,7 +36,7 @@
                             <td>{{produit.quantity}}</td>
                             <td>{{produit.price_sell}}</td>
                             <td>{{produit.price_buy}}</td>                         
-                            <td><div class="action">
+                            <td><div class="action d-flex aligns-items-center justify-content-center">
                                 <div class="sup" @click="supProduit(produit.id)">Supprimer définitivement</div>
                                 <div class="restore" @click="restaurerProduit(produit.id)">Restaurer ce produit</div></div>
                             </td>

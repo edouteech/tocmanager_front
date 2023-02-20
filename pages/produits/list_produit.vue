@@ -5,7 +5,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des produits dans le magazin</h4><br>
       <div class="d-flex">
           <div class="col-md-10">
@@ -73,7 +73,7 @@
                 <td>{{result.stock_max}}</td> -->
                 <td>{{result.quantity * result.price_sell}}</td>
                 <td>
-                  <div class="action"  v-for="(user, i) in users" :key="i">
+                  <div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                     <div @click="voirProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/produits/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -133,7 +133,7 @@
                 <td>{{produit.stock_max}}</td> -->
                 <td>{{produit.quantity * produit.price_sell}}</td>
                 <td>
-                  <div class="action"  v-for="(user, i) in users" :key="i">
+                  <div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                     <div @click="voirProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/produits/'+produit.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>

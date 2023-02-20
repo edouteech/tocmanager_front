@@ -61,7 +61,7 @@
                                 <td>{{user.phone}}</td>
                                 <td>{{user.email}}</td>
                                  <td>{{user.country}}</td>
-                                <td><div class="action">
+                                <td><div class="action d-flex aligns-items-center justify-content-center">
                                     <div class="sup" @click="supProfil(user.id)">Supprimer définitivement</div>
                                     <div class="restore" @click="restaurerUser(user.id)">Restaurer cet utilisateur</div></div>
                                 </td>

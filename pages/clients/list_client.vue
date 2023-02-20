@@ -5,7 +5,7 @@
       <Userinfo />
     </nav>
     
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des clients</h4><hr><br>
       <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}} 
@@ -70,7 +70,7 @@
               <td>{{result.email}}</td>
               <td class="text-danger">{{result.balance}}</td>
               <td>{{result.nature}}</td>
-              <td><div class="action" v-for="(user, i) in users" :key="i">
+              <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                 <div @click="voirClient(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
@@ -106,7 +106,7 @@
               <td>{{client.email}}</td>
               <td class="text-danger">{{client.balance}}</td>
               <td>{{client.nature}}</td>
-              <td><div class="action" v-for="(user, i) in users" :key="i">
+              <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                 <div @click="voirClient(client.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+client.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(client)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>

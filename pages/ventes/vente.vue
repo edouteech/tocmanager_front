@@ -7,7 +7,7 @@
 
     
   
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}} 
         </div>
@@ -90,7 +90,7 @@
                                             <input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index, line.product_id)" required>
                                         </div>
                                         <div class="col-md-1">
-                                            <span class="quantity_erreur" v-if="quantityError"><i class="fa fa-ban text-danger" aria-hidden="true" title="Cette quantité est supérieure à la quantité en stock !"></i></span>
+                                            <span class="quantity_erreur aligns-items-center justify-content-center" v-if="quantityError"><i class="fa fa-ban text-danger" aria-hidden="true" title="Cette quantité est supérieure à la quantité en stock !"></i></span>
                                         </div>
                                     </div>
                                 </td>

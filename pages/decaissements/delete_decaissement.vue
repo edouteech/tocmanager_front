@@ -5,7 +5,7 @@
       <User_info />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Décaissements supprimés</h4><hr>
       <div class="table-responsive">
             <table class="table table-hover">
@@ -32,7 +32,7 @@
                         <td>{{decaissement.montant}}</td>
                         <td v-if="decaissement.supplier">{{decaissement.supplier.name}}</td>
                         <td v-else>--Fournisseur supprimé--</td>
-                        <td><div class="action">
+                        <td><div class="action d-flex aligns-items-center justify-content-center">
                             <div class="sup" @click="supDecaissement(decaissement.id)">Supprimer définitivement</div>
                             <div class="restore" @click="restaurerDecaissement(decaissement.id)">Restaurer ce décaissement</div></div>
                         </td>

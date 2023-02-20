@@ -6,7 +6,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des achats éffectués</h4>
       <hr><br>
       <div class="d-flex">
@@ -71,7 +71,7 @@
               <td>{{ result.rest }}</td>
               <!-- <td>{{result.payment}}</td> -->
               <td>
-                <div class="action" v-for="(user, i) in users" :key="i">
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                   <NuxtLink :to="'/achats/voir/' + result.id" v-if="compagny == user.pivot.compagnie_id"><i
                       class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
                   <NuxtLink :to="'/achats/' + result.id"
@@ -109,7 +109,7 @@
               <td>{{ achat.amount }}</td>
               <td>{{ achat.rest }}</td>
               <td>
-                <div class="action" v-for="(user, i) in users" :key="i">
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                   <NuxtLink :to="'/achats/voir/' + achat.id" v-if="compagny == user.pivot.compagnie_id"><i
                       class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
                   <NuxtLink :to="'/achats/' + achat.id"

@@ -5,7 +5,7 @@
         <Userinfo /> 
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Catégories supprimées</h4><hr>
       <div class="table-responsive">
         <table class="table table-hover">
@@ -22,7 +22,7 @@
         <tbody>
             <tr  v-for="(categorie, i) in categories" :key="i">
                 <td>{{categorie.name}}</td>
-                <td><div class="action">
+                <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div class="sup" @click="supCategorie(categorie.id)">Supprimer définitivement</div>
                     <div class="restore" @click="restaurerCategorie(categorie.id)">Restaurer cette categorie</div></div>
                 </td>
