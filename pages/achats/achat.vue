@@ -8,7 +8,7 @@
 
     
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}} <br>
         </div>

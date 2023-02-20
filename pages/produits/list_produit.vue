@@ -5,7 +5,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des produits dans le magazin</h4><br>
       <div class="d-flex">
           <div class="col-md-10">
@@ -73,7 +73,7 @@
                 <td>{{result.stock_max}}</td> -->
                 <td>{{result.quantity * result.price_sell}}</td>
                 <td>
-                  <div class="action"  v-for="(user, i) in users" :key="i">
+                  <div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                     <div @click="voirProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/produits/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteProduit(result.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -120,7 +120,7 @@
             </thead>
           
             <tbody>
-              <tr  v-for="(produit, i) in produits" :key="i">
+              <tr  v-for="(produit, i) in produits" :key="i" :class="{ 'col-ligne': produit.quantity == 0 }">
                   <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(produit.id)" :value="produit.id"/></div></td>
                 <td>{{produit.name}}</td>
                 <td v-if="produit.category != null">{{produit.category.name}}</td>
@@ -133,7 +133,7 @@
                 <td>{{produit.stock_max}}</td> -->
                 <td>{{produit.quantity * produit.price_sell}}</td>
                 <td>
-                  <div class="action"  v-for="(user, i) in users" :key="i">
+                  <div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                     <div @click="voirProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/produits/'+produit.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteProduit(produit.id)" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -145,6 +145,35 @@
         </table>
         <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
       
+        <div class="table-responsive col-md-6 mx-auto my-4" v-if="stats">
+          <table class="table table-hover" >
+          <thead>
+            <tr class="table-dark">
+                <th>RECAPITULATIF</th>
+                <th>VALEURS</th>
+            </tr>
+          </thead>
+          
+            <tbody>
+              <tr>
+                <td>Quantité totale de produit</td>
+                <td>{{stats.sum_quantity}}</td>
+              </tr>
+              <tr>
+                <td>Valorisation totale</td>
+                <td>{{stats.valorisation}}</td>
+              </tr>
+              <tr>
+                <td>Cout total</td>
+                <td>{{stats.total_cost}}</td>
+              </tr>
+              <tr>
+                <td>Bénéfice total</td>
+                <td>{{stats.profit}}</td>
+              </tr>
+            </tbody>
+        </table>
+        </div>
         <form class="justify-content-end btn-group" role="search">
           <input type="file" id="file" ref="file" @change="handleFileUpload()" />
           <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
@@ -263,11 +292,13 @@ export default {
       listModal: "",
       checks: [],
       selection: 0,
-      showModalMultipleDelete: false
+      showModalMultipleDelete: false,
+      stats: ''
     }
   },
 
   mounted () {
+      this.prodStats()
       this.refresh()
       this.users = this.$auth.$state.user.roles;
       this.compagny = localStorage.getItem('auth.company_id');
@@ -276,6 +307,18 @@ export default {
   },
 
   methods: {
+    
+        prodStats(){
+          this.$axios.get('/products/stats',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+            this.stats = response.data.data
+          })
+        },
+
         multipleSup(){
           this.showModalMultipleDelete = true
         },
@@ -386,6 +429,8 @@ export default {
           let lastE = response.data.data.links.splice(-1,1);
           })
         },
+
+
         deleteProduit(id){
           this.showModalDelete = true
             this.key = id    
@@ -492,7 +537,9 @@ export default {
 </script>
 
 <style scoped>
-
+.col-ligne{
+  background-color: rgb(251, 200, 200);
+}
 .nav{
   overflow: auto;
 }

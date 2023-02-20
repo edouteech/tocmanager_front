@@ -5,7 +5,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des utilisateurs enregistrés</h4><hr><br><br>
       <div class="d-flex">
           <div class="col-md-10">
@@ -56,7 +56,7 @@
                   <td v-else-if="profil.role_name =='cashier'">Caissier</td>
                   <td v-else-if="profil.role_name ==null">----</td>
                   <td>{{profil.country}}</td>
-                  <td><div class="action"  v-for="(user, i) in users" :key="i">
+                  <td><div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                         <div @click="voirProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                         <NuxtLink :to="'/profils/'+profil.id"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                         <div @click="deleteProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>

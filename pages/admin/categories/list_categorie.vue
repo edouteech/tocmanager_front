@@ -4,7 +4,7 @@
           <Sidebar /><h3 class="name">Catégories de produits </h3>
         </nav>
     
-        <div class="app-main__outer p-5">
+        <div class="app-main__outer py-5 px-2">
           <h4>Liste des catégories de produits enregistrés sur la plateforme</h4><hr><br>
           <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
@@ -26,7 +26,7 @@
                   <td v-if="result.parent != null">{{result.parent.name}}</td>
                   <td v-else>---</td>
                   <td>{{result.compagny.name}}</td>
-                  <!-- <td><div class="action">
+                  <!-- <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div @click="voirCategorie(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/categorie/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteCategorie(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -52,7 +52,7 @@
                   <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
                   <td v-else>---</td>
                   <td>{{categorie.compagny.name}}</td>
-                  <!-- <td><div class="action">
+                  <!-- <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div @click="voirCategorie(categorie.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/categorie/'+categorie.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteCategorie(categorie.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>

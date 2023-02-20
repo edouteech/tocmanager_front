@@ -4,7 +4,7 @@
           <Sidebar /><h3 class="name">Compagnies </h3>
         </nav>
     
-        <div class="app-main__outer p-5">
+        <div class="app-main__outer py-5 px-2">
           <h4>Compagnies supprimées</h4><hr>
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}} 
@@ -33,7 +33,7 @@
                     <td>{{compagnie.name}}</td>
                     <td>{{compagnie.phone}}</td>
                     <td>{{compagnie.email}}</td>
-                    <td><div class="action">
+                    <td><div class="action d-flex aligns-items-center justify-content-center">
                         <button class="btn btn-outline-danger mx-2" @click="supCompagnie(compagnie.id)">Supprimer</button>
                         <button class="btn btn-outline-success" @click="restaurer(compagnie.id)">Restaurer</button></div>
                     </td>

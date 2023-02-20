@@ -7,7 +7,7 @@
 
     
   
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}} 
         </div>
@@ -26,16 +26,6 @@
                             :reduce="(client) => client.id"
                             append-to-body
                         />
-                          
-                        <!-- <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
-                            <div class="select2-cli" v-if="afficheCli !=0 "> 
-                                <div class="close d-flex justify-content-end" @click="go()">
-                                    <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
-                                </div>
-                                <ul>
-                                    <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="" >{{acteur.name}}</a></li>
-                                </ul>
-                            </div> -->
 
                         <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
@@ -59,7 +49,7 @@
                         </div> 
                     </div>                    
                 </div>
-                <!-- {{ form.sell_lines }} -->
+                
                 <div class="commande table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -83,25 +73,27 @@
                                         v-model="line.product_id"
                                         label="name"
                                         :options="produits"
+                                        :selectable="(produit) => produit.quantity > 0"
                                         :reduce="(produit) => produit.id"
                                         append-to-body
                                         @input="productChange(line.product_id, index)"
-                                    />
-                                    <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
-                                        <option disabled value="">Choisissez...</option>
-                                        <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
-                                    </select> -->
-                                    <!-- <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
-                                    <div class="select2-prod" v-if="afficheProd !=0">
-                                        <div class="close d-flex justify-content-end" @click="gos()">
-                                            <img class="close-img" src="/images/fermer.png" alt="" title="Fermer"/>
-                                        </div>
-                                        <ul>
-                                            <li v-for="(designation, i) in designations" :key="i" :value="designation.id" :data-i="i" :data-index="index"><a href="" @click.prevent="choiceProd(designation,i)">{{designation.name}}</a></li>
-                                        </ul>
-                                    </div> -->
+                                    >
+                                        <template #option="{ name, code, quantity }" style="background-color: blue;">
+                                            
+                                        <div :style="(quantity<=0)?'color: red;':''" >{{ name }} [{{quantity}}] ({{ code }})</div>
+                                        </template>
+                                    </v-select>
                                 </td>
-                                <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                                <td class="table-cole">
+                                    <div class="d-flex"> 
+                                        <div class="col-md-10">
+                                            <input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index, line.product_id)" required>
+                                        </div>
+                                        <div class="col-md-1 p-1">
+                                            <span class="quantity_erreur aligns-items-center justify-content-center" v-if="quantityError"><i class="fa fa-ban text-danger" :id="'real_quantity_'+index" aria-hidden="true" title="Cette quantité est supérieure à la quantité en stock !"></i></span>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
                                 <td class="table-col"><div><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
@@ -110,7 +102,10 @@
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
-                    </table>   
+                    </table>
+                    <div class="alert alert-danger justify-content-center" role="alert" v-if="quantityError">
+                        {{quantityError}} 
+                    </div>   
                     <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_amount">
                         Veuillez ajouter une ligne de vente
                     </div>  
@@ -285,7 +280,9 @@ export default {
             echeance: "",
             codeProd: '',
             codeError: null,
-            selectedClient: ''
+            selectedClient: '',
+            prodQ: '',
+            quantityError: null
         }
     },
 
@@ -389,9 +386,16 @@ export default {
                 let codeProdId = this.codes.id
                 let codeProdPrice = this.codes.price_sell
                 this.codeProd = "",
-                this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, amount_after_discount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
-                this.reduceAmount()
-                this.taxChange()
+                this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, amount_after_discount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
+                this.form.discount = 0;  
+                this.form.tax = 0;  
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount_after_discount;
+                    }
+                    this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
             }
             else{
                 this.codeError = response.data.message
@@ -515,10 +519,11 @@ export default {
             this.$axios.get('/products',{params: {
             compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
-          }
-          }).then(response => {
+        }
+        }).then(response => {
             // console.log(response.data.data);
-            this.produits = response.data.data}) 
+            this.produits = response.data.data
+        }) 
         },
 
         taxChange(){
@@ -554,18 +559,31 @@ export default {
                 }   
         },
 
-        quantityChange(index){
-            let line = this.form.sell_lines[index]
-            line.amount = Number(line.price) * Number(line.quantity);
-            line.amount_after_discount = Number(line.price) * Number(line.quantity);
-            let sum = 0;
-            for (let j = 0; j < this.form.sell_lines.length; j++) {
-                sum += this.form.sell_lines[j].amount_after_discount;
+        quantityChange(index, prod){
+            this.quantityError = null
+            for(let k = 0; k <= this.produits.length; k++){
+                if(this.produits[k].id == prod){
+                    this.prodQ = this.produits[k].quantity
+                    break;
+                }
             }
-            this.form.amount_ht = sum;
-            this.form.discount = 0
-            this.form.tax = 0
-            this.taxChange()
+            // console.log(this.prodQ);
+            let line = this.form.sell_lines[index]
+            if(Number(line.quantity) <= this.prodQ){
+                line.amount = Number(line.price) * Number(line.quantity);
+                line.amount_after_discount = Number(line.price) * Number(line.quantity);
+                let sum = 0;
+                for (let j = 0; j < this.form.sell_lines.length; j++) {
+                    sum += this.form.sell_lines[j].amount_after_discount;
+                }
+                this.form.amount_ht = sum;
+                this.form.discount = 0
+                this.form.tax = 0
+                this.taxChange()
+            }
+            else{
+                this.quantityError = "Cette quantité est supérieure à la quantité en stock !"
+            }
                 
         },
 
@@ -611,6 +629,7 @@ export default {
         productChange(IdProduit, IndexSellLines){
             // console.log(IdProduit);
             // console.log(IndexSellLines);
+            this.quantityError = null
             for(let k = 0; k <= this.produits.length; k++){
                 if(this.produits[k].id == IdProduit){
                     let ProdId = this.produits[k].id
@@ -675,7 +694,9 @@ export default {
 </script>
 
 <style scoped>
-
+.quantity_erreur {
+  cursor: pointer;
+}
 
 @media print {
     .boom, .cadre-haut{
@@ -1065,5 +1086,6 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
         margin: 0;
     }
 }
+
 </style>
 

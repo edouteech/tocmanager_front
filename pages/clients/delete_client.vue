@@ -5,7 +5,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Clients supprimés</h4><hr>
       <div class="table-responsive">
        <table class="table table-hover">
@@ -31,7 +31,7 @@
                 <td>{{client.name}}</td>
                 <td>{{client.phone}}</td>
                 <td>{{client.email}}</td>
-                <td><div class="action">
+                <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div class="sup" @click="supClient(client.id)">Supprimer définitivement</div>
                     <div class="restore" @click="restaurerClient(client.id)">Restaurer ce client</div></div>
                 </td>

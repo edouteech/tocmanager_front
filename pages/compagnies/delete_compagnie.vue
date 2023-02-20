@@ -58,7 +58,7 @@
                                 <td>{{compagnie.name}}</td>
                                 <td>{{compagnie.phone}}</td>
                                 <td>{{compagnie.email}}</td>
-                                <td><div class="action">
+                                <td><div class="action d-flex aligns-items-center justify-content-center">
                                     <div class="sup" @click="supCompagnie(compagnie.id)">Supprimer définitivement</div>
                                     <div class="restore" @click="restaurerCompagnie(compagnie.id)">Restaurer cette compagnie</div></div>
                                 </td>

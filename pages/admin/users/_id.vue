@@ -85,7 +85,7 @@
     </template>
     
     <script>
-    import Sidebar from '../../sidebar.vue'
+    import Sidebar from '../sidebar.vue'
     export default {
       auth: true,
       layout: "empty",

@@ -7,7 +7,7 @@
       <User_info />
     </nav>
 
-    <section class="app-main__outer p-5" v-for="(user, i) in users" :key="i">
+    <section class="app-main__outer py-5 px-2" v-for="(user, i) in users" :key="i">
         <div class="row mt-5">       
             <div class="col-md-6 col-xl-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
                 <NuxtLink to="/achats/delete_achat" >
