@@ -86,11 +86,11 @@
                                 </td>
                                 <td class="table-cole">
                                     <div class="d-flex"> 
-                                        <div class="col-md-11">
+                                        <div class="col-md-10">
                                             <input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index, line.product_id)" required>
                                         </div>
-                                        <div class="col-md-1">
-                                            <span class="quantity_erreur aligns-items-center justify-content-center" v-if="quantityError"><i class="fa fa-ban text-danger" aria-hidden="true" title="Cette quantité est supérieure à la quantité en stock !"></i></span>
+                                        <div class="col-md-1 p-1">
+                                            <span class="quantity_erreur aligns-items-center justify-content-center" v-if="quantityError"><i class="fa fa-ban text-danger" :id="'real_quantity_'+index" aria-hidden="true" title="Cette quantité est supérieure à la quantité en stock !"></i></span>
                                         </div>
                                     </div>
                                 </td>
@@ -629,6 +629,7 @@ export default {
         productChange(IdProduit, IndexSellLines){
             // console.log(IdProduit);
             // console.log(IndexSellLines);
+            this.quantityError = null
             for(let k = 0; k <= this.produits.length; k++){
                 if(this.produits[k].id == IdProduit){
                     let ProdId = this.produits[k].id
