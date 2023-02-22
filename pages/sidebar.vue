@@ -161,7 +161,7 @@
                   <NuxtLink to="/renouvelerAbonnement" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                         <i class="fa fa-handshake-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
-                          <span class="links_name" data-bs-dismiss="offcanvas">Renouveler l'abonnement</span>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Mon abonnement</span>
                       </div>
                   </NuxtLink>
               </li>

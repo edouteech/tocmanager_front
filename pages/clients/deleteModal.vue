@@ -1,12 +1,15 @@
 <template>
     <div class="modal-overlay" @click="$emit('close-modal')">
       <div class="modaler text-center py-5" @click.stop>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
+                  {{error}} 
+            </div>
               <strong>Voulez vous supprimer ce client ???</strong><br><br>
-              <div class="d-flex" @click="$emit('close-modal')">
+              <div class="d-flex">
                 <button class="btn btn-danger mx-auto" @click.prevent ="sup()">
                         Oui
                 </button>
-                <button class="btn btn-dark mx-auto" >
+                <button class="btn btn-dark mx-auto"  @click="$emit('close-modal')">
                         Non
                 </button>
                </div>
@@ -22,16 +25,26 @@
       auth:true,
       props: ['identifiant'],
       name: 'deleteModal',
+      data () {
+        return {
+            error: null,
+          }
+      },
 
       methods: {
         sup(){
             this.$axios.delete('/clients/' +this.identifiant,{params: {
             compagnie_id: localStorage.getItem('auth.company_id')
           }
-          }).then(response =>
-        //   console.log(response.data.data);
-            this.$emit('conf', { message: this.identifiant})
-            )   
+          }).then(response =>{
+              if(response.data.status == "success"){
+                this.$emit('conf', { message: this.identifiant})
+                this.$emit('close-modal')
+              }
+              else{
+                this.error = response.data.message
+              }
+            })
         },
       }
   
@@ -60,7 +73,7 @@
     width: 600px;
     margin-top: 15%;
     /* border-radius: 20px; */
-    height: 200px;
+    height: max-content;
     padding: 1%;
     box-shadow: 50px;
   }

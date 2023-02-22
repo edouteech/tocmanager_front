@@ -32,7 +32,14 @@
                     <!-- <p class=" fsize-1">Numéro de téléphone de la compagnie :<strong class="text-uppercase"> {{phone}}</strong></p> -->
                 </div>
             </div>
-        <div class="lignes"></div><br><br><br><br>
+        <div class="lignes"></div><br><br>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-outline-danger cursor-pointer btn-sup" @click.prevent="supAll()">
+                 <!-- <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i> -->
+                 <span>Supprimer toutes les informations relatives à la compagnie</span>
+            </button>
+            </div>
+        <br><br>
 
         <p class="text-center fsize-2">Liste des utilisateurs de la compagnie</p>
         <table class="table table-hover" v-if="this.element_search == ''">
@@ -204,21 +211,27 @@
                 </div>
             </div>
             
-        </div>
+        </div> 
+<deleteInfoCompagnieModal :identifiant= 'key' v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/> 
 </div>
 </template>
 
 <script>
+import deleteInfoCompagnieModal from './deleteInfoCompagnieModal.vue'
 import Sidebar from '../sidebar.vue'
-  import moment from "moment";
+import moment from "moment";
 export default {
   auth: true,
   layout: "empty",
   components: {
     Sidebar,  
+    deleteInfoCompagnieModal
   },
   data () {
     return {
+        id_compagny :'',
+        key:'',
+        showModal: false,
         element_search: '',
         compagny: '',
         email: '',
@@ -236,10 +249,16 @@ export default {
     },
 
     methods:{
+        supAll(){
+          this.showModal = true
+            this.key = this.id_compagny   
+        },
+
         recup(){
             this.$axios.get('/admin/compagnies/'+ this.$route.params.id)
             .then(response => {
                 // console.log(response.data.data[0]);
+                this.id_compagny = response.data.data[0].id
                 this.compagny = response.data.data[0].name
                 this.email = response.data.data[0].email
                 this.phone = response.data.data[0].phone
@@ -247,8 +266,7 @@ export default {
                 this.clients = response.data.data[0].clients
                 this.suppliers = response.data.data[0].suppliers
                 this.products = response.data.data[0].products
-                this.users = response.data.data[0].compagnie_users
-                
+                this.users = response.data.data[0].compagnie_users 
             }) 
         },
         
@@ -258,10 +276,15 @@ export default {
                 // console.log(response.data.data);
                 this.info_abonnement = response.data.data[0]
                 this.dateFin_abonnement = moment(response.data.data[0].ends_at).format("D MMM YYYY, h:mm:ss a")
-                this.dateFin_essai = moment(response.data.data[0].trial_ends_at).format("D MMM YYYY, h:mm:ss a")
-                
+                this.dateFin_essai = moment(response.data.data[0].trial_ends_at).format("D MMM YYYY, h:mm:ss a")               
             }) 
-        }
+        },
+
+        
+        setMessage(){
+            this.recup()
+            this.abonnement()
+        },
     },
     
     mounted(){
@@ -274,6 +297,11 @@ export default {
 </script>
 
 <style scoped>
+.btn-sup{
+    padding: 10px;
+    font-size: 14px;
+}
+
 .trait-abonnement{
     border-left: 2px solid black;
     margin-bottom: 15px;
