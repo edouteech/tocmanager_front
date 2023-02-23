@@ -595,9 +595,9 @@ export default {
 
 
 @media screen and (max-width: 900px) {
-    
+
 .name_side{
-    display: none,
+    display: none;
 }
 
 .app-main__outer{
