@@ -2,7 +2,7 @@
 <div>
     <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Achats </h3>
+      <Sidebar /><h3 class="name_side">Achats </h3>
       <Userinfo />
     </nav>
 
