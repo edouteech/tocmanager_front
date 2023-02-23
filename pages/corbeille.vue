@@ -197,9 +197,9 @@ mounted(){
 </script>
 
 <style scoped>
-.app-main__outer{
+/* .app-main__outer{
   overflow: auto;
-}
+} */
 
 .cases{
     display: flex;
