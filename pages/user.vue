@@ -1,7 +1,7 @@
 <template >
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Clients </h3>
+          <Sidebar /><h3 class="name_side">Clients </h3>
           <div class="bas-page " data-bs-dismiss="offcanvas">
                         <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
                         <span class="user_name" data-bs-dismiss="offcanvas">{{$auth.user.name}}</span> 

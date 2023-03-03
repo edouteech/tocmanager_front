@@ -3,7 +3,7 @@
     <link href="https://demo.dashboardpack.com/architectui-html-free/main.css" rel="stylesheet">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Corbeille</h3>
+      <Sidebar /><h3 class="name_side">Corbeille</h3>
       <User_info />
     </nav>
 
@@ -197,9 +197,9 @@ mounted(){
 </script>
 
 <style scoped>
-.app-main__outer{
+/* .app-main__outer{
   overflow: auto;
-}
+} */
 
 .cases{
     display: flex;
