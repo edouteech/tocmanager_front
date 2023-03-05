@@ -121,10 +121,10 @@
           <div class="nombre d-flex col-md-2 my-4">
             <label class="title mx-2 my-2"><strong> Affichage:</strong></label>
             <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-              <option disabled value>10</option>
+              <option value>10</option>
               <option value="25">25</option>
               <option value="50">50</option>
-              <option value="10">100</option>
+              <option value="100">100</option>
             </select>
           </div>
         </form>

@@ -127,28 +127,27 @@
     </form><br>
     <div class="d-flex col-md-2 my-4">
       <label class="title my-2">Affichage</label> 
-          <form action="">
-          <div class="nombre">
-            <!-- -->
-            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                <option disabled value>10</option>
-                <option value="25" >25</option>
-                <option value="50">50</option>
-                <option value="10">100</option>
-            </select>
-          </div>
-          </form>
+      <form action="">
+        <div class="nombre">
+          <!-- -->
+          <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+            <option value>10</option>
+            <option value="25" >25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </form>
     </div>
 
-        <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
-          <ul class="pagination">
-            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-            
-            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-          </ul>
-        </nav>
-  </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
+    <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
+      <ul class="pagination">
+        <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+        <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+        <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+      </ul>
+    </nav>
+  </div>  <br><br> 
 <voirProduit :prod_id='identifiant0' :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :group= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/>  

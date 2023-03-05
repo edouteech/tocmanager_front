@@ -46,9 +46,9 @@
           </thead>
           <tbody>
             <tr v-for="(result, j) in results" :key="j">
-              <td>{{ result.start_at }}</td>
-              <td>{{ result.end_at }}</td>
-              <td>{{ result.name_exercice }}</td>
+              <td>{{ result.code }}</td>
+              <td>{{ result.name }}</td>
+              <td>{{ result.group }}</td>
               <!-- <td><div class="action"  v-for="(user, i) in users" :key="i">
                       <div @click="voirFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                       <NuxtLink :to="'/fournisseurs/'+result.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
@@ -66,28 +66,26 @@
         <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
-              <th>Date de début</th>
-              <th>Date de fin</th>
+              <th>Code</th>
               <th>Nom</th>
-              <th>Statut</th>
+              <th>Groupe</th>
               <th>Actions</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr v-for="(exercice, i) in exercices" :key="i">
-              <td>{{ exercice.start_at }}</td>
-              <td>{{ exercice.end_at }}</td>
-              <td>{{ exercice.name_exercice }}</td>
-              <td>{{ exercice.status }}</td>
+            <tr v-for="(compte, i) in comptes" :key="i">
+              <td>{{ compte.code }}</td>
+              <td>{{ compte.name }}</td>
+              <td>{{ compte.group }}</td>
               <td>
                 <div class="action" v-for="(user, i) in users" :key="i">
-                  <NuxtLink :to="'/exercices/voir/' + exercice.id" v-if="compagny == user.pivot.compagnie_id"><i
+                  <NuxtLink :to="'/exercices/voir/' + compte.id" v-if="compagny == user.pivot.compagnie_id"><i
                       class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
-                  <NuxtLink :to="'/exercices/' + exercice.id"
+                  <NuxtLink :to="'/exercices/' + compte.id"
                     v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i
                       class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteExercice(exercice.id)"
+                  <div @click="deleteExercice(compte.id)"
                     v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i
                       class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
@@ -95,23 +93,48 @@
             </tr>
           </tbody>
         </table>
-        <p class="text-center"><strong>{{ total }} exercices(s) au total </strong></p>
+        <p class="text-center"><strong>{{ total }} compte (s) au total </strong></p>
         <hr class="text-primary">
 
       </div> <br><br>
-      <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
-        <ul class="pagination">
-          <li :class="(res_data.prev_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
-              @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-          <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a
-              :class="(link.active == true) ? 'page-link active' : 'page-link'" href="#" @click="refresh(link.label)">{{
-    link.label
-}}</a></li>
 
-          <li :class="(res_data.next_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
-              @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-        </ul>
-      </nav>
+    <form class="justify-content-end btn-group" role="search">
+      <input type="file" id="file" ref="file" @change="handleFileUpload()" />
+       <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">Importer</button>
+       <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+       <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'">Exporter en excel</button>
+
+       <div class="d-flex mt-4">
+          <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()" title="Importer fichier"><i class="fa fa-upload" aria-hidden="true"></i></button>
+
+          <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()" title="Exporter en pdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+
+          <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exp()" v-if="role == 'admin'" title="Exporter en excel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+        </div>
+    </form><br>
+    <div class="d-flex col-md-2 my-4">
+      <label class="title my-2">Affichage</label> 
+      <form action="">
+        <div class="nombre">
+          <!-- -->
+          <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+            <option value>10</option>
+            <option value="25" >25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
+      <ul class="pagination">
+        <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+        <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+        <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+      </ul>
+    </nav>
+    
     </div><br>
     <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
       @conf="setMessage" />
@@ -141,7 +164,7 @@ export default {
       results: '',
       links: [],
       res_data: null,
-      exercices: [],
+      comptes: [],
       compagnie_id: '',
       showModal: false,
       showModalDelete: false,
@@ -167,6 +190,18 @@ export default {
     setMessage() {
       this.refresh()
     },
+    search(){
+      this.$axios.get('/comptes',{params: {
+        compagnie_id: localStorage.getItem('auth.company_id'),
+        search: this.element_search
+      }
+      })
+      .then(response => {
+        console.log(response.data);
+      this.results = response.data.data.data 
+      
+      })
+    },
     deleteExercice(id) {
       this.showModalDelete = true
       this.key = id
@@ -182,13 +217,12 @@ export default {
         }
       })
         .then(response => {
-            console.log(response);
-          // this.total = response.data.data.total;
-          // this.exercices = response.data.data.data
+          this.total = response.data.data.total;
+          this.comptes = response.data.data.data
 
-          // this.res_data = response.data.data
-          // let firstE = response.data.data.links.shift()
-          // let lastE = response.data.data.links.splice(-1, 1);
+          this.res_data = response.data.data
+          let firstE = response.data.data.links.shift()
+          let lastE = response.data.data.links.splice(-1, 1);
         })
     }
   },
@@ -197,180 +231,180 @@ export default {
 </script>
     
 <style scoped>
-.btn-group {
-  display: flex;
-}
-
-.page {
-  display: flex;
-}
-
-.nombre {
-  margin: 0;
-}
-
-.title {
-  margin: 0.5% 2% 0 10%;
-  font-weight: bold;
-}
-
-/* .app-main__outer{
-      overflow: auto;
-    } */
-
-.fa {
-  margin: 0 5px;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.table {
-  margin-top: 5%;
-  text-align: center;
-}
-
-
-thead tr {
-  background-color: transparent;
-}
-
-
-tbody tr:last-of-type {
-  border-bottom: 2px solid rgb(140, 140, 250);
-}
-
-.action {
-  display: flex;
-}
-
-.custom-btn {
-  /* width: 220px;
-      height: 40px; */
-  color: #fff;
-  border-radius: 5px;
-  padding: 10px 25px;
-  font-family: 'Lato', sans-serif;
-  font-weight: 500;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  display: inline-block;
-  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
-    7px 7px 20px 0px rgba(0, 0, 0, .1),
-    4px 4px 5px 0px rgba(0, 0, 0, .1);
-  outline: none;
-}
-
-.btn-3 {
-  background: rgb(0, 172, 238);
-  background: linear-gradient(0deg, rgba(0, 172, 238, 1) 0%, rgba(2, 126, 251, 1) 100%);
-  width: 220px;
-  height: 40px;
-  line-height: 42px;
-  padding: 0;
-  border: none;
-
-}
-
-.btn-3 span {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.btn-3:before,
-.btn-3:after {
-  position: absolute;
-  content: "";
-  right: 0;
-  top: 0;
-  background: rgba(2, 126, 251, 1);
-  transition: all 0.3s ease;
-}
-
-.btn-3:before {
-  height: 0%;
-  width: 2px;
-}
-
-.btn-3:after {
-  width: 0%;
-  height: 2px;
-}
-
-.btn-3:hover {
-  background: transparent;
-  box-shadow: none;
-}
-
-.btn-3:hover:before {
-  height: 100%;
-}
-
-.btn-3:hover:after {
-  width: 100%;
-}
-
-.btn-3 span:hover {
-  color: rgba(2, 126, 251, 1);
-}
-
-.btn-3 span:before,
-.btn-3 span:after {
-  position: absolute;
-  content: "";
-  left: 0;
-  bottom: 0;
-  background: rgba(2, 126, 251, 1);
-  transition: all 0.3s ease;
-}
-
-.btn-3 span:before {
-  width: 2px;
-  height: 0%;
-}
-
-.btn-3 span:after {
-  width: 0%;
-  height: 2px;
-}
-
-.btn-3 span:hover:before {
-  height: 100%;
-}
-
-.btn-3 span:hover:after {
-  width: 100%;
-}
-
-.mobile-btn {
-  display: none;
-}
-
-
-
-@media screen and (max-width: 900px) {
-  /* .btn_recherche{
-        display:none;
-      } */
-
-  .mobile-btn {
-    display: block;
+  .btn-group {
+    display: flex;
   }
 
-  .web-btn {
+  .page {
+    display: flex;
+  }
+
+  .nombre {
+    margin: 0;
+  }
+
+  .title {
+    margin: 0.5% 2% 0 10%;
+    font-weight: bold;
+  }
+
+  /* .app-main__outer{
+        overflow: auto;
+      } */
+
+  .fa {
+    margin: 0 5px;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .table {
+    margin-top: 5%;
+    text-align: center;
+  }
+
+
+  thead tr {
+    background-color: transparent;
+  }
+
+
+  tbody tr:last-of-type {
+    border-bottom: 2px solid rgb(140, 140, 250);
+  }
+
+  .action {
+    display: flex;
+  }
+
+  .custom-btn {
+    /* width: 220px;
+        height: 40px; */
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+      7px 7px 20px 0px rgba(0, 0, 0, .1),
+      4px 4px 5px 0px rgba(0, 0, 0, .1);
+    outline: none;
+  }
+
+  .btn-3 {
+    background: rgb(0, 172, 238);
+    background: linear-gradient(0deg, rgba(0, 172, 238, 1) 0%, rgba(2, 126, 251, 1) 100%);
+    width: 220px;
+    height: 40px;
+    line-height: 42px;
+    padding: 0;
+    border: none;
+
+  }
+
+  .btn-3 span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .btn-3:before,
+  .btn-3:after {
+    position: absolute;
+    content: "";
+    right: 0;
+    top: 0;
+    background: rgba(2, 126, 251, 1);
+    transition: all 0.3s ease;
+  }
+
+  .btn-3:before {
+    height: 0%;
+    width: 2px;
+  }
+
+  .btn-3:after {
+    width: 0%;
+    height: 2px;
+  }
+
+  .btn-3:hover {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .btn-3:hover:before {
+    height: 100%;
+  }
+
+  .btn-3:hover:after {
+    width: 100%;
+  }
+
+  .btn-3 span:hover {
+    color: rgba(2, 126, 251, 1);
+  }
+
+  .btn-3 span:before,
+  .btn-3 span:after {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: 0;
+    background: rgba(2, 126, 251, 1);
+    transition: all 0.3s ease;
+  }
+
+  .btn-3 span:before {
+    width: 2px;
+    height: 0%;
+  }
+
+  .btn-3 span:after {
+    width: 0%;
+    height: 2px;
+  }
+
+  .btn-3 span:hover:before {
+    height: 100%;
+  }
+
+  .btn-3 span:hover:after {
+    width: 100%;
+  }
+
+  .mobile-btn {
     display: none;
   }
 
-  .btn-group {
-    display: inline;
-  }
 
-  .btn-group .btn {
-    margin: 10px 0;
+
+  @media screen and (max-width: 900px) {
+    /* .btn_recherche{
+          display:none;
+        } */
+
+    .mobile-btn {
+      display: block;
+    }
+
+    .web-btn {
+      display: none;
+    }
+
+    .btn-group {
+      display: inline;
+    }
+
+    .btn-group .btn {
+      margin: 10px 0;
+    }
   }
-}
 </style>
     
