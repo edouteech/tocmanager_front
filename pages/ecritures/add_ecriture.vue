@@ -159,11 +159,16 @@ export default {
           this.form.ligne_ecritures.splice(index, 1)
         },
         recupComptes() {
-            this.$axios.get('/comptes')
-                .then(response => {
-                    console.log(response)
-                    this.comptes = response.data.data
-                })
+            this.$axios.get('/comptes',{
+                params: {
+                    compagnie_id: localStorage.getItem('auth.company_id'),
+                    is_paginated: 0
+                }
+            })
+            .then(response => {
+                console.log(response)
+                this.comptes = response.data.data
+            })
         },
 
     },
