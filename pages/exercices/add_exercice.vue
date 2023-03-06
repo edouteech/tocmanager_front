@@ -23,7 +23,7 @@
 
                 <div class="form-group col-md-6">
                     <label class="title">Date de début</label>
-                    <input type="datetime-local" class="form-control" v-model="form.start_at" autocomplete="off" required placeholder="2022-10-05">
+                    <input type="date" class="form-control" v-model="form.start_at" autocomplete="off" required placeholder="2022-10-05">
                 </div>
                 <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.start_at">
                     {{errors.start_at}}
@@ -31,7 +31,7 @@
 
                 <div class="form-group col-md-6">
                     <label class="title">Date de fin</label>
-                    <input type="datetime-local" class="form-control" v-model="form.end_at" autocomplete="off" required placeholder="2022-10-05">
+                    <input type="date" class="form-control" v-model="form.end_at" autocomplete="off" required placeholder="2022-10-05">
                 </div>
                 <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.end_at">
                     {{errors.end_at}}

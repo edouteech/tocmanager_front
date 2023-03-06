@@ -24,7 +24,7 @@
 
                 <div class="form-group col-md-6">
                     <label class="title">Date de début</label>
-                    <input type="datetime-local" class="form-control" v-model="form.start_at" autocomplete="off"
+                    <input type="date" class="form-control" v-model="form.start_at" autocomplete="off"
                         required placeholder="2022-10-05">
                 </div>
                 <div class="alert alert-danger justify-content-center col-md-6" role="alert"
@@ -34,8 +34,17 @@
 
                 <div class="form-group col-md-6">
                     <label class="title">Date de fin</label>
-                    <input type="datetime-local" class="form-control" v-model="form.end_at" autocomplete="off" required
+                    <input type="date" class="form-control" v-model="form.end_at" autocomplete="off" required
                         placeholder="2022-10-05">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="title">Choisissez un statut</label>
+                    <select class="form-control" v-model="form.status">
+                        <option value="actif">Actif</option>
+                        <option value="inactif">Inactif</option>
+                        <option value="cloturé">Cloturé</option>
+                    </select>
                 </div>
                 <div class="alert alert-danger justify-content-center col-md-6" role="alert"
                     v-if="errors && errors.end_at">
@@ -66,6 +75,7 @@ export default {
                 name_exercice: '',
                 start_at: '',
                 end_at: '',
+                status: '' 
             },
             error: null,
             errors: [],
@@ -83,6 +93,7 @@ export default {
                 this.form.name_exercice = exercice.name_exercice,
                 this.form.start_at = exercice.start_at,
                 this.form.end_at = exercice.end_at
+                this.form.status = exercice.status
 
             })
     },
@@ -93,6 +104,7 @@ export default {
                 name_exercice: this.form.name_exercice,
                 start_at: this.form.start_at,
                 end_at: this.form.end_at,
+                status: this.form.status,
                 compagnie_id: localStorage.getItem('auth.company_id')
 
             })

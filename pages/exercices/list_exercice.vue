@@ -87,7 +87,7 @@
                   <NuxtLink :to="'/exercices/voir/' + exercice.id" v-if="compagny == user.pivot.compagnie_id"><i
                       class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
                   <NuxtLink :to="'/exercices/' + exercice.id"
-                    v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i
+                    v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1 && exercice.status != 'cloturé'"><i
                       class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                   <div @click="deleteExercice(exercice.id)"
                     v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i
