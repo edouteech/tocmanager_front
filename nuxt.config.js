@@ -105,6 +105,6 @@ export default {
   build: {
     transpile: [
       'defu'
-    ],
+    ]
   }
 }
