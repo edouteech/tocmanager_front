@@ -125,20 +125,26 @@ export default {
     },
     methods: {
         async submit() {
+            let exo_id = null
+            if (this.$route.query.exercice) {
+                exo_id= this.$route.query.exercice
+            } else {
+                exo_id = null
+            }
             await this.$axios.post('/ecritures', {
                 name_ecriture: this.form.name_ecriture,
                 date: this.form.date,
                 amount: this.form.amount,
                 comment: this.form.comment,
-                exercice_id: this.$route.query.exercice,
+                exercice_id: exo_id,
                 compagnie_id: localStorage.getItem('auth.company_id'),
                 ligne_ecritures: this.form.ligne_ecritures
             }).then(response => {
                 this.error = response.data.message
-                // console.log(this.error)
+                console.log(exo_id)
 
                 if (response.data.status == "success") {
-                    this.$router.push({ path: '/exercices/voir/1' });
+                    this.$router.push({ path: '/ecritures/list_ecriture' });
                     this.$toast('Nouvelle écriture ajoutée !!!', {
                         icon: 'fa fa-check-circle',
                     })

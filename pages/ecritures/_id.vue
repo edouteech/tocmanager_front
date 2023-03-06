@@ -165,7 +165,7 @@ export default {
                 // console.log(this.error)
 
                 if (response.data.status == "success") {
-                    this.$router.push({ path: '/exercices/voir/1' });
+                    this.$router.push({ path: '/ecritures/list_ecriture' });
                     this.$toast('Ecriture modifiée !!!', {
                         icon: 'fa fa-check-circle',
                     })

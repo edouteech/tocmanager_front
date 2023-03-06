@@ -143,6 +143,7 @@
         compagnie_id: '',
         showModal: false,
         showModalDelete: false,
+        ligne_ecritures: [],
         users: '',
         compagny: '',
         form: {
