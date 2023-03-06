@@ -1,7 +1,7 @@
 <template >
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Ma Compagnie </h3>
+          <Sidebar /><h3 class="name_side">Ma Compagnie </h3>
           <Userinfo />
         </nav>
         

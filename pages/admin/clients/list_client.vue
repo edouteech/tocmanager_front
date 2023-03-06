@@ -1,7 +1,7 @@
 <template >
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Clients </h3>
+          <Sidebar /><h3 class="name_side">Clients </h3>
                 <div class="bas-page " data-bs-dismiss="offcanvas">
                         <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
                         <span class="user_name" data-bs-dismiss="offcanvas">{{$auth.user.name}}</span>                        
@@ -83,10 +83,10 @@
                 <div class="nombre d-flex my-4 col-md-2">
                     <label class="title mx-3 my-2"><strong> Affichage:</strong></label> 
                     <select class="form-control " v-model="form.nombre" required @click.prevent="refresh()">
-                        <option disabled value>10</option>
+                        <option value="10">10</option>
                         <option value="25" >25</option>
                         <option value="50">50</option>
-                        <option value="10">100</option>
+                        <option value="100">100</option>
                     </select>
                 </div>
             </form>

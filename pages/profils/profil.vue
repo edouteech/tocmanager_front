@@ -1,7 +1,7 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Utilisateurs </h3>
+      <Sidebar /><h3 class="name_side">Utilisateurs </h3>
       <Userinfo />
     </nav>
 
@@ -78,10 +78,10 @@
               <div class="nombre d-flex">
                   <label class="title mx-5 my-2"><strong> Affichage:</strong></label> 
                   <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                      <option disabled value>10</option>
+                      <option value="10">10</option>
                       <option value="25" >25</option>
                       <option value="50">50</option>
-                      <option value="10">100</option>
+                      <option value="100">100</option>
                   </select>
               </div>
           </form>
