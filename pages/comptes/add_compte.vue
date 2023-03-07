@@ -11,33 +11,33 @@
             <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
                 {{error}}
             </div>
-            <h4>Enregistrer un nouvel exercice</h4>
+            <h4>Enregistrer un nouveau compte comptable</h4>
             <form action="">
                 <div class="form-group col-md-6">
-                    <label class="title">Entrer le nom de l'exercice</label>
-                    <input type="text" class="form-control" v-model="form.name_exercice" autocomplete="off" required placeholder="Nom de l'exercice">
+                    <label class="title">Entrer le code du compte</label>
+                    <input type="text" class="form-control" v-model="form.code" autocomplete="off" required placeholder="Code du compte">
                 </div>
-                <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.name_exercice">
-                    {{errors.name_exercice}}
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label class="title">Date de début</label>
-                    <input type="datetime-local" class="form-control" v-model="form.start_at" autocomplete="off" required placeholder="2022-10-05">
-                </div>
-                <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.start_at">
-                    {{errors.start_at}}
+                <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.code">
+                    {{errors.code}}
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label class="title">Date de fin</label>
-                    <input type="datetime-local" class="form-control" v-model="form.end_at" autocomplete="off" required placeholder="2022-10-05">
+                    <label class="title">Libellé du compte</label>
+                    <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Libellé du compte">
                 </div>
-                <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.end_at">
-                    {{errors.end_at}}
+                <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.name">
+                    {{errors.name}}
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="title">Groupe</label>
+                    <input type="text" class="form-control" v-model="form.end_at" autocomplete="off" required placeholder="Groupe">
+                </div>
+                <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.group">
+                    {{errors.group}}
                 </div>
     
-                <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer exercice</button>
+                <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Enregistrer compte</button>
             </form>
         </div>
     </div>
@@ -57,9 +57,9 @@
         data () {
             return{
                 form: {
-                    name_exercice: '',
-                    start_at: '',
-                    end_at: '',
+                    code: '',
+                    name: '',
+                    group: '',
                 },
                 errors: [],
                 error: null,
@@ -67,10 +67,10 @@
         },
         methods: {
             async submit(){
-                await  this.$axios.post('/exercices',{
-                name_exercice: this.form.name_exercice,
-                start_at: this.form.start_at,
-                end_at: this.form.end_at,
+                await  this.$axios.post('/comptes',{
+                code: this.form.code,
+                name: this.form.name,
+                group: this.form.group,
                 compagnie_id: localStorage.getItem('auth.company_id')
                 }).then(response =>{
                     // console.log( response ) 
@@ -78,8 +78,8 @@
                     // console.log(this.error)
     
                     if(response.data.status == "success"){
-                        this.$router.push({path:'/exercices/list_exercice'});
-                        this.$toast('Nouvel exercice ajouté !!!', {
+                        this.$router.push({path:'/comptes/list_compte'});
+                        this.$toast('Nouvel compte ajouté !!!', {
                             icon: 'fa fa-check-circle',
                         })
                     }
