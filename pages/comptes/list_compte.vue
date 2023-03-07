@@ -85,7 +85,7 @@
                   <NuxtLink :to="'/comptes/' + compte.id"
                     v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i
                       class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
-                  <div @click="deleteExercice(compte.id)"
+                  <div @click="deleteCompte(compte.id)"
                     v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i
                       class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
                 </div>
@@ -202,7 +202,7 @@ export default {
       
       })
     },
-    deleteExercice(id) {
+    deleteCompte(id) {
       this.showModalDelete = true
       this.key = id
 

@@ -25,7 +25,7 @@
 
       methods: {
         sup(){
-            this.$axios.delete('/exercices/' +this.identifiant,{params: {
+            this.$axios.delete('/comptes/' +this.identifiant,{params: {
             compagnie_id: localStorage.getItem('auth.company_id')
           }
           }).then(response =>

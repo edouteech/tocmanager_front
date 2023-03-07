@@ -2,7 +2,7 @@
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
             <Sidebar />
-            <h3 class="name">Comptes </h3>
+            <h3 class="name">Comptes comptable</h3>
             <User_info />
         </nav>
 
