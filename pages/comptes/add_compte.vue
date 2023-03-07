@@ -31,7 +31,7 @@
 
                 <div class="form-group col-md-6">
                     <label class="title">Groupe</label>
-                    <input type="text" class="form-control" v-model="form.end_at" autocomplete="off" required placeholder="Groupe">
+                    <input type="text" class="form-control" v-model="form.group" autocomplete="off" required placeholder="Groupe">
                 </div>
                 <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.group">
                     {{errors.group}}

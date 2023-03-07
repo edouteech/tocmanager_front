@@ -80,9 +80,9 @@
               <td>{{ compte.group }}</td>
               <td>
                 <div class="action" v-for="(user, i) in users" :key="i">
-                  <NuxtLink :to="'/exercices/voir/' + compte.id" v-if="compagny == user.pivot.compagnie_id"><i
+                  <NuxtLink :to="'/comptes/voir/' + compte.id" v-if="compagny == user.pivot.compagnie_id"><i
                       class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
-                  <NuxtLink :to="'/exercices/' + compte.id"
+                  <NuxtLink :to="'/comptes/' + compte.id"
                     v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i
                       class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                   <div @click="deleteExercice(compte.id)"

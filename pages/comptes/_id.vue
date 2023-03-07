@@ -2,44 +2,44 @@
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
             <Sidebar />
-            <h3 class="name">Exercices </h3>
+            <h3 class="name">Comptes </h3>
             <User_info />
         </nav>
 
         <div class="app-main__outer p-5">
-            <h4>Modifier les informations de cet exercice</h4>
+            <h4>Modifier les informations de ce compte</h4>
             <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
                 {{ error }}
             </div>
             <form action="">
                 <div class="form-group col-md-6">
-                    <label class="title">Entrer le nom de l'exercice</label>
-                    <input type="text" class="form-control" v-model="form.name_exercice" autocomplete="off" required
-                        placeholder="Nom de l'exercice">
+                    <label class="title">Entrer le code du compte</label>
+                    <input type="text" class="form-control" v-model="form.code" autocomplete="off" required
+                        placeholder="Code du compte">
                 </div>
                 <div class="alert alert-danger justify-content-center col-md-6" role="alert"
-                    v-if="errors && errors.name_exercice">
-                    {{ errors.name_exercice }}
+                    v-if="errors && errors.code">
+                    {{ errors.code }}
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label class="title">Date de début</label>
-                    <input type="datetime-local" class="form-control" v-model="form.start_at" autocomplete="off"
-                        required placeholder="2022-10-05">
+                    <label class="title">Libellé du coompte</label>
+                    <input type="text" class="form-control" v-model="form.name" autocomplete="off"
+                        required placeholder="Libellé du compte">
                 </div>
                 <div class="alert alert-danger justify-content-center col-md-6" role="alert"
-                    v-if="errors && errors.start_at">
-                    {{ errors.start_at }}
+                    v-if="errors && errors.name">
+                    {{ errors.name }}
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label class="title">Date de fin</label>
-                    <input type="datetime-local" class="form-control" v-model="form.end_at" autocomplete="off" required
-                        placeholder="2022-10-05">
+                    <label class="title">Groupe</label>
+                    <input type="text" class="form-control" v-model="form.group" autocomplete="off" required
+                        placeholder="Groupe">
                 </div>
                 <div class="alert alert-danger justify-content-center col-md-6" role="alert"
-                    v-if="errors && errors.end_at">
-                    {{ errors.end_at }}
+                    v-if="errors && errors.group">
+                    {{ errors.group }}
                 </div>
 
                 <button type="submit"  class="btn btn-success" v-on:click.prevent="submit()">Modifier</button>
@@ -63,43 +63,44 @@ export default {
     data() {
         return {
             form: {
-                name_exercice: '',
-                start_at: '',
-                end_at: '',
+                code: '',
+                name: '',
+                group: '',
             },
             error: null,
             errors: [],
         }
     },
     mounted() {
-        this.$axios.get('/exercices/' + this.$route.params.id, {
+        this.$axios.get('/comptes/' + this.$route.params.id, {
             params: {
                 compagnie_id: localStorage.getItem('auth.company_id')
             }
         })
             .then(response => {
                 // console.log(response.data)
-                let exercice = response.data.data;
-                this.form.name_exercice = exercice.name_exercice,
-                this.form.start_at = exercice.start_at,
-                this.form.end_at = exercice.end_at
+                let compte = response.data.data;
+                this.form.code = compte.code,
+                this.form.name = compte.name,
+                this.form.group = compte.group
+                console.log(compte)
 
             })
     },
 
     methods: {
         submit() {
-            this.$axios.put('/exercices/' + this.$route.params.id, {
-                name_exercice: this.form.name_exercice,
-                start_at: this.form.start_at,
-                end_at: this.form.end_at,
+            this.$axios.put('/comptes/' + this.$route.params.id, {
+                code: this.form.code,
+                name: this.form.name,
+                group: this.form.group,
                 compagnie_id: localStorage.getItem('auth.company_id')
 
             })
                 .then(response => {
                     // console.log(response.data);
                     if (response.data.status == 'success') {
-                        this.$router.push({ path: '/exercices/list_exercice', })
+                        this.$router.push({ path: '/comptes/list_compte', })
                         this.$toast('Modification éffectuée avec succès !!!', {
                             icon: 'fa fa-check-circle',
                         })
