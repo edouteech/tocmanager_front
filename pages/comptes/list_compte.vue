@@ -80,8 +80,7 @@
               <td>{{ compte.group }}</td>
               <td>
                 <div class="action" v-for="(user, i) in users" :key="i">
-                  <NuxtLink :to="'/comptes/voir/' + compte.id" v-if="compagny == user.pivot.compagnie_id"><i
-                      class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
+                  <div @click="voirCompte(compte.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/comptes/' + compte.id"
                     v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i
                       class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
@@ -136,6 +135,7 @@
     </nav>
     
     </div><br>
+    <voirCompte :code= 'identifiant1' :name= 'identifiant2' :group= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/>
     <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
       @conf="setMessage" />
 
@@ -147,13 +147,15 @@
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
 import deleteModal from './deleteModal.vue'
+import voirCompte from './voir_compte.vue'
 export default {
   auth: true,
   layout: "empty",
   components: {
     Sidebar,
     Userinfo,
-    deleteModal
+    deleteModal,
+    voirCompte
   },
 
   data() {
@@ -176,7 +178,10 @@ export default {
       role: "",
       id_cli: '',
       nom_cli: '',
-      key: ''
+      key: '',
+      identifiant1: '',
+      identifiant2: '',
+      identifiant3: ''
     }
   },
   async mounted() {
@@ -224,7 +229,23 @@ export default {
           let firstE = response.data.data.links.shift()
           let lastE = response.data.data.links.splice(-1, 1);
         })
-    }
+    },
+    voirCompte(id){
+            this.showModal = true;
+            this.$axios.get('/comptes/'+ id,{
+            params: {
+              compagnie_id: localStorage.getItem('auth.company_id')
+            }
+          }).then(response => {
+            console.log(response.data);
+             this.identifiant1 = response.data.data.code
+             this.identifiant2 = response.data.data.name
+             this.identifiant3 = response.data.data.group
+            //  this.identifiant4 = response.data.data[0].nature
+            //  this.identifiant5 = response.data.data[0].balance      
+             }) 
+               
+        },
   },
 
 }
