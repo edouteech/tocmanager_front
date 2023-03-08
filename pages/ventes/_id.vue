@@ -80,20 +80,16 @@
                                         v-model="line.product_id"
                                         label="name"
                                         :options="produits"
+                                        :selectable="(produit) => produit.quantity > 0"
                                         :reduce="(produit) => produit.id"
                                         append-to-body
                                         @input="productChange(line.product_id, index)"
-                                    />
-                                    <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
-                                        <option disabled value="">Choisissez...</option>
-                                        <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
-                                    </select> -->
-                                    <!-- <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
-                                    <div class="select2-prod" v-if="afficheProd !=0">
-                                        <ul>
-                                            <li v-for="(designation, i) in designations" :key="i" :value="designation.id" :data-i="i" :data-index="index"><a href="" @click.prevent="choiceProd(designation,i)">{{designation.name}}</a></li>
-                                        </ul>
-                                    </div> -->
+                                    >
+                                        <template #option="{ name, code, quantity }" style="background-color: blue;">
+                                            
+                                        <div :style="(quantity<=0)?'color: red;':''" >{{ name }} [{{quantity}}] ({{ code }})</div>
+                                        </template>
+                                    </v-select>
                                 </td>
                                 <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
