@@ -58,7 +58,7 @@
                                 <th>Désignation</th>
                                 <th>Quantité voulue</th>
                                 <th>Prix unitaire</th>
-                                <th scope="col">Réduction (Prix ou %)</th>
+                                <!-- <th scope="col">Réduction (Prix ou %)</th> -->
                                 <!-- <th>Taxe appliquée (%)</th>  -->
                                 <th> Total</th>                     
                             </tr>
@@ -83,7 +83,7 @@
                                 </td>
                                 <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
-                                <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
+                                <!-- <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td> -->
                                 <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
                                 <td class="table-col"><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required disabled></td>
                                 <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
@@ -96,8 +96,9 @@
                 </div><br>
                 
                 <div class="d-flex">
-                    <div class="form-group1 col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
-                    <div class="form-group col-md-6 mx-5">
+                    <div class="form-group1 col-md-4"> Réduction (Prix ou %): <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>  
+                    <div class="form-group1 col-md-4 mx-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+                    <div class="form-group col-md-4">
                         <div class="form-group ">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
@@ -317,6 +318,11 @@ export default {
         deleteLine(index){
           console.log(index);
           this.form.buy_lines.splice(index, 1)
+            let sum = 0;
+            for (let j = 0; j < this.form.buy_lines.length; j++) {
+                sum += this.form.buy_lines[j].amount;
+            }
+            this.form.amount= sum;
         },
 
         setMessage(payload) {
@@ -392,7 +398,33 @@ export default {
           }) 
         },
 
+        
+        reduceAmount(){
+            this.form.tax = 0
+            var red = this.form.discount;
+            var percent = red.indexOf("%"); 
+            let sum = 0;
+            for (let j = 0; j < this.form.buy_lines.length; j++) {
+                sum += this.form.buy_lines[j].amount;
+            }
+
+                if(percent != -1){
+                    var newRed = red.substring(0, red.length - 1);
+                    let calcul1 = sum * Number(newRed);
+                    let calcul2 = calcul1 / 100
+                    this.form.discount = calcul2
+                    this.form.amount = sum - calcul2;
+                    // this.form.amount_ht = sum -calcul2
+                } 
+                else{
+                    this.form.discount = red
+                    this.form.amount = sum - red
+                    // this.form.amount_ht = sum -red
+                }   
+        },
+
         quantityChange(index){
+            this.form.discount = 0
             let line = this.form.buy_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
             let sum = 0;
@@ -572,7 +604,7 @@ export default {
 }
 
 .app-main__outer{
-  overflow: auto;
+  overflow: none;
   margin: 0 5%;
 }
 
