@@ -401,26 +401,6 @@ export default {
                 this.codeError = response.data.message
             }
           })
-        //    await this.$axios.get('/products',{params: {
-        //         compagnie_id: localStorage.getItem('auth.company_id'),
-        //         is_paginated: 0
-        //     }
-        //     }).then(response => {
-        //         this.produits = response.data.data
-        //         for(let k = 0; k <= this.produits.length; k++){
-        //             if(this.produits[k].code == this.codeProd){
-        //                 let codeProdId = this.produits[k].id
-        //                 let codeProdPrice = this.produits[k].price_sell
-        //                 this.codeProd = "",
-        //                 this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 0, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});              
-        //                 this.taxChange()
-        //                 break;
-        //             }
-        //             else if(this.produits[k].code != this.codeProd){
-        //                 this.codeError = "Aucun produit n'a ce code"
-        //             }
-        //         }
-        //     }) 
         },
 
         deleteLine(index){
@@ -652,25 +632,7 @@ export default {
                     this.taxChange()
                     break;
                 }
-            }
-            // if(e.target.options.selectedIndex > -1) {
-            //     let i = e.target.options[e.target.options.selectedIndex].dataset.i;
-            //     let index = e.target.options[e.target.options.selectedIndex].dataset.index;
-            //     let product = this.produits[i];
-            //     let line = this.form.sell_lines[index]
-            //     line.price = product.price_sell;
-            //     line.amount = Number(line.price) * Number(line.quantity);
-            //     line.amount_after_discount = Number(line.price) * Number(line.quantity);
-                    
-                
-            //     let sum = 0;
-            //     for (let j = 0; j < this.form.sell_lines.length; j++) {
-            //         sum += this.form.sell_lines[j].amount_after_discount;
-            //     }
-            //     this.form.amount_ht = sum;
-            //     this.form.tax =0
-            //     this.taxChange()
-            // }    
+            }  
         },
 
         compagnie(){
