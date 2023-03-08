@@ -58,7 +58,7 @@
                             <th>Désignation</th>
                             <th>Quantité voulue</th>
                             <th>Prix unitaire</th>
-                            <th scope="col">Réduction (Prix ou %)</th>
+                            <!-- <th scope="col">Réduction (Prix ou %)</th> -->
                             <!-- <th>Taxe appliquée (%)</th> -->
                             <th>Total</th>                     
                         </tr>
@@ -82,7 +82,7 @@
                             </td>
                             <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
-                                <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
+                                <!-- <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td> -->
                             <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                     -->
                             <td class="table-col"><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required disabled></td>
                             <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
@@ -91,8 +91,9 @@
                 </table>     
             </div><br>
             <div class="d-flex">
-                    <div class="form-group1 col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
-                    <div class="form-group col-md-6 mx-5">
+                    <div class="form-group1 col-md-4"> Réduction (Prix ou %): <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>  
+                    <div class="form-group1 col-md-4 mx-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+                    <div class="form-group col-md-4">
                         <div class="form-group ">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
@@ -531,7 +532,7 @@ export default {
 }
 
 .app-main__outer{
-  overflow: auto;
+  overflow: none;
   margin: 0 5%;
 }
 
