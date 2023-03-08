@@ -13,8 +13,13 @@
             </div>
                 <h4 class="boom">Informations relatives au devis </h4><hr class="boom">
 
-                <div class="col-md-6 mx-auto my-4 boom">
-                    <button class="btn btn-outline-success col-md-12" v-on:click.prevent="submit()" :disabled="load">Imprimer le dévis</button>
+                <div class="row my-5">
+                    <div class="col-md-6 boom">
+                         <NuxtLink class="btn btn-outline-success col-md-12" v-on:click.prevent="submit()" :disabled="load" :to="'/ventes/devis/'+devis_id">Enregistrer le dévis comme une vente</NuxtLink>
+                    </div>
+                    <div class="col-md-6 boom">
+                        <button class="btn btn-outline-dark col-md-12" v-on:click.prevent="submit()" :disabled="load">Imprimer le dévis</button>
+                    </div>
                 </div>
 
                 <form action="" method="POST">
@@ -157,6 +162,7 @@
     
         data () {
             return{
+                devis_id: '',
                 load: false,
                 amount_error: null,
                 message: '',
@@ -229,9 +235,10 @@
                 }
                 })
                 .then(response => {
-                    console.log(response )
+                    // console.log(response.data.data )
                     let devis = response.data.data;
                     // this.categories = response.data.data
+                    this.devis_id = devis.id
                     this.form.date_devis = moment(devis.date_devis).format("YYYY-MM-DDThh:mm"),
                     this.client = devis.client.name,
                     this.form.devis_lines = devis.devis_lines,   
@@ -589,10 +596,10 @@
     
     
     
-    button {
+    /* button {
       margin: 25px;
       
-    }
+    } */
     
     .custom-btn {
       /* width: 130px;
