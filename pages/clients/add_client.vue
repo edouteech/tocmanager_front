@@ -8,7 +8,7 @@
 
     <div class="app-main__outer py-5 px-2">
         <h4>Enregistrer un nouveau client</h4>
-        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}}
         </div>
         <form action="">
@@ -120,8 +120,7 @@ export default {
               compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 // console.log( response ) 
-                this.error = response.data.message
-                console.log(this.error)
+                // console.log(this.error)
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/clients/list_client'});
@@ -130,6 +129,7 @@ export default {
                     })
                 }
                 else{
+                    this.error = response.data.message
                     this.errors = response.data.data
                     // this.$router.push({path:'/clients/add_client'});
                 }

@@ -7,6 +7,9 @@
 
     <div class="app-main__outer py-5 px-2">
         <h4>Modifier les informations de ce fournisseur</h4>
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
+            {{error}}
+        </div>
         <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le nom du fournisseur</label>
@@ -64,6 +67,7 @@ export default {
 },
     data () {
             return{
+                error: null,
                 fournisseur: "",
                 fournisseurs: [],
                 form: {
@@ -120,6 +124,7 @@ export default {
                         })
                     }
                     else{
+                        this.error = response.data.message
                         this.errors = response.data.data
                         // this.$router.push({path:'/clients/add_client'});
                     }

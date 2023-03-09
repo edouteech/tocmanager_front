@@ -87,9 +87,8 @@ export default {
             nature: this.form.nature,
             compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{
-                console.log( response ) 
-                this.error = response.data.message
-                console.log(this.error)
+                // console.log( response ) 
+                // console.log(this.error)
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/fournisseurs/list_fournisseur'});
@@ -98,6 +97,7 @@ export default {
                     })
                 }
                 else{
+                    this.error = response.data.message
                     this.errors = response.data.data
                     // this.$router.push({path:'/clients/add_client'});
                 }
