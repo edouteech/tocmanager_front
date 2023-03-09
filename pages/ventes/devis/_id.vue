@@ -12,34 +12,35 @@
                 {{error}} 
             </div>
                 <h4>Enregistrer le devis comme une vente </h4><hr>
-                <!-- <button @click.prevent="test()">
-                    Imprimer
-                </button> -->
                 <form action="" method="POST">
-                    <div class="cadre-haut">             
-                        <div class="ajout-client">  
-                            <v-select 
-                                placeholder="Choississez le client"
-                                v-model="form.client_id"
-                                label="name"
-                                :options="clients"
-                                :reduce="(client) => client.id"
-                                append-to-body
-                            />
-    
-                            <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
-                                <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
-                            </button>                
+                    <div class="row">        
+                        <div class="col-md-6">    
+                            <div class="ajout-client">  
+                                <v-select 
+                                    placeholder="Choississez le client"
+                                    v-model="form.client_id"
+                                    label="name"
+                                    :options="clients"
+                                    :reduce="(client) => client.id"
+                                    append-to-body
+                                />
+        
+                                <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
+                                </button>                
+                            </div>
                         </div>
-                        <div class="facture-date position-absolute end-0">
+                        <div class="col-md-6 facture-date my-auto">
                             <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
                         </div>
                     </div> <hr>
                     
-                    <div class="add_buttons row col-md-12 boom"> 
-                        <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                        <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
-                        <div class="col-md-5 mt-2">
+                    <div class="add_buttons row col-md-12 boom">
+                        <div class="d-flex col-md-8"> 
+                            <div class="col-md-4"><button class="btn btn-outline-primary col-md-11 mx-auto" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                            <div class="col-md-8"><button class="btn btn-outline-warning col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>           
+                        </div>
+                        <div class="col-md-4 mt-2">
                             <div class="d-flex code_recherche">
                                 <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search" @input="searchCode()" @click.prevent="searchCode()">
                                 <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -111,15 +112,15 @@
                         </div>  
                     </div><br>
                     <br>
-                    <div class="d-flex boom">
-                        <div class="form-group1 col-md-3"> 
+                    <div class="row boom">
+                        <div class="form-group col-md-4"> 
                             <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                         </div>
-                        <div class="form-group1 col-md-4 mx-4"> 
+                        <div class="form-group col-md-4"> 
                             <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
                         </div>
                         
-                        <div class="form-group col-md-4 ">
+                        <div class="form-group col-md-4">
                             <div class="form-group ">
                                 Méthode de paiement
                             <select class="form-control" v-model="form.payment">
@@ -131,8 +132,8 @@
                     </div><br>
      
                     <hr><br>
-                    <div class="d-flex boom">
-                        <div class="form-group col-md-2 ">
+                    <div class="row boom">
+                        <div class="form-group col-md-3">
                             <div>
                                 <strong>Taxe [0 -100]%</strong> <div><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
                             </div>
@@ -140,13 +141,13 @@
                                     Veuillez ajouter la taxe
                             </div> 
                         </div>
-                        <div class="form-group col-md-3 mx-4">
+                        <div class="form-group col-md-3">
                             <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
                         </div>
-                        <div class="form-group1 col-md-3"> 
+                        <div class="form-group col-md-3"> 
                             Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required>
                         </div>
-                        <div class="form-group1 col-md-3 mx-4"> 
+                        <div class="form-group col-md-3"> 
                             Echéance de paiement: 
                             <select v-model="echeance" class="form-control">
                                 <option disabled value="">Choisissez</option>
@@ -160,7 +161,9 @@
                         {{amount_error}} 
                     </div> 
                     <br><br><br><br>
-                    <button class="custom-btn btn-5" v-on:click.prevent="submit()" :disabled="load">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+                    <div class="col-md-6 mx-auto">
+                        <button class="custom-btn btn-5 col-md-12" v-on:click.prevent="submit()" :disabled="load">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+                    </div>
             
                 </form>
             
@@ -632,6 +635,22 @@
     </script>
     
     <style scoped>
+    
+    .ajout-client {
+        margin: 30px 0;
+        border: 1px solid #04012f;
+        padding: 30px 20px;
+        width: 300px;
+    }
+
+
+    .facture-date{
+        margin: 30px 0;
+        border: 1px solid #04012f;
+        padding: 30px 20px;
+        font-size: 18px;
+    }
+
     .quantity_erreur {
       cursor: pointer;
     }
@@ -752,7 +771,7 @@
     }
     
     .app-main__outer{
-      overflow: auto;
+      overflow: none;
       margin: 0 2%;
     }
     
@@ -765,35 +784,10 @@
         display: flex;
     }
     
-    .ajout-client{
-        margin: 30px 10px;
-        border: 1px solid darkblue;
-        padding: 30px 20px;
-        /* margin-right: 50%; */
-    }
     
-    .btn-ajout{
-        margin-top: 9%;
-        border: 1px solid #53af57;
-        padding: 10px;
-        width: 100px;
-        font-size: 10px;
-        border-radius: 15px;
-        text-align: center;
-        background-color: #53af57;
-        color: #fff;
-        cursor: pointer;
-    }
     
     .btn-ajout i{
         font-size: 14px;
-    }
-    
-    
-    .facture-date{
-        margin-top: 5%;
-        font-size: 18px;
-        margin-right: 10%;
     }
     
     .btn-ajout:hover{
@@ -810,20 +804,6 @@
     .facture-date input{
         border: none; 
         outline: none;
-    }
-    
-    .ajout-article .bx{
-        font-size: 18px;
-        margin-right: 10px;
-    }
-    .ajout-article{
-        /* margin-top: ; */
-        text-align: center;
-        background-color: rgb(238, 134, 64);
-        border-radius: 10px;
-        padding: 12px;
-        cursor: pointer;
-        width: 350px;
     }
     
     .code_recherche input{
@@ -903,7 +883,6 @@
     }
     
     .table{
-        margin-top: 5%;
         text-align: center;
     }      
     
@@ -984,46 +963,20 @@
       width:100%;
       transition:800ms ease all;
     }
+
     
-    @media screen and (max-width: 900px) {
-        .select2-cli{
-            width: 57%;
-        }
-    
-        .select2-prod{
-            width: 30%;
-        }
-    
-        .add_buttons{
-            margin: 50% 0;
-        }
-        .cadre-haut{
-            display: inline;
-            margin: 0;
-        }
-    
-        .ajout-client{
-            margin-right: 0;
-            margin: 10px 5px;
-            border: 1px solid darkblue;
-            padding: 5px ;
-        }
-    
-        .facture-date{
-            position: fixed;
-        }
-    
-        .table{
-            overflow: auto;
-        }
-    
-        .commande{
-            margin: 15% 0;
-        }
-        .ajout-article{
-            margin: 0;
-        }
+@media screen and (max-width: 900px) {
+    .form-group{
+        margin: 10px 0;
     }
+
+    .commande{
+        margin: 15% 0;
+    }
+    .ajout-article{
+        margin: 0;
+    }
+}
     
     </style>
     
