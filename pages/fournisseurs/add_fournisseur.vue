@@ -17,7 +17,7 @@
                 <label class="title">Entrer le nom du fournisseur</label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.name">
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.name">
                 {{errors.name}}
             </div>
 
@@ -25,7 +25,7 @@
                 <label class="title">Entrer le numero de téléphone du fournisseur</label>
                 <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.phone">
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.phone">
                 {{errors.phone}}
             </div>
 
@@ -33,7 +33,7 @@
                 <label class="title">Entrer l'email du fournisseur</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.email">
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.email">
                 {{errors.email}}
             </div>
 
