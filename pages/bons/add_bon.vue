@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name_side">Devis </h3>
+          <Sidebar /><h3 class="name_side">Bons de commande </h3>
           <Userinfo />
         </nav>
     
@@ -14,25 +14,27 @@
                 <h4>Enregistrer un bon de commande </h4><hr>
 
                 <form action="" method="POST">
-                    <div class="cadre-haut">             
-                        <div class="ajout-client">  
-                        <v-select 
-                            placeholder="Choississez le fournisseur"
-                            v-model="selectedFournisseur"
-                            label="name"
-                            :options="fournisseurs"
-                            :reduce="(fournisseur) => fournisseur.id"
-                        />             
+                    <div class="row">        
+                        <div class="col-md-6">    
+                            <div class="ajout-client"> 
+                                <v-select 
+                                    placeholder="Choississez le fournisseur"
+                                    v-model="selectedFournisseur"
+                                    label="name"
+                                    :options="fournisseurs"
+                                    :reduce="(fournisseur) => fournisseur.id"
+                                />             
+                            </div>
                         </div>
-                        <div class="facture-date position-absolute end-0">
+                        <div class="col-md-6 facture-date my-auto">
                             <span class="creation"> Date d'édition :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_order"/>                  
                         </div>
                     </div> <hr>
                     
                     <div class="add_buttons row col-md-12 boom"> 
                         <!-- <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div>  -->
-                        <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
-                        <div class="col-md-5 mt-2">
+                        <div class="col-md-6"><button class="btn btn-outline-success col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>           
+                        <div class="col-md-6 mt-2">
                             <div class="d-flex code_recherche">
                                 <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search" @input="searchCode()" @click.prevent="searchCode()">
                                 <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -495,6 +497,21 @@
     </script>
     
     <style scoped>
+    
+    .ajout-client {
+        margin: 30px 0;
+        border: 1px solid #53af57;
+        padding: 30px 20px;
+        width: 300px;
+    }
+
+    .facture-date{
+        margin: 30px 0;
+        border: 1px solid #53af57;
+        padding: 30px 20px;
+        font-size: 18px;
+    }
+
     .quantity_erreur {
       cursor: pointer;
     }
@@ -589,7 +606,7 @@
 }
 
 .app-main__outer{
-  overflow: auto;
+  overflow: none;
   margin: 0 5%;
 }
 
@@ -597,30 +614,6 @@
     margin: 5% ;
 }
 
-.cadre-haut{
-    display: flex;
-}
-
-.ajout-client{
-    margin: 30px 10px;
-    border: 1px solid darkblue;
-    padding: 30px 20px;
-    width: 270px;
-    /* margin-right: 50%; */
-}
-
-.btn-ajout{
-    margin-top: 9%;
-    border: 1px solid #53af57;
-    padding: 10px;
-    /* width: 100px; */
-    font-size: 10px;
-    border-radius: 15px;
-    text-align: center;
-    background-color: #53af57;
-    color: #fff;
-    cursor: pointer;
-}
 
 .code_recherche input{
     height: 45px;
@@ -629,17 +622,6 @@
 
 .code_recherche .btn{
     height: 40px;
-}
-
-.btn-ajout i{
-    font-size: 14px;
-}
-
-
-.facture-date{
-    margin-top: 5%;
-    font-size: 18px;
-    margin-right: 10%;
 }
 
 .btn-ajout:hover{
@@ -657,19 +639,6 @@
     outline: none;
 }
 
-.ajout-article .bx{
-    font-size: 18px;
-    margin-right: 10px;
-}
-.ajout-article{
-    /* margin: 4%; */
-    text-align: center;
-    background-color: rgb(8, 231, 97);
-    border-radius: 10px;
-    padding: 12px;
-    cursor: pointer;
-    width: 350px;
-}
 
 .modal .input-form {
     display: flex;
@@ -816,28 +785,10 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
   transition:800ms ease all;
 }
 
+    
 @media screen and (max-width: 900px) {
-    .add_buttons{
-        margin: 50% 0;
-    }
-    .cadre-haut{
-        display: inline;
-        margin: 0;
-    }
-
-    .ajout-client{
-        margin-right: 0;
-        margin: 10px 5px;
-        border: 1px solid darkblue;
-        padding: 5px ;
-    }
-
-    .facture-date{
-        position: fixed;
-    }
-
-    .table{
-        overflow: auto;
+    .form-group{
+        margin: 10px 0;
     }
 
     .commande{
