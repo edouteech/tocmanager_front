@@ -14,21 +14,23 @@
         </div>
             <h4>Enregistrer un achat</h4><hr>
             <form action="" method="POST">
-                <div class="cadre-haut">             
-                    <div class="ajout-client">  
-                        <v-select 
-                            placeholder="Choississez le fournisseur"
-                            v-model="selectedFournisseur"
-                            label="name"
-                            :options="fournisseurs"
-                            :reduce="(fournisseur) => fournisseur.id"
-                            append-to-body
-                        />
-                        <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
-                        </button>                
+                <div class="row">        
+                    <div class="col-md-6">    
+                        <div class="ajout-client">  
+                            <v-select 
+                                placeholder="Choississez le fournisseur"
+                                v-model="selectedFournisseur"
+                                label="name"
+                                :options="fournisseurs"
+                                :reduce="(fournisseur) => fournisseur.id"
+                                append-to-body
+                            />
+                            <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
+                            </button>  
+                        </div>              
                     </div>
-                    <div class="facture-date position-absolute end-0">
+                    <div class="col-md-6 facture-date my-auto">
                         <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_buy"/>                  
                     </div>
                 </div> <hr>
@@ -38,9 +40,11 @@
                     <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
                 </div> -->
                 <div class="add_buttons row col-md-12 boom"> 
-                    <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                    <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
-                    <div class="col-md-5 mt-2">
+                    <div class="d-flex col-md-8">
+                        <div class="col-md-4"><button class="btn btn-outline-primary col-md-11 mx-auto " @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                        <div class="col-md-8"><button class="btn btn-outline-success col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>  
+                    </div>         
+                    <div class="col-md-4 mt-2">
                         <div class="d-flex code_recherche">
                             <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search">
                             <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -95,11 +99,11 @@
                     </div>   
                 </div><br>
                 
-                <div class="d-flex">
-                    <div class="form-group1 col-md-4"> Réduction (Prix ou %): <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>  
-                    <div class="form-group1 col-md-4 mx-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+                <div class="row">
+                    <div class="form-group col-md-4"> Réduction (Prix ou %): <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>  
+                    <div class="form-group col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
                     <div class="form-group col-md-4">
-                        <div class="form-group ">
+                        <div class="form-group1">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
                             <option value="">Choississez</option>
@@ -112,10 +116,9 @@
                     {{amount_error}} 
                 </div> 
                 <br><br><br><br><br>
-                <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
-                <!-- <div class="submit">
-                    <input type="submit" id='submit'  value="Enregistrer la facture " name="submit">{{this.form.amount}}		          
-                </div>   -->
+                <div class="col-md-6 mx-auto">
+                    <button class="custom-btn btn-5 col-md-12" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+                </div>
         
             </form>
 <!-- 
@@ -525,7 +528,6 @@ export default {
 </script>
 
 <style scoped>
-
 .table-col{
     width: 18%;
 }
@@ -612,28 +614,12 @@ export default {
     margin: 5% ;
 }
 
-.cadre-haut{
-    display: flex;
-}
 
-.ajout-client{
-    margin: 30px 10px;
-    border: 1px solid darkblue;
-    padding: 30px 20px;
-    /* margin-right: 50%; */
-}
-
-.btn-ajout{
-    margin-top: 9%;
+.ajout-client {
+    margin: 30px 0;
     border: 1px solid #53af57;
-    padding: 10px;
-    /* width: 100px; */
-    font-size: 10px;
-    border-radius: 15px;
-    text-align: center;
-    background-color: #53af57;
-    color: #fff;
-    cursor: pointer;
+    padding: 30px 20px;
+    width: 300px;
 }
 
 .code_recherche input{
@@ -651,9 +637,10 @@ export default {
 
 
 .facture-date{
-    margin-top: 5%;
+    margin: 30px 0;
+    border: 1px solid #53af57;
+    padding: 30px 20px;
     font-size: 18px;
-    margin-right: 10%;
 }
 
 .btn-ajout:hover{
@@ -676,7 +663,6 @@ export default {
     margin-right: 10px;
 }
 .ajout-article{
-    /* margin: 4%; */
     text-align: center;
     background-color: rgb(8, 231, 97);
     border-radius: 10px;
@@ -752,7 +738,7 @@ input[type=submit]:hover{
 
 
 .table{
-	margin-top: 5%;
+	/* margin-top: 2%; */
     text-align: center;
 }      
 
@@ -831,27 +817,8 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
 }
 
 @media screen and (max-width: 900px) {
-    .add_buttons{
-        margin: 50% 0;
-    }
-    .cadre-haut{
-        display: inline;
-        margin: 0;
-    }
-
-    .ajout-client{
-        margin-right: 0;
-        margin: 10px 5px;
-        border: 1px solid darkblue;
-        padding: 5px ;
-    }
-
-    .facture-date{
-        position: fixed;
-    }
-
-    .table{
-        overflow: auto;
+    .form-group{
+        margin: 10px 0;
     }
 
     .commande{
