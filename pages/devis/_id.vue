@@ -12,30 +12,29 @@
                 {{error}} 
             </div>
                 <h4>Modifier ce devis </h4><hr>
-                <!-- <button @click.prevent="test()">
-                    Imprimer
-                </button> -->
                 <form action="" method="POST">
-                    <div class="cadre-haut">             
-                        <div class="ajout-client">  
-                            <v-select 
-                                placeholder="Choississez le client"
-                                v-model="form.client_id"
-                                label="name"
-                                :options="clients"
-                                :reduce="(client) => client.id"
-                                append-to-body
-                            />               
+                    <div class="row">        
+                        <div class="col-md-6">    
+                            <div class="ajout-client"> 
+                                <v-select 
+                                    placeholder="Choississez le client"
+                                    v-model="form.client_id"
+                                    label="name"
+                                    :options="clients"
+                                    :reduce="(client) => client.id"
+                                    append-to-body
+                                />               
+                            </div>
                         </div>
-                        <div class="facture-date position-absolute end-0">
-                            <span class="creation"> Date d'édition':</span> <input class="form-control"  type="datetime-local"  v-model="form.date_devis"/>                  
+                        <div class="col-md-6 facture-date my-auto">
+                            <span class="creation"> Date d'édition :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_devis"/>                  
                         </div>
                     </div> <hr>
                     
                     <div class="add_buttons row col-md-12 boom"> 
                         <!-- <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div>  -->
-                        <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
-                        <div class="col-md-5 mt-2">
+                        <div class="col-md-6"><button class="btn btn-outline-warning col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>           
+                        <div class="col-md-6 mt-2">
                             <div class="d-flex code_recherche">
                                 <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search" @input="searchCode()" @click.prevent="searchCode()">
                                 <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -588,6 +587,20 @@
     </script>
     
     <style scoped>
+    .ajout-client {
+        margin: 30px 0;
+        border: 1px solid #04012f;
+        padding: 30px 20px;
+        width: 300px;
+    }
+
+
+    .facture-date{
+        margin: 30px 0;
+        border: 1px solid #04012f;
+        padding: 30px 20px;
+        font-size: 18px;
+    }
     .quantity_erreur {
       cursor: pointer;
     }
@@ -708,54 +721,12 @@
     }
     
     .app-main__outer{
-      overflow: auto;
+      overflow: none;
       margin: 0 2%;
     }
     
     .commande{
         margin: 5%;
-    }
-    
-    
-    .cadre-haut{
-        display: flex;
-    }
-    
-    .ajout-client{
-        margin: 30px 10px;
-        border: 1px solid darkblue;
-        padding: 30px 20px;
-        width: 250px;
-        /* margin-right: 50%; */
-    }
-    
-    .btn-ajout{
-        margin-top: 9%;
-        border: 1px solid #53af57;
-        padding: 10px;
-        width: 100px;
-        font-size: 10px;
-        border-radius: 15px;
-        text-align: center;
-        background-color: #53af57;
-        color: #fff;
-        cursor: pointer;
-    }
-    
-    .btn-ajout i{
-        font-size: 14px;
-    }
-    
-    
-    .facture-date{
-        margin-top: 5%;
-        font-size: 18px;
-        margin-right: 10%;
-    }
-    
-    .btn-ajout:hover{
-        background-color: #fefefe;
-        color: rgb(0, 0, 0);
     }
     
     
@@ -860,7 +831,7 @@
     }
     
     .table{
-        margin-top: 5%;
+        /* margin-top: 5%; */
         text-align: center;
     }      
     
@@ -907,11 +878,11 @@
       line-height: 42px;
       padding: 20px ;
       border: none;
-      background: rgb(121, 161, 255);
-    background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%);
+      background: rgb(134, 248, 34);
+    background: linear-gradient(0deg, rgb(122, 254, 46) 0%, rgb(135, 249, 41) 100%);
     }
     .btn-5:hover {
-      color: #0909f0;
+      color: #09f014;
       background: transparent;
        box-shadow:none;
     }
@@ -923,7 +894,7 @@
       right:0;
       height:2px;
       width:0;
-      background: rgb(121, 161, 255);
+      background: rgb(89, 251, 36);
       box-shadow:
        -1px -1px 5px 0px #fff,
        7px 7px 20px 0px #0003,
@@ -942,38 +913,12 @@
       transition:800ms ease all;
     }
     
+        
     @media screen and (max-width: 900px) {
-        .select2-cli{
-            width: 57%;
+        .form-group{
+            margin: 10px 0;
         }
-    
-        .select2-prod{
-            width: 30%;
-        }
-    
-        .add_buttons{
-            margin: 50% 0;
-        }
-        .cadre-haut{
-            display: inline;
-            margin: 0;
-        }
-    
-        .ajout-client{
-            margin-right: 0;
-            margin: 10px 5px;
-            border: 1px solid darkblue;
-            padding: 5px ;
-        }
-    
-        .facture-date{
-            position: fixed;
-        }
-    
-        .table{
-            overflow: auto;
-        }
-    
+
         .commande{
             margin: 15% 0;
         }
