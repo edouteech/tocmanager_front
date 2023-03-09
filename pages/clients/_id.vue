@@ -15,7 +15,7 @@
                 <label class="title">Entrer le nom du client</label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
             </div>
-            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.name">
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.name">
                 {{errors.name}}
             </div>
 
@@ -23,7 +23,7 @@
                 <label class="title">Entrer le numero de téléphone du client</label>
                 <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
             </div>
-            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.phone">
                 {{errors.phone}}
             </div>
 
@@ -31,7 +31,7 @@
                 <label class="title">Entrer l'email du client</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
-            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.email">
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.email">
                 {{errors.email}}
             </div>
 
@@ -45,7 +45,7 @@
                 </select>
                 </div>
             </div>
-            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.nature">
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.nature">
                 {{errors.nature}}
             </div>
             
@@ -155,8 +155,16 @@ export default {
 
             })
             .then(response =>{
-                this.$router.push({
-                  path:'/clients/list_client',})
+                if(response.data.status == "success"){
+                    this.$router.push({path:'/clients/list_client',})
+                    this.$toast('Modifications éffectuées avec succès !!!', {
+                        icon: 'fa fa-check-circle',
+                    })
+                }
+                else{
+                    this.errors = response.data.data
+                    // this.$router.push({path:'/clients/add_client'});
+                }
             })          
         }
     }
