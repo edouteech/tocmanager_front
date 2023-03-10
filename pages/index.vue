@@ -335,13 +335,13 @@
   }
 
   .homme{
-    padding: 50px 50px 50px 0;
+    padding: 0px 50px 50px 0;
   }
 
   
   .rectangle-oblique{
       position: absolute;
-      height: 452.69px;
+      height: 500.69px;
       /* left: 534px;
       top: 70.67px; */
       margin-top: 60px;
