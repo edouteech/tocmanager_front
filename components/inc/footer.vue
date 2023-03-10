@@ -14,15 +14,15 @@
 
     <!-- Right -->
     <div>
-      <a href="https://www.facebook.com/Tocmanager" class="me-4 text-reset">
+      <NuxtLink to="https://www.facebook.com/Tocmanager" class="me-4 text-reset">
         <i class="fab fa-facebook-f"></i>
-      </a>
+      </NuxtLink>
       <!-- <a href="" class="me-4 text-reset">
         <i class="fab fa-google"></i>
       </a> -->
-      <a href="https://www.linkedin.com/showcase/tocmanager" class="me-4 text-reset">
+      <NuxtLink to="https://www.linkedin.com/showcase/tocmanager" class="me-4 text-reset">
         <i class="fab fa-linkedin"></i>
-      </a>
+      </NuxtLink>
     </div>
     <!-- Right -->
   </section>

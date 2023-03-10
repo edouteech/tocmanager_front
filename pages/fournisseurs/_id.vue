@@ -7,19 +7,33 @@
 
     <div class="app-main__outer py-5 px-2">
         <h4>Modifier les informations de ce fournisseur</h4>
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
+            {{error}}
+        </div>
         <form action="">
             <div class="form-group col-md-6">
                 <label class="title">Entrer le nom du fournisseur</label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
             </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.name">
+                {{errors.name}}
+            </div>
             <div class="form-group col-md-6">
                 <label class="title">Entrer le numero de téléphone du fournisseur</label>
                 <input type="tel" class="form-control" v-model="form.phone" required  placeholder="+525485335622">
             </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.phone">
+                {{errors.phone}}
+            </div>
+
             <div class="form-group col-md-6">
                 <label class="title">Entrer l'email du fournisseur</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.email">
+                {{errors.email}}
+            </div>
+
             <div class="form-group col-md-6">
                 <div class="form-group ">
                 <label class="title">Nature du fournisseur</label>
@@ -29,6 +43,9 @@
                         <option value="1">Entreprise</option>
                 </select>
                 </div>
+            </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.nature">
+                {{errors.nature}}
             </div>
 
             <button type="submit" class="btn btn-success" v-on:click.prevent="submit()">Modifier</button>
@@ -50,6 +67,7 @@ export default {
 },
     data () {
             return{
+                error: null,
                 fournisseur: "",
                 fournisseurs: [],
                 form: {
@@ -99,8 +117,17 @@ export default {
                 nature: this.form.nature,
                 compagnie_id: localStorage.getItem('auth.company_id')
                 }).then(response =>{
-                    this.$router.push({
-                    path:'/fournisseurs/list_fournisseur',})
+                    if(response.data.status == "success"){
+                        this.$router.push({path:'/fournisseurs/list_fournisseur',})
+                        this.$toast('Modifications éffectuées avec succès !!!', {
+                            icon: 'fa fa-check-circle',
+                        })
+                    }
+                    else{
+                        this.error = response.data.message
+                        this.errors = response.data.data
+                        // this.$router.push({path:'/clients/add_client'});
+                    }
                 })  
         }
     }

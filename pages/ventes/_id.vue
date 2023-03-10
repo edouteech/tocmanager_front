@@ -11,43 +11,33 @@
         </div>
         <h4>Modifier les infomations de cette vente</h4><hr>
             <form action="" method="POST">
-                <div class="cadre-haut">             
-                    <div class="ajout-client"> 
-                        <v-select 
-                            placeholder="Choississez le client"
-                            v-model="form.client_id"
-                            label="name"
-                            :options="clients"
-                            :reduce="(client) => client.id"
-                            append-to-body
-                        />                                  
-                        <!-- <select class="form-control"  v-model="form.client_id">
-                            <option disabled value="">Choisir le client</option>
-                            <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
-                                {{client.name}}
-                            </option>                           
-                        </select>   -->
-                        
-                        <!-- <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
-                        <div class="select2-cli" v-if="afficheCli !=0 ">
-                            <ul>
-                                <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="" >{{acteur.name}}</a></li>
-                            </ul>
-                        </div> -->
-
-                        <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
-                        </button>                
+                <div class="row">        
+                    <div class="col-md-6">    
+                        <div class="ajout-client">  
+                            <v-select 
+                                placeholder="Choississez le client"
+                                v-model="form.client_id"
+                                label="name"
+                                :options="clients"
+                                :reduce="(client) => client.id"
+                                append-to-body
+                            />   
+                            <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
+                            </button>                
+                        </div>
                     </div>
-                    <div class="facture-date position-absolute end-0">
-                    <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
+                    <div class="col-md-6 facture-date my-auto">
+                        <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
                     </div>
                 </div> <hr>
                 
                 <div class="add_buttons row col-md-12 boom"> 
-                    <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                    <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
-                    <div class="col-md-5 mt-2">
+                    <div class="d-flex col-md-8">
+                        <div class="col-md-4"><button class="btn btn-outline-primary col-md-11 mx-auto" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                        <div class="col-md-8"><button class="btn btn-outline-warning col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>           
+                    </div>
+                    <div class="col-md-4 mt-2">
                         <div class="d-flex code_recherche">
                             <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search" @input="searchCode()" @click.prevent="searchCode()">
                             <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -80,20 +70,16 @@
                                         v-model="line.product_id"
                                         label="name"
                                         :options="produits"
+                                        :selectable="(produit) => produit.quantity > 0"
                                         :reduce="(produit) => produit.id"
                                         append-to-body
                                         @input="productChange(line.product_id, index)"
-                                    />
-                                    <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
-                                        <option disabled value="">Choisissez...</option>
-                                        <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
-                                    </select> -->
-                                    <!-- <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
-                                    <div class="select2-prod" v-if="afficheProd !=0">
-                                        <ul>
-                                            <li v-for="(designation, i) in designations" :key="i" :value="designation.id" :data-i="i" :data-index="index"><a href="" @click.prevent="choiceProd(designation,i)">{{designation.name}}</a></li>
-                                        </ul>
-                                    </div> -->
+                                    >
+                                        <template #option="{ name, code, quantity }" style="background-color: blue;">
+                                            
+                                        <div :style="(quantity<=0)?'color: red;':''" >{{ name }} [{{quantity}}] ({{ code }})</div>
+                                        </template>
+                                    </v-select>
                                 </td>
                                 <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                                 <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
@@ -110,11 +96,11 @@
                     </div>  
                 </div><br>
                 <br>
-                <div class="d-flex">
-                    <div class="form-group1 col-md-3"> 
+                <div class="row">
+                    <div class="form-group col-md-4"> 
                         <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                     </div>
-                    <div class="form-group1 col-md-4 mx-4"> 
+                    <div class="form-group col-md-4"> 
                         <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
                     </div>
                     
@@ -130,17 +116,17 @@
                 </div><br>
  
                 <hr><br>
-                <div class="d-flex">
-                    <div class="form-group col-md-2 ">
+                <div class="row">
+                    <div class="form-group col-md-3 ">
                         <strong>Taxe [0 -100]%</strong> <div><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
                     </div>
-                    <div class="form-group col-md-3 mx-4">
+                    <div class="form-group col-md-3">
                         <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
                     </div>
-                    <div class="form-group1 col-md-3"> 
+                    <div class="form-group col-md-3"> 
                         Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required>
                     </div>
-                    <div class="form-group1 col-md-3 mx-4"> 
+                    <div class="form-group col-md-3"> 
                         Echéance de paiement: 
                         <select v-model="echeance" class="form-control">
                             <option disabled value="">Choisissez</option>
@@ -157,8 +143,9 @@
                     {{amount_error}} 
                 </div> 
                 <br><br><br><br>
-                <button class="custom-btn btn-5" v-on:click.prevent="submit()" :disabled="load">Modifier la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
-        
+                <div class="col-md-6 mx-auto">
+                    <button class="custom-btn btn-5 col-md-12" v-on:click.prevent="submit()" :disabled="load">Modifier la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+                </div>
             </form>
         
     </div>
@@ -398,7 +385,7 @@ export default {
             }
             })
             .then(response => {
-                console.log(response.data.data[0] )
+                // console.log(response.data.data[0] )
                 let vente = response.data.data[0];
                     this.$axios.put('/sells/' +this.$route.params.id,{
                         id: this.$route.params.id,
@@ -591,25 +578,7 @@ export default {
                     this.taxChange()
                     break;
                 }
-            }
-            // if(e.target.options.selectedIndex > -1) {
-            //     let i = e.target.options[e.target.options.selectedIndex].dataset.i;
-            //     let index = e.target.options[e.target.options.selectedIndex].dataset.index;
-            //     let product = this.produits[i];
-            //     let line = this.form.sell_lines[index]
-            //     line.price = product.price_sell;
-            //     line.amount = Number(line.price) * Number(line.quantity);
-            //     line.amount_after_discount = Number(line.price) * Number(line.quantity);
-                    
-                
-            //     let sum = 0;
-            //     for (let j = 0; j < this.form.sell_lines.length; j++) {
-            //         sum += this.form.sell_lines[j].amount_after_discount;
-            //     }
-            //     this.form.amount_ht = sum;
-            //     this.form.tax =0
-            //     this.taxChange()
-            // }    
+            }  
         },
    
     },
@@ -619,6 +588,20 @@ export default {
 
 <style scoped>
 
+.ajout-client {
+    margin: 30px 0;
+    border: 1px solid #04012f;
+    padding: 30px 20px;
+    width: 300px;
+}
+
+
+.facture-date{
+    margin: 30px 0;
+    border: 1px solid #04012f;
+    padding: 30px 20px;
+    font-size: 18px;
+}
 
 .table-col{
     width: 15%;
@@ -724,7 +707,7 @@ export default {
 }
 
 .app-main__outer{
-  overflow: auto;
+  overflow: none;
   margin: 0 2%;
 }
 
@@ -744,30 +727,6 @@ export default {
     /* margin-right: 50%; */
 }
 
-.btn-ajout{
-    margin-top: 9%;
-    border: 1px solid #53af57;
-    padding: 10px;
-    width: 100px;
-    font-size: 10px;
-    border-radius: 15px;
-    text-align: center;
-    background-color: #53af57;
-    color: #fff;
-    cursor: pointer;
-}
-
-.btn-ajout i{
-    font-size: 14px;
-}
-
-
-.facture-date{
-    margin-top: 5%;
-    font-size: 18px;
-    margin-right: 10%;
-}
-
 .btn-ajout:hover{
     background-color: #fefefe;
     color: rgb(0, 0, 0);
@@ -782,20 +741,6 @@ export default {
 .facture-date input{
     border: none; 
     outline: none;
-}
-
-.ajout-article .bx{
-    font-size: 18px;
-    margin-right: 10px;
-}
-.ajout-article{
-    /* margin-top: ; */
-    text-align: center;
-    background-color: rgb(238, 134, 64);
-    border-radius: 10px;
-    padding: 12px;
-    cursor: pointer;
-    width: 350px;
 }
 
 .code_recherche input{
@@ -875,7 +820,6 @@ input[type=submit]:hover{
 }
 
 .table{
-	margin-top: 5%;
     text-align: center;
 }      
 
@@ -922,11 +866,11 @@ button {
   line-height: 42px;
   padding: 20px ;
   border: none;
-  background: rgb(121, 161, 255);
-background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%);
+  background: rgb(36, 243, 17);
+background: linear-gradient(0deg, rgb(112, 245, 51) 0%, rgb(109, 246, 55) 100%);
 }
 .btn-5:hover {
-  color: #0909f0;
+  color: #09f009;
   background: transparent;
    box-shadow:none;
 }
@@ -938,7 +882,7 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
   right:0;
   height:2px;
   width:0;
-  background: rgb(121, 161, 255);
+  background: rgb(103, 251, 40);
   box-shadow:
    -1px -1px 5px 0px #fff,
    7px 7px 20px 0px #0003,
@@ -958,35 +902,8 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
 }
 
 @media screen and (max-width: 900px) {
-    .select2-cli{
-        width: 57%;
-    }
-
-    .select2-prod{
-        width: 30%;
-    }
-
-    .add_buttons{
-        margin: 50% 0;
-    }
-    .cadre-haut{
-        display: inline;
-        margin: 0;
-    }
-
-    .ajout-client{
-        margin-right: 0;
-        margin: 10px 5px;
-        border: 1px solid darkblue;
-        padding: 5px ;
-    }
-
-    .facture-date{
-        position: fixed;
-    }
-
-    .table{
-        overflow: auto;
+    .form-group{
+        margin: 10px 0;
     }
 
     .commande{

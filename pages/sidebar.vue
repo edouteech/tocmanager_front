@@ -48,6 +48,23 @@
                   </NuxtLink>
               </li>
               <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
+                  <NuxtLink to="/devis/list_devis" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                            <i class="fa fa-files-o" aria-hidden="true"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Liste des devis</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
+                  <NuxtLink to="/bons/list_bon" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                            <i class="fa fa-files-o" aria-hidden="true"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Liste des bons de commande</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
                   <NuxtLink to="/ventes/list_vente" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
                           <i class="fa fa-floppy-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>

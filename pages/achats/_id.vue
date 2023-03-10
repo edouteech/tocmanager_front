@@ -11,36 +11,34 @@
     <div class="app-main__outer py-5 px-2">
         <h4>Modifier les informations de cet achat</h4><hr>
         <form action="" method="POST">
-            <div class="cadre-haut">             
-                <div class="ajout-client">   
-                    <v-select 
-                        placeholder="Choississez le fournisseur"
-                        v-model="form.supplier_id"
-                        label="name"
-                        :options="fournisseurs"
-                        :reduce="(fournisseur) => fournisseur.id"
-                        append-to-body
-                    />
-                    <!-- <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
-                    <div class="select2-cli" v-if="afficheCli !=0">
-                        <ul>
-                            <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="">{{acteur.name}}</a></li>
-                        </ul>
-                    </div>          -->
-                    <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
-                        <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
-                    </button>                
-                </div>
-                <div class="facture-date position-absolute end-0">
-                    <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_buy"/>                  
-                </div>
-            </div> <hr>
+                <div class="row">        
+                    <div class="col-md-6">    
+                        <div class="ajout-client">    
+                            <v-select 
+                                placeholder="Choississez le fournisseur"
+                                v-model="form.supplier_id"
+                                label="name"
+                                :options="fournisseurs"
+                                :reduce="(fournisseur) => fournisseur.id"
+                                append-to-body
+                            />
+                            <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
+                            </button>   
+                        </div>              
+                    </div>   
+                    <div class="col-md-6 facture-date my-auto">
+                        <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_buy"/>                  
+                    </div>
+                </div> <hr>
             
             
             <div class="add_buttons row col-md-12 boom"> 
-                <div class="col-md-2"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                <div class="col-md-5"><button class="ajout-article" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button></div>           
-                <div class="col-md-5 mt-2">
+                <div class="d-flex col-md-8">
+                    <div class="col-md-4"><button class="btn btn-outline-primary col-md-11 mx-auto " @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                    <div class="col-md-8"><button class="btn btn-outline-success col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>  
+                </div>         
+                <div class="col-md-4 mt-2">
                     <div class="d-flex code_recherche">
                         <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search">
                         <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -51,14 +49,14 @@
                 </div>                    
             </div>
             
-            <div class="commande">
+            <div class="commande table-responsive">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Désignation</th>
                             <th>Quantité voulue</th>
                             <th>Prix unitaire</th>
-                            <th scope="col">Réduction (Prix ou %)</th>
+                            <!-- <th scope="col">Réduction (Prix ou %)</th> -->
                             <!-- <th>Taxe appliquée (%)</th> -->
                             <th>Total</th>                     
                         </tr>
@@ -82,7 +80,7 @@
                             </td>
                             <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
-                                <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
+                                <!-- <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td> -->
                             <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                     -->
                             <td class="table-col"><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required disabled></td>
                             <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
@@ -90,10 +88,11 @@
                     </tbody>
                 </table>     
             </div><br>
-            <div class="d-flex">
-                    <div class="form-group1 col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
-                    <div class="form-group col-md-6 mx-5">
-                        <div class="form-group ">
+            <div class="row">
+                    <div class="form-group col-md-4"> Réduction (Prix ou %): <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>  
+                    <div class="form-group col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+                    <div class="form-group col-md-4">
+                        <div class="form-group1 ">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
                             <option value="">Choississez</option>
@@ -103,10 +102,9 @@
                     </div>
                 </div>
             <br><br><br><br><br>
-            <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
-            <!-- <div class="submit">
-                <input type="submit" id='submit'  value="Enregistrer la facture " name="submit">{{this.form.amount}}		          
-            </div>   -->
+            <div class="col-md-6 mx-auto">
+                <button class="custom-btn btn-5" v-on:click.prevent="submit()">Modifier la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+            </div>
     
         </form>
     </div>
@@ -453,6 +451,20 @@ export default {
 
 <style scoped>
 
+.ajout-client {
+    margin: 30px 0;
+    border: 1px solid #53af57;
+    padding: 30px 20px;
+    width: 300px;
+}
+
+
+.facture-date{
+    margin: 30px 0;
+    border: 1px solid #53af57;
+    padding: 30px 20px;
+    font-size: 18px;
+}
 .table-col{
     width: 18%;
 }
@@ -531,7 +543,7 @@ export default {
 }
 
 .app-main__outer{
-  overflow: auto;
+  overflow: none;
   margin: 0 5%;
 }
 
@@ -543,25 +555,6 @@ export default {
     display: flex;
 }
 
-.ajout-client{
-    margin: 30px 10px;
-    border: 1px solid darkblue;
-    padding: 30px 20px;
-    /* margin-right: 50%; */
-}
-
-.btn-ajout{
-    margin-top: 9%;
-    border: 1px solid #53af57;
-    padding: 10px;
-    /* width: 100px; */
-    font-size: 10px;
-    border-radius: 15px;
-    text-align: center;
-    background-color: #53af57;
-    color: #fff;
-    cursor: pointer;
-}
 
 .code_recherche input{
     height: 45px;
@@ -576,12 +569,6 @@ export default {
     font-size: 14px;
 }
 
-
-.facture-date{
-    margin-top: 5%;
-    font-size: 18px;
-    margin-right: 10%;
-}
 
 .btn-ajout:hover{
     background-color: #fefefe;
@@ -679,7 +666,6 @@ input[type=submit]:hover{
 
 
 .table{
-	margin-top: 5%;
     text-align: center;
 }      
 
@@ -722,11 +708,11 @@ button {
   line-height: 42px;
   padding: 20px ;
   border: none;
-  background: rgb(121, 161, 255);
-background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%);
+  background: rgb(10, 225, 28);
+background: linear-gradient(0deg, rgb(23, 225, 20) 0%, rgb(68, 209, 43) 100%);
 }
 .btn-5:hover {
-  color: #0909f0;
+  color: #2ff009;
   background: transparent;
    box-shadow:none;
 }
@@ -738,7 +724,7 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
   right:0;
   height:2px;
   width:0;
-  background: rgb(121, 161, 255);
+  background: rgb(48, 228, 12);
   box-shadow:
    -1px -1px 5px 0px #fff,
    7px 7px 20px 0px #0003,
@@ -758,27 +744,8 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
 }
 
 @media screen and (max-width: 900px) {
-    .add_buttons{
-        margin: 50% 0;
-    }
-    .cadre-haut{
-        display: inline;
-        margin: 0;
-    }
-
-    .ajout-client{
-        margin-right: 0;
-        margin: 10px 5px;
-        border: 1px solid darkblue;
-        padding: 5px ;
-    }
-
-    .facture-date{
-        position: fixed;
-    }
-
-    .table{
-        overflow: auto;
+    .form-group{
+        margin: 10px 0;
     }
 
     .commande{

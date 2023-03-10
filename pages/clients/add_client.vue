@@ -8,7 +8,7 @@
 
     <div class="app-main__outer py-5 px-2">
         <h4>Enregistrer un nouveau client</h4>
-        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}}
         </div>
         <form action="">
@@ -16,7 +16,7 @@
                 <label class="title">Entrer le nom du client</label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
             </div>
-            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.name">
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.name">
                 {{errors.name}}
             </div>
 
@@ -24,7 +24,7 @@
                 <label class="title">Entrer le numero de téléphone du client</label>
                 <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
             </div>
-            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.phone">
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.phone">
                 {{errors.phone}}
             </div>
 
@@ -32,7 +32,7 @@
                 <label class="title">Entrer l'email du client</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
-            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.email">
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.email">
                 {{errors.email}}
             </div>
 
@@ -46,7 +46,7 @@
                 </select>
                 </div>
             </div>
-            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.nature">
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.nature">
                 {{errors.nature}}
             </div>
             <div class="form-group ">
@@ -120,8 +120,7 @@ export default {
               compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
                 // console.log( response ) 
-                this.error = response.data.message
-                console.log(this.error)
+                // console.log(this.error)
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/clients/list_client'});
@@ -130,6 +129,7 @@ export default {
                     })
                 }
                 else{
+                    this.error = response.data.message
                     this.errors = response.data.data
                     // this.$router.push({path:'/clients/add_client'});
                 }
