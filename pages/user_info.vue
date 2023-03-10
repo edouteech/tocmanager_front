@@ -3,15 +3,15 @@
     <nav>
         <ul>
             <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
-			<li class="item"><a href="#">
+			<li class="item"><NuxtLink to="#">
 				<span class="user_name" data-bs-dismiss="offcanvas">{{user.name}}</span>
-				<i class="fa fa-chevron-circle-down" aria-hidden="true"></i></a>
+				<i class="fa fa-chevron-circle-down" aria-hidden="true"></i></NuxtLink>
             <!-- First Tier Drop Down -->
             <ul>
-                <li><a href="/mon_profil"><i class="fa fa-user mx-3" aria-hidden="true"></i>Mon profil</a></li>
-                <li><a href="/update_password"><i class="fa fa-key mx-2" aria-hidden="true"></i>Modifier mot de passe</a></li>
+                <li><NuxtLink to="/mon_profil"><i class="fa fa-user mx-3" aria-hidden="true"></i>Mon profil</NuxtLink></li>
+                <li><NuxtLink to="/update_password"><i class="fa fa-key mx-2" aria-hidden="true"></i>Modifier mot de passe</NuxtLink></li>
 				<!-- <li v-on:click.prevent="change()"><a href="#">Changer de compagnie</a></li> -->
-                <li @click="logout()"><a href="" @click="logout()"><i class="fa fa-sign-out mx-2" aria-hidden="true"></i>Déconnexion</a></li>
+                <li @click="logout()"><NuxtLink to="" @click="logout()"><i class="fa fa-sign-out mx-2" aria-hidden="true"></i>Déconnexion</NuxtLink></li>
             </ul>        
             </li>
         </ul>

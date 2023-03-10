@@ -24,10 +24,10 @@
               </div>
               <div class="d-flex">
                   <div>
-                      <a href="/login"><button class="btn btn-outline-primary btn-offer" >Connexion</button></a>
+                      <NuxtLink to="/login" class="btn btn-outline-primary btn-offer" >Connexion</NuxtLink>
                   </div>
                   <div>
-                      <a href="/register"><button class="btn btn-outline-primary btn-offer" >Inscription</button></a>
+                      <NuxtLink to="/register" class="btn btn-outline-primary btn-offer" >Inscription</NuxtLink>
                   </div>
                   <!-- <div v-if="this.$auth.$state.loggedIn == true && role =='admin' ">
                       <a href="/dashboard"><button class="btn btn-outline-primary btn-offer" >Tableau de Bord</button></a>
