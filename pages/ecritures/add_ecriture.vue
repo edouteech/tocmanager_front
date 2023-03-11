@@ -158,7 +158,7 @@ export default {
             //  console.log(this.form.name)                
         },
         addLine() {
-            this.form.ligne_ecritures.push({ compte_id: "", side: "", amount: 0, compagnie_id: localStorage.getItem('auth.company_id') });
+            this.form.ligne_ecritures.push({ compte_id: "", side: "", date: this.form.date, amount: 0, compagnie_id: localStorage.getItem('auth.company_id') });
         },
         deleteLine(index){
         //   console.log(index);

@@ -175,6 +175,15 @@
                   </NuxtLink>
               </li> 
 
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_utilisateurs == 1">
+                  <NuxtLink to="/livres/livre" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-address-card-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Grand livre</span>
+                      </div>
+                  </NuxtLink>
+              </li> 
+
               <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1">
                   <NuxtLink to="/corbeille" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
