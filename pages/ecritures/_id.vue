@@ -98,6 +98,7 @@
 <script>
 import Sidebar from '../sidebar.vue'
 import User_info from '../user_info.vue'
+import moment from 'moment'
 export default {
     layout: "empty",
     auth: true,
@@ -110,7 +111,7 @@ export default {
         return {
             form: {
                 name_ecriture: '',
-                date: '',
+                date: moment().format("YYYY-MM-DDT00:00"),
                 amount: 0,
                 comment: '',
                 exercice_id: '',
@@ -151,6 +152,9 @@ export default {
             )
     },
     methods: {
+        moment: function () {
+          return moment();
+        },
         async submit() {
             await this.$axios.put('/ecritures/' + this.$route.params.id, {
                 name_ecriture: this.form.name_ecriture,

@@ -7,12 +7,10 @@
     </nav>
 
     <div class="table-responsive container-fluid">
-      <table
-        class="table table-borderless table-striped table-hover"
-      >
+      <table class="table table-borderless table-striped table-hover">
         <thead>
           <tr>
-            <th colspan="3">Grand livre au --</th>
+            <th colspan="3">Grand livre au {{today}}</th>
           </tr>
         </thead>
         <tbody>
@@ -21,10 +19,13 @@
               <tr>
                 <td colspan="3">{{ compte.name }}</td>
               </tr>
-              <tr v-for="(ligne_ecriture, i) in compte.ligne_ecritures" :key="i">
-                <td>{{ligne_ecriture.date}}</td>
-                <td>{{ligne_ecriture.amount}}</td>
-                <td>{{ligne_ecriture.side}}</td>
+              <tr
+                v-for="(ligne_ecriture, i) in compte.ligne_ecritures"
+                :key="i"
+              >
+                <td>{{ ligne_ecriture.date }}</td>
+                <td>{{ ligne_ecriture.amount }}</td>
+                <td>{{ ligne_ecriture.side }}</td>
               </tr>
             </table>
           </tr>
@@ -37,6 +38,7 @@
 <script>
 import Sidebar from "../sidebar.vue";
 import Userinfo from "../user_info.vue";
+import moment from "moment";
 export default {
   layout: "empty",
   auth: true,
@@ -51,6 +53,7 @@ export default {
       compagny: "",
       role: "",
       comptes: [],
+      today: moment().format("DD-MM-YYYY"),
     };
   },
 
@@ -62,12 +65,15 @@ export default {
   },
 
   methods: {
+    moment: function () {
+      return moment();
+    },
     refresh(page = 1) {
       this.$axios
         .get("/book", {
           params: {
             page: page,
-            compagnie_id: this.compagny
+            compagnie_id: this.compagny,
             //   per_page : this.form.nombre
           },
         })
