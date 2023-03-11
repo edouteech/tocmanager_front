@@ -55,10 +55,10 @@ export default {
   },
 
   mounted() {
-    this.refresh();
     this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem("auth.company_id");
     this.role = localStorage.getItem("auth.roles");
+    this.refresh();
   },
 
   methods: {
@@ -67,12 +67,12 @@ export default {
         .get("/book", {
           params: {
             page: page,
-            compagnie_id: 1
+            compagnie_id: this.compagny
             //   per_page : this.form.nombre
           },
         })
         .then((response) => {
-          console.log(response.data.data.data);
+          // console.log(response.data.data.data);
           this.comptes = response.data.data.data;
           this.res_data = response.data.data;
           this.total = response.data.data.total;
