@@ -2,6 +2,7 @@
     <div class="content">
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
         <nav class="navbar navbar-expand-lg  nav-bar">
             <div class="container">
                 <NuxtLink to="/">
@@ -14,7 +15,7 @@
                     <div class="col-md-7">
                         <ul class="navbar-nav  mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <NuxtLink to="" class="nav-link">A propos</NuxtLink>
+                                <NuxtLink to="" class="nav-link active">A propos</NuxtLink>
                             </li>
                             <li class="nav-item">
                                 <NuxtLink to="" class="nav-link">Services</NuxtLink>
@@ -22,16 +23,16 @@
                         </ul>
                     </div>
                     <div class="col-md-5 row my-auto">
-                        <div class="col-md-5 btns">
+                        <div class="col-md-10 d-flex btns">
                             <NuxtLink to="/login" class="btn btn-outline-primary btn-offer mx-auto" >Connexion</NuxtLink>
-                        </div>
-                        <div class="col-md-5 btns">
+                            <span class="mx-2"></span>
                             <NuxtLink to="/register" class="btn btn-outline-primary btn-offer mx-auto" >Inscription</NuxtLink>
-                        </div>
-                        <div class="col-md-2 m-auto d-flex btns">
-                            <img src="/images/france.png" alt="français" width="30" class="">
+                        <!-- </div> -->
+                        <!-- <div class="col-md-2 m-auto d-flex btns aligns-items-center justify-content-center"> -->
+                            <span class="mx-2"></span>
+                            <img src="/images/france.png" alt="français" width="30" height="25" class="my-auto">
                             <span class="mx-2">/</span>
-                            <img src="/images/usa.png" alt="anglais" width="35" class="">
+                            <img src="/images/usa.png" alt="anglais" width="35" height="25" class="my-auto">
                         </div>
 
                     </div>
@@ -39,25 +40,38 @@
             </div>
         </nav>
 
-        <div class="row first-section">
-            <div class="col-md-6 px-5 ">
-                <h2 class="py-5 mt-5 first-page-title">APPLICATION DE GESTION
-                    INTEGRE<br> POUR VOTRE 
-                    ENTREPRISE
-                </h2>
-
-                <p class="mt-3">
-                    TOCMANAGER est une application de gestion conçue par une équipe <br>
-                    de jeunes africains ayant décidé de participer activement au <br>
-                    développement du continent à travers le numérique. <br>
-
-                    <button class="btn btn-outline-primary mobile mt-3" >En savoir plus </button>
-                </p>
+        <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-5 align-self-center">
+                    <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <h2>APPLICATION DE GESTION INTEGRE POUR VOTRE ENTREPRISE</h2>
+                          <p>TOCMANAGER est une application de gestion conçue par une équipe de jeunes africains ayant décidé de participer activement au
+                              développement du continent à travers le numérique.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-7">
+                    <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                      <img src="/images/toc.png" alt="">
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-md-6 my-auto">
-                <div class="rectangle-oblique"></div>
-                <img src="/images/toc.png" alt="landing" class="toc"> 
-            </div>
+          </div>
+        </div>
+
+        <div class="col-md-8 mx-auto section2">
+          <div class="description">
+              <h2>Le Coup de Grace pour votre entreprise ???</h2>
+              Tocmanager est une application de gestion commerciale accessible sur ordinateur et smartphone conçue par le jeune Béninois <b>Édouard DJOSSA</b> et <b>son équipe</b>. Utilisable partout en déplacement et n'importe quand. Elle conserve vos données en cas de désagrément. Avec un abonnement mensuel de 5.000 francs CFA et de 50.000 francs l'an, vous bénéficiez des mises à jour et de l'assistance technique sans aucun autre frais supplémentaire ! Ses fonctionnalités sont diverses et variées nous avons: La gestion des stocks et de trésorerie en temps réel, recouvrement des dettes client et créance fournisseurs, impression de facture ou ticket de caisse normalisé, gestion des ressources humaines... Souscrivez à l'abonnement chez nous et bénéficiez d'une réduction de 1000 francs CFA sur les 5000 francs CFA et de 4000 francs CFA sur les 50000 francs CFA.
+          </div>
         </div>
 
         <div class="row homme">
@@ -65,15 +79,64 @@
                 <div class="rectangle-homme"></div>
                 <img src="/images/homme1.png" alt="">
             </div>
-            <div class="col-md-6 my-auto">
-                <div class="description">
-                    <h2>Le Coup de Grace pour votre entreprise ???</h2>
-                    Tocmanager est une application de gestion commerciale accessible sur ordinateur et smartphone conçue par le jeune Béninois <b>Édouard DJOSSA</b> et <b>son équipe</b>. Utilisable partout en déplacement et n'importe quand. Elle conserve vos données en cas de désagrément. Avec un abonnement mensuel de 5.000 francs CFA et de 50.000 francs l'an, vous bénéficiez des mises à jour et de l'assistance technique sans aucun autre frais supplémentaire ! Ses fonctionnalités sont diverses et variées nous avons: La gestion des stocks et de trésorerie en temps réel, recouvrement des dettes client et créance fournisseurs, impression de facture ou ticket de caisse normalisé, gestion des ressources humaines... Souscrivez à l'abonnement chez nous et bénéficiez d'une réduction de 1000 francs CFA sur les 5000 francs CFA et de 4000 francs CFA sur les 50000 francs CFA.
-                </div>
+            <div class="col-md-6 section31">
+              <div id="services" class="services">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-6">
+                      <div class="service-item first-service">
+                          <div class="icon"><img src="/images/interdit.jpg" alt="" class="service-img"></div>
+                          <h4>PREVENIR LES CAS DE VOL</h4>
+                          <p><b>Tocmanager</b> vous permet de suivre en temps réel vos stocks et cependant 
+                              d'éviter ainsi les nombreux cas de vol ou encore les autres pertes inexpliquées.</p>
+                          <div class="text-button">
+                          <!-- <a href="#">Read More <i class="fa fa-arrow-right"></i></a> -->
+                          </div>
+                      </div>
+                      </div>
+                      <div class="col-md-6">
+                      <div class="service-item second-service">
+                          <div class="icon"><img src="/images/creance.jpg" alt="" class="service-img"></div>
+                          <h4>RECOUVRER LES DETTES ET LES CREANCES</h4>
+                          <p>L'application vous offre une possibilité directe de rentrer en contact avec vos clients ou vos fournisseurs afin 
+                              de recouvrir respectivement aux dettes ou aux créances.
+                          </p>
+                          <div class="text-button">
+                          <!-- <a href="#">Read More <i class="fa fa-arrow-right"></i></a> -->
+                          </div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                        <div class="service-item third-service">
+                            <div class="icon"><img src="/images/gestion.jpg" alt="" class="service-img"></div>
+                            <h4>GERER LE STOCK ET LA TRESORERIE </h4>
+                            <p>Avec ses diverses fonctionalités, vous avez la possibilité de gérer efficacement à la fois 
+                                le stock de vos marchandises et la trésorerie juste avec des clics.</p>
+                            <div class="text-button">
+                            <!-- <a href="#">Read More <i class="fa fa-arrow-right"></i></a> -->
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                        <div class="service-item fourth-service">
+                            <div class="icon"><img src="/images/toc.png" alt="" class="service-img"></div>
+                            <h4>UTILISABLE SUR PC OU SMARTPHONE</h4>
+                            <p>Toujours dans l'optique de vous faciliter la tache, vous pouvez utiliser <b>Tocmanager</b>
+                            n'importe où et n'importe quand; que ce soit sur téléphone ou sur votre ordinateur.</p>
+                            <div class="text-button">
+                            <!-- <a href="#">Read More <i class="fa fa-arrow-right"></i></a> -->
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                  </div>
+              </div>
             </div>
         </div>
 
-        <div id="services" class="services section">
+        <div id="services" class="services section3">
             <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -83,7 +146,6 @@
                     <p><b>Tocmanager</b> vous permet de suivre en temps réel vos stocks et cependant 
                         d'éviter ainsi les nombreux cas de vol ou encore les autres pertes inexpliquées.</p>
                     <div class="text-button">
-                    <!-- <a href="#">Read More <i class="fa fa-arrow-right"></i></a> -->
                     </div>
                 </div>
                 </div>
@@ -95,7 +157,6 @@
                         de recouvrir respectivement aux dettes ou aux créances.
                     </p>
                     <div class="text-button">
-                    <!-- <a href="#">Read More <i class="fa fa-arrow-right"></i></a> -->
                     </div>
                 </div>
                 </div>
@@ -106,7 +167,6 @@
                     <p>Avec ses diverses fonctionalités, vous avez la possibilité de gérer efficacement à la fois 
                         le stock de vos marchandises et la trésorerie juste avec des clics.</p>
                     <div class="text-button">
-                    <!-- <a href="#">Read More <i class="fa fa-arrow-right"></i></a> -->
                     </div>
                 </div>
                 </div>
@@ -117,7 +177,6 @@
                     <p>Toujours dans l'optique de vous faciliter la tache, vous pouvez utiliser <b>Tocmanager</b>
                     n'importe où et n'importe quand; que ce soit sur téléphone ou sur votre ordinateur.</p>
                     <div class="text-button">
-                    <!-- <a href="#">Read More <i class="fa fa-arrow-right"></i></a> -->
                     </div>
                 </div>
                 </div>
@@ -125,35 +184,43 @@
             </div>
         </div>
 
-        
-        <!-- <div class="col-md-6 mx-auto mt-5">
-            <carousel
-                :autoplay = true
-                :autoplayTimeout = 3000
-                :navigationEnabled = "true"
-                navigationNextLabel="<i class='fa fa-arrow-right' aria-hidden='true'></i>"
-                navigationPrevLabel="<i class='fa fa-arrow-left' aria-hidden='true'></i>"
-                :paginationEnabled = true
-                :perPage="1"
-                :loop="true"
-            >
-                <slide>
-                    <div class="slide-img">
-                        <img src="images/carousel1.jpg" alt="First slide" width="800">
+        <div id="about" class="about-us section">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="section-heading">
+                  <h4 class="text-center">A propos de notre <em>équipe</em></h4>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="box-item">
+                      <h4>Maintenance</h4>
+                      <p>Résolution de tous les problèmes techniques</p>
                     </div>
-                </slide>
-                <slide>
-                    <div class="slide-img">
-                        <img src="images/carousel.jpg" alt="First slide" width="800">
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="box-item">
+                      <h4>Aide &amp; Support</h4>
+                      <p>Contactez - nous 24h/24 7j/7</p>
                     </div>
-                </slide>
-                <slide>
-                    <div class="slide-img">
-                        <img src="images/poignee.jpg" alt="First slide" width="800">
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="box-item">
+                      <h4>Manuels d'utilisation</h4>
+                      <p>Afin de faciliter votre expérience utilisateur</p>
                     </div>
-                </slide>
-            </carousel>
-        </div> -->
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="box-item">
+                      <h4>Co. Development</h4>
+                      <p>Lorem Ipsum Text</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div id="pricing" class="pricing-tables">
             <div class="container">
@@ -303,59 +370,97 @@
   </script>
   
   <style scoped>
+
+  
   .content{
     overflow: hidden;
-    background: #D3D4D6;
+  }
+
+  .navbar{
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+    height: 80px;
+  }
+   
+/* 
+---------------------------------------------
+Banner Style
+--------------------------------------------- 
+*/
+
+.main-banner {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  padding: 250px 120px 150px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.main-banner:after {
+  content: '';
+  background-image: url(/images/slider-left-dec.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.main-banner .left-content {
+  margin-right: 15px;
+}
+
+.main-banner .left-content h2 {
+  z-index: 2;
+  position: relative;
+  font-weight: 700;
+  line-height: 70px;
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.main-banner .left-content p {
+  z-index: 2;
+  position: relative;
+  margin-bottom: 45px;
+  color: #2a2a2a;
+  font-weight: 400;
+}
+
+.main-banner .left-content .first-button {
+  margin-right: 15px;
+}
+
+.main-banner .left-content .white-button {
+  display: inline-block;
+}
+
+.main-banner .right-image {
+  text-align: center;
+  position: relative;
+  z-index: 20;
+}
+
+.main-banner .right-image img {
+  width: 100%;
+}
+
+.main-banner .left-content .white-button a {
+  background-color: #4b8ef1;
+  color: #fff !important;
+}
+
+
+  .section2{
+    margin: 100px 0;
   }
 
   .navbar-toggler-icon{
     color: #fff;
   }
-
-  .first-section{
-    /* overflow: hidden; */
-    width: 100%;
-    margin-bottom: 100px;
-  }
-
-  .first-section img{
-    width: 100%;
-    z-index: 99;
-    position: relative;
-  }
-
-  .first-section p{
-    font-size: 20px;
-    font-weight: 300;
-  }
-
-  .first-section h2{
-    font-size: 40px;
-    font-weight: 700;
-  }
-
-  .homme{
-    padding: 0px 50px 50px 0;
-  }
-
-  
-  .rectangle-oblique{
-      position: absolute;
-      height: 500.69px;
-      /* left: 534px;
-      top: 70.67px; */
-      margin-top: 60px;
-      width: 50%;
-      background: linear-gradient(180deg, #2E9DDC 0%, #FFFAFA 100%);
-      /* border-radius: 475px; */
-      border-top-left-radius: 470px;
-      border-bottom-left-radius: 470px;
-      /* border-bottom-right-radius: 470px; */
-      /* transform: rotate(-14.07deg); */
-      z-index: 1;
-      overflow: hidden;
-  }
-
 
   .rectangle-homme{
       position: absolute;
@@ -390,7 +495,7 @@
   }
 
   .description h2{
-    color: rgb(66, 66, 247);
+    color: #2E9DDC;
     font-size: 30px;
     font-weight: 600;
     margin: 20px 0;
@@ -405,7 +510,7 @@ Services Style
 */
 
 .services {
-  padding: 130px 0;
+  /* padding: 130px 0; */
   position: relative;
   background-color: #fff;
 }
@@ -463,7 +568,8 @@ Services Style
   border-radius: 10px;
   border-top-right-radius: 50px;
   transition: all .3s;
-  height: 400px;
+  height: 450px;
+  margin: 20px 0;
 }
 
 .service-item .icon img {
@@ -486,10 +592,84 @@ Services Style
   text-align: justify;
 }
 
-
-.slide-img img{
-    width: 100%;
+.section3{
+  display: none;
 }
+
+
+
+/*
+---------------------------------------------
+About Us
+---------------------------------------------
+*/
+
+.about-us {
+  padding-top: 130px;
+  position: relative;
+}
+
+.about-us .section-heading {
+  margin-bottom: 45px;
+}
+
+.about-us .box-item {
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.07);
+  padding: 10px 30px;
+  background-color: #2E9DDC;
+  color: #fff;
+  border-radius: 40px;
+  margin-bottom: 30px;
+  height: 100px;
+  text-align: center;
+}
+
+.about-us .box-item h4 a {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 8px;
+  color: #2a2a2a;
+  transition: all .3s;
+}
+
+.about-us .box-item p {
+  margin-bottom: 0px;
+}
+
+.about-us .box-item:hover h4 a {
+  color: #4b8ef1;
+}
+
+.about-us .gradient-button {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.about-us span {
+  font-size: 14px;
+  color: #7a7a7a;
+}
+
+.about-us .right-image {
+  position: relative;
+  z-index: 1;
+}
+
+.about-us:after {
+  /* background-image: url(../images/about-bg.jpg); */
+  width: 777px;
+  height: 1132px;
+  content: '';
+  position: absolute;
+  background-repeat: no-repeat;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+
+
 
 
 /* 
@@ -782,8 +962,27 @@ footer{
 
 
   @media screen and (max-width: 900px) {
+    .navbar{
+      text-align: center;
+    }
+
+
+    .navbar .collapse{
+      border: 1px solid transparent;
+      margin: 10px 0;
+      padding-top: 5px;
+      padding-bottom: 15px;
+      background-color: #eaeaea;
+      z-index: 9;
+    }
+
+    .navbar .collapse ul li{
+      border-bottom: 1px solid rgb(177, 176, 176);
+      padding: 5px;
+    }
+
     .btns{
-        margin: 10px 0;
+        padding: 10px;
     }
 
     .service-item, .pricing-item-pro{
@@ -792,6 +991,18 @@ footer{
 
     .toc{
         margin-top: 80px;
+    }
+
+    .services{
+      margin: 100px 0;
+    }
+
+    .section3{
+      display: block;
+    }
+
+    .section31{
+      display: none;
     }
 
     .rectangle-oblique{
@@ -822,16 +1033,82 @@ footer{
         z-index: 1;
         overflow: hidden;
     }
-
+    
     .homme img{
         margin-top: -80px;
         margin-left: 30px;
     }
     .description{
-        margin-top: 50px;
-        margin-left: 30px;
+        margin: 0 30px;
     }
   }
+
+  
+
+/* 
+---------------------------------------------
+responsive
+--------------------------------------------- 
+*/
+
+
+
+@media (max-width: 1200px) {
+  
+  .main-banner .left-content h2 {
+    z-index: 2;
+    position: relative;
+    font-weight: 700;
+    line-height: 70px;
+    font-size: 50px;
+    margin-bottom: 20px;
+  }
+
+  .main-banner .left-content p {
+    margin-bottom: 45px;
+  }
+}
+
+@media (max-width: 992px) {
+  .header-area {
+    background-color: #fff;
+  }
+  .main-banner:after {
+    display: none;
+  } 
+  .main-banner .left-content h2 {
+    color: #2a2a2a;
+    margin-right: 0;
+  }
+  .main-banner .left-content p {
+    color: #afafaf;
+    margin-right: 0;
+  }
+  .main-banner .left-content .white-button a {
+    background-color: #4b8ef1;
+    color: #fff !important;
+  }
+  form#contact {
+    overflow: hidden;
+  }
+  .header-area .main-nav .logo h4 {
+    font-size: 20px;
+  }
+  .main-banner .left-content {
+    margin-right: 0px;
+  }
+  .main-banner {
+    text-align: center;
+    padding: 70px 0px 30px 0px;
+  }
+  .main-banner:before {
+    display: none;
+  }
+  .main-banner .right-image {
+    margin: 30px auto 0px auto;
+    text-align: center;
+  }
+}
   
   </style>
   
