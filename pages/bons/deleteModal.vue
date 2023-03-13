@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay" @click="$emit('close-modal')">
+  <div class="modal-overlay" >
     <div class="modaler text-center py-5">
       <div
         class="alert alert-danger justify-content-center"
