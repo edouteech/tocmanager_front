@@ -8,7 +8,12 @@
     </nav>
 
     <div class="container mb-5">
-      <h3 class="name text-center">Grand livre au {{ today }}</h3>
+      <div class="row mb-4">
+        <div class="col-8 text-start"><h3 class="name">Grand livre au {{ today }}</h3></div>
+        <div class="col-4 text-end">
+          <button class="btn btn-outline-dark web-btn mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+        </div>
+      </div>
       <table class="table" v-for="(compte, j) in comptes" :key="j">
         <thead>
           <tr class="table-primary">
@@ -126,6 +131,27 @@ export default {
           // let firstE = response.data.data.links.shift();
           // let lastE = response.data.data.links.splice(-1, 1);
         });
+    },
+    pdf() {
+      this.$axios.get('/book/download', {
+        params: {
+          compagnie_id: this.compagny
+        },
+        responseType: 'blob',
+        Accept: 'application/pdf'
+      }).then((response) => {
+        // console.log(response);
+        const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'Grand Livre Comptable au '+ this.today + '.pdf'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+        this.$toast('Téléchargement', {
+            icon: 'fa fa-check-circle',
+        })
+        this.$emit('close-modal')
+      })
     },
   },
 };
