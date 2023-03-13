@@ -1,33 +1,55 @@
 <template>
   <div>
-    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
+    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3 mb-5">
       <Sidebar />
-      <h3 class="name">Grand livre</h3>
       <Userinfo />
     </nav>
 
-    <div class="table-responsive container-fluid">
-      <table class="table table-borderless table-striped table-hover">
+    <div class="container mb-5">
+      <h3 class="name text-center">Grand livre au {{ today }}</h3>
+      <table class="table" v-for="(compte, j) in comptes" :key="j">
         <thead>
+          <tr class="table-primary">
+            <th scope="col" colspan="4">{{ compte.code }} {{ compte.name }}</th>
+          </tr>
           <tr>
-            <th colspan="3">Grand livre au {{today}}</th>
+            <th scope="col">Date</th>
+            <th scope="col">Libellé</th>
+            <th scope="col">Débit</th>
+            <th scope="col">Crédit</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(compte, j) in comptes" :key="j">
-            <table class="table table-borderless">
-              <tr>
-                <td colspan="3">{{ compte.name }}</td>
-              </tr>
-              <tr
-                v-for="(ligne_ecriture, i) in compte.ligne_ecritures"
-                :key="i"
-              >
-                <td>{{ ligne_ecriture.date }}</td>
-                <td>{{ ligne_ecriture.amount }}</td>
-                <td>{{ ligne_ecriture.side }}</td>
-              </tr>
-            </table>
+          <tr v-for="(ligne_ecriture, i) in compte.ligne_ecritures" :key="i">
+            <td>{{ ligne_ecriture.date }}</td>
+            <td>{{ligne_ecriture.ecriture.name_ecriture}}</td>
+            <td v-if="ligne_ecriture.side == 'Debit'">{{ ligne_ecriture.amount }}</td>
+            <td v-else></td>
+            <td v-if="ligne_ecriture.side == 'Credit'">{{ ligne_ecriture.amount }}</td>
+            <td v-else></td>
+          </tr>
+          <tr class="recap">
+            <td>---</td>
+            <td>Total</td>
+            <td> {{ compte.sum_debit }} </td>
+            <td> {{ compte.sum_amount - compte.sum_debit }} </td>
+          </tr>
+          <tr v-if="compte.sum_amount < 2 * compte.sum_debit" class="recap">
+            <td>---</td>
+            <td>Solde</td>
+            <td> {{ 2 * compte.sum_debit - compte.sum_amount }} </td>
+            <td></td>
+          </tr>
+          <tr v-if="compte.sum_amount > 2 * compte.sum_debit" class="recap">
+            <td>---</td>
+            <td>Solde</td>
+            <td></td>
+            <td> {{ compte.sum_amount - 2 * compte.sum_debit }} </td>
+          </tr>
+          <tr v-if="compte.sum_amount == 2 * compte.sum_debit" class="recap">
+            <td>Solde</td>
+            <td>0,00</td>
+            <td>0,00</td>
           </tr>
         </tbody>
       </table>
@@ -78,12 +100,12 @@ export default {
           },
         })
         .then((response) => {
-          // console.log(response.data.data.data);
-          this.comptes = response.data.data.data;
-          this.res_data = response.data.data;
-          this.total = response.data.data.total;
-          let firstE = response.data.data.links.shift();
-          let lastE = response.data.data.links.splice(-1, 1);
+          console.log(response.data);
+          this.comptes = response.data.data;
+          this.res_data = response.data;
+          // this.total = response.data.data.total;
+          // let firstE = response.data.data.links.shift();
+          // let lastE = response.data.data.links.splice(-1, 1);
         });
     },
   },
@@ -93,6 +115,11 @@ export default {
 <style scoped>
 .page {
   display: flex;
+}
+
+.recap {
+  background-color: black;
+  color:white;
 }
 
 .btn-group {
@@ -116,7 +143,7 @@ export default {
   cursor: pointer;
 }
 .table {
-  margin-top: 5%;
+  /* margin-top: 5%; */
   text-align: center;
 }
 
@@ -131,10 +158,10 @@ export default {
 thead tr {
   background-color: transparent;
 }
-
+/* 
 tbody tr:last-of-type {
   border-bottom: 2px solid rgb(140, 140, 250);
-}
+} */
 .action {
   display: flex;
 }
