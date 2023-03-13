@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay"  @click="$emit('close-modal')">
+  <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modaler" @click.stop>
       <img class="check" src="/images/eff.jpg" alt="" />
       <h6>Enregistré!</h6>
@@ -12,10 +12,9 @@
 
 
 <script>
-  export default {
-    name: 'SavedModal',
-   
-}
+export default {
+  name: "SavedModal",
+};
 </script>
 
 <style scoped>

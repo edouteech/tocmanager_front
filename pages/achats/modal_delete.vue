@@ -1,15 +1,14 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>                     
-          <p>Etes vous sur de vouloir supprimer définitivement cette facture ??? </p>
-          <div class="reponse">
-                <div class="yes"  @click="supAchat(infos)">
-                    Oui
-                </div>
-                <div class="no" @click="$emit('close-modal')">
-                    Non
-                </div>
-          </div>
+    <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
+      {{error}}
+    </div>  
+    <div class="modaler" @click.stop>
+      <p>Etes vous sur de vouloir supprimer définitivement cette facture ???</p>
+      <div class="reponse">
+        <div class="yes" @click="supAchat(infos)">Oui</div>
+        <div class="no" @click="$emit('close-modal')">Non</div>
+      </div>
     </div>
     <div class="close" @click="$emit('close-modal')">
       <img class="close-img" src="/images/fermer.png" alt="" />
@@ -18,64 +17,68 @@
 </template>
 
 <script>
-  export default {
-    name: 'deleteModal',
-    props: ['infos'],
-    data () {
-        return {
-            achat: "",
-        }
-    }, 
-    methods: {
-        supAchat(infos){
-            console.log(infos);
-            this.$axios.delete('/buys/' +infos,{
-            params: {
-              compagnie_id: localStorage.getItem('auth.company_id')
-            }})             
-            .then(response => {
-              // console.log(response.data.data);
-                  this.achat = response.data.data;
-                   this.$router.push({path:'/corbeille',})})                               
-        },
+export default {
+  name: "deleteModal",
+  props: ["infos"],
+  data() {
+    return {
+      achat: "",
+      error: null,
+    };
+  },
+  methods: {
+    supAchat(infos) {
+      this.$axios
+        .delete("/buys/" + infos, {
+          params: {
+            compagnie_id: localStorage.getItem("auth.company_id"),
+          },
+        })
+        .then((response) => {
+          if (response.data.status == "success") {
+            this.$emit("conf", { message: this.identifiant });
+            this.achat = response.data.data;
+            this.$router.push({ path: "/corbeille" });
+            this.$emit("close-modal");
+          } else {
+            this.error = response.data.message;
+          }
+        });
     },
-
-}
+  },
+};
 </script>
 
 <style scoped>
-
-.reponse{
-    display: flex;
-    
+.reponse {
+  display: flex;
 }
 
-.yes{
-    padding: 10px;
-    margin: 5%;
-    text-align: center;
-    border: 1px solid;
-    cursor: pointer;
-    margin-left: 30%;
-    border-radius: 10px;
+.yes {
+  padding: 10px;
+  margin: 5%;
+  text-align: center;
+  border: 1px solid;
+  cursor: pointer;
+  margin-left: 30%;
+  border-radius: 10px;
 }
-.no{
-    padding: 10px;
-    margin: 5%;
-    text-align: center;
-    border: 1px solid;
-    cursor: pointer;
-    border-radius: 10px;
-}
-
-.yes:hover{
-    background-color: rgb(201, 220, 251);
+.no {
+  padding: 10px;
+  margin: 5%;
+  text-align: center;
+  border: 1px solid;
+  cursor: pointer;
+  border-radius: 10px;
 }
 
-.no:hover{
-    background-color: rgb(201, 220, 251);
+.yes:hover {
+  background-color: rgb(201, 220, 251);
 }
 
+.no:hover {
+  background-color: rgb(201, 220, 251);
+}
 
 .modal-overlay {
   position: fixed;
@@ -85,18 +88,20 @@
   right: 0;
   display: flex;
   justify-content: center;
-  background-color: rgba(239, 239, 239, 0.803);;
+  background-color: rgba(239, 239, 239, 0.803);
 }
 
 .modaler {
   text-align: center;
-  background-color: rgb(209, 0, 0);;
-  height: 250px;
+  background-color: rgb(209, 0, 0);
+  height: max-content;
   width: 500px;
   margin-top: 12%;
   border-radius: 15px;
   padding: 30px 0;
 }
+
+
 .close {
   margin: 12% 0 0 16px;
   cursor: pointer;

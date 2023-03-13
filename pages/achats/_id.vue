@@ -8,6 +8,7 @@
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
       {{error}} <br>
     </div>
+
     <div class="app-main__outer py-5 px-2">
         <h4>Modifier les informations de cet achat</h4><hr>
         <form action="" method="POST">
@@ -33,21 +34,21 @@
                 </div> <hr>
             
             
-            <div class="add_buttons row col-md-12 boom"> 
-                <div class="d-flex col-md-8">
-                    <div class="col-md-4"><button class="btn btn-outline-primary col-md-11 mx-auto " @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                    <div class="col-md-8"><button class="btn btn-outline-success col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>  
-                </div>         
-                <div class="col-md-4 mt-2">
-                    <div class="d-flex code_recherche">
-                        <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                    </div>
-                    <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
-                        {{codeError}} 
-                    </div> 
-                </div>                    
-            </div>
+                <div class="add_buttons row col-md-12 boom"> 
+                    <div class="d-flex col-md-8">
+                        <div class="col-md-4"><button class="btn btn-outline-primary col-md-11 mx-auto " @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                        <div class="col-md-8"><button class="btn btn-outline-success col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>  
+                    </div>         
+                    <div class="col-md-4 mt-2">
+                        <div class="d-flex code_recherche">
+                            <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
+                            {{codeError}} 
+                        </div> 
+                    </div>                    
+                </div>
             
             <div class="commande table-responsive">
                 <table class="table table-bordered">
@@ -56,8 +57,6 @@
                             <th>Désignation</th>
                             <th>Quantité voulue</th>
                             <th>Prix unitaire</th>
-                            <!-- <th scope="col">Réduction (Prix ou %)</th> -->
-                            <!-- <th>Taxe appliquée (%)</th> -->
                             <th>Total</th>                     
                         </tr>
                     </thead>
@@ -65,9 +64,6 @@
                     <tbody>
                         <tr v-for="(line, index) in form.buy_lines" :key="index" v-show="line._destroy != 1">
                             <td class="table-coll">
-                                <!-- <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
-                                    <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
-                                </select> -->
                                 <v-select 
                                     placeholder="Choississez..."
                                     v-model="line.product_id"
@@ -80,28 +76,28 @@
                             </td>
                             <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
                             <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
-                                <!-- <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td> -->
-                            <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                     -->
                             <td class="table-col"><input class="form-control" type="num" v-model="line.amount" autocomplete="off" required disabled></td>
                             <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                         </tr>
                     </tbody>
                 </table>     
             </div><br>
+
             <div class="row">
-                    <div class="form-group col-md-4"> Réduction (Prix ou %): <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>  
-                    <div class="form-group col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
-                    <div class="form-group col-md-4">
-                        <div class="form-group1 ">
-                            Méthode de paiement
-                        <select class="form-control" v-model="form.payment">
-                            <option value="">Choississez</option>
-                            <option v-for="(methode, j) in methodes" :key="j" :value="methode" >{{methode}}</option>
-                        </select>
-                        </div>
+                <div class="form-group col-md-4"> Réduction (Prix ou %): <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>  
+                <div class="form-group col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+                <div class="form-group col-md-4">
+                    <div class="form-group1 ">
+                        Méthode de paiement
+                    <select class="form-control" v-model="form.payment">
+                        <option value="">Choississez</option>
+                        <option v-for="(methode, j) in methodes" :key="j" :value="methode" >{{methode}}</option>
+                    </select>
                     </div>
                 </div>
+            </div>
             <br><br><br><br><br>
+
             <div class="col-md-6 mx-auto">
                 <button class="custom-btn btn-5" v-on:click.prevent="submit()">Modifier la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
             </div>
@@ -177,14 +173,14 @@ export default {
       this.refresh()
       this.recupProduct()
       this.payment()
+
+      //récupère la facture concernée
       this.$axios.get('buys/'+ this.$route.params.id,{params: {
             compagnie_id: localStorage.getItem('auth.company_id')
           }
         })
           .then(response => {
-            console.log(response.data.data[0] )
             let achat = response.data.data[0];
-            // this.categories = response.data.data
             this.form.date_buy = moment(achat.date_buy).format("YYYY-MM-DDThh:mm"),
             this.form.supplier_id = achat.supplier.name,
             this.form.buy_lines = achat.buy_lines,   
@@ -196,31 +192,10 @@ export default {
           }        
         )          
     },
+
+
     methods: {
-        choiceProd(designation,i){
-            console.log(i);
-            let line = this.form.buy_lines[i]
-            this.element_searchProd = designation.name
-            line.product_id = designation.id
-            this.afficheProd = 0
-        },
-
-        searchProd(){
-            this.afficheProd =1
-            this.$axios.get('/products',{params: {
-                compagnie_id: localStorage.getItem('auth.company_id'),
-                search: this.element_searchProd,
-                is_paginated: 0
-            }
-            })
-            .then(response => {
-                // console.log(response.data);
-                this.designations = response.data.data 
-            
-            })
-        },
-
-
+        //ajouter un produit avec son code
         async codeAdd(){
           await this.$axios.get('/products/search',{params: {
             compagnie_id: localStorage.getItem('auth.company_id'),
@@ -228,7 +203,6 @@ export default {
           }
           })
           .then(response => {
-            // console.log(response.data);
             if(response.data.status == "success"){
                 this.codeError= null
                 this.codes = response.data.data;
@@ -250,44 +224,26 @@ export default {
 
         },
 
-        choiceCli(acteur){
-            this.element_searchCli = acteur.name
-            this.form.supplier_id = acteur.id
-            this.afficheCli= 0
-        },
 
-        searchCli(){
-        this.afficheCli =1
-        this.$axios.get('/suppliers',{params: {
-            compagnie_id: localStorage.getItem('auth.company_id'),
-            search: this.element_searchCli,
-            is_paginated: 0
-        }
-        })
-        .then(response => {
-            // console.log(response.data);
-            this.acteurs = response.data.data 
-        
-        })
-        },
-
+        //récupère les moyens de paiements
         payment(){
             this.$axios.get('/invoice/payments',{params: {
             compagnie_id: localStorage.getItem('auth.company_id')
           }
-          }).then(response =>
-            {
-                // console.log(response); 
-                this.methodes = response.data.data })
+          }).then(response =>{ 
+                this.methodes = response.data.data 
+          })
         },
 
         
+        //ajouter une ligne d'achat
         addLine(){
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});
         },
 
+
+        //supprimer une ligne d'achat
         deleteLine(index){
-        //   this.form.buy_lines.splice(index, 1)
           if(this.form.buy_lines[index].id){
             this.form.buy_lines[index]["_destroy"] = 1
             let lineDestroy = this.form.buy_lines[index].amount
@@ -296,8 +252,6 @@ export default {
             for (let j = 0; j < this.form.buy_lines.length; j++) {
                 sum += this.form.buy_lines[j].amount;
             }
-            // this.form.amount = sum - lineDestroy;
-            // this.form.amount_ttc = sum - lineDestroy;
             this.form.amount =  sum - lineDestroy;
           }
           else{
@@ -306,17 +260,16 @@ export default {
             for (let j = 0; j < this.form.buy_lines.length; j++) {
                 sum += this.form.buy_lines[j].amount;
             }
-            // this.form.amount = sum;
-            // this.form.amount_ttc = sum;
             this.form.amount =  sum - lineDestroy;
           }
         },
         
+
+        //modifier la facture concernée
         async submit(){
             await this.$axios.get('/buys/'+ this.$route.params.id,{params: {
                 compagnie_id: localStorage.getItem('auth.company_id')}
             }).then(response => {
-                // console.log(response.data.data[0] )
                 let achat = response.data.data[0];
                     this.$axios.put('/buys/' +this.$route.params.id,{
                         id: this.$route.params.id,
@@ -331,9 +284,6 @@ export default {
                         buy_lines: this.form.buy_lines,  
                         compagnie_id: localStorage.getItem('auth.company_id')
                         }).then(response =>{ 
-                            console.log( response ) 
-                            this.error = response.data.message
-                            console.log(this.error)
                             if(response.data.status == 'success'){
                                 this.$router.push({path:'/ventes/list_vente'})
                             }
@@ -341,33 +291,36 @@ export default {
                                 this.error = response.data.message
                             }
                         }).catch( err => console.log( err ) )
-
-               
-                    }) 
+            }) 
                       
         },
          
 
+        //récupère la liste des fournisseurs
         refresh(){
             this.$axios.get('/suppliers',{params: {
                 is_paginated: 0,
                 compagnie_id: localStorage.getItem('auth.company_id')
             }
             }).then(response => {
-                // console.log(response);
-            this.fournisseurs = response.data.data})
+                this.fournisseurs = response.data.data
+            })
         },
 
+
+        //récupère la liste des produits
         recupProduct(){
             this.$axios.get('/products',{params: {
-            compagnie_id: localStorage.getItem('auth.company_id'),
-            is_paginated: 0
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                is_paginated: 0
             }
             }).then(response => {
-                // console.log(response.data.data.data);
-            this.produits = response.data.data}) 
+                this.produits = response.data.data
+            }) 
         },
 
+
+        //changer le montant en fonction de la qualité
         quantityChange(index){
             let line = this.form.buy_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
@@ -383,6 +336,8 @@ export default {
                 
         },
 
+
+        //reduction du montant dans les lignes de vente
         reduceChange(index){
             let line = this.form.buy_lines[index]
             let calculQ = Number(line.price) * Number(line.quantity)
@@ -418,6 +373,8 @@ export default {
                 }   
         },
 
+
+        //choisir un produit dans les lignes de vente
         productChange(IdProduit, IndexBuyLines){
             for(let k = 0; k <= this.produits.length; k++){
                 if(this.produits[k].id == IdProduit){
@@ -428,8 +385,6 @@ export default {
                     this.form.buy_lines[IndexBuyLines].quantity = 1
                     this.form.buy_lines[IndexBuyLines].discount = 0
                     this.form.buy_lines[IndexBuyLines].amount = ProdPrice
-                    // this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
-                    // this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1);  
                     let sum = 0;
                     let lineDestroy = 0
                     for (let j = 0; j < this.form.buy_lines.length; j++) {

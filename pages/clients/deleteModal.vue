@@ -54,8 +54,6 @@
   
   
   <style scoped>
-
-  
   .modal-overlay {
     position: fixed;
     top: 0;
