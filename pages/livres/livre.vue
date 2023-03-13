@@ -17,7 +17,7 @@
       <table class="table" v-for="(compte, j) in comptes" :key="j">
         <thead>
           <tr class="table-primary">
-            <th scope="col" colspan="4">{{ compte.code }} {{ compte.name }}</th>
+            <th scope="col" colspan="4">Compte {{ compte.code }} {{ compte.name }}</th>
           </tr>
           <tr>
             <th scope="col">Date</th>
