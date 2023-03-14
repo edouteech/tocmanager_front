@@ -77,7 +77,7 @@ export default {
   width: 600px;
   margin-top: 15%;
   /* border-radius: 20px; */
-  height: 200px;
+  height: max-content;
   padding: 1%;
   box-shadow: 50px;
 }

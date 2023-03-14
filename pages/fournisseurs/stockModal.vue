@@ -1,112 +1,117 @@
 <template>
-    <div class="modal-overlay"  @click="$emit('close-modal')">
-      <div class="modaler" @click.stop>
-        <h6 class="text-center">Télécharger la fiche de commande du fournisseur !</h6>
-        <form action="" class="my-5">
-            <p>Choississez ou non un intervalle de dates</p>
-            <div class="range">
-                <input class="form-control" type="date"  v-model="form.date_debut" />  
-                <input  class="form-control" type="date"  v-model="form.date_fin"  />  
-            </div> 
-            <button class="btn btn-outline-success" @click.prevent="pdf()">Télécharger</button> 
-        </form>
-      </div>
+  <div class="modal-overlay" @click="$emit('close-modal')">
+    <div class="modaler">
+      <h6 class="text-center">
+        Télécharger la fiche de commande du fournisseur !
+      </h6>
+      <form action="" class="my-5">
+        <p>Choississez ou non un intervalle de dates</p>
+        <div class="range">
+          <input class="form-control" type="date" v-model="form.date_debut" />
+          <input class="form-control" type="date" v-model="form.date_fin" />
+        </div>
+        <button class="btn btn-outline-success" @click.prevent="pdf()">
+          Télécharger
+        </button>
+      </form>
     </div>
-  </template>
+  </div>
+</template>
   
   
   <script>
-    export default {
-      name: 'stockModal',
-      props: ['cli', 'cli_name'],
-      data () {
-        return{
-            form: {
-                date_debut: "",
-                date_fin:""
-            },
-        }
+export default {
+  name: "stockModal",
+  props: ["cli", "cli_name"],
+  data() {
+    return {
+      form: {
+        date_debut: "",
+        date_fin: "",
       },
+    };
+  },
 
-      methods:{
-        pdf() {
-          this.$axios.get('/suppliers/'+this.cli+'/download', {
-            params: {
-              compagnie_id: localStorage.getItem('auth.company_id'),
-              start_at: this.form.date_debut,
-              end_at: this.form.date_fin
-            },
-            responseType: 'blob',
-            Accept: 'application/pdf'
-          }).then((response) => {
-            // console.log(response);
-            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', this.cli_name+'_stock.pdf'); //or any other extension
-            document.body.appendChild(link);
-            link.click();
-            this.$toast('Téléchargement', {
-                icon: 'fa fa-check-circle',
-            })
-            this.$emit('close-modal')
-          })
-        },
-      }
-      
-     
-  }
-  </script>
+  methods: {
+    //exportation en pdf
+    pdf() {
+      this.$axios
+        .get("/suppliers/" + this.cli + "/download", {
+          params: {
+            compagnie_id: localStorage.getItem("auth.company_id"),
+            start_at: this.form.date_debut,
+            end_at: this.form.date_fin,
+          },
+          responseType: "blob",
+          Accept: "application/pdf",
+        })
+        .then((response) => {
+          const url = window.URL.createObjectURL(
+            new Blob([response.data], { type: "application/pdf" })
+          );
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", this.cli_name + "_stock.pdf");
+          document.body.appendChild(link);
+          link.click();
+          this.$toast("Téléchargement", {
+            icon: "fa fa-check-circle",
+          });
+          this.$emit("close-modal");
+        });
+    },
+  },
+};
+</script>
   
   <style scoped>
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    background-color: #e3e3e3da;
-    z-index: 999;
-  }
-  
-  .modaler {
-    background-color: rgb(45, 44, 44);
-    height: 400px;
-    width: 600px;
-    margin: auto;
-    padding: 60px 0;
-    border-radius: 20px;
-    color: #fff;
-    padding: 5px 15px;
-  }
-  .close {
-    margin: 10% 0 0 16px;
-    cursor: pointer;
-  }
-  
-  .close-img {
-    width: 25px;
-  }
-  
-  .check {
-    width: 150px;
-  }
-  
-  h6 {
-    font-weight: 500;
-    font-size: 28px;
-    margin: 20px 0;
-  }
-  
-  p {
-    font-size: 16px;
-    margin: 20px 0;
-  }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #e3e3e3da;
+  z-index: 999;
+}
 
-  
-.range{
+.modaler {
+  background-color: rgb(45, 44, 44);
+  height: 400px;
+  width: 600px;
+  margin: auto;
+  padding: 60px 0;
+  border-radius: 20px;
+  color: #fff;
+  padding: 5px 15px;
+}
+.close {
+  margin: 10% 0 0 16px;
+  cursor: pointer;
+}
+
+.close-img {
+  width: 25px;
+}
+
+.check {
+  width: 150px;
+}
+
+h6 {
+  font-weight: 500;
+  font-size: 28px;
+  margin: 20px 0;
+}
+
+p {
+  font-size: 16px;
+  margin: 20px 0;
+}
+
+.range {
   display: flex;
   /* border: 1px solid gainsboro; */
   border-radius: 10px;
@@ -114,21 +119,18 @@
   margin-bottom: 2%;
   margin-top: 2%;
   font-size: 18px;
-
 }
 
-.range input{
+.range input {
   margin-right: 2%;
 }
 
-   
 @media screen and (max-width: 900px) {
-.range input{
-  width: 45%;
+  .range input {
+    width: 45%;
+  }
 }
-}
-.range{
+.range {
   margin: 30px 0;
 }
-
-  </style>
+</style>
