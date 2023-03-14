@@ -534,10 +534,6 @@ export default {
   font-weight: bold;
 }
 
-.app-main__outer {
-  overflow: auto;
-}
-
 .fa {
   margin: 0 5px;
   font-size: 22px;

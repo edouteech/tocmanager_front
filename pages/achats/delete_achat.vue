@@ -9,6 +9,13 @@
     <div class="app-main__outer py-5 px-2">
       <h4>Factures supprimées</h4>
       <hr />
+      <div
+        class="alert alert-danger justify-content-center"
+        role="alert"
+        v-if="error"
+      >
+        {{ error }}
+      </div>
       <div class="table-responsive">
         <table class="table table-hover">
           <thead>
@@ -133,6 +140,7 @@ export default {
 
   data() {
     return {
+      error: null,
       links: [],
       res_data: null,
       showModal: false,
@@ -174,8 +182,16 @@ export default {
           },
         })
         .then((response) => {
-          this.achat = response.data.data;
-          this.$router.push({ path: "/achats/list_achat" });
+          if (response.data.status == "success") {
+            this.achat = response.data.data;
+            this.$router.push({ path: "/achats/list_achat" });
+            this.$toast("Restauration de la facture !!! ", {
+              icon: "fa fa-check-circle",
+            });
+            this.$emit("close-modal");
+          } else {
+            this.error = response.data.message;
+          }
         });
     },
 

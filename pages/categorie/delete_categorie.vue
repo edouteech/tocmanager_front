@@ -9,6 +9,13 @@
     <div class="app-main__outer py-5 px-2">
       <h4>Catégories supprimées</h4>
       <hr />
+      <div
+        class="alert alert-danger justify-content-center"
+        role="alert"
+        v-if="error"
+      >
+        {{ error }}
+      </div>
       <div class="table-responsive">
         <table class="table table-hover">
           <thead>
@@ -106,7 +113,6 @@
     </div>
     <br />
 
-    <!-- <pre> {{res_data}}</pre> -->
     <deleteModal
       :infos="identifiant"
       v-show="showModal"
@@ -130,6 +136,7 @@ export default {
 
   data() {
     return {
+      error: null,
       links: [],
       res_data: null,
       showModal: false,
@@ -172,8 +179,16 @@ export default {
           },
         })
         .then((response) => {
-          this.categorie = response.data.data;
-          this.$router.push({ path: "/categorie/list_categorie" });
+          if (response.data.status == "success") {
+            this.categorie = response.data.data;
+            this.$router.push({ path: "/categorie/list_categorie" });
+            this.$toast("Restauration de la catégorie !!! ", {
+              icon: "fa fa-check-circle",
+            });
+            this.$emit("close-modal");
+          } else {
+            this.error = response.data.message;
+          }
         });
     },
 
