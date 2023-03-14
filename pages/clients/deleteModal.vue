@@ -46,6 +46,9 @@ export default {
         })
         .then((response) => {
           if (response.data.status == "success") {
+            this.$toast("Suppression !!!", {
+              icon: "fa fa-check-circle",
+            });
             this.$emit("conf", { message: this.identifiant });
             this.$emit("close-modal");
           } else {
