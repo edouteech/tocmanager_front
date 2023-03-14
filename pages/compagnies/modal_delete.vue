@@ -1,15 +1,20 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop>                     
-          <p>Etes vous sur de vouloir supprimer définitivement cette compagnie ??? </p>
-          <div class="reponse">
-                <div class="yes"  @click="supCompagnie(infos)">
-                    Oui
-                </div>
-                <div class="no" @click="$emit('close-modal')">
-                    Non
-                </div>
-          </div>
+    <div class="modal">
+      <div
+        class="alert alert-danger justify-content-center"
+        role="alert"
+        v-if="error"
+      >
+        {{ error }}
+      </div>
+      <p>
+        Etes vous sur de vouloir supprimer définitivement cette compagnie ???
+      </p>
+      <div class="reponse">
+        <div class="yes" @click="supCompagnie(infos)">Oui</div>
+        <div class="no" @click="$emit('close-modal')">Non</div>
+      </div>
     </div>
     <div class="close" @click="$emit('close-modal')">
       <img class="close-img" src="/images/fermer.png" alt="" />
@@ -18,68 +23,65 @@
 </template>
 
 <script>
-  export default {
-    name: 'deleteModal',
-    props: ['infos'],
-    data () {
-        return {
-            compagnie: "",
+export default {
+  name: "deleteModal",
+  props: ["infos"],
+  data() {
+    return {
+      compagnie: "",
+      error: null,
+    };
+  },
+  methods: {
+    //suppression définitive de compagnie
+    supCompagnie(infos) {
+      this.$axios.delete("/destroy/compagnie/" + infos).then((response) => {
+        if (response.data.status == "success") {
+          this.compagnie = response.data.data;
+          this.$router.push({ path: "/corbeille" });
+        } else {
+          this.error = response.data.message;
         }
-    }, 
-    methods: {
-        supCompagnie(infos){
-            console.log(infos);
-            this.$axios.delete('/destroy/compagnie/' +infos)      
-            .then(response => {console.log(response.data.data);
-                  this.compagnie = response.data.data;
-                   this.$router.push({path:'/corbeille',})})                               
-        },
-
-        refresh(){
-          this.$axios.get('/get/compagnie')
-          .then(response => {console.log(response);})
-        }
+      });
     },
 
-}    
-        
-            
-            
-        
+    refresh() {
+      this.$axios.get("/get/compagnie").then((response) => {});
+    },
+  },
+};
 </script>
 
 <style scoped>
-.reponse{
-    display: flex;
-    
+.reponse {
+  display: flex;
 }
 
-.yes{
-    padding: 10px;
-    margin: 5%;
-    text-align: center;
-    border: 1px solid;
-    cursor: pointer;
-    border-radius: 10px;
-    margin-left: 30%;
+.yes {
+  padding: 10px;
+  margin: 5%;
+  text-align: center;
+  border: 1px solid;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-left: 30%;
 }
-.no{
-    padding: 10px;
-    margin: 5%;
-    text-align: center;
-    border: 1px solid;
-    cursor: pointer;
-    border-radius: 10px;
-}
-
-.yes:hover{
-    background-color: rgb(201, 220, 251);
+.no {
+  padding: 10px;
+  margin: 5%;
+  text-align: center;
+  border: 1px solid;
+  cursor: pointer;
+  border-radius: 10px;
 }
 
-.no:hover{
-    background-color: rgb(201, 220, 251);
+.yes:hover {
+  background-color: rgb(201, 220, 251);
 }
 
+.no:hover {
+  background-color: rgb(201, 220, 251);
+}
 
 .modal-overlay {
   position: fixed;
