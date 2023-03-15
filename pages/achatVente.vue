@@ -46,7 +46,7 @@ export default {
 
 <style scoped>
 .app-main__outer {
-  overflow: auto;
+  overflow: none;
 }
 .fa {
   font-size: 35px;

@@ -210,7 +210,7 @@ export default {
 }
 
 .app-main__outer {
-  overflow: auto;
+  overflow: none;
 }
 
 .action {

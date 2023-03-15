@@ -342,7 +342,7 @@ form {
 }
 
 .app-main__outer {
-  overflow: auto;
+  overflow: none;
 }
 
 input {

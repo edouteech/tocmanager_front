@@ -145,7 +145,7 @@ export default {
 
 <style scoped>
 .app-main__outer {
-  overflow: auto;
+  overflow: none;
 }
 
 .input-field {

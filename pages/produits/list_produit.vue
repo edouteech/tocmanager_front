@@ -870,7 +870,7 @@ export default {
   font-weight: bold;
 }
 .app-main__outer {
-  overflow: auto;
+  overflow: none;
 }
 .fa {
   margin: 2px 10px;

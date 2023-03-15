@@ -221,7 +221,7 @@ form {
   margin-top: 5%;
 }
 .app-main__outer {
-  overflow: auto;
+  overflow: none;
 }
 
 .fa {
