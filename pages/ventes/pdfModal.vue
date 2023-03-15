@@ -1,6 +1,6 @@
 <template>
     <div class="modal-overlay"  @click="$emit('close-modal')">
-      <div class="modaler" @click.stop>
+      <div class="modaler">
         <h6 class="text-center">Télécharger les factures de vente !</h6>
         <form action="" class="my-5">
             <p>Choississez ou non un intervalle de dates</p>
@@ -28,6 +28,7 @@
       },
 
       methods:{
+        //exportation en pdf
         pdf() {
           this.$axios.get('/sells/download', {
             params: {
@@ -38,11 +39,10 @@
             responseType: 'blob',
             Accept: 'application/pdf'
           }).then((response) => {
-            // console.log(response);
             const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'factures_ventes.pdf'); //or any other extension
+            link.setAttribute('download', 'factures_ventes.pdf');
             document.body.appendChild(link);
             link.click();
             this.$toast('Téléchargement', {
