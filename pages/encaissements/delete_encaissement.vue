@@ -37,13 +37,13 @@
                   class="action d-flex aligns-items-center justify-content-center"
                 >
                   <div class="sup" @click="supEncaissement(encaissement.id)">
-                    Supprimer définitivement
+                    Supprimer
                   </div>
                   <div
                     class="restore"
                     @click="restaurerEncaissement(encaissement.id)"
                   >
-                    Restaurer cet encaissement
+                    Restaurer
                   </div>
                 </div>
               </td>

@@ -41,10 +41,10 @@
                   class="action d-flex aligns-items-center justify-content-center"
                 >
                   <div class="sup" @click="supVente(vente.id)">
-                    Supprimer définitivement
+                    Supprimer
                   </div>
                   <div class="restore" @click="restaurerVente(vente.id)">
-                    Restaurer cette facture
+                    Restaurer
                   </div>
                 </div>
               </td>

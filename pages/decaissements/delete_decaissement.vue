@@ -44,13 +44,13 @@
                   class="action d-flex aligns-items-center justify-content-center"
                 >
                   <div class="sup" @click="supDecaissement(decaissement.id)">
-                    Supprimer définitivement
+                    Supprimer
                   </div>
                   <div
                     class="restore"
                     @click="restaurerDecaissement(decaissement.id)"
                   >
-                    Restaurer ce décaissement
+                    Restaurer
                   </div>
                 </div>
               </td>

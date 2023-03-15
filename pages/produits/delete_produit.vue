@@ -43,10 +43,10 @@
                   class="action d-flex aligns-items-center justify-content-center"
                 >
                   <div class="sup" @click="supProduit(produit.id)">
-                    Supprimer définitivement
+                    Supprimer
                   </div>
                   <div class="restore" @click="restaurerProduit(produit.id)">
-                    Restaurer ce produit
+                    Restaurer
                   </div>
                 </div>
               </td>

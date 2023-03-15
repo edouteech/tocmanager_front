@@ -41,10 +41,10 @@
                   class="action d-flex aligns-items-center justify-content-center"
                 >
                   <div class="sup" @click="supClient(client.id)">
-                    Supprimer définitivement
+                    Supprimer
                   </div>
                   <div class="restore" @click="restaurerClient(client.id)">
-                    Restaurer ce client
+                    Restaurer
                   </div>
                 </div>
               </td>

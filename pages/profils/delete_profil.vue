@@ -57,10 +57,10 @@
                     class="action d-flex aligns-items-center justify-content-center"
                   >
                     <div class="sup" @click="supProfil(user.id)">
-                      Supprimer définitivement
+                      Supprimer
                     </div>
                     <div class="restore" @click="restaurerUser(user.id)">
-                      Restaurer cet utilisateur
+                      Restaurer
                     </div>
                   </div>
                 </td>

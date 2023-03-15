@@ -40,13 +40,13 @@
                   class="action d-flex aligns-items-center justify-content-center"
                 >
                   <div class="sup" @click="supFournisseur(fournisseur.id)">
-                    Supprimer définitivement
+                    Supprimer
                   </div>
                   <div
                     class="restore"
                     @click="restaurerFournisseur(fournisseur.id)"
                   >
-                    Restaurer ce fournisseur
+                    Restaurer
                   </div>
                 </div>
               </td>

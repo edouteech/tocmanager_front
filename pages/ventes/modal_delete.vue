@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay" @click="$emit('close-modal')">
+  <div class="modal-overlay">
     <div class="modaler">
       <div
         class="alert alert-danger justify-content-center"
@@ -9,9 +9,9 @@
         {{ error }}
       </div>
       <p>Etes vous sur de vouloir supprimer définitivement cette facture ???</p>
-      <div class="reponse">
-        <div class="yes" @click="supVente(infos)">Oui</div>
-        <div class="no" @click="$emit('close-modal')">Non</div>
+      <div class="d-flex">
+        <button class="btn btn-outline-danger mx-auto" @click="supVente(infos)">Oui</button>
+        <button class="btn btn-outline-success mx-auto" @click="$emit('close-modal')">Non</button>
       </div>
     </div>
     <div class="close" @click="$emit('close-modal')">
@@ -41,7 +41,7 @@ export default {
         })
         .then((response) => {
           if (response.data.status == "success") {
-            this.$toast("Suppression !!!", {
+            this.$toast("Suppression...", {
               icon: "fa fa-check-circle",
             });
             this.vente = response.data.data;
@@ -56,38 +56,9 @@ export default {
 </script>
 
 <style scoped>
-.reponse {
-  display: flex;
-}
-
-.yes {
-  padding: 10px;
-  margin: 5%;
-  text-align: center;
-  border: 1px solid;
-  cursor: pointer;
-  margin-left: 30%;
-  border-radius: 10px;
-}
-.no {
-  padding: 10px;
-  margin: 5%;
-  text-align: center;
-  border: 1px solid;
-  cursor: pointer;
-  border-radius: 10px;
-}
-
-.yes:hover {
-  background-color: rgb(201, 220, 251);
-}
-
-.no:hover {
-  background-color: rgb(201, 220, 251);
-}
 
 .modal-overlay {
-  z-index: 99;
+  z-index: 999;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -100,13 +71,16 @@ export default {
 
 .modaler {
   text-align: center;
-  background-color: rgb(209, 0, 0);
+  color: #fff;
+  background-color: rgb(46, 46, 46);
   height: max-content;
-  width: 500px;
+  width: 600px;
   margin-top: 12%;
   border-radius: 15px;
-  padding: 30px 0;
+  padding: 50px 20px;
 }
+
+
 .close {
   margin: 12% 0 0 16px;
   cursor: pointer;
@@ -132,13 +106,5 @@ p {
   margin: 20px 5px;
 }
 
-button {
-  background-color: #ac003e;
-  width: 150px;
-  height: 40px;
-  color: white;
-  font-size: 14px;
-  border-radius: 16px;
-  margin-top: 50px;
-}
+
 </style>

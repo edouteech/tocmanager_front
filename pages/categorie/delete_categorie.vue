@@ -32,13 +32,13 @@
                   class="action d-flex aligns-items-center justify-content-center"
                 >
                   <div class="sup" @click="supCategorie(categorie.id)">
-                    Supprimer définitivement
+                    Supprimer
                   </div>
                   <div
                     class="restore"
                     @click="restaurerCategorie(categorie.id)"
                   >
-                    Restaurer cette categorie
+                    Restaurer
                   </div>
                 </div>
               </td>

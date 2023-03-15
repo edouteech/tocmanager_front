@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay" @click="$emit('close-modal')">
+  <div class="modal-overlay">
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
       {{error}}
     </div>  
@@ -37,9 +37,10 @@ export default {
         })
         .then((response) => {
           if (response.data.status == "success") {
-            this.$emit("conf", { message: this.identifiant });
-            this.achat = response.data.data;
             this.$router.push({ path: "/corbeille" });
+            this.$toast("Suppression... ", {
+              icon: "fa fa-check-circle",
+            });
             this.$emit("close-modal");
           } else {
             this.error = response.data.message;
@@ -53,7 +54,7 @@ export default {
 <style scoped>
 
 .modal-overlay {
-  z-index: 99;
+  z-index: 999;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -66,9 +67,10 @@ export default {
 
 .modaler {
   text-align: center;
-  background-color: rgb(240, 179, 179);
+  color: #fff;
+  background-color: rgb(46, 46, 46);
   height: max-content;
-  width: 500px;
+  width: 600px;
   margin-top: 12%;
   border-radius: 15px;
   padding: 50px 20px;
