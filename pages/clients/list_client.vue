@@ -642,6 +642,10 @@ export default {
         });
     },
 
+    //ajout des valeurs dans checks
+    checkbox(id) {},
+
+
     //importation des clients
     submitFile() {
       let formData = new FormData();

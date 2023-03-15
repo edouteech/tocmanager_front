@@ -530,6 +530,10 @@ export default {
         });
     },
 
+    //ajout des valeurs dans checks
+    checkbox(id) {},
+
+    
     //détails de l'encaissement
     voirEncaissement(id) {
       this.showModal = true;

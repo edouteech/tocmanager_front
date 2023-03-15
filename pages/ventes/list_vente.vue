@@ -624,6 +624,10 @@ export default {
       this.selection = 1;
     },
 
+    //ajout des valeurs dans checks
+    checkbox(id) {},
+
+
     //fermer les cases à cocher
     deselectionner() {
       this.selection = 0;

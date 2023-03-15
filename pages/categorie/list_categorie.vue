@@ -477,6 +477,10 @@ export default {
         });
     },
 
+    //ajout des valeurs dans checks
+    checkbox(id) {},
+
+    
     //modal de confirmation pour suppression
     deleteCategorie(id) {
       this.showModalDelete = true;

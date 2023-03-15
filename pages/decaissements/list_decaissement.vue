@@ -511,6 +511,10 @@ export default {
       this.refresh();
     },
 
+    //ajout des valeurs dans checks
+    checkbox(id) {},
+
+
     //récupère la liste des décaissements
     refresh(page = 1) {
       this.$axios

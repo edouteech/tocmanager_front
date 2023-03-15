@@ -632,6 +632,12 @@ export default {
         });
     },
 
+
+    //ajout des valeurs dans checks
+    checkbox(id) {},
+
+
+    
     //importation des fournisseurs
     submitFile() {
       let formData = new FormData();
