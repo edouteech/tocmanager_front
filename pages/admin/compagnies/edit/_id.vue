@@ -125,7 +125,7 @@ export default {
         },
 
         submit(){          
-            this.$axios.put('/compagnies/'+this.$route.params.id, {
+            this.$axios.put('admin/compagnies/'+this.$route.params.id, {
             id: this.$route.params.id,
             name: this.form.name,
             phone: this.form.phone,
@@ -180,7 +180,7 @@ export default {
 
 
         refresh(){
-            this.$axios.get('/compagnies/'+ this.$route.params.id)
+            this.$axios.get('admin/compagnies/'+ this.$route.params.id)
             .then(response => {
                 // console.log(response.data.data[0] )
             let compagnie = response.data.data[0];
