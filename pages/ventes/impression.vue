@@ -160,6 +160,7 @@ export default {
   font-size: 24px;
 }
 .modal-overlay {
+  z-index: 99;
   position: fixed;
   top: 0;
   bottom: 0;
