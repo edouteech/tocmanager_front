@@ -1,44 +1,100 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>    
-    <div class="alert alert-danger justify-content-center" role="alert" v-if="status == 'error'">
-      {{error}}
-    </div>                 
-            <form action="" method="POST"> 
-                        <h4>Ajout de fournisseur</h4>
+    <div class="modaler" @click.stop>
+      <div
+        class="alert alert-danger justify-content-center"
+        role="alert"
+        v-if="status == 'error'"
+      >
+        {{ error }}
+      </div>
 
-                <div class="input-form">					
-                    <input type="text" class="form-control" placeholder="Entrer le nom du fournisseur " v-model="form.name" autocomplete="off" id="name_four" required>
-                </div>  
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['name'] != null">{{errors['name']}}</div>   
+      <form action="" method="POST">
+        <h4>Ajout de fournisseur</h4>
+        <div class="input-form">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Entrer le nom du fournisseur "
+            v-model="form.name"
+            autocomplete="off"
+            id="name_four"
+            required
+          />
+        </div>
+        <div
+          class="alert alert-danger justify-content-center"
+          role="alert"
+          v-if="errors['name'] != null"
+        >
+          {{ errors["name"] }}
+        </div>
 
-                <div class="input-form">        
-                  <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
-                </div>
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['phone'] != null">{{errors['phone']}}</div> 
+        <div class="input-form">
+          <vue-tel-input
+            class="form-control form-control-sm"
+            v-model="form.phone"
+          ></vue-tel-input>
+        </div>
+        <div
+          class="alert alert-danger justify-content-center"
+          role="alert"
+          v-if="errors['phone'] != null"
+        >
+          {{ errors["phone"] }}
+        </div>
 
-                <div class="input-form">    
-                    <input type="email" class="form-control" placeholder="Entrer l'email du fournisseur " v-model="form.email" autocomplete="off" id="email_four" required>
-                </div>
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['email'] != null">{{errors['email']}}</div> 
+        <div class="input-form">
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Entrer l'email du fournisseur "
+            v-model="form.email"
+            autocomplete="off"
+            id="email_four"
+            required
+          />
+        </div>
+        <div
+          class="alert alert-danger justify-content-center"
+          role="alert"
+          v-if="errors['email'] != null"
+        >
+          {{ errors["email"] }}
+        </div>
 
-                <div class="input-form"> 
-                   <select class="form-control" v-model="form.nature" id="nature_four" required>
-                        <option disabled value="">Choisissez la nature du fournisseur</option>
-                        <option value="0">Particulier</option>
-                        <option value="1">Entreprise</option>
-                    </select>
-                    <!-- <input type="number" placeholder="Entrer la nature du fournisseur " v-model="form.nature" autocomplete="off" required> -->
-                    
-                </div>
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors['nature'] != null">{{errors['nature']}}</div> 
-                <div class="submit-form" >
-                    <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
-                </div>
-                <!-- <div v-else class="submit-form">
-                    <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer" name="submit">				          
-                </div> -->
-            </form>
+        <div class="input-form">
+          <select
+            class="form-control"
+            v-model="form.nature"
+            id="nature_four"
+            required
+          >
+            <option disabled value="">
+              Choisissez la nature du fournisseur
+            </option>
+            <option value="0">Particulier</option>
+            <option value="1">Entreprise</option>
+          </select>
+        </div>
+        <div
+          class="alert alert-danger justify-content-center"
+          role="alert"
+          v-if="errors['nature'] != null"
+        >
+          {{ errors["nature"] }}
+        </div>
+
+        <div class="submit-form">
+          <input
+            type="submit"
+            id="submit"
+            @click.prevent="submit()"
+            value="Enregistrer"
+            name="submit"
+          />
+        </div>
+      </form>
     </div>
     <div class="close" @click="$emit('close-modal')">
       <img class="close-img" src="/images/fermer.png" alt="" />
@@ -47,109 +103,109 @@
 </template>
 
 <script>
-  export default {
-    name: 'ajoutModal',
-    data () {
-    return{
-        form: {
-            name: '',
-            email: '',
-            phone: '',
-            nature: 0, 
-            compagnie_id: ''
-        },
-        errors: [],
-        error: null,
-        status: '',
-    }
+export default {
+  name: "ajoutModal",
+  data() {
+    return {
+      form: {
+        name: "",
+        email: "",
+        phone: "",
+        nature: 0,
+        compagnie_id: "",
+      },
+      errors: [],
+      error: null,
+      status: "",
+    };
+  },
+
+  methods: {
+    async submit() {
+      await this.$axios
+        .post("/suppliers", {
+          name: this.form.name,
+          email: this.form.email,
+          phone: this.form.phone,
+          nature: this.form.nature,
+          compagnie_id: localStorage.getItem("auth.company_id"),
+        })
+        .then((response) => {
+          this.$emit("conf", {
+            message: this.form.name,
+            cli_id: response.data.data.id,
+          });
+          this.status = response.data.status;
+          if (this.status == "success") {
+            (this.form.name = ""),
+              (this.form.phone = ""),
+              (this.form.email = ""),
+              (this.form.nature = ""),
+              (this.status = response.data.status);
+            this.$emit("close-modal");
+            this.$toast("Fournisseur ajouté !!! ", {
+              icon: "fa fa-check-circle",
+            });
+          } else {
+            this.error = response.data.message;
+            this.status = response.data.status;
+            this.errors = response.data.data;
+          }
+        })
+        .catch((err) => console.log(err));
     },
-    
-    methods: {
-        async submit(){
-            await  this.$axios.post('/suppliers',{
-              name: this.form.name,
-              email: this.form.email,
-              phone: this.form.phone,
-              nature: this.form.nature,
-              compagnie_id: localStorage.getItem('auth.company_id')
-            })
-            .then(response =>{
-              this.$emit('conf', { message: this.form.name, cli_id: response.data.data.id })
-                // console.log( response ) 
-                this.error = response.data.message
-                this.status = response.data.status
-                // console.log(this.error)
-                  if(this.status == 'success'){
-                    // alert('Nouveau client ajouté avec succès');
-                      this.form.name = '',
-                      this.form.phone = '',
-                      this.form.email = '',
-                      this.form.nature = '',
-                      this.status = response.data.status
-                      this.$emit('close-modal')
-                      this.$toast("Fournisseur ajouté !!! ", {
-                      icon: 'fa fa-check-circle',
-                  })
-                  }
-                  else{
-                    // alert("Echec lors de l'ajout du client ! Veuillez réessayer.");
-                    this.status = response.data.status
-                      this.errors = response.data.data
-                      // this.$router.push({path:'/categorie/add_client'});
-                  }
-             }).catch( err => console.log( err ) )
-            
-            },
-    }
-}
+  },
+};
 </script>
 
 <style scoped>
 form {
-    padding: 50px;
-} 
+  padding: 50px;
+}
 
 .input-form {
-    display: flex;
-    flex-direction: column-reverse;
-    margin-top: 30px;
-    height: 50px;
+  display: flex;
+  flex-direction: column-reverse;
+  margin-top: 30px;
+  height: 50px;
 }
-  
+
 input {
-    padding: 8px;
-    border: none; outline: none;
-    border-bottom: 2px solid #605050;
+  padding: 8px;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #605050;
 }
 
 input::placeholder {
-    font-size: 16px;
-    opacity: 0.8;
+  font-size: 16px;
+  opacity: 0.8;
 }
 
 .submit-form {
-    margin-top: 10%;
-    text-align: center;       
+  margin-top: 10%;
+  text-align: center;
 }
 
-input[type=submit] {
-    background-color: white;
-    color: black;
-    padding: 10px 15px;
-    margin: 8px 0;
-    border: 1px solid #0971fa;
-    cursor: pointer;
-    width: 60%;
-    font-size: 15px;
+input[type="submit"] {
+  background-color: white;
+  color: black;
+  padding: 10px 15px;
+  margin: 8px 0;
+  border: 1px solid #0971fa;
+  cursor: pointer;
+  width: 60%;
+  font-size: 15px;
 }
 
-input[type=submit]:hover{
-    background-color: #0971fa;
-    color: white;
-    border: 1px solid #0971fa;
-    font-size: 16px;
+input[type="submit"]:hover {
+  background-color: #0971fa;
+  color: white;
+  border: 1px solid #0971fa;
+  font-size: 16px;
 }
 .modal-overlay {
+  z-index: 99;
   position: fixed;
   top: 0;
   bottom: 0;

@@ -28,7 +28,7 @@
   </template>
   
   <script>
-  export default {
-    layout: 'error-layout',
-  }
-  </script>
+export default {
+  layout: "error-layout",
+};
+</script>

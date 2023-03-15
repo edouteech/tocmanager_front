@@ -6,168 +6,155 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">  
-      <div class="d-flex align-items-end flex-column">
-        <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Imprimer</span></div>
-        <NuxtLink :to="'/achats/'+this.$route.params.id"><button type="submit" class="btn btn-dark mt-3 mb-5">Modifier l'achat</button></NuxtLink> 
-      </div>
-      <div class="d-flex align-items-end flex-column">
-          <p><strong> M/Mme {{supplier.name}}</strong> </p>
-          <p><strong> Fournisseur {{compagny.name}}</strong> </p>
-          <p><strong> {{supplier.phone}}</strong> </p>
-      </div><br>
-      <div class="p-2 mb-2 bg-secondary text-white text-center"><h4>Informations sur la facture</h4></div><br>
-      <div class="">
-        <p><strong>Numéro de la facture : {{id}}</strong> </p>
-        <p><strong> Date de la facture : {{date_buy}}</strong> </p>
-        <p><strong> N° Fournisseur : {{supplier.id}}</strong> </p>
-      </div>
-      <!-- <table class="table table-hover">
-          <thead>
-            <tr class="table-primary">
-              <th>Date de l'achat</th>
-              <th>Fournisseur concerné </th>
-              <th>Montant de la facture</th>
-              <th>Montant restant à payer </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{date_buy}}</td>
-              <td>{{supplier.name}}</td>
-              <td>{{montant}}</td>
-              <td>{{rest}}</td>
-            </tr>
-          </tbody>
-        </table>  <br><br> 
-        <h5><p class="text-center">Listes des produits de la facture</p></h5> -->
-        <table class="facture table table-hover ">
-          <thead>
-            <tr class="table-success">
-              <th>Nom du produit</th>
-              <th>Quantité </th>
-              <th>Prix unitaire </th>
-              <th>Total HT</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(facture, j) in factures" :key="j">
-              <td>{{facture.product.name}}</td>
-              <td>{{facture.quantity}}</td>
-              <td>{{facture.price}}</td>
-              <td>{{facture.amount}} F CFA</td>
-            </tr>
-          </tbody>
-        </table>  <br><br> 
-        
-            <table  class="total d-flex align-items-end flex-column">
-              <tbody>
-                <tr>
-                  <td class="p-2">Taxe</td>
-                  <td class="py-2 px-5">{{tax}} F CFA</td>
-                </tr>
-                <tr>
-                  <td class="p-2"><strong>TOTAL</strong></td>
-                  <td class="py-2 px-5"><strong>{{montant}} F CFA</strong></td>
-                </tr>
-                <tr>
-                  <td class="p-2">Montant restant à décaisser</td>
-                  <td class="py-2 px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
-                </tr>
-              </tbody>
-            </table>  
-        <br><br> 
-        <hr>
-        <div class="caisse" v-if="rest > 0">
-          <h4>Ajouter des décaissements pour cette facture</h4><br><br>
-                <div  v-if="number == 0">
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="error_rest != null">
-                  {{error_rest}} 
-                </div></div>
-                <form action="" method="POST">
-                    <div class="form-group col-md-6">					
-                      <input type="date" class="form-control" placeholder="Entrer la date de ce décaissement " v-model="form.date" autocomplete="off" id="date" required>       
-                    </div> <br>
-                    <div class="form-group col-md-6">        
-                      <input type="number" class="form-control" placeholder="Entrer le montant à décaisser " v-model="form.montant" id="montant" required>
-                    </div> <br>
-                    <div class="form-group col-md-6">
-                        <label class="title">Méthode de paiement</label>
-                        <select class="form-control" v-model="form.payment">
-                            <option value="">Choississez</option>
-                            <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
-                        </select>
-                    </div>
-                    
-                    
-                    <br>
-                        
-                    <button type="submit" class="btn btn-success" @click.prevent="submit()">Ajouter ...</button>          
-                </form>  <br><br><hr>
+        <div class="d-flex align-items-end flex-column">
+          <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Imprimer</span></div>
+          <NuxtLink :to="'/achats/'+this.$route.params.id"><button type="submit" class="btn btn-dark mt-3 mb-5">Modifier l'achat</button></NuxtLink> 
         </div>
-        <div class="decaissement">
-          <h4>Liste des décaissements pour cette facture</h4>
-          <table class="table table-hover">
+
+        <div class="d-flex align-items-end flex-column">
+            <p><strong> M/Mme {{supplier.name}}</strong> </p>
+            <p><strong> Fournisseur {{compagny.name}}</strong> </p>
+            <p><strong> {{supplier.phone}}</strong> </p>
+        </div><br>
+
+        <div class="p-2 mb-2 bg-secondary text-white text-center"><h4>Informations sur la facture</h4></div><br>
+        <div class="">
+          <p><strong>Numéro de la facture : {{id}}</strong> </p>
+          <p><strong> Date de la facture : {{date_buy}}</strong> </p>
+          <p><strong> N° Fournisseur : {{supplier.id}}</strong> </p>
+        </div>
+
+          <table class="facture table table-hover ">
             <thead>
-              <tr class="table-primary">
-                <th>Date décaissement</th>
-                <th>Montant </th>
+              <tr class="table-success">
+                <th>Nom du produit</th>
+                <th>Quantité </th>
+                <th>Prix unitaire </th>
+                <th>Total HT</th>
               </tr>
             </thead>
+
             <tbody>
-              <tr  v-for="(decaissement, i) in decaissements" :key="i">
-                <td>{{decaissement.date}}</td>
-                <td>{{decaissement.montant}}</td>
+              <tr v-for="(facture, j) in factures" :key="j">
+                <td>{{facture.product.name}}</td>
+                <td>{{facture.quantity}}</td>
+                <td>{{facture.price}}</td>
+                <td>{{facture.amount}} F CFA</td>
               </tr>
             </tbody>
-          </table>  <br>
-          <nav aria-label="Page navigation example px-8 " v-if="res_data != null">
-            <ul class="pagination">
-              <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="recupFacture(res_data.current_page - 1)">Précédent</a></li>
-              <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="recupFacture(link.label)">{{link.label}}</a></li>
-              
-              <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="recupFacture(res_data.current_page + 1)">Suivant</a></li>
-            </ul>
-          </nav>
-        </div><br><br> 
+          </table>  <br><br> 
+          
+          <table  class="total d-flex align-items-end flex-column">
+            <tbody>
+              <tr>
+                <td class="p-2">Taxe</td>
+                <td class="py-2 px-5">{{tax}} F CFA</td>
+              </tr>
+              <tr>
+                <td class="p-2"><strong>TOTAL</strong></td>
+                <td class="py-2 px-5"><strong>{{montant}} F CFA</strong></td>
+              </tr>
+              <tr>
+                <td class="p-2">Montant restant à décaisser</td>
+                <td class="py-2 px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
+              </tr>
+            </tbody>
+          </table>  
+          <br><br> 
+          <hr>
 
+          <div class="caisse" v-if="rest > 0">
+            <h4>Ajouter des décaissements pour cette facture</h4><br><br>
+                  <div  v-if="number == 0">
+                  <div class="alert alert-danger justify-content-center" role="alert" v-if="error_rest != null">
+                    {{error_rest}} 
+                  </div></div>
+                  
+                  <form action="" method="POST">
+                      <div class="form-group col-md-6">					
+                        <input type="date" class="form-control" placeholder="Entrer la date de ce décaissement " v-model="form.date" autocomplete="off" id="date" required>       
+                      </div> <br>
+
+                      <div class="form-group col-md-6">        
+                        <input type="number" class="form-control" placeholder="Entrer le montant à décaisser " v-model="form.montant" id="montant" required>
+                      </div> <br>
+                      <div class="form-group col-md-6">
+                          <label class="title">Méthode de paiement</label>
+                          <select class="form-control" v-model="form.payment">
+                              <option value="">Choississez</option>
+                              <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
+                          </select>
+                      </div>
+                      
+                      
+                      <br>
+                          
+                      <button type="submit" class="btn btn-success" @click.prevent="submit()">Ajouter ...</button>          
+                  </form>  <br><br><hr>
+          </div>
+          <div class="decaissement">
+            <h4>Liste des décaissements pour cette facture</h4>
+            <table class="table table-hover">
+              <thead>
+                <tr class="table-primary">
+                  <th>Date décaissement</th>
+                  <th>Montant </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  v-for="(decaissement, i) in decaissements" :key="i">
+                  <td>{{decaissement.date}}</td>
+                  <td>{{decaissement.montant}}</td>
+                </tr>
+              </tbody>
+            </table>  <br>
+            <nav aria-label="Page navigation example px-8 " v-if="res_data != null">
+              <ul class="pagination">
+                <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="recupFacture(res_data.current_page - 1)">Précédent</a></li>
+                <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="recupFacture(link.label)">{{link.label}}</a></li>
+                
+                <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="recupFacture(res_data.current_page + 1)">Suivant</a></li>
+              </ul>
+            </nav>
+          </div><br><br> 
     </div>
      <!-- Footer -->
-  <footer class="text-center text-lg-start bg-dark text-white">
-      <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
-    <!-- Section: Social media -->
-    <section
-      class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
-    >
-      <!-- Left -->
-      <div class="me-5 d-none d-lg-block">
-        <img src="../../../static/images/logo.png" class="logo-img" alt="">
-      </div>
-      <!-- Left -->
+      <footer class="text-center text-lg-start bg-dark text-white">
+          <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
+        <!-- Section: Social media -->
+        <section
+          class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
+        >
+          <!-- Left -->
+          <div class="me-5 d-none d-lg-block">
+            <img src="../../../static/images/logo.png" class="logo-img" alt="">
+          </div>
+          <!-- Left -->
 
-      <!-- Right -->
-      <div>
-        <a href="" class="me-4 text-reset">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="" class="me-4 text-reset">
-          <i class="fab fa-google"></i>
-        </a>
-        <a href="" class="me-4 text-reset">
-          <i class="fab fa-github"></i>
-        </a>
-      </div>
-      <!-- Right -->
-    </section>
-    <!-- Section: Social media -->
+          <!-- Right -->
+          <div>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-google"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+          <!-- Right -->
+        </section>
+        <!-- Section: Social media -->
 
 
-    <!-- Copyright -->
-    <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
-      Copyright © 2022 - Tous droits réservés TocManager-dS
-    </div>
-    <!-- Copyright -->
-  </footer>
-<!-- Footer -->
+        <!-- Copyright -->
+        <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
+          Copyright © 2022 - Tous droits réservés TocManager-dS
+        </div>
+        <!-- Copyright -->
+      </footer>
+    <!-- Footer -->
 </div>
 </template>
 
@@ -214,13 +201,14 @@ export default {
 
     mounted(){
       this.payment()
+
+      //récupère la facture en question
       this.$axios.get('/buys/'+ this.$route.params.id,
         {
             params: {
               compagnie_id: localStorage.getItem('auth.company_id')
             }
         }).then(response => {
-          // console.log(response.data.data);
         this.id = response.data.data[0].id,
         this.factures = response.data.data[0].buy_lines,
         this.date_buy = moment(response.data.data[0].date_buy).format("D MMM YYYY, h:mm:ss a"),
@@ -236,10 +224,12 @@ export default {
 
     methods: {
 
+        //impression pdf
         generatePdf() {
             window.print();
         },
 
+        //décaissement pour une facture
         async submit(){
           if(this.form.montant > this.rest){
                this.error_rest = "Le montant à encaisser ne doit pas etre supérieur à la somme due"
@@ -256,9 +246,6 @@ export default {
               payment: this.form.payment,
               compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{ 
-                console.log( response ) 
-                // this.$emit('conf', { date_encaissement: this.form.date, montant_encaissement: this.form.montant })
-               
                if(response.data.status == "success"){
                   var that = this;
                   this.number = 1;
@@ -269,13 +256,13 @@ export default {
                 }
                 else{
                     this.errors = response.data.data
-                    // this.$router.push({path:'/clients/add_client'});
                 }
-            }).catch( error => console.log( error ) )
-                //  console.log(this.form.name)     
+            }).catch( error => console.log( error ) )     
           }           
         },
             
+
+        //récupère les informations de la facture
         recupInfos(){
           this.$axios.get('/buys/'+ this.$route.params.id,
             {
@@ -284,14 +271,15 @@ export default {
                 }
             })
           .then(response => {
-            // console.log(response.data.data);
             this.date_buy = response.data.data[0].date_buy,
             this.supplier = response.data.data[0].supplier,
             this.montant = response.data.data[0].amount,
             this.rest = response.data.data[0].rest
-      }) 
+          }) 
         },
 
+
+        //récupère la liste des décaissements
         recupFacture(page){
           this.$axios.get('/decaissements',
             {
@@ -303,24 +291,23 @@ export default {
             }
           ).then(response => 
           {
-            // console.log(response);
             this.decaissements = response.data.data.data
             this.res_data= response.data.data
-            // this.links = response.data.data.links
             let firstE = response.data.data.links.shift()
             let lastE = response.data.data.links.splice(-1,1);
           })
         },
 
  
+
+        //récupère les moyens de paiement
         payment(){
             this.$axios.get('/invoice/payments',{params: {
             compagnie_id: localStorage.getItem('auth.company_id')
           }
-          }).then(response =>
-            {
-                // console.log(response); 
-                this.methodes = response.data.data })
+          }).then(response =>{
+                this.methodes = response.data.data 
+          })
         },
     },
 }

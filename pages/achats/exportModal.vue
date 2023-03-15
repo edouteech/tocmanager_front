@@ -14,17 +14,6 @@
                     Date d'édition
                 </label>
             </div>
-            <!-- <div class="form-check">
-                <input 
-                    class="form-check-input mx-3" 
-                    type="checkbox" 
-                    v-model="form.amount_ht" 
-                    true-value="1"
-                    false-value="0" @click="exp()">
-                <label class="form-check-label" for="flexCheckChecked">
-                    Prix Hors Taxe
-                </label>
-            </div> -->
             <div class="form-check">
                 <input 
                     class="form-check-input mx-3" 
@@ -36,17 +25,6 @@
                     Taxe
                 </label>
             </div>
-            <!-- <div class="form-check">
-                <input 
-                    class="form-check-input mx-3" 
-                    type="checkbox" 
-                    v-model="form.amount_ttc" 
-                    true-value="1"
-                    false-value="0 " @click="exp()">
-                <label class="form-check-label" for="flexCheckChecked">
-                    Prix Toute Taxe Comprise
-                </label>
-            </div> -->
             <div class="form-check">
                 <input 
                     class="form-check-input mx-3" 
@@ -99,14 +77,11 @@
   <script>
     export default {
       name: 'exportModal',
-      // props: ['identifiant'],
       data () {
         return{
             form: {
                 date: 1,
-                // amount_ht: 1,
                 tax: 1,
-                // amount_ttc: 1,
                 discount: 1,
                 amount: 1,
                 supplier: 1,
@@ -117,18 +92,10 @@
                 label: "date_buy",
                 field: "date_buy",
             },
-            // {
-            //     label: "amount_ht",
-            //     field: "amount_ht",
-            // },
             {
                 label: "tax",
                 field: "tax",
             },
-            // {
-            //     label: "amount_ttc",
-            //     field: "amount_ttc",
-            // },
             {
                 label: "discount",
                 field: "discount",
@@ -137,16 +104,12 @@
                 label: "amount",
                 field: "amount",
             },
-            // {
-            //     label: "rest",
-            //     field: "rest",
-            // },
             {
                 label: "supplier",
                 field: "supplier.name",
             },
-      ],
-      data : [],
+          ],
+          data : [],
         }
       },
 
@@ -155,32 +118,24 @@
       },
 
       methods:{
+
+        //exportation en excel
         async exp(){
-            // console.log(this.form.balance);
             await this.$axios.get('/sells',{
                 params: {
                 compagnie_id: localStorage.getItem('auth.company_id'),
                 is_paginated: 0
                 }
             }).then(response =>{
-                // console.log(response);
                 this.data = response.data.data
                 
                 if(this.form.date == 0){
                     this.columns.splice(0, 1);
                 }
 
-                // if(this.form.amount_ht == 0){
-                //     this.columns.splice(1, 1);
-                // }
-
                 if(this.form.tax == 0){
                     this.columns.splice(1, 1);
                 }
-
-                // if(this.form.amount_ttc == 0){
-                //     this.columns.splice(3, 1);
-                // }
 
                 if(this.form.discount == 0){
                     this.columns.splice(2, 1);
@@ -204,6 +159,7 @@
   
   <style scoped>
   .modal-overlay {
+  z-index: 99;
     position: fixed;
     top: 0;
     bottom: 0;

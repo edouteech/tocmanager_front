@@ -12,123 +12,109 @@
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}} <br>
         </div>
-            <h4>Enregistrer un achat</h4><hr>
-            <form action="" method="POST">
-                <div class="row">        
-                    <div class="col-md-6">    
-                        <div class="ajout-client">  
-                            <v-select 
-                                placeholder="Choississez le fournisseur"
-                                v-model="selectedFournisseur"
-                                label="name"
-                                :options="fournisseurs"
-                                :reduce="(fournisseur) => fournisseur.id"
-                                append-to-body
-                            />
-                            <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
-                                <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
-                            </button>  
-                        </div>              
-                    </div>
-                    <div class="col-md-6 facture-date my-auto">
-                        <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_buy"/>                  
-                    </div>
-                </div> <hr>
-                
-                <!-- <div class="add_buttons d-flex"> 
-                    <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                    <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
-                </div> -->
-                <div class="add_buttons row col-md-12 boom"> 
-                    <div class="d-flex col-md-8">
-                        <div class="col-md-4"><button class="btn btn-outline-primary col-md-11 mx-auto " @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                        <div class="col-md-8"><button class="btn btn-outline-success col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>  
-                    </div>         
-                    <div class="col-md-4 mt-2">
-                        <div class="d-flex code_recherche">
-                            <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                        </div>
-                        <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
-                            {{codeError}} 
-                        </div> 
-                    </div>                    
-                </div>
 
-                <div class="commande table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Désignation</th>
-                                <th>Quantité voulue</th>
-                                <th>Prix unitaire</th>
-                                <!-- <th scope="col">Réduction (Prix ou %)</th> -->
-                                <!-- <th>Taxe appliquée (%)</th>  -->
-                                <th> Total</th>                     
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            <tr v-for="(line, index) in form.buy_lines" :key="index">
-                                <td class="table-coll">
-                                    <v-select 
-                                        placeholder="Choississez..."
-                                        v-model="line.product_id"
-                                        label="name"
-                                        :options="produits"
-                                        :reduce="(produit) => produit.id"
-                                        append-to-body
-                                        @input="productChange(line.product_id, index)"
-                                    />
-                                    <!-- <select class="form-control " v-model="line.product_id" id="" @change="productChange">
-                                        <option disabled value="">Choisissez...</option> 
-                                        <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
-                                    </select> -->
-                                </td>
-                                <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
-                                <!-- <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td> -->
-                                <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
-                                <td class="table-col"><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required disabled></td>
-                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
-                            </tr>
-                        </tbody>
-                    </table>  
-                    <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_amount">
-                        Veuillez ajouter une ligne d'achat
-                    </div>   
-                </div><br>
-                
-                <div class="row">
-                    <div class="form-group col-md-4"> Réduction (Prix ou %): <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>  
-                    <div class="form-group col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
-                    <div class="form-group col-md-4">
-                        <div class="form-group1">
-                            Méthode de paiement
-                        <select class="form-control" v-model="form.payment">
-                            <option value="">Choississez</option>
-                            <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
-                        </select>
-                        </div>
+        <h4>Enregistrer un achat</h4><hr>
+        <form action="" method="POST">
+            <div class="row">        
+                <div class="col-md-6">    
+                    <div class="ajout-client">  
+                        <v-select 
+                            placeholder="Choississez le fournisseur"
+                            v-model="selectedFournisseur"
+                            label="name"
+                            :options="fournisseurs"
+                            :reduce="(fournisseur) => fournisseur.id"
+                            append-to-body
+                        />
+                        <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
+                        </button>  
+                    </div>              
+                </div>
+                <div class="col-md-6 facture-date my-auto">
+                    <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_buy"/>                  
+                </div>
+            </div> <hr>
+            
+            <!-- <div class="add_buttons d-flex"> 
+                <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
+            </div> -->
+            <div class="add_buttons row col-md-12 boom"> 
+                <div class="d-flex col-md-8">
+                    <div class="col-md-4"><button class="btn btn-outline-primary col-md-11 mx-auto " @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                    <div class="col-md-8"><button class="btn btn-outline-success col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>  
+                </div>         
+                <div class="col-md-4 mt-2">
+                    <div class="d-flex code_recherche">
+                        <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    </div>
+                    <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
+                        {{codeError}} 
+                    </div> 
+                </div>                    
+            </div>
+
+            <div class="commande table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Désignation</th>
+                            <th>Quantité voulue</th>
+                            <th>Prix unitaire</th>
+                            <th> Total</th>                     
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <tr v-for="(line, index) in form.buy_lines" :key="index">
+                            <td class="table-coll">
+                                <v-select 
+                                    placeholder="Choississez..."
+                                    v-model="line.product_id"
+                                    label="name"
+                                    :options="produits"
+                                    :reduce="(produit) => produit.id"
+                                    append-to-body
+                                    @input="productChange(line.product_id, index)"
+                                />
+                            </td>
+                            <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                            <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
+                            <td class="table-col"><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required disabled></td>
+                            <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
+                        </tr>
+                    </tbody>
+                </table>  
+                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_amount">
+                    Veuillez ajouter une ligne d'achat
+                </div>   
+            </div><br>
+            
+            <div class="row">
+                <div class="form-group col-md-4"> Réduction (Prix ou %): <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>  
+                <div class="form-group col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+                <div class="form-group col-md-4">
+                    <div class="form-group1">
+                        Méthode de paiement
+                    <select class="form-control" v-model="form.payment">
+                        <option value="">Choississez</option>
+                        <option v-for="(methode, j) in methodes" :key="j" :value="methode">{{methode}}</option>
+                    </select>
                     </div>
                 </div>
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error">
-                    {{amount_error}} 
-                </div> 
-                <br><br><br><br><br>
-                <div class="col-md-6 mx-auto">
-                    <button class="custom-btn btn-5 col-md-12" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
-                </div>
-        
-            </form>
-<!-- 
-            <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
-            <p>Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
-            Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
-            la mise à jour des informations. </p>
-        </div> -->
+            </div>
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error">
+                {{amount_error}} 
+            </div> 
+            <br><br><br><br><br>
 
-        
+            <div class="col-md-6 mx-auto">
+                <button class="custom-btn btn-5 col-md-12" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+            </div>
+
+        </form>
     </div>
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/>
     <SavedModal v-show="showSaved" @close-modal="showSaved = false" />
@@ -148,16 +134,6 @@ import produitModal from './produitModal.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
 export default {
-    // head() {
-    //   return {
-    //     script: [
-    //       {
-    //         src: "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"
-    //       },
-    //     ],
-
-    //   }
-    // },
     layout: "empty",
     auth:true,
     components: {
@@ -222,70 +198,24 @@ export default {
     
     methods: {
 
-        go(){
-            this.afficheCli = 0
-        },
-
-        choiceProd(designation,i){
-            console.log(i);
-            let line = this.form.buy_lines[i]
-            this.element_searchProd = designation.name
-            line.product_id = designation.id
-            this.afficheProd = 0
-        },
-
-        searchProd(){
-            this.afficheProd =1
-            this.$axios.get('/products',{params: {
-                compagnie_id: localStorage.getItem('auth.company_id'),
-                search: this.element_searchProd,
-                is_paginated: 0
-            }
-            })
-            .then(response => {
-                // console.log(response.data);
-                this.designations = response.data.data 
-            
-            })
-        },
-
-
-        choiceCli(acteur){
-            this.element_searchCli = acteur.name
-            this.form.supplier_id = acteur.id
-            this.afficheCli= 0
-        },
-
-        searchCli(){
-            this.afficheCli =1
-            this.$axios.get('/suppliers',{params: {
-                compagnie_id: localStorage.getItem('auth.company_id'),
-                search: this.element_searchCli,
-                is_paginated: 0
-            }
-            })
-            .then(response => {
-                // console.log(response.data);
-                this.acteurs = response.data.data 
-            
-            })
-        },
-
+        //recupère les moyens de paiement
         payment(){
             this.$axios.get('/invoice/payments',{params: {
             compagnie_id: localStorage.getItem('auth.company_id')
           }
-          }).then(response =>
-            {
-                // console.log(response); 
-                this.methodes = response.data.data })
+          }).then(response =>{
+                this.methodes = response.data.data 
+          })
         },
 
 
+        //ajoue une ligne d'achat
         addLine(){
             this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});
         },
 
+
+        //ajouter le produit par son code
         async codeAdd(){
           await this.$axios.get('/products/search',{params: {
             compagnie_id: localStorage.getItem('auth.company_id'),
@@ -293,7 +223,6 @@ export default {
           }
           })
           .then(response => {
-            // console.log(response.data);
             if(response.data.status == "success"){
                 this.codeError= null
                 this.codes = response.data.data;
@@ -315,11 +244,9 @@ export default {
 
         },
 
-        // deleteLine(){
-        //     this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: localStorage.getItem('auth.company_id')});
-        // },
+
+        //supprimer une ligne d'achat
         deleteLine(index){
-          console.log(index);
           this.form.buy_lines.splice(index, 1)
             let sum = 0;
             for (let j = 0; j < this.form.buy_lines.length; j++) {
@@ -328,49 +255,52 @@ export default {
             this.form.amount= sum;
         },
 
+
+        //rappeler la fonction refresh apres le modal
         setMessage(payload) {
             this.refresh()
             this.message = payload.message
             this.four_id = payload.four_id
         },
 
+
+        //rappeler la fonction recupProduit apres le modal 
         setProduit(payload) {
             this.recupProduct()
         },
 
        
-
+        //ajouter un achat
         async submit(){
-                await  this.$axios.post('/buys',{
-                    date_buy: this.form.date_buy,
-                    tax: this.form.tax,
-                    discount: this.form.discount,
-                    amount: this.form.amount,
-                    amount_sent: this.form.amount_sent,
-                    user_id: this.user,
-                    supplier_id: this.selectedFournisseur,  
-                    buy_lines: this.form.buy_lines,
-                    payment: this.form.payment,
-                    compagnie_id: localStorage.getItem('auth.company_id')
-                    }).then(response =>{ 
-                        // console.log( response ) 
+            await  this.$axios.post('/buys',{
+                date_buy: this.form.date_buy,
+                tax: this.form.tax,
+                discount: this.form.discount,
+                amount: this.form.amount,
+                amount_sent: this.form.amount_sent,
+                user_id: this.user,
+                supplier_id: this.selectedFournisseur,  
+                buy_lines: this.form.buy_lines,
+                payment: this.form.payment,
+                compagnie_id: localStorage.getItem('auth.company_id')
+                }).then(response =>{ 
+                    if(response.data.status == "success"){
+                        this.$router.push({path:'/achats/SavedModal',})
+                        this.$toast("Enregistrement d'une facture !!! ", {
+                            icon: 'fa fa-check-circle',
+                        })
+                    }
+                
+                    else{ 
                         this.error = response.data.message
-                        if(response.data.status == "success"){
-                            this.$router.push({path:'/achats/SavedModal',})
-                            this.$toast("Enregistrement d'une facture !!! ", {
-                                icon: 'fa fa-check-circle',
-                            })
-                        }
-                    
-                        else{ 
-                            this.errors = response.data.data
-                            this.errors_amount = response.data.data.amount
-                        }
-                }).catch( err => console.log( err ) )
-                    //  console.log(this.form.name)                                        
+                        this.errors = response.data.data
+                        this.errors_amount = response.data.data.amount
+                    }
+            }).catch( err => console.log( err ) )                                    
         },
 
 
+        //recupère la liste des fournisseurs
         refresh(){
             this.$axios.get('/suppliers',
             {
@@ -378,30 +308,31 @@ export default {
                     compagnie_id: localStorage.getItem('auth.company_id'),
                     is_paginated: 0
                 }
-          }).then(response => {
-            // console.log(response.data.data);
-            this.fournisseurs = response.data.data
-            for(let k = 0; k <= this.fournisseurs.length; k++){
-                if(this.fournisseurs[k].default_supplier == true){
-                    this.selectedFournisseur = this.fournisseurs[k].id
-                    break;
+            }).then(response => {
+                this.fournisseurs = response.data.data
+                for(let k = 0; k <= this.fournisseurs.length; k++){
+                    if(this.fournisseurs[k].default_supplier == true){
+                        this.selectedFournisseur = this.fournisseurs[k].id
+                        break;
+                    }
                 }
-            }
-          })
+            })
         },
 
+
+        //recupère la liste des produits
         recupProduct(){
             this.$axios.get('/products',{params: {
             compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
           }
           }).then(response => {
-            // console.log(response.data.data);
             this.produits = response.data.data
           }) 
         },
 
         
+        //reduction du montant
         reduceAmount(){
             this.form.tax = 0
             var red = this.form.discount;
@@ -417,15 +348,15 @@ export default {
                     let calcul2 = calcul1 / 100
                     this.form.discount = calcul2
                     this.form.amount = sum - calcul2;
-                    // this.form.amount_ht = sum -calcul2
                 } 
                 else{
                     this.form.discount = red
                     this.form.amount = sum - red
-                    // this.form.amount_ht = sum -red
                 }   
         },
 
+
+        //changer le montant en fonction de la quantité
         quantityChange(index){
             this.form.discount = 0
             let line = this.form.buy_lines[index]
@@ -439,6 +370,7 @@ export default {
         },
 
         
+        //réduction du montant dans les lignes d'achat
         reduceChange(index){
             let line = this.form.buy_lines[index]
             let calculQ = Number(line.price) * Number(line.quantity)
@@ -466,6 +398,8 @@ export default {
                 }   
         },
 
+
+        //choisir le produit dans les lignes d'achat
         productChange(IdProduit, IndexBuyLines){
             
             for(let k = 0; k <= this.produits.length; k++){
@@ -477,8 +411,6 @@ export default {
                     this.form.buy_lines[IndexBuyLines].discount = 0
                     this.form.buy_lines[IndexBuyLines].quantity = 1
                     this.form.buy_lines[IndexBuyLines].amount = ProdPrice
-                    // this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
-                    // this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1); 
                     let sum = 0;
                     for (let j = 0; j < this.form.buy_lines.length; j++) {
                         sum += this.form.buy_lines[j].amount;
@@ -488,25 +420,10 @@ export default {
                 }
             }
 
-            // if(e.target.options.selectedIndex > -1) {
-            //     let i = e.target.options[e.target.options.selectedIndex].dataset.i;
-            //     let index = e.target.options[e.target.options.selectedIndex].dataset.index;
-            //     let product = this.produits[i];
-            //     let line = this.form.buy_lines[index]
-            //     line.price = product.price_buy;
-            //     line.amount = Number(line.price) * Number(line.quantity);
-                    
-                
-            //     let sum = 0;
-            //     for (let j = 0; j < this.form.buy_lines.length; j++) {
-            //         sum += this.form.buy_lines[j].amount;
-            //     }
-            //     this.form.amount = sum;
-            // }
-
                 
         },
 
+        //recupère les infos de la compagnie
         compagnie(){
             this.$axios.get('/compagnies/'+ this.compagny,{params: {
             compagnie_id: this.$auth.$storage.getUniversal('company_id')

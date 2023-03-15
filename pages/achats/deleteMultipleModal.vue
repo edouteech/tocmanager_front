@@ -1,15 +1,18 @@
 <template>
     <div class="modal-overlay" @click="$emit('close-modal')">
       <div class="modaler text-center py-5" @click.stop>
-              <strong>Voulez vous supprimer ces factures ???</strong><br><br>
-              <div class="d-flex">
-                <button class="btn btn-danger mx-auto" @click.prevent ="sup()">
-                        Oui
-                </button>
-                <button class="btn btn-dark mx-auto"  @click="$emit('close-modal')">
-                        Non
-                </button>
-               </div>
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
+              {{error}} 
+        </div>
+          <strong>Voulez vous supprimer ces factures ???</strong><br><br>
+          <div class="d-flex">
+            <button class="btn btn-danger mx-auto" @click.prevent ="sup()">
+                    Oui
+            </button>
+            <button class="btn btn-dark mx-auto"  @click="$emit('close-modal')">
+                    Non
+            </button>
+          </div>
       </div>
       <div class="close" @click="$emit('close-modal')">
       <img class="close-img" src="/images/fermer.png" alt="" />
@@ -22,23 +25,29 @@
       auth:true,
       props: ['ids'],
       name: 'deleteMultipleModal',
+      data () {
+        return {
+            error: null,
+          }
+      },
 
       methods: {
         sup(){
-        //   console.log(this.ids);
           this.$axios.post('/buys/multipleDelete',
             {
               buy_ids: this.ids,
               compagnie_id: localStorage.getItem('auth.company_id')
             })
             .then(response => {
-            // console.log(response);
-            this.$emit('conf', { message: this.ids})
-            if(response.data.status == 'success'){
-                this.$emit('close-modal')
-            }
+              this.$emit('conf', { message: this.ids})
+              if(response.data.status == 'success'){
+                  this.$emit('close-modal')
+              }
+              else{
+                this.error = response.data.message
+              }
             
-          })
+            })
         },
       }
   
@@ -49,8 +58,8 @@
   
   <style scoped>
 
-  
-  .modal-overlay {
+.modal-overlay {
+  z-index: 99;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -66,8 +75,7 @@
     overflow: auto;
     width: 600px;
     margin-top: 15%;
-    /* border-radius: 20px; */
-    height: 200px;
+    height: max-content;
     padding: 1%;
     box-shadow: 50px;
   }
@@ -91,5 +99,6 @@
       margin-left: 3%;
       color: rgb(11, 7, 40);
   }
+  
   
   </style>
