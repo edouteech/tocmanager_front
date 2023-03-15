@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay" @click.prevent="$emit('close-modal')">
+  <div class="modal-overlay">
     <div class="quiz">
       <p class="text-center">
         Voulez vous imprimer en <strong> format ticket de caisse</strong> ???
@@ -160,7 +160,7 @@ export default {
   font-size: 24px;
 }
 .modal-overlay {
-  z-index: 99;
+  z-index: 999;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -176,7 +176,6 @@ export default {
   background-color: white;
   height: auto;
   width: 800px;
-  /* margin-top: 20%; */
   padding: 2% 1%;
   border-radius: 3px;
   overflow: auto;
