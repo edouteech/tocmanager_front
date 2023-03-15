@@ -497,6 +497,9 @@ export default {
       });
     },
 
+    //ajout des valeurs dans checks
+    checkbox(id) {},
+
 
     //rappeler la fonction refresh après le modal
     setMessage() {
