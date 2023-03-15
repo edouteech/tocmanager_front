@@ -132,6 +132,14 @@
                       </div>
                   </NuxtLink>
               </li> 
+              <li>
+                  <NuxtLink to="/admin/corbeille" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-trash" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Corbeille</span>
+                      </div>
+                  </NuxtLink>   
+              </li> 
               <!-- <li>
                   <NuxtLink to="/corbeille" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
@@ -243,7 +251,7 @@
   .bas-page{
       margin-top: 10%;
       display: flex;    
-      border: 1px solid rgb(88, 87, 87);
+      /* border: 1px solid rgb(88, 87, 87); */
       padding: 10px;
   }
   

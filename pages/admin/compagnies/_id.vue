@@ -5,10 +5,10 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Compagnies </h3>
+          <Sidebar /><h3 class="name_side">Compagnies </h3>
         </nav>
     
-        <div class="app-main__outer p-5">
+        <div class="app-main__outer py-5 px-2">
           <h4>Informations de la compagnie</h4><br>
           <!-- <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
@@ -16,10 +16,30 @@
           </form> -->
         <br><br>
         <div class="lignes"></div><br>
-            <p class="text-center fsize-3">Nom de la compagnie :<strong class="text-uppercase"> {{compagny}}</strong></p>
-            <p class="text-center fsize-2">Email de la compagnie :<strong> {{email}}</strong></p>
-            <p class="text-center fsize-2">Numéro de téléphone de la compagnie :<strong class="text-uppercase"> {{phone}}</strong></p>
-        <div class="lignes"></div><br><br><br><br>
+            <div class="row col-md-12">
+                <div class="col-md-6">
+                    <p class=" fsize-2">Nom de la compagnie :<strong class="text-uppercase"> {{compagny}}</strong></p>
+                    <p class=" fsize-1">Email de la compagnie :<strong> {{email}}</strong></p>
+                    <p class=" fsize-1">Numéro de téléphone de la compagnie :<strong class="text-uppercase"> {{phone}}</strong></p>
+                </div>
+                <div class="col-md-6 trait-abonnement" v-if="info_abonnement">
+                    <p class=" fsize-2">Type d'abonnement :
+                        <strong class="text-uppercase" v-if="info_abonnement.plan_id == 1">Abonnement mensuel</strong>
+                        <strong class="text-uppercase" v-else>Abonnement annuel</strong>
+                    </p>
+                    <p class=" fsize-1" v-if="info_abonnement.ends_at">Fin abonnement :<strong> {{dateFin_abonnement}}</strong></p>
+                    <p class=" fsize-1" v-else>Fin de la période d'essai :<strong> {{dateFin_essai}}</strong></p>
+                    <!-- <p class=" fsize-1">Numéro de téléphone de la compagnie :<strong class="text-uppercase"> {{phone}}</strong></p> -->
+                </div>
+            </div>
+        <div class="lignes"></div><br><br>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-outline-danger cursor-pointer btn-sup" @click.prevent="supAll()">
+                 <!-- <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i> -->
+                 <span>Supprimer toutes les informations relatives à la compagnie</span>
+            </button>
+            </div>
+        <br><br>
 
         <p class="text-center fsize-2">Liste des utilisateurs de la compagnie</p>
         <table class="table table-hover" v-if="this.element_search == ''">
@@ -191,20 +211,27 @@
                 </div>
             </div>
             
-        </div>
+        </div> 
+<deleteInfoCompagnieModal :identifiant= 'key' v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/> 
 </div>
 </template>
 
 <script>
+import deleteInfoCompagnieModal from './deleteInfoCompagnieModal.vue'
 import Sidebar from '../sidebar.vue'
+import moment from "moment";
 export default {
   auth: true,
   layout: "empty",
   components: {
     Sidebar,  
+    deleteInfoCompagnieModal
   },
   data () {
     return {
+        id_compagny :'',
+        key:'',
+        showModal: false,
         element_search: '',
         compagny: '',
         email: '',
@@ -214,34 +241,72 @@ export default {
         compagnie_users: [],
         products: [],
         suppliers: [],
-        users: []
+        users: [],
+        info_abonnement: "",
+        dateFin_abonnement: "",
+        dateFin_essai: ""
     }
+    },
+
+    methods:{
+        supAll(){
+          this.showModal = true
+            this.key = this.id_compagny   
+        },
+
+        recup(){
+            this.$axios.get('/admin/compagnies/'+ this.$route.params.id)
+            .then(response => {
+                // console.log(response.data.data[0]);
+                this.id_compagny = response.data.data[0].id
+                this.compagny = response.data.data[0].name
+                this.email = response.data.data[0].email
+                this.phone = response.data.data[0].phone
+                this.categories = response.data.data[0].categories
+                this.clients = response.data.data[0].clients
+                this.suppliers = response.data.data[0].suppliers
+                this.products = response.data.data[0].products
+                this.users = response.data.data[0].compagnie_users 
+            }) 
+        },
+        
+        abonnement(){
+            this.$axios.get('/index/abonnement/compagnie/'+ this.$route.params.id)
+            .then(response => {
+                // console.log(response.data.data);
+                this.info_abonnement = response.data.data[0]
+                this.dateFin_abonnement = moment(response.data.data[0].ends_at).format("D MMM YYYY, h:mm:ss a")
+                this.dateFin_essai = moment(response.data.data[0].trial_ends_at).format("D MMM YYYY, h:mm:ss a")               
+            }) 
+        },
+
+        
+        setMessage(){
+            this.recup()
+            this.abonnement()
+        },
     },
     
     mounted(){
-        this.$axios.get('/admin/compagnies/'+ this.$route.params.id)
-        .then(response => {console.log(response.data.data[0]);
-            this.compagny = response.data.data[0].name
-            this.email = response.data.data[0].email
-            this.phone = response.data.data[0].phone
-            this.categories = response.data.data[0].categories
-            this.clients = response.data.data[0].clients
-            this.suppliers = response.data.data[0].suppliers
-            this.products = response.data.data[0].products
-            this.users = response.data.data[0].compagnie_users
-            
-        }) 
+        this.recup()
+        this.abonnement()
     },
 
-    methods: {
-    
-    
-    },
     
 }
 </script>
 
 <style scoped>
+.btn-sup{
+    padding: 10px;
+    font-size: 14px;
+}
+
+.trait-abonnement{
+    border-left: 2px solid black;
+    margin-bottom: 15px;
+}
+
 li:hover{
     background-color: rgb(207, 237, 247);
 }

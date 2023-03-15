@@ -1,11 +1,11 @@
 <template >
   <div>
       <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-        <Sidebar /><h3 class="name">Ventes </h3>
+        <Sidebar /><h3 class="name_side">Ventes </h3>
         <Userinfo />
       </nav>
   
-      <div class="app-main__outer p-5">
+      <div class="app-main__outer py-5 px-2">
         <h4>Liste des ventes effectuées</h4><hr><br>
         <div class="d-flex">
           <div class="col-md-10 row">
@@ -19,15 +19,39 @@
 
         <div class="mobile-btn mt-4">
         <NuxtLink  to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Nouvelle vente</span></button></NuxtLink></div>
-        <div class="range">
+          <div class="range">
             <input class="form-control" type="date"  v-model="date_debut"  required />  
             <input  class="form-control" type="date"  v-model="date_fin"  required />  
             <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
           </div>  
+          <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+            </button>
+            <div class="col-md-3 mx-2">
+              <select class="form-control" v-model="trie" @change="TriFactures(trie)"> 
+                <option disabled value="">Trier par...</option>
+                <option value="toutes">Toutes les factures</option>   
+                <option value="true">Factures normalisées</option>  
+                <option value="false">Factures non normalisées</option>                                      
+            </select>
+            </div>
+          </div>
         <div v-if="this.element_search != ''" class="table-responsive">
           <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
                   <th>Date facture</th>
                   <th>Client concerné</th>
                   <!-- <th>Montant HT </th>
@@ -40,6 +64,7 @@
               </thead>
               <tbody>
                 <tr  v-for="(result, i) in results" :key="i">
+                  <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
                   <td>{{result.date_sell}}</td>
                   <td>{{result.client.name}}</td>
                   <!-- <td>{{result.amount_ht}}</td>
@@ -47,7 +72,7 @@
                   <td>{{result.amount}}</td>
                   <td class="text-danger">{{result.rest}}</td>
                   <td>{{result.payment}}</td>
-                  <td><div class="action" v-for="(user, i) in users" :key="i">
+                  <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                         <NuxtLink :to="'/ventes/voir/'+result.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
                         <div class="cursor-pointer" @click.prevent="print(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
                         <NuxtLink :to="'/ventes/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
@@ -60,10 +85,12 @@
           </table> 
         <p class="text-center"><strong>{{total}} facture(s) au total </strong></p><hr class="text-primary">
         </div>
+        <!-- <div class="form-check"><input class="form-check-input" type="checkbox" v-model="check" true-value="1" false-value="0"></div> -->
         <div v-if="this.element_search == ''" class="table-responsive">
           <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
                   <th>Date facture</th>
                   <th>Client concerné</th>
                   <!-- <th>Montant HT </th>
@@ -76,6 +103,7 @@
               </thead>
               <tbody>
                 <tr  v-for="(vente, i) in ventes" :key="i">
+                  <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(vente.id)" :value="vente.id"/></div></td>
                   <td>{{vente.date_sell}}</td>
                   <td>{{vente.client.name}}</td>
                   <!-- <td>{{vente.amount_ht}}</td>
@@ -83,7 +111,7 @@
                   <td>{{vente.amount}}</td>
                   <td class="text-danger">{{vente.rest}}</td>
                   <td>{{vente.payment}}</td>
-                  <td><div class="action" v-for="(user, i) in users" :key="i">
+                  <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                         <NuxtLink :to="'/ventes/voir/'+vente.id" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
                         <div class="cursor-pointer" @click.prevent="print(vente.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-print text-primary" aria-hidden="true"></i></div>
                         <NuxtLink :to="'/ventes/'+vente.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
@@ -101,8 +129,8 @@
             <!-- <input type="file" id="file" ref="file" @change="handleFileUpload()" />
             <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button> -->
             
-            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'">Exporter en excel</button>
-            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'"><i class="fa fa-file-excel-o" aria-hidden="true"></i><span class="text-ajout">Exporter en excel</span></button>
+            <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()"><i class="fa fa-file-pdf-o" aria-hidden="true"></i><span class="text-ajout">Exporter en pdf</span></button>
             
             <!-- <vue-excel-xlsx
                 class="btn btn-outline-info mx-5"
@@ -119,14 +147,14 @@
                 <div class="nombre d-flex my-4 col-md-2">
                     <label class="title mx-3 my-2"><strong> Affichage:</strong></label> 
                     <select class="form-control " v-model="form.nombre" required @click.prevent="refresh()">
-                        <option value>10</option>
+                        <option value="10">10</option>
                         <option value="25" >25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
                 </div>
             </form>
-          <nav aria-label="Page navigation example "  class="d-flex" v-if="res_data != null">
+          <nav aria-label="Page navigation example "  class="d-flex nav" v-if="res_data != null">
             <ul class="pagination">
               <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
               <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
@@ -138,16 +166,25 @@
       <br> 
   
       <div class="imprim" id="impression">
-        <div class="d-flex align-items-end flex-column">
-            <p><strong> M/Mme {{client.name}}</strong> </p>
-            <p><strong> Client {{compagn.name}}</strong> </p>
-            <p><strong> {{client.phone}}</strong> </p>
-        </div><br>
-        <div class="p-2 mb-2 bg-secondary text-white text-center"><h4>Informations sur la facture</h4></div><br>
-        <div class="">
-          <p><strong>Numéro de la facture : {{id}}</strong> </p>
-          <p><strong> Date de la facture : {{date_sell}}</strong> </p>
-          <p><strong> N° Client : {{client.id}}</strong> </p>
+          <div class="d-flex align-items-start flex-column">
+            <div class="entreprise-photo mb-2" v-if="compagn.logo">
+              <img :src="$config.webURL + compagn.logo" alt="profil" class="profil" width="70" height="50">
+            </div>
+            <strong> Société {{compagn.name}}</strong>
+            <strong> Email: {{compagn.email}}</strong>
+            <strong> Tél: {{compagn.phone}}</strong>
+          </div>
+          <div class="d-flex align-items-end flex-column client-info">
+              <strong> M/Mme {{client.name}}</strong>
+              <strong> Email: {{client.email}}</strong> 
+              <strong> Tél: {{client.phone}}</strong> 
+          </div>
+        <br>
+        <div class="p-2 mb-2 bg-secondary text-white text-center"><h4>Informations sur la facture</h4></div>
+        <div class="d-flex align-items-start flex-column">
+          <strong>Numéro de la facture : {{id}}</strong>
+          <strong> Date de la facture : {{date_sell}}</strong>
+          <strong> N° Client : {{client.id}}</strong>
         </div>
   
           <table class="table table-hover facture">
@@ -181,25 +218,25 @@
           <table  class="total d-flex align-items-end flex-column">
             <tbody>
               <tr>
-                <td class="p-2">Taxe</td>
-                <td class="py-2 px-5">{{tax}} F CFA</td>
+                <td class="px-2">Taxe</td>
+                <td class=" px-5">{{tax}} F CFA</td>
               </tr>
               <tr>
-                <td class="p-2"><strong>TOTAL</strong></td>
-                <td class="py-2 px-5"><strong>{{montant}} F CFA</strong></td>
+                <td class="px-2"><strong>TOTAL</strong></td>
+                <td class=" px-5"><strong>{{montant}} F CFA</strong></td>
               </tr>
               <tr>
-                <td class="p-2">Montant restant à encaisser</td>
-                <td class="py-2 px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
+                <td class="px-2">Montant restant à encaisser</td>
+                <td class=" px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
               </tr>
             </tbody>
           </table>  <br><br> 
       </div>
       <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
-
+      <deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/>  
       <exportModal v-show="exportModal" @close-modal="exportModal = false" />  
       <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" /> 
-  <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' v-show="showModal" @close-modal="showModal = false"/>
+      <Impression :date_sell= 'identifiant1' :client= 'identifiant2' :factures= 'identifiant3' :montant= 'identifiant4' :rest= 'identifiant5' :tax= 'identifiant6' :qr_info= 'identifiant7' :compagn= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
          
   <!-- Footer -->
     <footer class="text-center text-lg-start bg-dark text-white">
@@ -233,7 +270,7 @@
   
       <!-- Copyright -->
       <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
-        Copyright © 2022 - Tous droits réservés TocManager-dS
+        Copyright © 2022 - Tous droits réservés TocManager
       </div>
       <!-- Copyright -->
     </footer>
@@ -246,6 +283,7 @@
   <script>
   import pdfModal from './pdfModal.vue';
   import exportModal from './exportModal.vue';
+  import deleteMultipleModal from './deleteMultipleModal.vue'; 
   import deleteModal from './deleteModal.vue';  
   import Impression from './impression.vue';  
   import moment from "moment";
@@ -260,10 +298,12 @@
       Impression,
       deleteModal,
       exportModal,
-      pdfModal
+      pdfModal,
+      deleteMultipleModal
     },
      data () {
         return {
+          trie: "",
           links: [],
           res_data: null,
           showModal: false,
@@ -275,6 +315,7 @@
           identifiant5: '',
           identifiant6: '',
           identifiant7: '',
+          identifiant8: '',
           ventes: [],
           vente: "",
           total: '',
@@ -302,6 +343,11 @@
           date_fin: "",
           role: "",
           pdfModal: false,
+          sup_checkbox: 0,
+          list_delete: [],
+          checks: [],
+          selection: 0,
+          showModalMultipleDelete: false
     }
   },
 
@@ -317,6 +363,26 @@
         //         this.data = response.data.data
         //         })   
         // },
+
+        multipleSup(){
+          this.showModalMultipleDelete = true
+        },
+
+        selectionner(){
+          this.selection = 1
+        },
+
+        deselectionner(){
+          this.selection = 0
+          this.checks = []
+        },
+
+        checkbox(id){
+          // console.log(id)
+          console.log(this.checks)
+        },
+
+
         exp(){
             this.exportModal = true
         },
@@ -373,6 +439,48 @@
               let lastE = response.data.data.links.splice(-1,1);
             })  
           },
+
+          
+          TriFactures(trie){
+            // console.log(trie);
+            if(trie == "toutes"){
+              this.refresh()
+            }
+            else if(trie == "false"){
+              this.$axios.get('/sells/filter',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                page: 1,
+                is_invoiced: false
+              }   
+              })        
+              .then(response => 
+              {
+                // console.log(response);
+                this.ventes = response.data.data.data
+                this.res_data= response.data.data
+                this.total = response.data.data.total
+                let firstE = response.data.data.links.shift()
+                let lastE = response.data.data.links.splice(-1,1);
+              })  
+            }
+            else if(trie == "true"){
+              this.$axios.get('/sells/filter',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                page: 1,
+                is_invoiced: true
+              }   
+              })        
+              .then(response => 
+              {
+                // console.log(response);
+                this.ventes = response.data.data.data
+                this.res_data= response.data.data
+                this.total = response.data.data.total
+                let firstE = response.data.data.links.shift()
+                let lastE = response.data.data.links.splice(-1,1);
+              })  
+            }
+          },
   
           recupClient(){
             this.$axios.get('/clients',{params: {
@@ -390,7 +498,7 @@
                 compagnie_id: localStorage.getItem('auth.company_id')
               }
             }).then(response => {
-              // console.log(response);
+              // console.log(response.data.data[0]);
               this.id = response.data.data[0].id,
               this.factures = response.data.data[0].sell_lines,
               this.date_sell = moment(response.data.data[0].date_sell).format("D MMM YYYY, h:mm:ss a"),
@@ -417,7 +525,7 @@
                     compagnie_id: localStorage.getItem('auth.company_id')
                   }
                 }).then(response => {
-                  // console.log(response);
+                  // console.log(response.data.data[0]);
                   this.showModal = true;
                   // this.id = response.data.data[0].id,
                   this.identifiant3 = response.data.data[0].sell_lines,
@@ -428,6 +536,7 @@
                   this.identifiant6 = response.data.data[0].tax
                   // this.compagn = response.data.data[0].client.compagny
                   this.identifiant7 = response.data.data[0].facture
+                  this.identifiant8 = response.data.data[0].client.compagny
                 }) 
           }
           
@@ -448,6 +557,12 @@
   
   <style scoped>
 
+  .nav{
+    overflow: auto;
+  }
+.client-info{
+  margin-top: -10%;
+}
   .app-main__outer{
     overflow: auto;
     font-size: 14px;
@@ -483,7 +598,7 @@
     }
     .imprim {
          display: block;
-         padding: 5%;
+         padding: 1%;
       }
     /* nav, .trait, .other_page{
       display: none !important;

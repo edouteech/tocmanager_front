@@ -1,12 +1,12 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Clients </h3>
+      <Sidebar /><h3 class="name_side">Clients </h3>
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
-      <h4>Clients supprimés</h4>
+    <div class="app-main__outer py-5 px-2">
+      <h4>Clients supprimés</h4><hr>
       <div class="table-responsive">
        <table class="table table-hover">
           <thead>
@@ -31,7 +31,7 @@
                 <td>{{client.name}}</td>
                 <td>{{client.phone}}</td>
                 <td>{{client.email}}</td>
-                <td><div class="action">
+                <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div class="sup" @click="supClient(client.id)">Supprimer définitivement</div>
                     <div class="restore" @click="restaurerClient(client.id)">Restaurer ce client</div></div>
                 </td>
@@ -41,25 +41,25 @@
     </table>
     <p class="text-center"><strong>{{total}} clients au total </strong></p><hr class="text-primary">
     </div>    <br><br>  
-    <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
-        <ul class="pagination">
-        <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-        <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-        
-        <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-        </ul>
         <form action="">
-            <div class="nombre d-flex">
-                <label class="title mx-5 my-2"><strong> Affichage:</strong></label> 
-                <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                    <option value>10</option>
+            <div class="nombre d-flex my-4 col-md-2">
+                <label class="title mx-3 my-2"><strong> Affichage:</strong></label> 
+                <select class="form-control " v-model="form.nombre" required @click.prevent="refresh()">
+                    <option value="10">10</option>
                     <option value="25" >25</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
             </div>
-          </form>
-    </nav>
+        </form>
+        <nav aria-label="Page navigation example "  class="d-flex nav" v-if="res_data != null">
+            <ul class="pagination">
+                <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+                <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+                
+                <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+            </ul>
+        </nav>
 </div><br>
 
             <!-- <pre> {{res_data}}</pre> -->
@@ -138,6 +138,10 @@ export default {
 </script>
 
 <style scoped>
+  .nav{
+    overflow: auto;
+  }
+  
 .app-main__outer{
   overflow: auto;
 }
@@ -149,15 +153,21 @@ export default {
 .table{
 	margin-top: 5%;
   text-align: center;
-}   
+}  
+
+.table th{
+	padding: 20px;
+}
+
 tbody tr:last-of-type{
     border-bottom: 2px solid rgb(241, 20, 20);
-}  
+}   
 .sup{
     border: 1px solid black;
     border-radius: 15px;
+    height: 35px;
     padding: 5px;
-    margin: 15px;
+    margin: 0 10px;
     cursor: pointer;
     
 }
@@ -171,17 +181,14 @@ tbody tr:last-of-type{
     cursor: pointer;
     border: 1px solid black;
     border-radius: 15px;
-    margin: 15px;
+    height: 35px;
     padding: 5px;
+    margin: 0 10px;
 }
 
 .restore:hover{
     color: #fff;
     background-color: green;
-}
-
-.w-full{
-    text-align: center;
 }
 
 </style>

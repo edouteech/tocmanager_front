@@ -1,7 +1,7 @@
 <template >
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Ventes </h3>
+      <Sidebar /><h3 class="name_side">Ventes </h3>
       <User_info />
     </nav>
 
@@ -10,7 +10,7 @@
       
       <div  v-for="(user, i) in users" :key="i">
         <NuxtLink to="/update_compagnie" v-if="compagn == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
-          <button type="submit" class="btn btn-warning mx-5">Compléter les informations de la compagnie</button>
+          <!-- <button type="submit" class="btn btn-warning mx-5">Compléter les informations de la compagnie</button> -->
         </NuxtLink>
 
         <NuxtLink to="" class="text-danger" v-else>Veuillez contacter l'administrateur pour résoudre le problème !!!</NuxtLink>
@@ -18,16 +18,26 @@
     </div>
 
 
-    <div class="app-main__outer p-5">
-      <div class="d-flex">
+    <div class="app-main__outer py-5 px-2">
+      
+      <div class="d-flex align-items-end flex-column">
         <!-- <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Impression A4</span></div> -->
         <!-- <div class="other_print mx-5" @click="generatePdf()"><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Autre format d'impression</span></div> -->
-        <button type="submit" class="btn btn-success mx-5" @click.prevent="validerFactureNormalise()" v-if="qrcode != null">Valider la facture normalisée</button>
+        <button type="submit" class="btn btn-success mx-5" @click.prevent="validerFactureNormalise()" v-if="qr_info != null">Valider la facture normalisée</button>
         <button type="submit" class="btn btn-primary mx-5" @click.prevent="genererFactureNormalise()" v-else>Générer la facture normalisée</button>
+        <NuxtLink :to="'/ventes/'+this.$route.params.id"><button type="submit" class="btn btn-dark mx-5 my-3">Modifier la vente</button></NuxtLink> 
       </div>
         <br>
 
-      <div class="d-flex align-items-end flex-column">
+        <div class="d-flex align-items-start flex-column">
+            <div class="entreprise-photo my-3" v-if="compagny.logo">
+              <img :src="$config.webURL + compagny.logo" alt="profil" class="profil" width="70" height="50">
+            </div>
+            <p><strong> Société {{compagny.name}}</strong></p>
+            <p><strong> Email: {{compagny.email}}</strong></p>
+            <p><strong> Tél: {{compagny.phone}}</strong></p>
+          </div>
+          <div class="d-flex align-items-end flex-column client-info">
           <p><strong> M/Mme {{client.name}}</strong> </p>
           <p><strong> Client {{compagny.name}}</strong> </p>
           <p><strong> {{client.phone}}</strong> </p>
@@ -57,7 +67,7 @@
           </tbody>
         </table>  <br><br> 
         <h5><p class="text-center">Listes des produits de la facture</p></h5> -->
-
+      <div class="table-responsive">
         <table class="table table-hover facture">
           <thead>
             <tr class="table-secondary">
@@ -77,9 +87,10 @@
               <td>{{facture.amount_after_discount}} F CFA</td>
             </tr>
           </tbody>
-        </table>  <br><br> 
+        </table>  
+      </div><br><br> 
         
-            <div class="d-flex align-items-end flex-column mb-4" v-if="qrcode != null">
+            <div class="d-flex align-items-end flex-column mb-4 recap" v-if="qrcode != null">
               <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+qrcode" alt="QRcode" />
               <div class="d-flex align-items-start flex-column mb-4">
                 <p> <strong>Mecef_counteurs :</strong>{{qr_info.mecef_counteurs}}</p>
@@ -115,7 +126,8 @@
               <td class="py-2 px-5"><strong class="text-warning">{{rest}} F CFA</strong></td>
             </tr>
           </tbody>
-        </table>  <br><br> 
+        </table>  
+      <br><br> 
         
         <hr class="trait">
           <div class="caisse" v-if="rest > 0">
@@ -310,16 +322,15 @@ export default {
     },
 
     mounted(){
+      // console.log(this.$auth)
       this.payment()
       this.refresh()
       this.recupFacture()
       this.compagn = localStorage.getItem('auth.company_id');
-      this.users = this.$auth.$state.user;
+      this.users = this.$auth.$state.user.roles;
     },
 
     methods: {
-
-          
         payment(){
             this.$axios.get('/invoice/payments',{params: {
             compagnie_id: localStorage.getItem('auth.company_id')
@@ -415,7 +426,8 @@ export default {
             params: {
               compagnie_id: localStorage.getItem('auth.company_id')
             }
-          }).then(response => {console.log(response.data.data);
+          }).then(response => {
+            // console.log(response.data.data);
             this.date_sell = response.data.data[0].date_sell,
             this.client = response.data.data[0].client,
             this.montant = response.data.data[0].amount,
@@ -456,7 +468,7 @@ export default {
           }
           })
             .then(response =>{ 
-                console.log( response ) 
+                // console.log( response ) 
                   this.refresh()
                   this.error = response.data.message
                 
@@ -470,10 +482,13 @@ export default {
           }
           })
             .then(response =>{ 
-                console.log( response ) 
+                // console.log( response ) 
+                // if(response.status == 'success'){
                   this.refresh()
+                // }
+                // else{
                   this.error = response.data.message
-                
+                // } 
             }).catch( err => console.log( err ) )
 
         },
@@ -483,6 +498,10 @@ export default {
 </script>
 
 <style scoped>
+.client-info{
+  margin-top: -10%;
+}
+
 .logo-img{
     width: 170px;
 }
@@ -574,6 +593,12 @@ tbody tr:last-of-type{
 thead tr{
     background-color: transparent;
 }
+
+/* @media screen and (max-width: 900px) {
+  .recap{
+    margin-right: -15%;
+  }
+} */
 
 
 

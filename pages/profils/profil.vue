@@ -1,11 +1,11 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Utilisateurs </h3>
+      <Sidebar /><h3 class="name_side">Utilisateurs </h3>
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des utilisateurs enregistrés</h4><hr><br><br>
       <div class="d-flex">
           <div class="col-md-10">
@@ -16,10 +16,26 @@
           </div>
           <NuxtLink  to="/profils/add_profil" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouvel utilisateur</span></button></NuxtLink>
       </div>
+          <!-- <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+            </button>
+          </div> -->
       <div class="table-responsive">
           <table class="table table-hover">
               <thead>
                 <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
                       <th>Noms</th>
                       <th>Numéros de téléphone</th>
                       <th>Emails</th>
@@ -31,6 +47,7 @@
             
               <tbody>
                 <tr  v-for="(profil, i) in profils" :key="i">
+                  <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(profil.id)" :value="profil.id"/></div></td>
                   <td>{{profil.name}}</td>
                   <td>{{profil.phone}}</td>
                   <td>{{profil.email}}</td>
@@ -39,7 +56,7 @@
                   <td v-else-if="profil.role_name =='cashier'">Caissier</td>
                   <td v-else-if="profil.role_name ==null">----</td>
                   <td>{{profil.country}}</td>
-                  <td><div class="action"  v-for="(user, i) in users" :key="i">
+                  <td><div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                         <div @click="voirProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                         <NuxtLink :to="'/profils/'+profil.id"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                         <div @click="deleteProfil(profil.id)"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -50,7 +67,7 @@
           </table>
         <p class="text-center"><strong>{{total}} utilisateur(s) au total </strong></p><hr class="text-primary">
       </div><br><br> 
-        <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
+        <nav aria-label="Page navigation example " class="d-flex nav" v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
             <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
@@ -61,7 +78,7 @@
               <div class="nombre d-flex">
                   <label class="title mx-5 my-2"><strong> Affichage:</strong></label> 
                   <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                      <option value>10</option>
+                      <option value="10">10</option>
                       <option value="25" >25</option>
                       <option value="50">50</option>
                       <option value="100">100</option>
@@ -70,9 +87,9 @@
           </form>
         </nav>
     </div><br><br><br>
-
-<voirProfil :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :pays= 'identifiant4' :role= 'identifiant5' :ajout= 'identifiant6' :modifier= 'identifiant7' :supprimer= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
-<deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
+    <deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/>  
+    <voirProfil :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :pays= 'identifiant4' :role= 'identifiant5' :ajout= 'identifiant6' :modifier= 'identifiant7' :supprimer= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
+    <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
 
 </template>
@@ -82,6 +99,7 @@ import deleteModal from './deleteModal.vue'
 import voirProfil from './voir_profil.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
+  import deleteMultipleModal from './deleteMultipleModal.vue'; 
 export default {
     layout: "empty",
     auth: true,
@@ -89,7 +107,8 @@ export default {
       Sidebar,  
       voirProfil,
       Userinfo,
-      deleteModal
+      deleteModal,
+      deleteMultipleModal
     },
 
     data () {
@@ -116,16 +135,36 @@ export default {
           },
           key: "",
           showModalDelete: false,
-          results: ''
+          results: '',
+          checks: [],
+          selection: 0,
+          showModalMultipleDelete: false
         }
       },
 
     mounted () {
       this.refresh()
-         this.users = this.$auth.$state.user.roles;
-    this.compagny = localStorage.getItem('auth.company_id');
+      this.users = this.$auth.$state.user.roles;
+      this.compagny = localStorage.getItem('auth.company_id');
     },
     methods: {
+        multipleSup(){
+          this.showModalMultipleDelete = true
+        },
+
+        selectionner(){
+          this.selection = 1
+        },
+
+        deselectionner(){
+          this.selection = 0
+          this.checks = []
+        },
+
+        checkbox(id){
+          // console.log(id)
+          console.log(this.checks)
+        },
 
         deleteProfil(id){
           this.showModalDelete = true
@@ -191,6 +230,11 @@ export default {
 </script>
 
 <style scoped>
+
+.nav{
+  overflow: auto;
+}
+
 .app-main__outer{
   overflow: auto;
 }

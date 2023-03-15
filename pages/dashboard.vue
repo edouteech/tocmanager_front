@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Tableau De Bord </h3>
+      <Sidebar /><h3 class="name_side">Tableau De Bord </h3>
       <Userinfo />
     </nav>
 
@@ -339,13 +339,13 @@ export default {
 //   moment().format("YYYY-MM-DDThh:mm")
     middleware:'auth',
     mounted(){    
-        console.log(this.$auth)
+        // console.log(this.$auth)
         this.$axios.post('/tableau/de/bord',{
               date_debut: this.form.date_debut,
               date_fin: this.form.date_fin,
               compagnie_id: localStorage.getItem('auth.company_id')
         }).then(response => {
-            console.log(response);
+            // console.log(response);
 
            this.volume_vente  = response.data.data.volume_vente
            this.chiffre_affaire = response.data.data.chiffre_affaire
@@ -558,6 +558,8 @@ export default {
 </script>
 
 <style>
+
+
 .app-main__outer{
     padding: 5%;
     font-size: 14px;
@@ -593,6 +595,11 @@ export default {
 
 
 @media screen and (max-width: 900px) {
+
+.name_side{
+    display: none;
+}
+
 .app-main__outer{
     padding: 3%;
 }
@@ -609,6 +616,10 @@ table{
 
 .i{
     font-size: 13px
+}
+
+.text-ajout{
+    display: none;
 }
 
 }

@@ -1,11 +1,11 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Catégories de produits </h3>
+      <Sidebar /><h3 class="name_side">Catégories de produits </h3>
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
          <h4>Modifier les informations de cette catégorie</h4>
        <form action="">
             <div class="form-group col-md-6">

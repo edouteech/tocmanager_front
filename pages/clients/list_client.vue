@@ -1,12 +1,16 @@
 <template >
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Clients </h3>
+      <Sidebar /><h3 class="name_side">Clients </h3>
       <Userinfo />
     </nav>
     
-    <div class="app-main__outer p-5">
-      <h4>Liste des clients</h4><hr><br><br>
+    <div class="app-main__outer py-5 px-2">
+      <h4>Liste des clients</h4><hr><br>
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
+            {{error}} 
+        </div>
+      <br>
       <div class="d-flex">
           <div class="col-md-10">
             <form class="d-flex col-md-7" role="search">
@@ -20,15 +24,36 @@
         <NuxtLink  to="/clients/add_client" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau client</span></button></NuxtLink>
       </div>
 
-      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+      <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
         {{error}} 
-      </div>
-
+      </div> -->
+  
+          <div class="d-flex justify-content-end mt-3" v-for="(user, i) in users" :key="i">
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <div v-if="defaultNum != 0">
+              <button class="btn btn-outline-dark mx-3" @click.prevent="chooseDefaultClient()">
+                Choisir commme client par défaut
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+            </button>
+          </div>
       <div class="table-responsive search_result" v-if="this.element_search != ''">
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
                   <th>Noms</th>
                   <th>Numéros de téléphone</th>
                   <th>Emails </th>
@@ -39,12 +64,13 @@
           </thead>
           <tbody>
            <tr  v-for="(result, j) in results" :key="j">
-              <td>{{result.name}}</td>
+                <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
+              <td>{{result.name}}<span v-if="result.default_client == true"><i class="fa fa-star text-success mx-3 cursor-pointer" aria-hidden="true" title="Démettre du fournisseur par défaut" @click.prevent="supDefaultClient(result.id)"></i></span></td>
               <td>{{result.phone}}</td>
               <td>{{result.email}}</td>
               <td class="text-danger">{{result.balance}}</td>
               <td>{{result.nature}}</td>
-              <td><div class="action" v-for="(user, i) in users" :key="i">
+              <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                 <div @click="voirClient(result.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+result.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
@@ -63,6 +89,7 @@
         <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
                   <th>Noms</th>
                   <th>Numéros de téléphone</th>
                   <th>Emails </th>
@@ -73,12 +100,13 @@
           </thead>
           <tbody>
            <tr  v-for="(client, i) in clients" :key="i">
-              <td>{{client.name}}</td>
+                <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(client.id)" :value="client.id"/></div></td>
+              <td>{{client.name}}<span v-if="client.default_client == true"><i class="fa fa-star text-success mx-3 cursor-pointer" aria-hidden="true" title="Démettre du client par défaut" @click.prevent="supDefaultClient(client.id)"></i></span></td>
               <td>{{client.phone}}</td>
               <td>{{client.email}}</td>
               <td class="text-danger">{{client.balance}}</td>
               <td>{{client.nature}}</td>
-              <td><div class="action" v-for="(user, i) in users" :key="i">
+              <td><div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                 <div @click="voirClient(client.id)" v-if=" compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                 <NuxtLink :to="'/clients/'+client.id" v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(client)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
@@ -120,7 +148,7 @@
       <div class="nombre">
         <!-- -->
         <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-            <option value>10</option>
+            <option value="10">10</option>
             <option value="25" >25</option>
             <option value="50">50</option>
             <option value="100">100</option>
@@ -128,7 +156,7 @@
       </div>
     </form>
     </div>
-    <nav class="page" aria-label="Page navigation example px-8" v-if="res_data != null">
+    <nav class="page nav" aria-label="Page navigation example px-8" v-if="res_data != null">
       <ul class="pagination">
         <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
         <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
@@ -141,7 +169,7 @@
 <stockModal :cli="id_cli" :cli_name="nom_cli" v-show="stockModal" @close-modal="stockModal = false"/>  
 <voirClient :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance="identifiant5" :nature= 'identifiant4' :type= 'type_client' :seuil='seuil_client' v-show="showModal" @close-modal="showModal = false"/>
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/>
-
+<deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/>  
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 </div>
 
@@ -154,6 +182,7 @@ import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
 import deleteModal from './deleteModal.vue'
 import exportModal from './exportModal.vue'
+import deleteMultipleModal from './deleteMultipleModal.vue'; 
 export default {
   layout: "empty",
   auth: true,
@@ -163,7 +192,8 @@ export default {
     Userinfo,
     deleteModal,
     exportModal,
-    stockModal
+    stockModal,
+    deleteMultipleModal
   },
    data () {
       return {
@@ -195,7 +225,11 @@ export default {
         role: "",
         id_cli: '',
         nom_cli: '',
-        stockModal: false
+        stockModal: false,
+        checks: [],
+        selection: 0,
+        showModalMultipleDelete: false,
+        defaultNum: 0
       }
     },
 
@@ -208,6 +242,73 @@ export default {
     },
 
     methods: {
+      chooseDefaultClient(){
+          // console.log(this.checks.length)
+        if(this.checks.length == '1'){
+          let default_cli = this.checks[0]
+          this.$axios.put('/clients/'+default_cli+'/default', {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+            }
+          ).then((response) => {
+              // console.log(response.data);
+              
+              if(response.data.status == "success"){
+                this.selection = 0
+                this.defaultNum = 0
+                this.checks = []
+                this.refresh()
+                this.$toast('Client par défaut choisi avec succès !!!', {
+                    icon: 'fa fa-check-circle',
+                })
+              }else{
+                this.error = response.data.message
+              }
+            })
+        }
+        else{
+          this.error = "Vous ne pouvez que sélectionner qu'un seul client par défaut"
+        }
+      },
+
+      supDefaultClient(default_client){
+        this.$axios.put('/clients/'+default_client+'/default/unset', {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+            }
+          ).then((response) => {
+              // console.log(response.data);
+              
+              if(response.data.status == "success"){
+                this.refresh()
+                this.$toast('Client par défaut supprimé avec succès !!!', {
+                    icon: 'fa fa-check-circle',
+                })
+              }else{
+                this.error = response.data.message
+              }
+            })
+      },
+
+      multipleSup(){
+        this.showModalMultipleDelete = true
+      },
+
+      selectionner(){
+        this.selection = 1
+        this.defaultNum = 1
+      },
+
+      deselectionner(){
+        this.selection = 0
+        this.defaultNum = 0
+        this.checks = []
+      },
+
+      checkbox(id){
+        // console.log(id)
+        // console.log(this.checks)
+      },
+
+
       exporte(){
         this.exportModal = true
       },
@@ -353,6 +454,11 @@ export default {
 </script>
 
 <style scoped>
+
+.nav{
+    overflow: auto;
+}
+
 .btn-group{
   display: flex;
 }
@@ -390,7 +496,7 @@ export default {
 
 .fa{
   margin: 0 5px;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
 }
 .table{

@@ -2,48 +2,57 @@
 <div>
     <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Achats </h3>
+      <Sidebar /><h3 class="name_side">Achats </h3>
       <Userinfo />
     </nav>
 
     
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}} <br>
         </div>
             <h4>Enregistrer un achat</h4><hr>
             <form action="" method="POST">
-                <div class="cadre-haut">             
-                    <div class="ajout-client">                                   
-                        <!-- <select class="form-control" v-model="form.supplier_id">
-                            <option disabled value="">Choisir le fournisseur</option>
-                            <option v-for="(fournisseur, index) in fournisseurs" :key="index" :label="fournisseur.name" :value="fournisseur.id">
-                                {{fournisseur.name}}
-                            </option>                           
-                        </select>       -->
-                        <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
-                        <div class="select2-cli" v-if="afficheCli !=0">
-                            <ul>
-                                <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="">{{acteur.name}}</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors.supplier_id">
-                        {{errors.supplier_id}}
-                        </div>     -->
-                        <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
-                        </button>                
+                <div class="row">        
+                    <div class="col-md-6">    
+                        <div class="ajout-client">  
+                            <v-select 
+                                placeholder="Choississez le fournisseur"
+                                v-model="selectedFournisseur"
+                                label="name"
+                                :options="fournisseurs"
+                                :reduce="(fournisseur) => fournisseur.id"
+                                append-to-body
+                            />
+                            <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>Ajouter un fournisseur
+                            </button>  
+                        </div>              
                     </div>
-                    <div class="facture-date position-absolute end-0">
+                    <div class="col-md-6 facture-date my-auto">
                         <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_buy"/>                  
                     </div>
                 </div> <hr>
                 
-                <div class="add_buttons d-flex"> 
+                <!-- <div class="add_buttons d-flex"> 
                     <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
                     <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
+                </div> -->
+                <div class="add_buttons row col-md-12 boom"> 
+                    <div class="d-flex col-md-8">
+                        <div class="col-md-4"><button class="btn btn-outline-primary col-md-11 mx-auto " @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                        <div class="col-md-8"><button class="btn btn-outline-success col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>  
+                    </div>         
+                    <div class="col-md-4 mt-2">
+                        <div class="d-flex code_recherche">
+                            <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
+                            {{codeError}} 
+                        </div> 
+                    </div>                    
                 </div>
 
                 <div class="commande table-responsive">
@@ -53,7 +62,7 @@
                                 <th>Désignation</th>
                                 <th>Quantité voulue</th>
                                 <th>Prix unitaire</th>
-                                <th scope="col">Réduction (Prix ou %)</th>
+                                <!-- <th scope="col">Réduction (Prix ou %)</th> -->
                                 <!-- <th>Taxe appliquée (%)</th>  -->
                                 <th> Total</th>                     
                             </tr>
@@ -61,18 +70,27 @@
                         
                         <tbody>
                             <tr v-for="(line, index) in form.buy_lines" :key="index">
-                                <td>
-                                    <select class="form-control " v-model="line.product_id" id="" @change="productChange">
+                                <td class="table-coll">
+                                    <v-select 
+                                        placeholder="Choississez..."
+                                        v-model="line.product_id"
+                                        label="name"
+                                        :options="produits"
+                                        :reduce="(produit) => produit.id"
+                                        append-to-body
+                                        @input="productChange(line.product_id, index)"
+                                    />
+                                    <!-- <select class="form-control " v-model="line.product_id" id="" @change="productChange">
                                         <option disabled value="">Choisissez...</option> 
                                         <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
-                                    </select>
+                                    </select> -->
                                 </td>
-                                <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" required></td>
-                                <td><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td>
-                                <!-- <td><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
-                                <td><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required></td>
-                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger " aria-hidden="true"></i></td>
+                                <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
+                                <!-- <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td> -->
+                                <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
+                                <td class="table-col"><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required disabled></td>
+                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
                     </table>  
@@ -81,10 +99,11 @@
                     </div>   
                 </div><br>
                 
-                <div class="d-flex">
-                    <div class="form-group1 col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
-                    <div class="form-group col-md-6 mx-5">
-                        <div class="form-group ">
+                <div class="row">
+                    <div class="form-group col-md-4"> Réduction (Prix ou %): <input class="form-control received" type="number" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>  
+                    <div class="form-group col-md-4"> Somme envoyée: <input class="form-control received" type="number" v-model="form.amount_sent"  autocomplete="off"  required></div>  
+                    <div class="form-group col-md-4">
+                        <div class="form-group1">
                             Méthode de paiement
                         <select class="form-control" v-model="form.payment">
                             <option value="">Choississez</option>
@@ -97,10 +116,9 @@
                     {{amount_error}} 
                 </div> 
                 <br><br><br><br><br>
-                <button class="custom-btn btn-5" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
-                <!-- <div class="submit">
-                    <input type="submit" id='submit'  value="Enregistrer la facture " name="submit">{{this.form.amount}}		          
-                </div>   -->
+                <div class="col-md-6 mx-auto">
+                    <button class="custom-btn btn-5 col-md-12" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+                </div>
         
             </form>
 <!-- 
@@ -121,6 +139,8 @@
 </template>
 
 <script>
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 import moment from "moment";
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
@@ -145,7 +165,8 @@ export default {
         ajoutModal, 
         SavedModal,
         produitModal,
-        Userinfo
+        Userinfo,
+        vSelect
     },
 
     data () {
@@ -182,7 +203,11 @@ export default {
             designations: '',
             acteurs: '',
             afficheCli: 0,
-            afficheProd: 0
+            afficheProd: 0,
+            codeProd: '',
+            codeError: null,
+            codes: '',
+            selectedFournisseur: ""
         }
     },
 
@@ -197,6 +222,10 @@ export default {
     
     methods: {
 
+        go(){
+            this.afficheCli = 0
+        },
+
         choiceProd(designation,i){
             console.log(i);
             let line = this.form.buy_lines[i]
@@ -206,18 +235,18 @@ export default {
         },
 
         searchProd(){
-        this.afficheProd =1
-        this.$axios.get('/products',{params: {
-            compagnie_id: localStorage.getItem('auth.company_id'),
-            search: this.element_searchProd,
-            is_paginated: 0
-        }
-        })
-        .then(response => {
-            // console.log(response.data);
-            this.designations = response.data.data 
-        
-        })
+            this.afficheProd =1
+            this.$axios.get('/products',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                search: this.element_searchProd,
+                is_paginated: 0
+            }
+            })
+            .then(response => {
+                // console.log(response.data);
+                this.designations = response.data.data 
+            
+            })
         },
 
 
@@ -228,18 +257,18 @@ export default {
         },
 
         searchCli(){
-        this.afficheCli =1
-        this.$axios.get('/suppliers',{params: {
-            compagnie_id: localStorage.getItem('auth.company_id'),
-            search: this.element_searchCli,
-            is_paginated: 0
-        }
-        })
-        .then(response => {
-            // console.log(response.data);
-            this.acteurs = response.data.data 
-        
-        })
+            this.afficheCli =1
+            this.$axios.get('/suppliers',{params: {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+                search: this.element_searchCli,
+                is_paginated: 0
+            }
+            })
+            .then(response => {
+                // console.log(response.data);
+                this.acteurs = response.data.data 
+            
+            })
         },
 
         payment(){
@@ -251,8 +280,39 @@ export default {
                 // console.log(response); 
                 this.methodes = response.data.data })
         },
+
+
         addLine(){
-            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, amount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});
+            this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});
+        },
+
+        async codeAdd(){
+          await this.$axios.get('/products/search',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            code: this.codeProd
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+            if(response.data.status == "success"){
+                this.codeError= null
+                this.codes = response.data.data;
+                let codeProdId = this.codes.id
+                let codeProdPrice = this.codes.price_buy
+                this.codeProd = "",
+                this.form.buy_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});              
+                let sum = 0;
+                for (let j = 0; j < this.form.buy_lines.length; j++) {
+                    sum += this.form.buy_lines[j].amount;
+                }
+
+                this.form.amount = sum 
+            }
+            else{
+                this.codeError = response.data.message
+            }
+          })
+
         },
 
         // deleteLine(){
@@ -261,6 +321,11 @@ export default {
         deleteLine(index){
           console.log(index);
           this.form.buy_lines.splice(index, 1)
+            let sum = 0;
+            for (let j = 0; j < this.form.buy_lines.length; j++) {
+                sum += this.form.buy_lines[j].amount;
+            }
+            this.form.amount= sum;
         },
 
         setMessage(payload) {
@@ -283,12 +348,12 @@ export default {
                     amount: this.form.amount,
                     amount_sent: this.form.amount_sent,
                     user_id: this.user,
-                    supplier_id: this.form.supplier_id,  
+                    supplier_id: this.selectedFournisseur,  
                     buy_lines: this.form.buy_lines,
                     payment: this.form.payment,
                     compagnie_id: localStorage.getItem('auth.company_id')
                     }).then(response =>{ 
-                        console.log( response ) 
+                        // console.log( response ) 
                         this.error = response.data.message
                         if(response.data.status == "success"){
                             this.$router.push({path:'/achats/SavedModal',})
@@ -315,7 +380,14 @@ export default {
                 }
           }).then(response => {
             // console.log(response.data.data);
-            this.fournisseurs = response.data.data})
+            this.fournisseurs = response.data.data
+            for(let k = 0; k <= this.fournisseurs.length; k++){
+                if(this.fournisseurs[k].default_supplier == true){
+                    this.selectedFournisseur = this.fournisseurs[k].id
+                    break;
+                }
+            }
+          })
         },
 
         recupProduct(){
@@ -325,10 +397,37 @@ export default {
           }
           }).then(response => {
             // console.log(response.data.data);
-            this.produits = response.data.data}) 
+            this.produits = response.data.data
+          }) 
+        },
+
+        
+        reduceAmount(){
+            this.form.tax = 0
+            var red = this.form.discount;
+            var percent = red.indexOf("%"); 
+            let sum = 0;
+            for (let j = 0; j < this.form.buy_lines.length; j++) {
+                sum += this.form.buy_lines[j].amount;
+            }
+
+                if(percent != -1){
+                    var newRed = red.substring(0, red.length - 1);
+                    let calcul1 = sum * Number(newRed);
+                    let calcul2 = calcul1 / 100
+                    this.form.discount = calcul2
+                    this.form.amount = sum - calcul2;
+                    // this.form.amount_ht = sum -calcul2
+                } 
+                else{
+                    this.form.discount = red
+                    this.form.amount = sum - red
+                    // this.form.amount_ht = sum -red
+                }   
         },
 
         quantityChange(index){
+            this.form.discount = 0
             let line = this.form.buy_lines[index]
             line.amount = Number(line.price) * Number(line.quantity);
             let sum = 0;
@@ -346,7 +445,7 @@ export default {
             var str = line.discount;
             var percent = str.indexOf("%"); 
 
-                if(percent !== -1){
+                if(percent != -1){
                     var newStr = str.substring(0, str.length - 1);
                     let calculR = calculQ * Number(newStr);
                     let Rprix = calculR / 100
@@ -367,23 +466,43 @@ export default {
                 }   
         },
 
-        productChange(e){
-            if(e.target.options.selectedIndex > -1) {
-                let i = e.target.options[e.target.options.selectedIndex].dataset.i;
-                let index = e.target.options[e.target.options.selectedIndex].dataset.index;
-                let product = this.produits[i];
-                let line = this.form.buy_lines[index]
-                line.price = product.price_buy;
-                line.amount = Number(line.price) * Number(line.quantity);
+        productChange(IdProduit, IndexBuyLines){
+            
+            for(let k = 0; k <= this.produits.length; k++){
+                if(this.produits[k].id == IdProduit){
+                    let ProdId = this.produits[k].id
+                    let ProdPrice = this.produits[k].price_buy
+                    this.form.buy_lines[IndexBuyLines].product_id = ProdId
+                    this.form.buy_lines[IndexBuyLines].price = ProdPrice
+                    this.form.buy_lines[IndexBuyLines].discount = 0
+                    this.form.buy_lines[IndexBuyLines].quantity = 1
+                    this.form.buy_lines[IndexBuyLines].amount = ProdPrice
+                    // this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
+                    // this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1); 
+                    let sum = 0;
+                    for (let j = 0; j < this.form.buy_lines.length; j++) {
+                        sum += this.form.buy_lines[j].amount;
+                    }
+                    this.form.amount = sum; 
+                    break;
+                }
+            }
+
+            // if(e.target.options.selectedIndex > -1) {
+            //     let i = e.target.options[e.target.options.selectedIndex].dataset.i;
+            //     let index = e.target.options[e.target.options.selectedIndex].dataset.index;
+            //     let product = this.produits[i];
+            //     let line = this.form.buy_lines[index]
+            //     line.price = product.price_buy;
+            //     line.amount = Number(line.price) * Number(line.quantity);
                     
                 
-                let sum = 0;
-                for (let j = 0; j < this.form.buy_lines.length; j++) {
-                    sum += this.form.buy_lines[j].amount;
-                }
-                this.form.amount = sum;
-                // console.log(sum); 
-            }
+            //     let sum = 0;
+            //     for (let j = 0; j < this.form.buy_lines.length; j++) {
+            //         sum += this.form.buy_lines[j].amount;
+            //     }
+            //     this.form.amount = sum;
+            // }
 
                 
         },
@@ -409,6 +528,12 @@ export default {
 </script>
 
 <style scoped>
+.table-col{
+    width: 18%;
+}
+.table-cole{
+    width: 12%;
+}
 .select2-cli{
     border: 1px solid ;
     width: 14%;
@@ -420,6 +545,11 @@ export default {
 .select2-cli a{
     color: #605050;
     text-decoration: none;
+}
+
+.close-img {
+    width: 25px;
+    cursor: pointer;
 }
 
 .select2-cli ul{
@@ -476,7 +606,7 @@ export default {
 }
 
 .app-main__outer{
-  overflow: auto;
+  overflow: none;
   margin: 0 5%;
 }
 
@@ -484,28 +614,21 @@ export default {
     margin: 5% ;
 }
 
-.cadre-haut{
-    display: flex;
-}
 
-.ajout-client{
-    margin: 30px 10px;
-    border: 1px solid darkblue;
-    padding: 30px 20px;
-    /* margin-right: 50%; */
-}
-
-.btn-ajout{
-    margin-top: 9%;
+.ajout-client {
+    margin: 30px 0;
     border: 1px solid #53af57;
-    padding: 10px;
-    /* width: 100px; */
-    font-size: 10px;
-    border-radius: 15px;
-    text-align: center;
-    background-color: #53af57;
-    color: #fff;
-    cursor: pointer;
+    padding: 30px 20px;
+    width: 300px;
+}
+
+.code_recherche input{
+    height: 45px;
+    margin: 20px 0;
+}
+
+.code_recherche .btn{
+    height: 40px;
 }
 
 .btn-ajout i{
@@ -514,9 +637,10 @@ export default {
 
 
 .facture-date{
-    margin-top: 5%;
+    margin: 30px 0;
+    border: 1px solid #53af57;
+    padding: 30px 20px;
     font-size: 18px;
-    margin-right: 10%;
 }
 
 .btn-ajout:hover{
@@ -539,12 +663,12 @@ export default {
     margin-right: 10px;
 }
 .ajout-article{
-    margin: 4%;
     text-align: center;
     background-color: rgb(8, 231, 97);
     border-radius: 10px;
     padding: 12px;
     cursor: pointer;
+    width: 350px;
 }
 
 .modal .input-form {
@@ -614,7 +738,7 @@ input[type=submit]:hover{
 
 
 .table{
-	margin-top: 5%;
+	/* margin-top: 2%; */
     text-align: center;
 }      
 
@@ -693,27 +817,8 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
 }
 
 @media screen and (max-width: 900px) {
-    .add_buttons{
-        margin: 50% 0;
-    }
-    .cadre-haut{
-        display: inline;
-        margin: 0;
-    }
-
-    .ajout-client{
-        margin-right: 0;
-        margin: 10px 5px;
-        border: 1px solid darkblue;
-        padding: 5px ;
-    }
-
-    .facture-date{
-        position: fixed;
-    }
-
-    .table{
-        overflow: auto;
+    .form-group{
+        margin: 10px 0;
     }
 
     .commande{

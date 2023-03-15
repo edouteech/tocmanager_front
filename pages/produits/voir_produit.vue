@@ -43,6 +43,10 @@
                     <td>Groupe de taxation</td>
                     <td>{{group}}</td>
                   </tr>
+                  <tr>
+                    <td>Code du produit</td>
+                    <td>{{code}}</td>
+                  </tr>
                   
                 </tbody>
               </table><br>
@@ -83,7 +87,7 @@
 <script>
   export default {
     auth:true,
-    props: ['prod_id','id','nom', 'quantite', 'vente', 'achat', 'min', 'max', 'group'],
+    props: ['prod_id','id','nom', 'quantite', 'vente', 'achat', 'min', 'max', 'group', 'code'],
     name: 'voirProduit',
 
     methods:{

@@ -1,13 +1,13 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Encaissements </h3>
+      <Sidebar /><h3 class="name_side">Encaissements </h3>
       <User_info />
     </nav>
 
 
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
              {{error}}
         </div>
@@ -40,8 +40,8 @@
                 </select>
                 </div>
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors_client_id">
-                {{errors_client_id}}
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors_client">
+                {{errors_client}}
             </div>
             <div class="form-group col-md-6">
                 <label class="title">Méthode de paiement</label>
@@ -85,8 +85,8 @@ export default {
             error: null,
             user:'',
             methodes:'',
-            errors_montant: "",
-            errors_client:""
+            errors_montant: null,
+            errors_client: null
         }
     },
 

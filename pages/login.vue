@@ -54,7 +54,7 @@
           </div>
 
           <div class="text-center text-lg-start mt-4 pt-2">
-            <button type="button"  @click.prevent="login()" class="btn btn-primary btn-lg"
+            <button type="button" :disabled="load" @click.prevent="login()" class="btn btn-primary btn-lg"
               style="padding-left: 1rem; padding-right: 1rem;">Se connecter</button>
             <p class="small fw-bold mt-2 pt-1 mb-0">Vous n'avez pas de compte ? <NuxtLink to="/register"  class="link-primary px-2">               
                 Inscription
@@ -80,7 +80,7 @@ export default {
   },
 
   data() {
-    return {
+    return {  
       error: null,
       showModal: false,
       key: '',
@@ -89,7 +89,8 @@ export default {
         password: ''
       },
       errors:[],
-      role: ''
+      role: '',
+      load: false,
 
     }
   },
@@ -114,6 +115,7 @@ export default {
       
 
       async login() {
+            this.load = true
         if(this.form.password == "00000000"){
             try {
                   let response = await this.$auth.loginWith('local', { data: this.form })
@@ -134,95 +136,96 @@ export default {
               try {
                 let response = await this.$auth.loginWith('local', { data: this.form })
                 this.error = response.data.message
+                  this.load = false
                 // console.log(response)
                 let verification = response.data.data.original.user.email_verified_at
                 this.$auth.$storage.setUniversal('user_id', response.data.data.original.user.id)
                 this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
                 this.$auth.$storage.setUniversal('email', this.form.email)
                 this.$auth.setUserToken(response.data.data.original.access_token) 
-                      if(verification == null){
-                        this.showModal = true
-                      } 
-                      else{
+                      // if(verification == null){
+                      //   this.showModal = true
+                      // } 
+                      // else{
                         // this.$auth.setUserToken(response.data.data.original.access_token)         
                         //   .then(response =>{
-                            this.role = localStorage.getItem('auth.roles');
-                              if(this.role == 'super_admin'){
-                                  this.$auth.setUserToken(response.data.data.original.access_token)         
+                        this.role = localStorage.getItem('auth.roles');
+                          if(this.role == 'super_admin'){
+                              this.$auth.setUserToken(response.data.data.original.access_token)         
+                              .then(response =>{
+                                this.$router.push( '/admin/admin',)
+                              })
+                          }
+                          else if(this.role == 'admin'){
+                            let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
+                              
+                                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                                this.$auth.setUserToken(response.data.data.original.access_token)         
                                   .then(response =>{
-                                    this.$router.push( '/admin/admin',)
-                                  })
-                              }
-                              else if(this.role == 'admin'){
-                                let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
-                                  
-                                    this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                                    this.$auth.setUserToken(response.data.data.original.access_token)         
-                                      .then(response =>{
-                                        // console.log(response)
-                                          this.$axios.get('/index/abonnement/compagnie/'+localStorage.getItem('auth.company_id'))
+                                    // console.log(response)
+                                      this.$axios.get('/index/abonnement/compagnie/'+localStorage.getItem('auth.company_id'))
+                                      .then(result =>{
+                                        // console.log(result);
+                                        if( result.data.data.length == 0){
+                                          this.$router.push( '/choisirAbonnement')
+                                        }
+                                        else{
+                                          this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
                                           .then(result =>{
-                                            // console.log(result);
                                             if( result.data.data.length == 0){
-                                              this.$router.push( '/choisirAbonnement')
-                                            }
-                                            else{
-                                              this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
-                                              .then(result =>{
-                                                if( result.data.data.length == 0){
-                                                  this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
-                                                  .then(response =>{
-                                                    // console.log(response)
-                                                    if( response.data.data.hasEndGrace == false){
-                                                      this.$router.push( '/dashboard',)
-                                                    }
-                                                    else{
-                                                      this.$router.push( '/renouvelerAbonnement',)
-                                                    }
-                                                  })
-                                                }
-                                                else{
+                                              this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
+                                              .then(response =>{
+                                                // console.log(response)
+                                                if( response.data.data.hasEndGrace == false){
                                                   this.$router.push( '/dashboard',)
                                                 }
-
+                                                else{
+                                                  this.$router.push( '/renouvelerAbonnement',)
+                                                }
                                               })
                                             }
-                                          }) 
-                                    })
-                              }
-                              else{
-                                let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
-                                this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
-                                
-                                  // console.log(result);
-                                  // if( result.data.data.length == 0){
-                                  //   this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
-                                  // }
-                                  // else{
-                                  //   this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                                  //   this.$auth.setUserToken(response.data.data.original.access_token)         
-                                  //     .then(response =>{
-                                  //       this.$router.push( '/ventes/vente',)
-                                  //   })
-                                  // }
-                                  .then(result =>{
-                                      if( result.data.data.length == 0){
-                                        this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
-                                        .then(response =>{
-                                          console.log(response)
-                                          if( response.data.data.hasEndGrace == false){
-                                            this.$router.push( '/ventes/vente',)
-                                          }
-                                          else{
-                                            this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
-                                          }
-                                        })
-                                      }
-                                      else{
+                                            else{
+                                              this.$router.push( '/dashboard',)
+                                            }
+
+                                          })
+                                        }
+                                      }) 
+                                })
+                          }
+                          else{
+                            let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
+                            this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
+                            
+                              // console.log(result);
+                              // if( result.data.data.length == 0){
+                              //   this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
+                              // }
+                              // else{
+                              //   this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
+                              //   this.$auth.setUserToken(response.data.data.original.access_token)         
+                              //     .then(response =>{
+                              //       this.$router.push( '/ventes/vente',)
+                              //   })
+                              // }
+                              .then(result =>{
+                                  if( result.data.data.length == 0){
+                                    this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
+                                    .then(response =>{
+                                      console.log(response)
+                                      if( response.data.data.hasEndGrace == false){
                                         this.$router.push( '/ventes/vente',)
                                       }
-                                }) 
-                              }
+                                      else{
+                                        this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
+                                      }
+                                    })
+                                  }
+                                  else{
+                                    this.$router.push( '/ventes/vente',)
+                                  }
+                            }) 
+                          // }
                             // })
                       }    
               } catch (err) {
@@ -238,6 +241,10 @@ export default {
 </script>
 
 <style scoped>
+/* .contain{
+  background: #D3D4D6;
+} */
+
 .error-message{
   border: 1px solid transparent;
   color: red;

@@ -1,14 +1,14 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Fournisseurs </h3>
+      <Sidebar /><h3 class="name_side">Fournisseurs </h3>
       <User_info />
     </nav>
 
 
   
-    <div class="app-main__outer p-5">
-        <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+    <div class="app-main__outer py-5 px-2">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}}
         </div>
         <h4>Enregistrer un nouveau fournisseur</h4>
@@ -17,7 +17,7 @@
                 <label class="title">Entrer le nom du fournisseur</label>
                 <input type="text" class="form-control" v-model="form.name" autocomplete="off" required placeholder="Jean Doe">
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.name">
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.name">
                 {{errors.name}}
             </div>
 
@@ -25,7 +25,7 @@
                 <label class="title">Entrer le numero de téléphone du fournisseur</label>
                 <vue-tel-input class="form-control form-control-sm" v-model="form.phone"></vue-tel-input> 
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.phone">
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.phone">
                 {{errors.phone}}
             </div>
 
@@ -33,7 +33,7 @@
                 <label class="title">Entrer l'email du fournisseur</label>
                 <input type="email" class="form-control" v-model="form.email" autocomplete="off" required  placeholder="azerty@azert.com" >
             </div>
-            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.email">
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors && errors.email">
                 {{errors.email}}
             </div>
 
@@ -87,9 +87,8 @@ export default {
             nature: this.form.nature,
             compagnie_id: localStorage.getItem('auth.company_id')
             }).then(response =>{
-                console.log( response ) 
-                this.error = response.data.message
-                console.log(this.error)
+                // console.log( response ) 
+                // console.log(this.error)
 
                 if(response.data.status == "success"){
                     this.$router.push({path:'/fournisseurs/list_fournisseur'});
@@ -98,6 +97,7 @@ export default {
                     })
                 }
                 else{
+                    this.error = response.data.message
                     this.errors = response.data.data
                     // this.$router.push({path:'/clients/add_client'});
                 }

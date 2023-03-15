@@ -105,6 +105,10 @@ export default {
   build: {
     transpile: [
       'defu'
-    ]
-  }
+    ],
+  },
+
+  publicRuntimeConfig: {
+    webURL: "http://localhost:8000/"
+  },
 }

@@ -1,11 +1,11 @@
 <template >
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Ma Compagnie </h3>
+          <Sidebar /><h3 class="name_side">Ma Compagnie </h3>
           <Userinfo />
         </nav>
         
-        <div class="app-main__outer p-5">
+        <div class="app-main__outer py-5 px-2">
           <h4>Informations relatives à ma compagnie</h4><hr>
             <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
                 {{error}} 
@@ -15,9 +15,18 @@
             </div>
             <div class="row">
                 <div class="col-lg-5 col-md-12 img mt-5">
-                  <div class="contact-info mt-5">
+                  <div class="contact-info mt-5" v-if="logo == null">
                     <img src="./../static/images/enter11.png" alt="profil" class="profil mt-5" />
                   </div>
+                  <div class="contact-info mt-5" v-else>
+                    <img :src="$config.webURL + logo" alt="profil" class="profil mt-5">
+                    <!-- <img src="./../static/images/enter11.png" alt="profil" class="profil mt-5" /> -->
+                  </div>
+                  <div class="form-outline mt-4">
+                        <span class="fa fa-file-image-o px-2"></span><label class="form-label">Importer logo de la compagnie</label>
+                        <div class="input-field d-flex"><input type="file" @change="handleFileUpload" size="70" name="file" ref="file" class="input_file_style_file" /><button class="btn btn-outline-success" type="submit" @click.prevent="Logo()"><i class="fa fa-download" aria-hidden="true"></i></button> </div>   
+                          
+                    </div>
                 </div>
       
                 <div class="col-lg-6 col-md-12 mt-2 ml-5">
@@ -93,13 +102,15 @@ export default {
                 ifu: '',
                 registre: '',
                 address: '',
-                token: ''
+                token: '',
 
             },
             error_message: "",
             error: null,
             errors: null,
-            compagny: ''
+            compagny: '',
+            selectedFile: null,
+            logo: '',
         }
         },
     mounted() {
@@ -108,6 +119,11 @@ export default {
     },
 
     methods: {
+        
+        handleFileUpload(event){
+          this.selectedFile = event.target.files[0]
+        //   console.log(this.selectedFile)
+        },
 
         submit(){          
             this.$axios.put('/compagnies/'+this.compagny, {
@@ -134,13 +150,42 @@ export default {
                   }
             })          
         },
+
+        async Logo(){
+            const FormData = require('form-data');
+                  let formd = new FormData();
+                  formd.append('logo', this.selectedFile);
+                  formd.append('compagnie_id', localStorage.getItem('auth.company_id'));
+              await  this.$axios.post('/compagnies/'+this.compagny+'/picture',formd, 
+              {
+                params: {
+                    compagnie_id: localStorage.getItem('auth.company_id')
+                }
+              })   
+              .then(response =>{ 
+                // console.log(response)
+                this.$router.push({
+                  path:'/update_compagnie',})
+                  if(response.data.status == "success"){
+                    this.errors="Modifications éffectuées avec succès !!!"
+                    this.selectedFile = null
+                    this.refresh()
+                  }
+                  else{
+                      this.error = "Echec!!! Veuillez réessayer..."
+                      
+                  }
+              }).catch( err => console.log( err ) )
+        },
+
+
         refresh(){
             this.$axios.get('/compagnies/'+ this.compagny,{params: {
             compagnie_id: localStorage.getItem('auth.company_id')
           }
           })
             .then(response => {
-                // console.log(response.data.data )
+                // console.log(response.data.data[0] )
             let compagnie = response.data.data[0];
             // this.clients = response.data.data
             this.form.name = compagnie.name,
@@ -149,7 +194,8 @@ export default {
             this.form.ifu = compagnie.register_number,
             this.form.address = compagnie.address,
             this.form.registre = compagnie.rccm,
-            this.form.token = compagnie.mecef_token
+            this.form.token = compagnie.mecef_token,
+            this.logo = compagnie.logo
           }      
         )
         }
@@ -159,9 +205,15 @@ export default {
 </script>
 
 <style scoped>
+.btn-action{
+    position: absolute;
+}
 
+.contact-info img{
+    width: 100%;
+}
 @media screen and (max-width: 800px) {
-    .img{
+    .contact-info{
         display: none;
     }
     }

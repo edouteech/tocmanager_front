@@ -1,7 +1,7 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Décaissements </h3>
+      <Sidebar /><h3 class="name_side">Décaissements </h3>
       <User_info />
     </nav>
 
@@ -9,7 +9,7 @@
       {{error}}
     </div>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
         <h4>Enregistrer un décaissement</h4><hr>
         <form action="">
             <div class="form-group col-md-6">

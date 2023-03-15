@@ -6,7 +6,7 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des achats éffectués</h4>
       <hr><br>
       <div class="d-flex">
@@ -29,14 +29,31 @@
           </NuxtLink>
         </div>
         <div class="range">
-            <input class="form-control" type="date"  v-model="date_debut"  required />  
-            <input  class="form-control" type="date"  v-model="date_fin"  required />  
-            <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
-          </div>  
+          <input class="form-control" type="date"  v-model="date_debut"  required />  
+          <input  class="form-control" type="date"  v-model="date_fin"  required />  
+          <button class="btn btn-outline-success" @click="refresh()"><i class="fa fa-check-circle" aria-hidden="true"></i></button>    
+        </div>  
+
+        <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+          <div v-if="selection == 0">
+            <button class="btn btn-outline-info" @click.prevent="selectionner()">
+              Sélectionner
+            </button>
+          </div>
+          <div v-else>
+            <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+              Annuler
+            </button>
+          </div>
+          <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+            <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+          </button>
+        </div>
       <div v-if="this.element_search != ''" class="table-responsive">
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+              <th v-if="selection != 0"></th>
               <th>Date facture</th>
               <th>Fournisseur concerné</th>
               <th>Montant facture </th>
@@ -47,13 +64,14 @@
           </thead>
           <tbody>
             <tr v-for="(result, i) in results" :key="i">
+              <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
               <td>{{ result.date_buy }}</td>
               <td>{{ result.supplier.name }}</td>
               <td>{{ result.amount }}</td>
               <td>{{ result.rest }}</td>
               <!-- <td>{{result.payment}}</td> -->
               <td>
-                <div class="action" v-for="(user, i) in users" :key="i">
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                   <NuxtLink :to="'/achats/voir/' + result.id" v-if="compagny == user.pivot.compagnie_id"><i
                       class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
                   <NuxtLink :to="'/achats/' + result.id"
@@ -75,6 +93,7 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+              <th v-if="selection != 0"></th>
               <th>Date facture</th>
               <th>Fournisseur concerné</th>
               <th>Montant de la facture</th>
@@ -84,12 +103,13 @@
           </thead>
           <tbody>
             <tr v-for="(achat, i) in achats" :key="i">
+              <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(achat.id)" :value="achat.id"/></div></td>
               <td>{{ achat.date_buy }}</td>
               <td>{{ achat.supplier.name }}</td>
               <td>{{ achat.amount }}</td>
               <td>{{ achat.rest }}</td>
               <td>
-                <div class="action" v-for="(user, i) in users" :key="i">
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                   <NuxtLink :to="'/achats/voir/' + achat.id" v-if="compagny == user.pivot.compagnie_id"><i
                       class="fa fa-info-circle text-success" aria-hidden="true"></i></NuxtLink>
                   <NuxtLink :to="'/achats/' + achat.id"
@@ -114,21 +134,21 @@
           :file-type="'xlsx'" :sheet-name="'sheetname'">
           Exporter
         </vue-excel-xlsx> -->
-        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'">Exporter en excel</button>
-        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">Exporter en pdf</button>
+        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role =='admin'"><i class="fa fa-file-excel-o" aria-hidden="true"></i><span class="text-ajout">Exporter en excel</span></button>
+        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()"><i class="fa fa-file-pdf-o" aria-hidden="true"></i><span class="text-ajout">Exporter en pdf</span></button>
       </form><br><br>
         <form action="">
           <div class="nombre d-flex col-md-2 my-4">
             <label class="title mx-3 my-2"><strong> Affichage:</strong></label>
             <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-              <option value>10</option>
+              <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
               <option value="100">100</option>
             </select>
           </div>
         </form>
-      <nav aria-label="Page navigation example" class="d-flex" v-if="res_data != null">
+      <nav aria-label="Page navigation example" class="d-flex nav" v-if="res_data != null">
         <ul class="pagination">
           <li :class="(res_data.prev_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
               @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -147,12 +167,14 @@
       <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" /> 
     <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
       @conf="setMessage" />
+      <deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/>  
 
   </div>
 
 </template>
 
 <script>
+import deleteMultipleModal from './deleteMultipleModal.vue'; 
 import pdfModal from './pdfModal.vue'
 import exportModal from './exportModal.vue'
 import deleteModal from './deleteModal.vue'
@@ -168,7 +190,8 @@ export default {
     Userinfo,
     deleteModal,
     exportModal,
-    pdfModal
+    pdfModal,
+    deleteMultipleModal
   },
   data() {
     return {
@@ -195,11 +218,33 @@ export default {
       date_debut: "",
       date_fin: "",
       role: "",
-      pdfModal: false
+      pdfModal: false,
+      checks: [],
+      selection: 0,
+      showModalMultipleDelete: false
     }
   },
 
   methods: {
+
+    multipleSup(){
+      this.showModalMultipleDelete = true
+    },
+
+    selectionner(){
+      this.selection = 1
+    },
+
+    deselectionner(){
+      this.selection = 0
+      this.checks = []
+    },
+
+    checkbox(id){
+      // console.log(id)
+      console.log(this.checks)
+    },
+
     exp(){
         this.exportModal = true
     },
@@ -218,7 +263,7 @@ export default {
         }
       })
         .then(response => {
-          console.log(response);
+          // console.log(response);
           this.results = response.data.data.data
           this.res_data = response.data.data
           this.total = response.data.data.total
@@ -244,7 +289,7 @@ export default {
           date_fin: this.date_fin
         }
       }).then(response => {
-        console.log(response);
+        // console.log(response);
         this.achats = response.data.data.data
         this.res_data = response.data.data
         this.total = response.data.data.total
@@ -259,7 +304,7 @@ export default {
           compagnie_id: localStorage.getItem('auth.company_id')
         }
       }).then(response => {
-        console.log(response.data.data.data);
+        // console.log(response.data.data.data);
         this.fournisseurs = response.data.data.data
       })
     },
@@ -267,7 +312,7 @@ export default {
     voirAchat(id) {
       this.showModal = true;
       this.$axios.get('/buys/' + id).then(response => {
-        console.log(response.data.data[0]);
+        // console.log(response.data.data[0]);
         this.identifiant1 = response.data.data[0].date_buy
         this.identifiant2 = response.data.data[0].supplier_id
         this.identifiant3 = response.data.data[0].amount
@@ -293,6 +338,10 @@ export default {
 </script>
 
 <style scoped>
+.nav{
+  overflow: auto;
+}
+
 .app-main__outer {
   overflow: auto;
 }
@@ -313,12 +362,11 @@ export default {
   margin-right: 2%;
 }
 
-
-.fa {
-  margin: 0 5px;
-  font-size: 22px;
-  cursor: pointer;
-}
+.fa{
+    margin: 0 5px;
+    font-size: 18px;
+    cursor: pointer;
+  }
 
 .table {
   margin-top: 2%;
@@ -447,9 +495,9 @@ tbody tr:last-of-type {
 
 
 @media screen and (max-width: 400px) {
-  .action {
+  /* .action {
     padding: 20px 0;
-  }
+  } */
 }
 
   

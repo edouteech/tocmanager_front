@@ -1,11 +1,11 @@
 <template>
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Produits </h3>
+          <Sidebar /><h3 class="name_side">Produits </h3>
         </nav>
     
-        <div class="app-main__outer p-5">
-          <h4>Liste des produits de la plateforme</h4><br>
+        <div class="app-main__outer py-5 px-2">
+          <h4>Liste des produits de la plateforme</h4><hr><br>
           <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
               <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
@@ -28,7 +28,8 @@
               <tbody>
                <tr  v-for="(result, j) in results" :key="j" @click="voirProduit(result.id)">
                   <td>{{result.name}}</td>
-                  <td>{{result.category.name}}</td>
+                  <td v-if="result.category">{{result.category.name}}</td>
+                  <td v-else>-----</td>
                   <td>{{result.quantity}}</td>
                   <td>{{result.price_sell}}</td>
                   <td>{{result.price_buy}}</td>
@@ -59,7 +60,8 @@
                   <tr  v-for="(produit, i) in produits" :key="i" >
                     
                     <td>{{produit.name}}</td>
-                    <td>{{produit.category.name}}</td>
+                    <td v-if="produit.category">{{produit.category.name}}</td>
+                    <td v-else>-----</td>
                     <td>{{produit.quantity}}</td>
                     <!-- <td class="controler"><div class="replace"><input :id="'real_quantity_'+produit.id" type="number" class="form-control w-75" placeholder="------" autocomplete="off" required><i class="fa fa-check-circle text-primary" aria-hidden="true" @click="replaceQuantity(produit.id)"></i></div></td> -->
                     <td>{{produit.price_sell}}</td>
@@ -71,28 +73,25 @@
             <p class="text-center"><strong>{{total}} produit(s) au total </strong></p><hr class="text-primary">
           </div><br><br>
         <!-- <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br> -->
-            <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
-              <ul class="pagination">
-                <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-                <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-                
-                <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-              </ul>
-              <div class="d-flex mx-3">
-              <label class="title mt-1">Affichage</label> 
-              <form action="">
-              <div class="nombre">
-                <!-- -->
-                <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                    <option value>10</option>
-                    <option value="25" >25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-              </div>
-              </form>
-            </div>
-            </nav>
+        <form action="">
+                <div class="nombre d-flex my-4 col-md-2">
+                    <label class="title mx-3 my-2"><strong> Affichage:</strong></label> 
+                    <select class="form-control " v-model="form.nombre" required @click.prevent="refresh()">
+                        <option value="10">10</option>
+                        <option value="25" >25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </form>
+          <nav aria-label="Page navigation example "  class="d-flex nav" v-if="res_data != null">
+            <ul class="pagination">
+              <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+              <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+              
+              <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+            </ul>
+          </nav>
       </div>          <!-- <pre> {{res_data}}</pre> --><br><br> 
     <voirProduit :id= 'identifiant1' :nom= 'identifiant2' :quantite= 'identifiant3' :vente= 'identifiant4' :achat= 'identifiant5' :min= 'identifiant6' :max= 'identifiant7' :compagny= 'identifiant8' v-show="showModal" @close-modal="showModal = false"/>
     </div>
@@ -272,7 +271,11 @@
     }
     </script>
     
-    <style scoped>    
+    <style scoped>   
+    
+  .nav{
+    overflow: auto;
+  } 
     .nombre{
       margin: 0 ;
     }
@@ -290,7 +293,7 @@
       cursor: pointer;
     }
     .table{
-        margin-top: 5%;
+        margin-top: 2%;
       text-align: center;
     }          
     

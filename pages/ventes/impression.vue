@@ -1,36 +1,50 @@
 <template>
-    <div class="modal-overlay" @click="$emit('close-modal')">
+    <div class="modal-overlay" @click.prevent="$emit('close-modal')">
         
       <div class="quiz">
            <p class="text-center">Voulez vous imprimer en <strong> format ticket de caisse</strong> ???</p><br>
            <div class="d-flex text-center response">
-              <div class="resp mx-5" @click="generatePdf()" >Oui</div>
-              <div class="resp mx-5" @click="$emit('close-modal')">Non</div>
+              <div class="resp mx-5" @click.prevent="generatePdf()" >Oui</div>
+              <div class="resp mx-5" @click.prevent="$emit('close-modal')">Non</div>
             </div>
       </div>
-      <div class="modaler" @click.stop>
+      <div class="modaler">
             <div class="other_page">
-                <p><strong> Date de la facture : {{date_sell}}</strong> </p>
-                <p><strong> M/Mme {{client.name}}</strong> </p>
-                <p><strong>Téléphone : {{client.phone}}</strong> </p>
+              <div>
+                
+              <div class="d-flex align-items-start flex-column">
+                <div class="entreprise-photo mb-2" v-if="compagn.logo">
+                  <img :src="$config.webURL + compagn.logo" alt="profil" class="profil" width="70" height="50">
+                </div>
+                <strong> Société {{compagn.name}}</strong>
+                <strong> Email: {{compagn.email}}</strong>
+                <strong> Tél: {{compagn.phone}}</strong>
+              </div>
+              <div class="d-flex align-items-end flex-column client-info">
+                <strong> Date : {{date_sell}}</strong>
+                <strong> M/Mme {{client.name}}</strong>
+                <strong>Téléphone : {{client.phone}}</strong>
+              </div>
+              </div>
+              
                 <br><hr>
                 <div class="d-flex">
-                    <div class="py-4 px-2 w-25">Nom du produit</div>
-                    <div class="py-4 px-2 w-25">Quantité </div>
-                    <div class="py-4 px-2 w-25">Prix unitaire </div>
-                    <div class="py-4 px-2 w-25">Total HT</div>
+                    <div class="py-2 px-2 colonne_article text-center"><strong>Article</strong></div>
+                    <div class="py-2 px-2 colonne text-center"><strong>Qte </strong></div>
+                    <div class="py-2 px-2 colonne text-center"><strong>P.U. </strong></div>
+                    <div class="py-2 px-2 colonne text-center"><strong>Total HT</strong></div>
                 </div>
                 <div class="d-flex" v-for="(facture, j) in factures" :key="j">
-                    <div class="px-2 w-25">{{facture.product.name}}</div>
-                    <div class="px-2 w-25">{{facture.quantity}}</div>
-                    <div class="px-2 w-25">{{facture.price}}</div>
-                    <div class="px-2 w-25">{{facture.amount}} F CFA</div>
-                </div><br><br>
+                    <div class="px-1 colonne_article text-center ">{{facture.product.name}}</div>
+                    <div class="px-1 colonne text-center">{{facture.quantity}}</div>
+                    <div class="px-1 colonne text-center">{{facture.price}}</div>
+                    <div class="px-1 colonne text-center">{{facture.amount}} F CFA</div>
+                </div>
                 <hr><br>
-                <div >
-                    <p><strong> Total : {{montant}} F CFA</strong> </p>
-                    <p><strong> Taxe : {{tax}} F CFA</strong> </p>
-                    <p><strong> Montant restant à encaisser : {{rest}} F CFA</strong> </p>
+                <div class="d-flex align-items-start flex-column recap_total">
+                    <strong> Total : {{montant}} F CFA</strong>
+                    <span>Taxe : {{tax}} F CFA</span>
+                    <span>Reste à payer : {{rest}} F CFA</span>
                 </div>
 
                 <div class="text-center" v-if="qr_info != null">
@@ -45,7 +59,7 @@
 
             </div>
       </div>
-      <div class="close" @click="$emit('close-modal')">
+      <div class="close" @click.prevent="$emit('close-modal')">
         <img class="close-img" src="/images/fermer.png" alt="" />
       </div>
   
@@ -56,7 +70,7 @@
     export default {
       auth:true,
       name: 'Impression',
-      props: ['date_sell','client', 'factures', 'montant', 'rest', 'tax', 'qr_info'],
+      props: ['date_sell','client', 'factures', 'montant', 'rest', 'tax', 'qr_info', 'compagn'],
       data () {
         return{
             
@@ -73,6 +87,21 @@
   </script>
   
 <style scoped>
+.colonne{
+  width: 20%;
+}
+
+.colonne_article{
+  width: 40%;
+}
+
+.recap_total{
+  font-size: 30px;
+}
+
+.client-info{
+  margin-top: -15%;
+}
 .quiz{
   background-color: white;
   height: 200px;
@@ -98,6 +127,7 @@
 
   .modaler{
     display: none;
+    font-size: 24px;
   }
   .modal-overlay {
     position: fixed;
@@ -116,7 +146,7 @@
     height: auto;
     width: 800px;
     /* margin-top: 20%; */
-    padding: 30px ;
+    padding: 2% 1%;
     border-radius: 3px;
     overflow: auto;
   }

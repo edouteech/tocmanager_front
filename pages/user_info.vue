@@ -78,6 +78,7 @@ export default {
     border: 1px solid transparent;
     border-radius: 100%;
     cursor: pointer;
+	color: #040404;
 }
 
 i{
@@ -87,7 +88,7 @@ i{
 
 .bas-page .user_name{
     font-size: 12px;
-    padding:  10px;
+    /* padding:  5px; */
     padding-top:  5px;
     color: rgb(246, 245, 245);
     font-weight: bold;
@@ -141,7 +142,9 @@ nav ul {
 nav ul li {
 	display:inline-block;
 	background-color: #040404;
-	padding: 10px;
+	padding: 10px 2px;
+	border: 1px solid transparent;
+	border-radius: 10px;
 }
 
 nav a {
@@ -174,8 +177,8 @@ nav ul ul li {
 	float:none;
 	display:list-item;
 	position: relative;
-	margin-left: -35%;
-	width: 270px;
+	margin-left: -45%;
+	width: 240px;
 	border-bottom: 1px solid white;
 }
 

@@ -1,11 +1,12 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Produits </h3>
+      <Sidebar /><h3 class="name_side">Produits </h3>
+      <Userinfo />
     </nav>
 
   
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
       {{error}} 
     </div>
@@ -43,6 +44,14 @@
             </div>
             <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.tax_group">
                 {{errors.tax_group}}
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="title">Entrer le code du produit</label>
+                <input  type="text" class="form-control" placeholder="CODE"  v-model="form.code">
+            </div>
+            <div class="alert alert-danger justify-content-center col-md-6" role="alert" v-if="errors.code">
+                {{errors.code}}
             </div>
 
             <div class="form-group col-md-6">
@@ -95,12 +104,14 @@
 </template>
 
 <script>
+import Userinfo from '../user_info.vue';
 import Sidebar from '../sidebar.vue'
 export default {
     layout: "empty",
     auth: true,
     components: {
         Sidebar,
+        Userinfo
         
     },
 
@@ -111,6 +122,7 @@ export default {
             form: {
                 category_id: '',
                 name: '',
+                code: '',
                 quantity: '',
                 price_sell:'',
                 price_buy:'',
@@ -135,6 +147,7 @@ export default {
             await  this.$axios.post('/products',{
               category_id: this.form.category_id,
               name: this.form.name,
+              code: this.form.code,
               quantity: this.form.quantity,
               price_sell: this.form.price_sell,
               price_buy: this.form.price_buy,

@@ -1,48 +1,56 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Ventes </h3>
+      <Sidebar /><h3 class="name_side">Ventes </h3>
       <Userinfo />
     </nav>
 
     
   
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
         <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{error}} 
         </div>
             <h4>Enregistrer une vente </h4><hr>
             <form action="" method="POST">
-                <div class="cadre-haut">             
-                    <div class="ajout-client">                                   
-                        <!-- <select class="form-control"  v-model="form.client_id">
-                            <option disabled value="">Choisir le client</option>
-                            <option v-for="(client, index) in clients" :key="index" :label="client.name" :value="client.id">
-                                {{client.name}}
-                            </option>                           
-                        </select>   -->
-                        
-                        <div @click.prevent="searchCli()"><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchCli"  aria-label="Search" @input="searchCli()"></div>
-                        <div class="select2-cli" v-if="afficheCli !=0 ">
-                            <ul>
-                                <li v-for="(acteur, index) in acteurs" :key="index" :label="acteur.name" :value="acteur.id"  @click.prevent="choiceCli(acteur)"><a href="" >{{acteur.name}}</a></li>
-                            </ul>
-                        </div>
+                <div class="row">        
+                    <div class="col-md-6">    
+                        <div class="ajout-client">  
+                            <v-select 
+                                placeholder="Choississez le client"
+                                v-model="selectedClient"
+                                label="name"
+                                :options="clients"
+                                :reduce="(client) => client.id"
+                                append-to-body
+                            />
 
-                        <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
-                        </button>                
+                            <button class="btn btn-info btn_ajout"  @click.prevent="showModal = true">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un client
+                            </button>  
+                        </div>              
                     </div>
-                    <div class="facture-date position-absolute end-0">
-                    <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
+                    <div class="col-md-6 facture-date my-auto">
+                        <span class="creation"> Date de création :</span> <input class="form-control"  type="datetime-local"  v-model="form.date_sell"/>                  
                     </div>
                 </div> <hr>
                 
-                <div class="add_buttons d-flex"> 
-                    <div class="col-md-5"><button class="btn-ajout" @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
-                    <button class="ajout-article col-md-6" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un article</button>             
+                <div class="add_buttons row col-md-12 boom"> 
+                    <div class="d-flex col-md-8">
+                        <div class="col-md-4"><button class="btn btn-outline-primary col-md-11 mx-auto " @click.prevent="showProduit = true"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Nouveau produit</button></div> 
+                        <div class="col-md-8"><button class="btn btn-outline-warning col-md-12 mx-auto" @click.prevent="addLine()"><i class="fa fa-plus-circle" aria-hidden="true"></i><br> Ajouter un article</button></div>           
+                    </div>
+                    <div class="col-md-4 mt-2">
+                        <div class="d-flex code_recherche">
+                            <input class="form-control " type="search" placeholder="code..." v-model="codeProd"  aria-label="Search" @input="searchCode()" @click.prevent="searchCode()">
+                            <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
+                            {{codeError}} 
+                        </div> 
+                    </div>                    
                 </div>
-
+                
                 <div class="commande table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -59,38 +67,56 @@
                         
                         <tbody>
                             <tr v-for="(line, index) in form.sell_lines" :key="index">
-                                <td>
-                                    <select class="form-control" v-model="line.product_id" id="" @change="productChange"> 
-                                        <option disabled value="">Choisissez...</option>
-                                        <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>                                       
-                                    </select>
-                                    <!-- <div ><input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_searchProd"  aria-label="Search" @input="searchProd()" @change="productChange()" @click.prevent="searchProd()"></div>
-                                    <div class="select2-prod" v-if="afficheProd !=0">
-                                        <ul>
-                                            <li v-for="(designation, i) in designations" :key="i" :value="designation.id" :data-i="i" :data-index="index"><a href="" @click.prevent="choiceProd(designation,i)">{{designation.name}}</a></li>
-                                        </ul>
-                                    </div> -->
+                                <td class="table-coll">
+                                    <!-- <v-select v-model="line.product_id" :options="fruits" /> -->
+                                    <v-select 
+                                        placeholder="Choississez..."
+                                        v-model="line.product_id"
+                                        label="name"
+                                        :options="produits"
+                                        :selectable="(produit) => produit.quantity > 0"
+                                        :reduce="(produit) => produit.id"
+                                        append-to-body
+                                        @input="productChange(line.product_id, index)"
+                                    >
+                                        <template #option="{ name, code, quantity }" style="background-color: blue;">
+                                            
+                                        <div :style="(quantity<=0)?'color: red;':''" >{{ name }} [{{quantity}}] ({{ code }})</div>
+                                        </template>
+                                    </v-select>
                                 </td>
-                                <td><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                <td><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
-                                <td><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
-                                <td><div><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
+                                <td class="table-cole">
+                                    <div class="d-flex"> 
+                                        <div class="col-md-10">
+                                            <input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index, line.product_id)" required>
+                                        </div>
+                                        <div class="col-md-1 p-1">
+                                            <span class="quantity_erreur aligns-items-center justify-content-center" v-if="quantityError"><i class="fa fa-ban text-danger" :id="'real_quantity_'+index" aria-hidden="true" title="Cette quantité est supérieure à la quantité en stock !"></i></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled ></td>
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled></td>
+                                <td class="table-col"><div><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)"></div></td>
                                 <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
-                                <td><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
-                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></td>
+                                <td class="table-col"><input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off" disabled></td>
+                                <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                             </tr>
                         </tbody>
-                    </table>   
+                    </table>
+                    <div class="alert alert-danger justify-content-center" role="alert" v-if="quantityError">
+                        {{quantityError}} 
+                    </div>   
                     <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_amount">
                         Veuillez ajouter une ligne de vente
                     </div>  
                 </div><br>
                 <br>
-                <div class="d-flex">
-                    <div class="form-group1 col-md-3"> 
+                <div class="row boom">
+                    <div class="form-group col-md-4"> 
                         <strong>Réduction (Prix ou %)</strong> <div  @change="taxChange()"><input class="form-control received" type="text" v-model="form.discount"  autocomplete="off"  required @change="reduceAmount()"></div>
                     </div>
-                    <div class="form-group1 col-md-4 mx-4"> 
+                    <div class="form-group col-md-4"> 
                         <strong>Montant Total Hors-Taxe</strong> <input class="form-control received" type="number" v-model="form.amount_ht"  autocomplete="off"  disabled>
                     </div>
                     
@@ -106,17 +132,22 @@
                 </div><br>
  
                 <hr><br>
-                <div class="d-flex">
-                    <div class="form-group col-md-2 ">
-                        <strong>Taxe [0 -100]%</strong> <div><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
+                <div class="row boom">
+                    <div class="form-group col-md-3">
+                        <div>
+                            <strong>Taxe [0 -100]%</strong> <div><input class="form-control received" type="number" v-model="form.tax"  autocomplete="off" placeholder="Exemple : 18" @change="taxChange()"></div>
+                        </div>
+                        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_tax">
+                                Veuillez ajouter la taxe
+                        </div> 
                     </div>
-                    <div class="form-group col-md-3 mx-4">
+                    <div class="form-group col-md-3">
                         <strong>Montant Total TTC </strong><input class="form-control received" type="number" v-model="form.amount_ttc"  autocomplete="off"  disabled>
                     </div>
-                    <div class="form-group1 col-md-3"> 
+                    <div class="form-group col-md-3"> 
                         Somme reçue: <input class="form-control received" type="number" v-model="form.amount_received"  autocomplete="off"  required>
                     </div>
-                    <div class="form-group1 col-md-3 mx-4"> 
+                    <div class="form-group col-md-3"> 
                         Echéance de paiement: 
                         <select v-model="echeance" class="form-control">
                             <option disabled value="">Choisissez</option>
@@ -125,29 +156,67 @@
                             <option value="90">90</option>
                         </select>
                     </div>
-                </div>
-                <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_tax">
-                        Veuillez ajouter la taxe
-                </div>  
+                </div> 
                 <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
                     {{amount_error}} 
                 </div> 
                 <br><br><br><br>
-                <button class="custom-btn btn-5" v-on:click.prevent="submit()" :disabled="load">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+                <div class="col-md-6 mx-auto">
+                    <button class="custom-btn btn-5 col-md-12" v-on:click.prevent="submit()" :disabled="load">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+                </div>
         
             </form>
         
     </div>
     
     <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
-    <SavedModal v-show="showSaved" @close-modal="showSaved = false" :identifiant= 'cli_id'/>
+    <SavedModal v-show="showSaved" @close-modal="showSaved = false" :identifiant= 'cli_id' :recupFacture="facts" :email_client="cli_email"/>
     <produitModal v-show="showProduit" @close-modal="showProduit = false" @prod="setProduit"/>
-
+         
+  <!-- Footer -->
+  <footer class="text-center text-lg-start bg-dark text-white">
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
+      <!-- Section: Social media -->
+      <section
+        class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
+      >
+        <!-- Left -->
+        <div class="me-5 d-none d-lg-block">
+          <img src="../../static/images/logo.png" class="logo-img" alt="">
+        </div>
+        <!-- Left -->
+  
+        <!-- Right -->
+        <div>
+          <a href="" class="me-4 text-reset">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="" class="me-4 text-reset">
+            <i class="fab fa-google"></i>
+          </a>
+          <a href="" class="me-4 text-reset">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <!-- Right -->
+      </section>
+      <!-- Section: Social media -->
+  
+  
+      <!-- Copyright -->
+      <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05);">
+        Copyright © 2022 - Tous droits réservés TocManager
+      </div>
+      <!-- Copyright -->
+    </footer>
+  <!-- Footer -->
 </div>
  
 </template>
 
 <script>
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 import moment from "moment";
 import SavedModal from './SavedModal.vue'
 import ajoutModal from './ajoutModal.vue'
@@ -155,14 +224,15 @@ import produitModal from './produitModal.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
 export default {
-    layout : 'empty',
+    layout : 'voir',
     auth:true,
     components: {
         Sidebar, 
         ajoutModal, 
         SavedModal,
         produitModal,
-        Userinfo
+        Userinfo,
+        vSelect
     },
 
     data () {
@@ -171,12 +241,15 @@ export default {
             amount_error: null,
             message: '',
             cli_id: '',
+            facts: "",
+            cli_email: "",
             showModal: false,
             showSaved: false,
             showProduit: false,
             clients: [],
             client: "",
             produits: [],
+            codes: '',
             form:{
                 user_id: '',
                 date_sell: moment().format("YYYY-MM-DDThh:mm"),
@@ -204,8 +277,14 @@ export default {
             acteurs: '',
             afficheCli: 0,
             afficheProd: 0,
+            afficheCode: 0,
             recherche: '',
-            echeance: ""
+            echeance: "",
+            codeProd: '',
+            codeError: null,
+            selectedClient: '',
+            prodQ: '',
+            quantityError: null
         }
     },
 
@@ -220,6 +299,18 @@ export default {
     },
     
     methods: {
+        test(){
+          var fac = document.getElementById('commande')
+              window.print(fac) ;
+        },
+
+        go(){
+            this.afficheCli = 0
+        },
+
+        gos(){
+            this.afficheProd = 0
+        },
 
         choiceProd(designation,i){
             console.log(i);
@@ -238,7 +329,7 @@ export default {
           }
           })
           .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             this.designations = response.data.data 
           
           })
@@ -283,9 +374,47 @@ export default {
             this.form.sell_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, amount_after_discount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});           
         },
 
+        async codeAdd(){
+          await this.$axios.get('/products/search',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            code: this.codeProd
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+            if(response.data.status == "success"){
+                this.codeError= null
+                this.codes = response.data.data;
+                let codeProdId = this.codes.id
+                let codeProdPrice = this.codes.price_sell
+                this.codeProd = "",
+                this.form.sell_lines.push({product_id: codeProdId, price: codeProdPrice, quantity: 1, discount: 0, amount: codeProdPrice*1, amount_after_discount: codeProdPrice*1, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
+                this.form.discount = 0;  
+                this.form.tax = 0;  
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount_after_discount;
+                    }
+                    this.form.amount_ht = sum;
+                    this.form.amount_ttc = sum;
+                    this.form.amount =  this.form.amount_ttc;
+            }
+            else{
+                this.codeError = response.data.message
+            }
+          })
+        },
+
         deleteLine(index){
         //   console.log(index);
           this.form.sell_lines.splice(index, 1)
+          let sum = 0;
+            for (let j = 0; j < this.form.sell_lines.length; j++) {
+                sum += this.form.sell_lines[j].amount_after_discount;
+            }
+            this.form.amount_ht = sum;
+            this.form.amount_ttc = sum;
+            this.form.amount =  this.form.amount_ttc;
         },
 
         setMessage(payload) {
@@ -296,7 +425,20 @@ export default {
             this.recupProduct()
         },
 
+        searchCode(){
+          this.$axios.get('/products',{params: {
+            compagnie_id: localStorage.getItem('auth.company_id'),
+            search: this.codeProd
+          }
+          })
+          .then(response => {
+            // console.log(response.data);
+              this.codes = response.data.data;
+          })
+        },
+
         async submit(){
+            // console.log(this.selectedClient);
             this.load = true
             await  this.$axios.post('/sells',{
               date_sell: this.form.date_sell,
@@ -307,21 +449,25 @@ export default {
               amount_ttc: this.form.amount_ttc,
               amount_received: this.form.amount_received,
               user_id: this.user,
-              client_id: this.form.client_id,  
+              client_id: this.selectedClient,  
               sell_lines: this.form.sell_lines,
               payment: this.form.payment,
               echeance: this.echeance,
               compagnie_id: localStorage.getItem('auth.company_id') 
             }).then(response =>{ 
-                console.log( response ) 
+                // console.log( response.data.data ) 
                 this.error = response.data.message
                 // console.log(this.form.client_id)
                     if(response.data.status == "success"){
                         this.cli_id = response.data.data.id
-                        this.showSaved = true
-                        this.$toast("Enregistrement d'une facture !!! ", {
-                            icon: 'fa fa-check-circle',
-                        })
+                        this.cli_email = response.data.data.client.email
+                        this.facts = response.data.data
+                            // this.$router.push({path:'/ventes/SavedModal',})
+                            this.showSaved = true
+                        // this.$toast("Enregistrement d'une facture !!! ", {
+                        //     icon: 'fa fa-check-circle',
+                        //     timeout: 1000,
+                        // })
                     }
                     else{
                         this.load = false
@@ -342,17 +488,24 @@ export default {
           }).then(response => {
             // console.log(response.data.data);
             this.clients = response.data.data
-            })
+            for(let k = 0; k <= this.clients.length; k++){
+                if(this.clients[k].default_client == true){
+                    this.selectedClient = this.clients[k].id
+                    break;
+                }
+            }
+          })
         },
 
         recupProduct(){
             this.$axios.get('/products',{params: {
             compagnie_id: localStorage.getItem('auth.company_id'),
             is_paginated: 0
-          }
-          }).then(response => {
+        }
+        }).then(response => {
             // console.log(response.data.data);
-            this.produits = response.data.data}) 
+            this.produits = response.data.data
+        }) 
         },
 
         taxChange(){
@@ -364,6 +517,7 @@ export default {
         },
 
         reduceAmount(){
+            this.form.tax = 0
             var red = this.form.discount;
             var percent = red.indexOf("%"); 
             let sum = 0;
@@ -387,17 +541,31 @@ export default {
                 }   
         },
 
-        quantityChange(index){
-            let line = this.form.sell_lines[index]
-            line.amount = Number(line.price) * Number(line.quantity);
-            line.amount_after_discount = Number(line.price) * Number(line.quantity);
-            let sum = 0;
-            for (let j = 0; j < this.form.sell_lines.length; j++) {
-                sum += this.form.sell_lines[j].amount_after_discount;
+        quantityChange(index, prod){
+            this.quantityError = null
+            for(let k = 0; k <= this.produits.length; k++){
+                if(this.produits[k].id == prod){
+                    this.prodQ = this.produits[k].quantity
+                    break;
+                }
             }
-            this.form.amount_ht = sum;
-            this.form.tax =0
-            this.taxChange()
+            // console.log(this.prodQ);
+            let line = this.form.sell_lines[index]
+            if(Number(line.quantity) <= this.prodQ){
+                line.amount = Number(line.price) * Number(line.quantity);
+                line.amount_after_discount = Number(line.price) * Number(line.quantity);
+                let sum = 0;
+                for (let j = 0; j < this.form.sell_lines.length; j++) {
+                    sum += this.form.sell_lines[j].amount_after_discount;
+                }
+                this.form.amount_ht = sum;
+                this.form.discount = 0
+                this.form.tax = 0
+                this.taxChange()
+            }
+            else{
+                this.quantityError = "Cette quantité est supérieure à la quantité en stock !"
+            }
                 
         },
 
@@ -420,6 +588,8 @@ export default {
                     this.form.amount_ht = sum;
                     this.form.amount_ttc = sum;
                     this.form.amount =  this.form.amount_ttc;
+                    this.form.discount = 0
+                    this.form.tax = 0
                     this.taxChange()
                 } 
                 else{
@@ -431,31 +601,40 @@ export default {
                     this.form.amount_ht = sum;
                     this.form.amount_ttc = sum;
                     this.form.amount =  this.form.amount_ttc;
+                    this.form.discount = 0
+                    this.form.tax = 0
                     this.taxChange()
                 }   
         },
 
 
-        productChange(e){
-            if(e.target.options.selectedIndex > -1) {
-                let i = e.target.options[e.target.options.selectedIndex].dataset.i;
-                let index = e.target.options[e.target.options.selectedIndex].dataset.index;
-                let product = this.produits[i];
-                let line = this.form.sell_lines[index]
-                line.price = product.price_sell;
-                line.amount = Number(line.price) * Number(line.quantity);
-                line.amount_after_discount = Number(line.price) * Number(line.quantity);
-                    
-                
-                let sum = 0;
-                for (let j = 0; j < this.form.sell_lines.length; j++) {
-                    sum += this.form.sell_lines[j].amount_after_discount;
+        productChange(IdProduit, IndexSellLines){
+            // console.log(IdProduit);
+            // console.log(IndexSellLines);
+            this.quantityError = null
+            for(let k = 0; k <= this.produits.length; k++){
+                if(this.produits[k].id == IdProduit){
+                    let ProdId = this.produits[k].id
+                    let ProdPrice = this.produits[k].price_sell
+                    // this.form.sell_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_sell});  
+                    this.form.sell_lines[IndexSellLines].product_id = ProdId
+                    this.form.sell_lines[IndexSellLines].price = ProdPrice
+                    this.form.sell_lines[IndexSellLines].quantity = 1
+                    this.form.sell_lines[IndexSellLines].discount = 0
+                    this.form.sell_lines[IndexSellLines].amount = ProdPrice
+                    this.form.sell_lines[IndexSellLines].amount_after_discount = ProdPrice
+                    // this.form.sell_lines.splice(this.form.sell_lines.length - 2, 1);  
+                    let sum = 0;
+                    for (let j = 0; j < this.form.sell_lines.length; j++) {
+                        sum += this.form.sell_lines[j].amount_after_discount;
+                    }
+                    this.form.amount_ht = sum; 
+                    this.form.discount = 0
+                    this.form.tax = 0               
+                    this.taxChange()
+                    break;
                 }
-                this.form.amount_ht = sum;
-                this.form.tax =0
-                this.taxChange()
-                // console.log(sum); 
-            }    
+            }  
         },
 
         compagnie(){
@@ -479,6 +658,72 @@ export default {
 </script>
 
 <style scoped>
+.ajout-client {
+    margin: 30px 0;
+    border: 1px solid #04012f;
+    padding: 30px 20px;
+    width: 300px;
+}
+
+
+.facture-date{
+    margin: 30px 0;
+    border: 1px solid #04012f;
+    padding: 30px 20px;
+    font-size: 18px;
+}
+
+.quantity_erreur {
+  cursor: pointer;
+}
+
+@media print {
+    .boom, .cadre-haut{
+        display: none !important;
+    }
+    nav{
+        display: none !important;
+    }
+    footer{
+        display: none !important;
+    }
+}
+
+.table-col{
+    width: 15%;
+}
+.table-cole{
+    width: 10%;
+}
+
+.codeSearch-results{
+    border: 1px solid ;
+    /* width: 14%; */
+    position: absolute;
+    z-index: 99;
+    background-color: #fefefe;
+}
+
+.codeSearch-results a{
+    color: #605050;
+    text-decoration: none;
+}
+
+.codeSearch-results ul{
+    list-style: none;
+    overflow: auto;
+    padding: 0;
+    height: 200px;
+    text-align: left;
+}
+
+.codeSearch-results li{
+    padding: 2px 10px;
+}
+
+.codeSearch-results li:hover{
+    background-color: rgb(103, 180, 247);
+}
 .select2-cli{
     border: 1px solid ;
     width: 14%;
@@ -506,6 +751,11 @@ export default {
 
 .select2-cli li:hover{
     background-color: rgb(103, 180, 247);
+}
+
+.close-img {
+    width: 25px;
+    cursor: pointer;
 }
 
 .select2-prod{
@@ -543,8 +793,8 @@ export default {
 }
 
 .app-main__outer{
-  overflow: auto;
-  margin: 0 5%;
+  overflow: none;
+  margin: 0 2%;
 }
 
 .commande{
@@ -556,36 +806,10 @@ export default {
     display: flex;
 }
 
-.ajout-client{
-    margin: 30px 10px;
-    border: 1px solid darkblue;
-    padding: 30px 20px;
-    /* margin-right: 50%; */
-}
-
-.btn-ajout{
-    margin-top: 9%;
-    border: 1px solid #53af57;
-    padding: 10px;
-    /* width: 100px; */
-    font-size: 10px;
-    border-radius: 15px;
-    text-align: center;
-    background-color: #53af57;
-    color: #fff;
-    cursor: pointer;
-}
-
 .btn-ajout i{
     font-size: 14px;
 }
 
-
-.facture-date{
-    margin-top: 5%;
-    font-size: 18px;
-    margin-right: 10%;
-}
 
 .btn-ajout:hover{
     background-color: #fefefe;
@@ -607,14 +831,17 @@ export default {
     font-size: 18px;
     margin-right: 10px;
 }
-.ajout-article{
-    margin: 4%;
-    text-align: center;
-    background-color: rgb(238, 134, 64);
-    border-radius: 10px;
-    padding: 12px;
-    cursor: pointer;
+
+
+.code_recherche input{
+    height: 45px;
+    margin: 20px 0;
 }
+
+.code_recherche .btn{
+    height: 40px;
+}
+
 
 .modal .input-form {
     display: flex;
@@ -683,7 +910,7 @@ input[type=submit]:hover{
 }
 
 .table{
-	margin-top: 5%;
+	/* margin-top: 5%; */
     text-align: center;
 }      
 
@@ -765,36 +992,10 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
   transition:800ms ease all;
 }
 
+
 @media screen and (max-width: 900px) {
-    .select2-cli{
-        width: 57%;
-    }
-
-    .select2-prod{
-        width: 30%;
-    }
-
-    .add_buttons{
-        margin: 50% 0;
-    }
-    .cadre-haut{
-        display: inline;
-        margin: 0;
-    }
-
-    .ajout-client{
-        margin-right: 0;
-        margin: 10px 5px;
-        border: 1px solid darkblue;
-        padding: 5px ;
-    }
-
-    .facture-date{
-        position: fixed;
-    }
-
-    .table{
-        overflow: auto;
+    .form-group{
+        margin: 10px 0;
     }
 
     .commande{
@@ -804,5 +1005,6 @@ background: linear-gradient(0deg, rgb(121, 161, 255) 0%, rgb(121, 161, 255) 100%
         margin: 0;
     }
 }
+
 </style>
 

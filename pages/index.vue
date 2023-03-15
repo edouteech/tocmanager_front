@@ -4,7 +4,7 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
       <nav class="navbar navbar-expand-lg  nav-bar">
           <div class="container">
-              <NuxtLink to="/login">
+              <NuxtLink to="/">
                   <img src="/images/logo.png" class="logo-img" alt="">
               </NuxtLink>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,12 @@
                   <div>
                       <a href="/register"><button class="btn btn-outline-primary btn-offer" >Inscription</button></a>
                   </div>
+                  <!-- <div v-if="this.$auth.$state.loggedIn == true && role =='admin' ">
+                      <a href="/dashboard"><button class="btn btn-outline-primary btn-offer" >Tableau de Bord</button></a>
+                  </div>
+                  <div v-if="this.$auth.$state.loggedIn == true">
+                      <a href="/ventes/vente"><button class="btn btn-outline-warning btn-offer" >Vente</button></a>
+                  </div> -->
                   <div><img src="/images/france.png" alt="français" width="30" class="mx-1"></div>/
                   <div><img src="/images/usa.png" alt="anglais" width="35" class="mx-1"></div>
   <!-- <a href="#" onclick="doGTranslate('en|en');return false;" title="English" class="gflag nturl" style="background-position:-0px -0px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="English" /></a><a href="#" onclick="doGTranslate('en|fr');return false;" title="French" class="gflag nturl" style="background-position:-200px -100px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="French" /></a>
@@ -348,7 +354,23 @@
   <script>
   export default {
       auth: false,
-      layout: 'landing'
+      layout: 'landing',
+    //   data() {
+    //     return { 
+    //         role: ''
+
+    //     }
+    //   },
+
+    //   mounted(){
+    //     this.role = localStorage.getItem("auth.roles")
+    //     // console.log(this.$auth)
+    //   }
+        mounted(){
+            if (this.$auth.loggedIn) {
+                this.$nuxt.$options.router.push("/dashboard")
+            }
+        },
   
   }
   </script>

@@ -1,7 +1,7 @@
 <template >
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Clients </h3>
+          <Sidebar /><h3 class="name_side">Clients </h3>
           <div class="bas-page " data-bs-dismiss="offcanvas">
                         <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
                         <span class="user_name" data-bs-dismiss="offcanvas">{{$auth.user.name}}</span> 
@@ -9,7 +9,7 @@
                 </div>
         </nav>
         
-        <div class="app-main__outer p-5">
+        <div class="app-main__outer py-5 px-2">
           <h4>Liste des clients</h4><br>
           <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search">
@@ -24,7 +24,7 @@
                   <td>{{result.phone}}</td>
                   <td>{{result.balance}}</td>
                   <td>{{result.nature}}</td>
-                  <!-- <td><div class="action">
+                  <!-- <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -51,7 +51,7 @@
                   <td>{{client.phone}}</td>
                   <td>{{client.balance}}</td>
                   <td>{{client.nature}}</td>
-                  <td><div class="action">
+                  <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div @click="voirClient(client.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/clients/'+client.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteClient(client.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>

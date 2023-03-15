@@ -1,15 +1,15 @@
 <template >
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Achats </h3>
+      <Sidebar /><h3 class="name_side">Achats </h3>
       <User_info />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">  
+      <div class="d-flex align-items-end flex-column">
         <div class="print" @click="generatePdf()" ><i class="fa fa-print text-primary" aria-hidden="true"></i><span class="text-end mx-2">Imprimer</span></div>
-        
-      <br>
-      
+        <NuxtLink :to="'/achats/'+this.$route.params.id"><button type="submit" class="btn btn-dark mt-3 mb-5">Modifier l'achat</button></NuxtLink> 
+      </div>
       <div class="d-flex align-items-end flex-column">
           <p><strong> M/Mme {{supplier.name}}</strong> </p>
           <p><strong> Fournisseur {{compagny.name}}</strong> </p>

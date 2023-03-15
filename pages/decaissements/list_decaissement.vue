@@ -2,11 +2,11 @@
   <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
       <Sidebar />
-      <h3 class="name">Décaissements </h3>
+      <h3 class="name">Décaissements</h3>
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
       <h4>Liste des décaissements</h4>
       <hr><br><br>
       <div class="d-flex">
@@ -28,11 +28,26 @@
               décaissement</span></button></NuxtLink>
             
       </div>
-
+          <div class="d-flex justify-content-end mt-3" v-for="(user, i) in users" :key="i">
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+            </button>
+          </div>
       <div v-if="this.element_search != ''" class="table-responsive">
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
               <th>Dates de décaissement</th>
               <th>Montants</th>
               <th>Fournisseurs concernés</th>
@@ -42,11 +57,12 @@
 
           <tbody>
             <tr v-for="(result, i) in results" :key="i">
+                <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
               <td>{{ result.date }}</td>
               <td>{{ result.montant }}</td>
               <td>{{ result.supplier.name }}</td>
               <td>
-                <div class="action" v-for="(user, i) in users" :key="i">
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                   <div @click="voirDecaissement(result.id)" v-if="compagny == user.pivot.compagnie_id"><i
                       class="fa fa-info-circle" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/decaissements/' + result.id"
@@ -68,6 +84,7 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-primary">
+                  <th v-if="selection != 0"></th>
               <th>Dates de décaissement</th>
               <th>Montants</th>
               <th>Fournisseurs concernés</th>
@@ -77,11 +94,12 @@
 
           <tbody>
             <tr v-for="(decaissement, i) in decaissements" :key="i">
+                <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(decaissement.id)" :value="decaissement.id"/></div></td>
               <td>{{ decaissement.date }}</td>
               <td>{{ decaissement.montant }}</td>
               <td>{{ decaissement.supplier.name }}</td>
               <td>
-                <div class="action" v-for="(user, i) in users" :key="i">
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                   <div @click="voirDecaissement(decaissement.id)" v-if="compagny == user.pivot.compagnie_id"><i
                       class="fa fa-info-circle" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/decaissements/' + decaissement.id"
@@ -121,14 +139,14 @@
           <div class="nombre d-flex col-md-2 my-4">
             <label class="title mx-2 my-2"><strong> Affichage:</strong></label>
             <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-              <option value>10</option>
+              <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
               <option value="100">100</option>
             </select>
           </div>
         </form>
-      <nav aria-label="Page navigation example " class="d-flex" v-if="res_data != null">
+      <nav aria-label="Page navigation example " class="d-flex nav" v-if="res_data != null">
         <ul class="pagination">
           <li :class="(res_data.prev_page_url == null) ? 'page-item disabled' : 'page-item'"><a class="page-link"
               @click="refresh(res_data.current_page - 1)">Précédent</a></li>
@@ -146,6 +164,7 @@
       <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" />
     <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
       @conf="setMessage" />
+      <deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/>  
 
   </div>
 
@@ -159,6 +178,7 @@ import exportModal from './exportModal.vue'
 import voirDecaissement from './voir_decaissement.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
+import deleteMultipleModal from './deleteMultipleModal.vue'; 
 export default {
   layout: "empty",
   auth: true,
@@ -168,7 +188,8 @@ export default {
     Userinfo,
     deleteModal,
     exportModal,
-    pdfModal
+    pdfModal,
+    deleteMultipleModal
   },
   data() {
     return {
@@ -194,7 +215,10 @@ export default {
       results: "",
       expotModal: false,
       pdfModal: false,
-      role: ''
+      role: '',
+      checks: [],
+      selection: 0,
+      showModalMultipleDelete: false
     }
   },
 
@@ -206,6 +230,26 @@ export default {
   },
 
   methods: {
+
+    multipleSup(){
+      this.showModalMultipleDelete = true
+    },
+
+    selectionner(){
+      this.selection = 1
+    },
+
+    deselectionner(){
+      this.selection = 0
+      this.checks = []
+    },
+
+    checkbox(id){
+      // console.log(id)
+      console.log(this.checks)
+    },
+
+
     exporte() {
        this.expotModal = true
     },
@@ -305,6 +349,11 @@ export default {
 </script>
 
 <style scoped>
+
+.nav{
+  overflow: auto;
+}
+
 .btn-group{
   display: flex;
 }

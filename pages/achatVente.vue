@@ -1,10 +1,10 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Ordres </h3>
+      <Sidebar /><h3 class="name_side">Ordres </h3>
     </nav>
 
-    <div class="app-main__outer p-5">
+    <div class="app-main__outer py-5 px-2">
         <!-- <button @click="generatePdf()" >Print !</button> -->
         <NuxtLink to="/achats/achat">  
             <div class="case1">

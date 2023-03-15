@@ -5,11 +5,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Achats </h3>
+      <Sidebar /><h3 class="name_side">Achats </h3>
     </nav>
 
         <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">  
-            <div class="app-main__outer p-5">
+            <div class="app-main__outer py-5 px-2">
                 <div class="app-main__inner">
                     <div class="app-page-title">
                         <div class="page-title-wrapper">

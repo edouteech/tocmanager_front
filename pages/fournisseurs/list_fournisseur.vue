@@ -1,12 +1,17 @@
 <template>
 <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-      <Sidebar /><h3 class="name">Fournisseurs </h3>
+      <Sidebar /><h3 class="name_side">Fournisseurs </h3>
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer p-5">
-      <h4>Liste des fournisseurs</h4><hr><br><br>
+    <div class="app-main__outer py-5 px-2">
+      <h4>Liste des fournisseurs</h4><hr><br>
+      
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
+        {{error}} 
+      </div>
+      <br>
       <div class="d-flex">
           <div class="col-md-10">
             <form class="d-flex col-md-7" role="search">
@@ -19,15 +24,33 @@
 
       <div class="mobile-btn mt-4"><NuxtLink  to="/fournisseurs/add_fournisseur" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1"><span>Ajouter nouveau fournisseur</span></button></NuxtLink></div>
 
-      <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
-        {{error}} 
-      </div>
 
+        <div class="d-flex justify-content-end mt-3" v-for="(user, i) in users" :key="i">
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <div v-if="defaultNum != 0">
+              <button class="btn btn-outline-dark mx-3" @click.prevent="chooseDefaultClient()">
+                Choisir commme fournisseur par défaut
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+            </button>
+          </div>
       <div class="table-responsive search_result" v-if="this.element_search != ''" >
         <!-- <div >{{result.name}}</div> -->
         <table class="table table-hover">
           <thead>
             <tr class="table-primary" >
+                  <th v-if="selection != 0"></th>
                     <th>Noms</th>
                     <th>Numéros de téléphone</th>
                     <th>Emails</th>
@@ -38,12 +61,13 @@
           </thead>
           <tbody>
            <tr  v-for="(result, j) in results" :key="j">
-              <td>{{result.name}}</td>
+              <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id"/></div></td>
+              <td>{{result.name}}<span v-if="result.default_supplier == true"><i class="fa fa-star text-success mx-3 cursor-pointer" aria-hidden="true" title="Démettre du fournisseur par défaut" @click.prevent="supDefaultClient(result.id)"></i></span></td>
               <td>{{result.phone}}</td>
               <td>{{result.email}}</td>
               <td>{{result.balance}}</td>
               <td>{{result.nature}}</td>
-              <td><div class="action"  v-for="(user, i) in users" :key="i">
+              <td><div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                   <div @click="voirFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/fournisseurs/'+result.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(result)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
@@ -60,6 +84,7 @@
         <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
             <tr class="table-primary" >
+                  <th v-if="selection != 0"></th>
                     <th>Noms</th>
                     <th>Numéros de téléphone</th>
                     <th>Emails</th>
@@ -71,12 +96,13 @@
           
             <tbody>
               <tr  v-for="(fournisseur, i) in fournisseurs" :key="i">
-                <td>{{fournisseur.name}}</td>
+                  <td v-if="selection != 0"><div class="form-check"><input type="checkbox" v-model="checks" @change="checkbox(fournisseur.id)" :value="fournisseur.id"/></div></td>
+                <td>{{fournisseur.name}}<span v-if="fournisseur.default_supplier == true"><i class="fa fa-star text-success mx-3 cursor-pointer " aria-hidden="true" title="Démettre du fournisseur par défaut" @click.prevent="supDefaultClient(fournisseur.id)"></i></span></td>
                 <td>{{fournisseur.phone}}</td>
                 <td>{{fournisseur.email}}</td>
                 <td>{{fournisseur.balance}}</td>
                 <td>{{fournisseur.nature}}</td>
-                <td><div class="action"  v-for="(user, i) in users" :key="i">
+                <td><div class="action d-flex aligns-items-center justify-content-center"  v-for="(user, i) in users" :key="i">
                   <div @click="voirFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle text-warning" aria-hidden="true"></i></div>
                   <NuxtLink :to="'/fournisseurs/'+fournisseur.id" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_edition == 1"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                 <div class="cursor-pointer" v-b-tooltip.hover title="Télécharger l'état de commande" @click="stockExporte(fournisseur)" v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-download" aria-hidden="true"></i></div>
@@ -109,7 +135,7 @@
           <div class="nombre">
             <!-- -->
             <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                <option value>10</option>
+                <option value="10">10</option>
                 <option value="25" >25</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
@@ -117,7 +143,7 @@
           </div>
           </form>
         </div>
-        <nav class="page" aria-label="Page navigation example " v-if="res_data != null">
+        <nav class="page nav" aria-label="Page navigation example " v-if="res_data != null">
           <ul class="pagination">
             <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
             <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
@@ -129,7 +155,8 @@
 <voirFournisseur :nom= 'identifiant1' :phone= 'identifiant2' :email= 'identifiant3' :balance= 'identifiant5' :nature= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>
 <deleteModal :identifiant= 'key' v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage"/>  
 <exportModal v-show="exportModal" @close-modal="exportModal = false"/> 
-<stockModal :cli="id_cli" :cli_name="nom_cli" v-show="stockModal" @close-modal="stockModal = false"/>   
+<stockModal :cli="id_cli" :cli_name="nom_cli" v-show="stockModal" @close-modal="stockModal = false"/>  
+<deleteMultipleModal :ids= 'checks' v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false" @conf="setMessage"/>   
 
 </div>
 
@@ -142,6 +169,7 @@ import exportModal from './exportModal.vue'
 import voirFournisseur from './voir_fournisseur.vue'
 import Sidebar from '../sidebar.vue'
 import Userinfo from '../user_info.vue'
+  import deleteMultipleModal from './deleteMultipleModal.vue'; 
 export default {
   auth: true,
   layout: "empty",
@@ -151,7 +179,8 @@ export default {
     Userinfo,
     deleteModal,
     exportModal,
-    stockModal
+    stockModal,
+    deleteMultipleModal
   },
 
   data () {
@@ -183,7 +212,11 @@ export default {
       role: "",
       id_cli: '',
       nom_cli: '',
-      stockModal: false
+      stockModal: false,
+      checks: [],
+      selection: 0,
+      showModalMultipleDelete: false,
+      defaultNum: 0
     }
   },
   async mounted () {
@@ -194,6 +227,73 @@ export default {
   },
 
   methods: {
+
+        chooseDefaultClient(){
+            console.log(this.checks.length)
+          if(this.checks.length == '1'){
+            let default_cli = this.checks[0]
+            this.$axios.put('/suppliers/'+default_cli+'/default', {
+                compagnie_id: localStorage.getItem('auth.company_id'),
+              }
+            ).then((response) => {
+                // console.log(response.data);
+                
+                if(response.data.status == "success"){
+                  this.selection = 0
+                  this.defaultNum = 0
+                  this.checks = []
+                  this.refresh()
+                  this.$toast('Fournisseur par défaut choisi avec succès !!!', {
+                      icon: 'fa fa-check-circle',
+                  })
+                }else{
+                  this.error = response.data.message
+                }
+              })
+          }
+          else{
+            this.error = "Vous ne pouvez que sélectionner qu'un seul fournisseur par défaut"
+          }
+        },
+
+        supDefaultClient(default_fournisseur){
+        this.$axios.put('/suppliers/'+default_fournisseur+'/default/unset', {
+              compagnie_id: localStorage.getItem('auth.company_id'),
+            }
+          ).then((response) => {
+              // console.log(response.data);
+              
+              if(response.data.status == "success"){
+                this.refresh()
+                this.$toast('Fournisseur par défaut démis avec succès !!!', {
+                    icon: 'fa fa-check-circle',
+                })
+              }else{
+                this.error = response.data.message
+              }
+            })
+        },
+
+
+        multipleSup(){
+          this.showModalMultipleDelete = true
+        },
+
+        selectionner(){
+          this.selection = 1
+          this.defaultNum = 1
+        },
+
+        deselectionner(){
+          this.selection = 0
+          this.checks = []
+          this.defaultNum = 0
+        },
+
+        checkbox(id){
+          // console.log(id)
+          console.log(this.checks)
+        },
     exporte(){
         this.exportModal = true 
     },
@@ -338,6 +438,10 @@ export default {
 </script>
 
 <style scoped>
+
+.nav{
+    overflow: auto;
+}
 .btn-group{
   display: flex;
 }
@@ -360,11 +464,11 @@ export default {
 
 .fa{
   margin: 0 5px;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
 }
 .table{
-	margin-top: 5%;
+	margin-top: 2%;
   text-align: center;
 }        
 

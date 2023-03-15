@@ -1,12 +1,12 @@
 <template>
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Catégories de produits </h3>
+          <Sidebar /><h3 class="name_side">Catégories de produits </h3>
           <Userinfo />
         </nav>
     
     
-        <div class="app-main__outer p-5">
+        <div class="app-main__outer py-5 px-2">
             <div class="alert alert-danger justify-content-center" role="alert" v-if="error != null">
             {{error}}
             </div>
@@ -78,7 +78,7 @@
                     <div class="nombre">
                         <!-- -->
                         <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                            <option value>10</option>
+                            <option value="10">10</option>
                             <option value="25" >25</option>
                             <option value="50">50</option>
                             <option value="100">100</option>

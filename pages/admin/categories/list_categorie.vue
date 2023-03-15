@@ -1,11 +1,11 @@
 <template>
     <div>
         <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3"> 
-          <Sidebar /><h3 class="name">Catégories de produits </h3>
+          <Sidebar /><h3 class="name_side">Catégories de produits </h3>
         </nav>
     
-        <div class="app-main__outer p-5">
-          <h4>Liste des catégories de produits enregistrés sur la plateforme</h4><br>
+        <div class="app-main__outer py-5 px-2">
+          <h4>Liste des catégories de produits enregistrés sur la plateforme</h4><hr><br>
           <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search" @input="search()" aria-label="Search" >
               <button class="btn btn-outline-success" type="submit" @click.prevent="search()">Rechercher</button>
@@ -26,7 +26,7 @@
                   <td v-if="result.parent != null">{{result.parent.name}}</td>
                   <td v-else>---</td>
                   <td>{{result.compagny.name}}</td>
-                  <!-- <td><div class="action">
+                  <!-- <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div @click="voirCategorie(result.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/categorie/'+result.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteCategorie(result.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -52,7 +52,7 @@
                   <td v-if="categorie.parent != null">{{categorie.parent.name}}</td>
                   <td v-else>---</td>
                   <td>{{categorie.compagny.name}}</td>
-                  <!-- <td><div class="action">
+                  <!-- <td><div class="action d-flex aligns-items-center justify-content-center">
                     <div @click="voirCategorie(categorie.id)"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
                     <NuxtLink :to="'/categorie/'+categorie.id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
                     <div @click="deleteCategorie(categorie.id)"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></div>
@@ -65,28 +65,25 @@
           </div>
             <br><br> 
             <!-- <form class="d-flex justify-content-end" role="search"><input type="file" id="file" ref="file" @change="handleFileUpload()" /> <button class="btn btn-outline-dark" type="submit" @click.prevent="submitFile()">Importer</button></form><br><br> -->
-            <nav class="page" aria-label="Page navigation example px-8 " v-if="res_data != null">
-          <ul class="pagination">
-            <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
-            <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
-            
-            <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
-          </ul>
-          <div class="d-flex">
-            <label class="title">Affichage :</label> 
             <form action="">
-              <div class="nombre">
-                <!-- -->
-                <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
-                    <option value>10</option>
-                    <option value="25" >25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-              </div>
+                <div class="nombre d-flex my-4 col-md-2">
+                    <label class="title mx-3 my-2"><strong> Affichage:</strong></label> 
+                    <select class="form-control " v-model="form.nombre" required @click.prevent="refresh()">
+                        <option value="10">10</option>
+                        <option value="25" >25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
             </form>
-          </div>
-        </nav>
+          <nav aria-label="Page navigation example "  class="d-flex nav" v-if="res_data != null">
+            <ul class="pagination">
+              <li :class="(res_data.prev_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a></li>
+              <li class="page-item" v-for="(link, index) in res_data.links" :key="index"><a :class="(link.active == true)? 'page-link active':'page-link'" href="#" @click="refresh(link.label)">{{link.label}}</a></li>
+              
+              <li :class="(res_data.next_page_url == null)? 'page-item disabled':'page-item'"><a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a></li>
+            </ul>
+          </nav>
       </div><br>
      <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' :compagny= 'identifiant3' v-show="showModal" @close-modal="showModal = false"/>  
     
@@ -136,7 +133,8 @@
                       'Content-Type': 'multipart/form-data'
                   }
                 }
-              ).then(response => {console.log(response);
+              ).then(response => {
+                // console.log(response);
                 if(response.data.status == "success"){
                   this.refresh()
                   alert("L'importation s'est bien effectuée ...");
@@ -162,7 +160,8 @@
                 search: this.element_search
               }
               })
-              .then(response => {console.log(response.data.data.data);
+              .then(response => {
+                // console.log(response.data.data.data);
               this.results = response.data.data.data 
               
               })
@@ -171,7 +170,8 @@
            deleteCategorie(id){
               console.log(id);
               this.$axios.delete('/categories/' +id)
-              .then(response => {console.log(response.data.data);
+              .then(response => {
+                // console.log(response.data.data);
                 this.refresh()})                 
             },      
             
@@ -182,7 +182,8 @@
                   page: page,
                   per_page : this.form.nombre
                 }
-              }).then(response =>{console.log(response);
+              }).then(response =>{
+                // console.log(response);
                 this.categories = response.data.data.data
                 this.res_data= response.data.data
                 this.total = response.data.data.total;
@@ -221,6 +222,10 @@
     
     <style scoped>
     
+  .nav{
+    overflow: auto;
+  } 
+
     .nombre{
       margin: 0 ;
     }
@@ -240,7 +245,7 @@
       cursor: pointer;
     }
     .table{
-        margin-top: 5%;
+        margin-top: 2%;
       text-align: center;
     }      
     
