@@ -1,6 +1,6 @@
 <template>
     <div class="modal-overlay" @click="$emit('close-modal')">
-      <div class="modaler" @click.stop>  
+      <div class="modaler">  
                          
               <form action="" method="POST"> 
                 <h4>Changer de compagnie </h4>
@@ -10,12 +10,9 @@
                           <option  v-for="(compagnie, i) in compagnies" :key="i" :value="compagnie.id">{{compagnie.name}}</option>
                       </select>
                   </div>
-                  <div class="submit-form" @click="$emit('close-modal')">
+                  <div class="submit-form" >
                     <button type="submit" class="btn btn-primary" v-on:click.prevent="submit()">Se connecter</button>				          
                   </div>
-                  <!-- <div v-else class="submit-form">
-                      <input type="submit" id='submit' @click.prevent="submit()" value="Enregistrer le client" name="submit">				          
-                  </div> -->
               </form>
       </div>
       <div class="close" @click="$emit('close-modal')">
@@ -42,10 +39,9 @@
   
       methods: {
           async submit(){
-            console.log(this.form.compagny_id)
             this.$auth.$storage.setUniversal('company_id', this.form.compagny_id)
             this.$router.push({path:'/mon_profil'})
-            // this.error = " Compagnie changée !!!"
+            this.$emit("close-modal");
           },
   
       }

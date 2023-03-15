@@ -1,12 +1,6 @@
 <template>
     <div class="modal-overlay" @click="$emit('close-modal')">
-      <div class="modaler text-center py-5" @click.stop>
-        <!-- <div class="alert alert-danger justify-content-center" role="alert" v-if="errors != null">
-            {{errors}} 
-        </div>
-        <div class="alert alert-success justify-content-center" role="alert" v-if="error != null">
-            {{error}} 
-        </div> -->
+      <div class="modaler text-center py-5">
              <p class="text-danger text-center"><strong>Votre email n'est pas encore vérifié !!!</strong></p>
              <br><br>
              <div>Pour vérifier votre addresse email, <p class="lien text-success" @click.prevent="verify()"><span  @click="$emit('close-modal')">cliquez ici</span></p> </div>
@@ -33,13 +27,6 @@
         verify(){
             this.$axios.post('/email/verification-notification')
             .then(response =>{
-                 console.log(response)
-                //  if(response.status == "success"){
-                //     this.error = "Un mail vous a été envoyé."
-                //  }
-                //  else{
-                //     this.errors = response.message
-                //  }
                 this.$emit('conf')
             })
         },
