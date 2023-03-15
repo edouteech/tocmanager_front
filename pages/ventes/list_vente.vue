@@ -791,13 +791,13 @@ export default {
         })
         .then((response) => {
           this.showModal = true;
-          (this.identifiant3 = response.data.data[0].sell_lines),
-            (this.identifiant1 = moment(response.data.data[0].date_sell).format(
-              "D MMM YYYY, h:mm:ss a"
-            )),
-            (this.identifiant2 = response.data.data[0].client),
-            (this.identifiant4 = response.data.data[0].amount),
-            (this.identifiant5 = response.data.data[0].rest);
+          this.identifiant3 = response.data.data[0].sell_lines,
+          this.identifiant1 = moment(response.data.data[0].date_sell).format(
+            "D MMM YYYY, h:mm:ss a"
+          ),
+          this.identifiant2 = response.data.data[0].client,
+          this.identifiant4 = response.data.data[0].amount,
+          this.identifiant5 = response.data.data[0].rest;
           this.identifiant6 = response.data.data[0].tax;
           this.identifiant7 = response.data.data[0].facture;
           this.identifiant8 = response.data.data[0].client.compagny;

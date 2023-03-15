@@ -17,9 +17,9 @@
                             <li class="nav-item">
                                 <NuxtLink to="" class="nav-link active">A propos</NuxtLink>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <NuxtLink to="" class="nav-link">Services</NuxtLink>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <div class="col-md-5 row my-auto">

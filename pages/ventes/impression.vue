@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="modaler">
-      <div class="other_page">
+      <div class="other_page" v-if="date_sell">
         <div>
           <div class="d-flex align-items-start flex-column">
             <div class="entreprise-photo mb-2" v-if="compagn.logo">
