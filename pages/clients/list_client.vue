@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
       <Sidebar />
@@ -117,6 +117,7 @@
               <th>Numéros de téléphone</th>
               <th>Emails</th>
               <th>Balance</th>
+              <th>Montant dû au client</th>
               <th>Nature</th>
               <th>Actions</th>
             </tr>
@@ -147,6 +148,7 @@
               <td>{{ result.phone }}</td>
               <td>{{ result.email }}</td>
               <td class="text-danger">{{ result.balance }}</td>
+              <td class="text-danger">{{ result.sum_remainder }}</td>
               <td>{{ result.nature }}</td>
               <td>
                 <div
@@ -215,6 +217,7 @@
               <th>Numéros de téléphone</th>
               <th>Emails</th>
               <th>Balance</th>
+              <th>Montant dû au client</th>
               <th>Nature</th>
               <th>Actions</th>
             </tr>
@@ -245,6 +248,7 @@
               <td>{{ client.phone }}</td>
               <td>{{ client.email }}</td>
               <td class="text-danger">{{ client.balance }}</td>
+              <td class="text-danger">{{ client.sum_remainder }}</td>
               <td>{{ client.nature }}</td>
               <td>
                 <div
@@ -437,6 +441,7 @@
       :phone="identifiant2"
       :email="identifiant3"
       :balance="identifiant5"
+      :sum_remainder="identifiant6"
       :nature="identifiant4"
       :type="type_client"
       :seuil="seuil_client"
@@ -493,6 +498,7 @@ export default {
       identifiant3: "",
       identifiant4: "",
       identifiant5: "",
+      identifiant6: "",
       type_client: "",
       seuil_client: "",
       compagnie_id: "",
@@ -645,7 +651,6 @@ export default {
     //ajout des valeurs dans checks
     checkbox(id) {},
 
-
     //importation des clients
     submitFile() {
       let formData = new FormData();
@@ -734,6 +739,7 @@ export default {
           this.identifiant3 = response.data.data[0].email;
           this.identifiant4 = response.data.data[0].nature;
           this.identifiant5 = response.data.data[0].balance;
+          this.identifiant6 = response.data.data[0].sum_remainder;
           this.type_client = response.data.data[0].type_client;
           this.seuil_client = response.data.data[0].seuil_max;
         });

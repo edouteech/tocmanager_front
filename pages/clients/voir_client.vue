@@ -29,6 +29,10 @@
             <td>{{ balance }}</td>
           </tr>
           <tr>
+            <td>Montant dû au client</td>
+            <td>{{ sum_remainder }}</td>
+          </tr>
+          <tr>
             <td>Nature du client</td>
             <td>{{ nature }}</td>
           </tr>
@@ -52,7 +56,7 @@
 <script>
 export default {
   auth: true,
-  props: ["nom", "phone", "email", "balance", "nature", "type", "seuil"],
+  props: ["nom", "phone", "email", "balance", "sum_remainder", "nature", "type", "seuil"],
   name: "voirClient",
   data() {
     return {

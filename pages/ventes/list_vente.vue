@@ -118,6 +118,7 @@
                   <th>Montant TTC </th> -->
               <th>Net à payer</th>
               <th>Montant du</th>
+              <th>Relicat du client</th>
               <th>Moyen de paiement</th>
               <th>Actions</th>
             </tr>
@@ -140,6 +141,7 @@
                   <td>{{result.amount_ttc}}</td> -->
               <td>{{ result.amount }}</td>
               <td class="text-danger">{{ result.rest }}</td>
+              <td class="text-danger">{{ result.remainder }}</td>
               <td>{{ result.payment }}</td>
               <td>
                 <div
@@ -212,6 +214,7 @@
                   <th>Montant TTC </th> -->
               <th>Net à payer</th>
               <th>Montant du</th>
+              <th>Relicat du client</th>
               <th>Moyen de paiement</th>
               <th>Actions</th>
             </tr>
@@ -234,6 +237,7 @@
                   <td>{{vente.amount_ttc}}</td> -->
               <td>{{ vente.amount }}</td>
               <td class="text-danger">{{ vente.rest }}</td>
+              <td class="text-danger">{{ vente.remainder }}</td>
               <td>{{ vente.payment }}</td>
               <td>
                 <div

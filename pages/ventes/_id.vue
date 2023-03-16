@@ -472,7 +472,7 @@ export default {
           this.form.amount_ht = vente.amount_ht;
           this.form.amount_ttc = vente.amount_ttc;
           this.form.payment = vente.payment;
-          this.form.amount_received = vente.amount - vente.rest;
+          this.form.amount_received = vente.amount - vente.rest + vente.remainder;
         });
     },
 
