@@ -734,14 +734,14 @@ export default {
           },
         })
         .then((response) => {
-          this.identifiant1 = response.data.data[0].name;
-          this.identifiant2 = response.data.data[0].phone;
-          this.identifiant3 = response.data.data[0].email;
-          this.identifiant4 = response.data.data[0].nature;
-          this.identifiant5 = response.data.data[0].balance;
-          this.identifiant6 = response.data.data[0].sum_remainder;
-          this.type_client = response.data.data[0].type_client;
-          this.seuil_client = response.data.data[0].seuil_max;
+          this.identifiant1 = response.data.data.name;
+          this.identifiant2 = response.data.data.phone;
+          this.identifiant3 = response.data.data.email;
+          this.identifiant4 = response.data.data.nature;
+          this.identifiant5 = response.data.data.balance;
+          this.identifiant6 = response.data.data.sum_remainder;
+          this.type_client = response.data.data.type_client;
+          this.seuil_client = response.data.data.seuil_max;
         });
     },
   },

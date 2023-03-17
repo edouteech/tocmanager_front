@@ -784,25 +784,25 @@ export default {
           },
         })
         .then((response) => {
-          this.identifiant0 = response.data.data[0].id;
-          this.identifiant2 = response.data.data[0].name;
-          this.identifiant3 = response.data.data[0].quantity;
-          this.identifiant4 = response.data.data[0].price_sell;
-          this.identifiant5 = response.data.data[0].price_buy;
-          this.identifiant6 = response.data.data[0].stock_min;
-          this.identifiant7 = response.data.data[0].stock_max;
-          if (response.data.data[0].category) {
-            this.identifiant1 = response.data.data[0].category.name;
+          this.identifiant0 = response.data.data.id;
+          this.identifiant2 = response.data.data.name;
+          this.identifiant3 = response.data.data.quantity;
+          this.identifiant4 = response.data.data.price_sell;
+          this.identifiant5 = response.data.data.price_buy;
+          this.identifiant6 = response.data.data.stock_min;
+          this.identifiant7 = response.data.data.stock_max;
+          if (response.data.data.category) {
+            this.identifiant1 = response.data.data.category.name;
           } else {
             this.identifiant1 = "Pas de catégorie associée";
           }
-          if (response.data.data[0].tax_group) {
-            this.identifiant8 = response.data.data[0].tax_group;
+          if (response.data.data.tax_group) {
+            this.identifiant8 = response.data.data.tax_group;
           } else {
             this.identifiant8 = "Relié à aucun groupe";
           }
-          if (response.data.data[0].code) {
-            this.identifiant9 = response.data.data[0].code;
+          if (response.data.data.code) {
+            this.identifiant9 = response.data.data.code;
           } else {
             this.identifiant9 = "Pas de code";
           }

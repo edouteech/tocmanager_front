@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
       <Sidebar />
@@ -179,8 +179,8 @@
     />
   </div>
 </template>
-    
-    <script>
+
+<script>
 import Sidebar from "../sidebar.vue";
 import Userinfo from "../user_info.vue";
 import deleteModal from "./deleteModal.vue";
@@ -221,9 +221,7 @@ export default {
       defaultNum: 0,
     };
   },
-
-  async mounted() {
-    await this.exp();
+  mounted() {
     this.refresh();
     this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem("auth.company_id");
@@ -264,8 +262,8 @@ export default {
   },
 };
 </script>
-    
-    <style scoped>
+
+<style scoped>
 .nav {
   overflow: auto;
 }
@@ -441,4 +439,3 @@ tbody tr:last-of-type {
   }
 }
 </style>
-    
