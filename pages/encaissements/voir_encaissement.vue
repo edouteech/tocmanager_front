@@ -1,45 +1,31 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>                     
-                <br><br>
-            <h4 class="titre">Informations de l'encaissement</h4><br><br><br>
-              <table class="table table-hover">
-                <thead>
-                  <tr class="table-success">
-                        <th>A savoir</th>
-                        <th>Décaissement</th>
-                        
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Date de l'encaissement </td>
-                    <td>{{date}}</td>
-                  </tr>
-                  <tr>
-                    <td>Montant</td>
-                    <td>{{montant}}</td>
-                  </tr>
-                  <tr>
-                    <td>Client concerné</td>
-                    <td>{{client_id}}</td>
-                  </tr>
-                  
-                  
-                </tbody>
-              </table>
-                <!-- <div class="input-form">					
-                   <span class="mode">Date de l'encaissement : </span> <span class="resp">{{date}}</span>
-                    
-                </div>     <br>
-                <div class="input-form">        
-                   <span class="mode">Montant : </span><span class="resp"> {{montant}}</span>
-                </div><br>
-            
-                <div class="input-form">    
-                    <span class="mode">Client concerné: </span><span class="resp">{{client_id}}</span>
-                </div><br> -->
-
+    <div class="modaler">
+      <br /><br />
+      <h4 class="titre">Informations de l'encaissement</h4>
+      <br /><br /><br />
+      <table class="table table-hover">
+        <thead>
+          <tr class="table-success">
+            <th>A savoir</th>
+            <th>Décaissement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Date de l'encaissement</td>
+            <td>{{ date }}</td>
+          </tr>
+          <tr>
+            <td>Montant</td>
+            <td>{{ montant }}</td>
+          </tr>
+          <tr>
+            <td>Client concerné</td>
+            <td>{{ client_id }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="close" @click="$emit('close-modal')">
       <img class="close-img" src="/images/fermer.png" alt="" />
@@ -48,23 +34,22 @@
 </template>
 
 <script>
-  export default {
-    auth:true,
-    props: ['montant', 'date', 'client_id'],
-    name: 'voirClient',
-    data () {
-    return{
-        client: '',
-    }
-    },
-}
-
+export default {
+  auth: true,
+  props: ["montant", "date", "client_id"],
+  name: "voirClient",
+  data() {
+    return {
+      client: "",
+    };
+  },
+};
 </script>
 
 
 <style scoped>
-
 .modal-overlay {
+  z-index: 999;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -93,8 +78,7 @@
   width: 25px;
 }
 
-
-.titre{
+.titre {
   border: 1px solid black;
   background-color: black;
   color: #ffff;
@@ -102,23 +86,22 @@
   text-align: center;
 }
 
-tbody tr:nth-child(even){
-	background-color: rgb(228, 240, 245);
+tbody tr:nth-child(even) {
+  background-color: rgb(228, 240, 245);
 }
 
-tbody tr:last-of-type{
-	border-bottom: 2px solid rgb(92, 237, 8);
+tbody tr:last-of-type {
+  border-bottom: 2px solid rgb(92, 237, 8);
 }
 
-.input-form .mode{
-    font-size: 18px;
-    font-weight: bold;
+.input-form .mode {
+  font-size: 18px;
+  font-weight: bold;
 }
 
-.input-form .resp{
-    font-size: 16px;
-    margin-left: 3%;
-    color: rgb(11, 7, 40);
+.input-form .resp {
+  font-size: 16px;
+  margin-left: 3%;
+  color: rgb(11, 7, 40);
 }
-
 </style>

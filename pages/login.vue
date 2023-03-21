@@ -1,243 +1,287 @@
 <template>
-<div class="contain ">
-  <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' rel='stylesheet'>
-  <!-- <div class="alert alert-success justify-content-center" role="alert">
+  <div class="contain">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- <div class="alert alert-success justify-content-center" role="alert">
       {{this.params.errors}}
   </div> -->
 
-  <br><br>
-    
-  <h2 class="text px-4">Connectez vous</h2>
-  <div class="container-fluid h-custom">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-md-9 col-lg-6 col-xl-5">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-          class="img-fluid" alt="Sample image">
-      </div>
-      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-        <form>
-          <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
-            {{error}}
+    <br /><br />
+
+    <h2 class="text px-4">Connectez vous</h2>
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+            class="img-fluid"
+            alt="Sample image"
+          />
         </div>
-          <div class="divider d-flex align-items-center my-4">
-            <p class="text-center fw-bold mx-3 mb-0">Connexion</p>
-          </div>
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form>
+            <div
+              class="alert alert-danger justify-content-center"
+              role="alert"
+              v-if="error"
+            >
+              {{ error }}
+            </div>
+            <div class="divider d-flex align-items-center my-4">
+              <p class="text-center fw-bold mx-3 mb-0">Connexion</p>
+            </div>
 
-          <!-- Email input -->
-          <div class="form-outline mb-4">
-            <span class="fa fa-envelope px-2"></span> <label class="form-label">Adresse Email</label>
-            <div class="input-field"><input type="email" class="form-control form-control-lg" v-model="form.email" required
-              placeholder="Entrer votre addresse email " /></div>
-            
-          </div>
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+              <span class="fa fa-envelope px-2"></span>
+              <label class="form-label">Adresse Email</label>
+              <div class="input-field">
+                <input
+                  type="email"
+                  class="form-control form-control-lg"
+                  v-model="form.email"
+                  required
+                  placeholder="Entrer votre addresse email "
+                />
+              </div>
+            </div>
 
-          <!-- Password input -->
-          <div class="form-outline mb-3">
-            <span class="fas fa-lock px-2"></span><label class="form-label">Mot de passe</label>
-            <div class="input-field">
-            <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
-              placeholder="Entrer votre mot de passe"/><span><i class="fa fa-eye px-2" id="eye" @click="changer()"></i></span></div>
-            
-          </div>
+            <!-- Password input -->
+            <div class="form-outline mb-3">
+              <span class="fas fa-lock px-2"></span
+              ><label class="form-label">Mot de passe</label>
+              <div class="input-field">
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control form-control-lg"
+                  v-model="form.password"
+                  placeholder="Entrer votre mot de passe"
+                /><span
+                  ><i class="fa fa-eye px-2" id="eye" @click="changer()"></i
+                ></span>
+              </div>
+            </div>
 
-          <div class="d-flex justify-content-between align-items-center">
-            <!-- Checkbox -->
-            <!-- <div class="form-check mb-0">
-              <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-              <label class="form-check-label" for="form2Example3">
-                Se rappeler de moi
-              </label>
-            </div> -->
-            <NuxtLink to="/password1"  class="link-primary px-2">               
+            <div class="d-flex justify-content-between align-items-center">
+              <NuxtLink to="/password1" class="link-primary px-2">
                 Mot de passe oublié ?
-            </NuxtLink>
-          </div>
+              </NuxtLink>
+            </div>
 
-          <div class="text-center text-lg-start mt-4 pt-2">
-            <button type="button" :disabled="load" @click.prevent="login()" class="btn btn-primary btn-lg"
-              style="padding-left: 1rem; padding-right: 1rem;">Se connecter</button>
-            <p class="small fw-bold mt-2 pt-1 mb-0">Vous n'avez pas de compte ? <NuxtLink to="/register"  class="link-primary px-2">               
-                Inscription
-            </NuxtLink></p>
-          </div><br><br><br>
-        </form>
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <button
+                type="button"
+                :disabled="load"
+                @click.prevent="login()"
+                class="btn btn-primary btn-lg"
+                style="padding-left: 1rem; padding-right: 1rem"
+              >
+                Se connecter
+              </button>
+              <p class="small fw-bold mt-2 pt-1 mb-0">
+                Vous n'avez pas de compte ?
+                <NuxtLink to="/register" class="link-primary px-2">
+                  Inscription
+                </NuxtLink>
+              </p>
+            </div>
+            <br /><br /><br />
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  
-<modalEmail :identifiant= 'key' v-show="showModal" @close-modal="showModal = false" @conf="setMessage"/>  
 
-</div>
+    <modalEmail
+      :identifiant="key"
+      v-show="showModal"
+      @close-modal="showModal = false"
+      @conf="setMessage"
+    />
+  </div>
 </template>
 
 <script>
-import modalEmail from './modalEmail.vue'
+import modalEmail from "./modalEmail.vue";
 export default {
-  middleware:'auth',
-  name: 'login',
+  middleware: "auth",
+  name: "login",
   components: {
-    modalEmail
+    modalEmail,
   },
 
   data() {
-    return {  
+    return {
       error: null,
       showModal: false,
-      key: '',
+      key: "",
       form: {
-        email: '' ,
-        password: ''
+        email: "",
+        password: "",
       },
-      errors:[],
-      role: '',
+      errors: [],
+      role: "",
       load: false,
-
-    }
+    };
   },
   methods: {
-
-      changer(){
-        var pwd = document.getElementById("password");
-        var fa =  document.getElementById("eye")
-        if(pwd.getAttribute("type")=="password"){
-            pwd.setAttribute("type","text");
-            fa.class="fa fa-eye px-2";
-        } else {
-            pwd.setAttribute("type","password");
-            fa.class="fa fa-eye-slash px-2"
-        }
-      },
-
-      setMessage(){
-        this.$router.push( '/login',)
-        
-      },
-      
-
-      async login() {
-            this.load = true
-        if(this.form.password == "00000000"){
-            try {
-                  let response = await this.$auth.loginWith('local', { data: this.form })
-                  // this.error = response.data.message
-                  this.$auth.$storage.setUniversal('roles', response.data.data.original.roles[0].name)
-                  this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                  this.$auth.$storage.setUniversal('user_id', response.data.data.original.user.id)
-                  this.$auth.$storage.setUniversal('email', this.form.email)
-                    this.$auth.setUserToken(response.data.data.original.access_token)
-                    .then(response =>{this.$router.push( '/change_pswd',)
-                    })     
-                } catch (err) {
-                  console.log(err);
-                }
-        }
-        else{
-              // if(this.form.email == "super_admin@super_admin.com" && this.form.password == "123456789"){
-              try {
-                let response = await this.$auth.loginWith('local', { data: this.form })
-                this.error = response.data.message
-                  this.load = false
-                // console.log(response)
-                let verification = response.data.data.original.user.email_verified_at
-                this.$auth.$storage.setUniversal('user_id', response.data.data.original.user.id)
-                this.$auth.$storage.setUniversal ('roles', response.data.data.original.roles[0].name)
-                this.$auth.$storage.setUniversal('email', this.form.email)
-                this.$auth.setUserToken(response.data.data.original.access_token) 
-                      // if(verification == null){
-                      //   this.showModal = true
-                      // } 
-                      // else{
-                        // this.$auth.setUserToken(response.data.data.original.access_token)         
-                        //   .then(response =>{
-                        this.role = localStorage.getItem('auth.roles');
-                          if(this.role == 'super_admin'){
-                              this.$auth.setUserToken(response.data.data.original.access_token)         
-                              .then(response =>{
-                                this.$router.push( '/admin/admin',)
-                              })
-                          }
-                          else if(this.role == 'admin'){
-                            let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
-                              
-                                this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                                this.$auth.setUserToken(response.data.data.original.access_token)         
-                                  .then(response =>{
-                                    // console.log(response)
-                                      this.$axios.get('/index/abonnement/compagnie/'+localStorage.getItem('auth.company_id'))
-                                      .then(result =>{
-                                        // console.log(result);
-                                        if( result.data.data.length == 0){
-                                          this.$router.push( '/choisirAbonnement')
-                                        }
-                                        else{
-                                          this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
-                                          .then(result =>{
-                                            if( result.data.data.length == 0){
-                                              this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
-                                              .then(response =>{
-                                                // console.log(response)
-                                                if( response.data.data.hasEndGrace == false){
-                                                  this.$router.push( '/dashboard',)
-                                                }
-                                                else{
-                                                  this.$router.push( '/renouvelerAbonnement',)
-                                                }
-                                              })
-                                            }
-                                            else{
-                                              this.$router.push( '/dashboard',)
-                                            }
-
-                                          })
-                                        }
-                                      }) 
-                                })
-                          }
-                          else{
-                            let checkAbonnement = response.data.data.original.compagnies[0].is_suscribed
-                            this.$axios.get('/index/abonnement/compagnie/active/'+localStorage.getItem('auth.company_id'))
-                            
-                              // console.log(result);
-                              // if( result.data.data.length == 0){
-                              //   this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
-                              // }
-                              // else{
-                              //   this.$auth.$storage.setUniversal('company_id', response.data.data.original.compagnies[0].id)
-                              //   this.$auth.setUserToken(response.data.data.original.access_token)         
-                              //     .then(response =>{
-                              //       this.$router.push( '/ventes/vente',)
-                              //   })
-                              // }
-                              .then(result =>{
-                                  if( result.data.data.length == 0){
-                                    this.$axios.get('/compagnies/grace/'+localStorage.getItem('auth.company_id'))
-                                    .then(response =>{
-                                      console.log(response)
-                                      if( response.data.data.hasEndGrace == false){
-                                        this.$router.push( '/ventes/vente',)
-                                      }
-                                      else{
-                                        this.error = "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager."
-                                      }
-                                    })
-                                  }
-                                  else{
-                                    this.$router.push( '/ventes/vente',)
-                                  }
-                            }) 
-                          // }
-                            // })
-                      }    
-              } catch (err) {
-                  console.log(err);
-                  // this.refresh();
-              }
-        }   
+    //afficher et cacher le mot de passe
+    changer() {
+      var pwd = document.getElementById("password");
+      var fa = document.getElementById("eye");
+      if (pwd.getAttribute("type") == "password") {
+        pwd.setAttribute("type", "text");
+        fa.class = "fa fa-eye px-2";
+      } else {
+        pwd.setAttribute("type", "password");
+        fa.class = "fa fa-eye-slash px-2";
       }
-    }   
-}
+    },
 
+    //action à effectuer après le modal
+    setMessage() {
+      this.$router.push("/login");
+    },
 
+    //connexion
+    async login() {
+      this.load = true;
+      if (this.form.password == "00000000") {
+        try {
+          let response = await this.$auth.loginWith("local", {
+            data: this.form,
+          });
+          this.$auth.$storage.setUniversal(
+            "roles",
+            response.data.data.original.roles[0].name
+          );
+          this.$auth.$storage.setUniversal(
+            "company_id",
+            response.data.data.original.compagnies[0].id
+          );
+          this.$auth.$storage.setUniversal(
+            "user_id",
+            response.data.data.original.user.id
+          );
+          this.$auth.$storage.setUniversal("email", this.form.email);
+          this.$auth
+            .setUserToken(response.data.data.original.access_token)
+            .then((response) => {
+              this.$router.push("/change_pswd");
+            });
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        try {
+          let response = await this.$auth.loginWith("local", {
+            data: this.form,
+          });
+          this.error = response.data.message;
+          this.load = false;
+          let verification = response.data.data.original.user.email_verified_at;
+          this.$auth.$storage.setUniversal(
+            "user_id",
+            response.data.data.original.user.id
+          );
+          this.$auth.$storage.setUniversal(
+            "roles",
+            response.data.data.original.roles[0].name
+          );
+          this.$auth.$storage.setUniversal("email", this.form.email);
+          this.$auth.setUserToken(response.data.data.original.access_token);
+          this.role = localStorage.getItem("auth.roles");
+          if (this.role == "super_admin") {
+            this.$auth
+              .setUserToken(response.data.data.original.access_token)
+              .then((response) => {
+                this.$router.push("/admin/admin");
+              });
+          } else if (this.role == "admin") {
+            let checkAbonnement =
+              response.data.data.original.compagnies[0].is_suscribed;
+
+            this.$auth.$storage.setUniversal(
+              "company_id",
+              response.data.data.original.compagnies[0].id
+            );
+            this.$auth
+              .setUserToken(response.data.data.original.access_token)
+              .then((response) => {
+                this.$axios
+                  .get(
+                    "/index/abonnement/compagnie/" +
+                      localStorage.getItem("auth.company_id")
+                  )
+                  .then((result) => {
+                    if (result.data.data.length == 0) {
+                      this.$router.push("/choisirAbonnement");
+                    } else {
+                      this.$axios
+                        .get(
+                          "/index/abonnement/compagnie/active/" +
+                            localStorage.getItem("auth.company_id")
+                        )
+                        .then((result) => {
+                          if (result.data.data.length == 0) {
+                            this.$axios
+                              .get(
+                                "/compagnies/grace/" +
+                                  localStorage.getItem("auth.company_id")
+                              )
+                              .then((response) => {
+                                if (response.data.data.hasEndGrace == false) {
+                                  this.$router.push("/dashboard");
+                                } else {
+                                  this.$router.push("/renouvelerAbonnement");
+                                }
+                              });
+                          } else {
+                            this.$router.push("/dashboard");
+                          }
+                        });
+                    }
+                  });
+              });
+          } else {
+            let checkAbonnement =
+              response.data.data.original.compagnies[0].is_suscribed;
+            this.$axios
+              .get(
+                "/index/abonnement/compagnie/active/" +
+                  localStorage.getItem("auth.company_id")
+              )
+              .then((result) => {
+                if (result.data.data.length == 0) {
+                  this.$axios
+                    .get(
+                      "/compagnies/grace/" +
+                        localStorage.getItem("auth.company_id")
+                    )
+                    .then((response) => {
+                      console.log(response);
+                      if (response.data.data.hasEndGrace == false) {
+                        this.$router.push("/ventes/vente");
+                      } else {
+                        this.error =
+                          "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager.";
+                      }
+                    });
+                } else {
+                  this.$router.push("/ventes/vente");
+                }
+              });
+          }
+        } catch (err) {
+          console.log(err);
+          // this.refresh();
+        }
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -245,37 +289,36 @@ export default {
   background: #D3D4D6;
 } */
 
-.error-message{
+.error-message {
   border: 1px solid transparent;
   color: red;
   font-size: 15px;
   text-align: center;
   font-weight: bold;
   margin-top: 5%;
-
 }
 .input-field {
-    border-radius: 5px;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    color: #4343ff
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #4343ff;
 }
 
 .divider:after,
 .divider:before {
-content: "";
-flex: 1;
-height: 1px;
-background: #eee;
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
 }
 .h-custom {
-height: calc(100% - 73px);
+  height: calc(100% - 73px);
 }
 @media (max-width: 450px) {
-.h-custom {
-height: 100%;
-}
+  .h-custom {
+    height: 100%;
+  }
 }
 </style>

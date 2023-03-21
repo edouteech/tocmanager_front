@@ -28,6 +28,7 @@
       },
 
       methods:{
+        //télécharger fichier pdf
         pdf() {
           this.$axios.get('/buys/download', {
             params: {
@@ -38,11 +39,10 @@
             responseType: 'blob',
             Accept: 'application/pdf'
           }).then((response) => {
-            // console.log(response);
             const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'factures_achats.pdf'); //or any other extension
+            link.setAttribute('download', 'factures_achats.pdf');
             document.body.appendChild(link);
             link.click();
             this.$toast('Téléchargement', {
@@ -59,6 +59,7 @@
   
   <style scoped>
   .modal-overlay {
+  z-index: 999;
     position: fixed;
     top: 0;
     bottom: 0;

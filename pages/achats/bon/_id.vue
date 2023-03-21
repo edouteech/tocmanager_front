@@ -58,8 +58,6 @@
                                     <th>Désignation</th>
                                     <th>Quantité voulue</th>
                                     <th>Prix unitaire</th>
-                                    <!-- <th scope="col">Réduction (Prix ou %)</th> -->
-                                    <!-- <th>Taxe appliquée (%)</th>  -->
                                     <th> Total</th>                     
                                 </tr>
                             </thead>
@@ -76,15 +74,9 @@
                                             append-to-body
                                             @input="productChange(line.product_id, index)"
                                         />
-                                        <!-- <select class="form-control " v-model="line.product_id" id="" @change="productChange">
-                                            <option disabled value="">Choisissez...</option> 
-                                            <option v-for="(product, i) in produits" :key="i" :value="product.id" :data-i="i" :data-index="index">{{product.name}}</option>
-                                        </select> -->
                                     </td>
                                     <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                    <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
-                                    <!-- <td class="table-col"><input class="form-control" type="text" v-model="line.discount"  autocomplete="off" required @change="reduceChange(index)" ></td> -->
-                                    <!-- <td class="table-col"><input class="form-control" type="number" v-model="form.tax" autocomplete="off"  required></td>                     -->
+                                    <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>                  -->
                                     <td class="table-col"><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required disabled></td>
                                     <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                                 </tr>
@@ -118,12 +110,6 @@
                     </div>
             
                 </form>
-    <!-- 
-                <h4 class=" text-danger">TOKEN INEXISTANT !!!</h4><br>
-                <p>Veuillez remplir les informations relatives à votre entreprise notamment <strong>le token MeCEF.</strong>
-                Dans le cas où vous n'etes pas <strong>l'administrateur principal de l'entreprise</strong>, veuillez contacter ce dernier pour
-                la mise à jour des informations. </p>
-            </div> -->
     
             
         </div>
@@ -209,15 +195,14 @@
         },
         
         methods: {
+            // récupère le bon de commande concerné
             recupBon(){
                 this.$axios.get('/orders/'+ this.$route.params.id,{params: {
                     compagnie_id: localStorage.getItem('auth.company_id')
                 }
                 })
                 .then(response => {
-                    // console.log(response.data.data )
                     let order = response.data.data;
-                    // this.categories = response.data.data
                     this.form.date_buy = moment(order.date_order).format("YYYY-MM-DDThh:mm"),
                     this.form.supplier_id = order.supplier_id,
                     this.form.buy_lines = order.order_lines,   
@@ -227,70 +212,22 @@
                 }) 
             },
     
-            go(){
-                this.afficheCli = 0
-            },
-    
-            choiceProd(designation,i){
-                console.log(i);
-                let line = this.form.buy_lines[i]
-                this.element_searchProd = designation.name
-                line.product_id = designation.id
-                this.afficheProd = 0
-            },
-    
-            searchProd(){
-                this.afficheProd =1
-                this.$axios.get('/products',{params: {
-                    compagnie_id: localStorage.getItem('auth.company_id'),
-                    search: this.element_searchProd,
-                    is_paginated: 0
-                }
-                })
-                .then(response => {
-                    // console.log(response.data);
-                    this.designations = response.data.data 
-                
-                })
-            },
-    
-    
-            choiceCli(acteur){
-                this.element_searchCli = acteur.name
-                this.form.supplier_id = acteur.id
-                this.afficheCli= 0
-            },
-    
-            searchCli(){
-                this.afficheCli =1
-                this.$axios.get('/suppliers',{params: {
-                    compagnie_id: localStorage.getItem('auth.company_id'),
-                    search: this.element_searchCli,
-                    is_paginated: 0
-                }
-                })
-                .then(response => {
-                    // console.log(response.data);
-                    this.acteurs = response.data.data 
-                
-                })
-            },
-    
+            
+            // récupère les moyens de paiement
             payment(){
                 this.$axios.get('/invoice/payments',{params: {
                 compagnie_id: localStorage.getItem('auth.company_id')
               }
               }).then(response =>
-                {
-                    // console.log(response); 
-                    this.methodes = response.data.data })
+                {this.methodes = response.data.data })
             },
     
-    
+            //ajouter une ligne dans le tableau
             addLine(){
                 this.form.buy_lines.push({product_id: "", price: 0, quantity: 1, discount: 0, amount: 0, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});
             },
-    
+
+            //trouver un produit à partir de son code
             async codeAdd(){
               await this.$axios.get('/products/search',{params: {
                 compagnie_id: localStorage.getItem('auth.company_id'),
@@ -298,7 +235,6 @@
               }
               })
               .then(response => {
-                // console.log(response.data);
                 if(response.data.status == "success"){
                     this.codeError= null
                     this.codes = response.data.data;
@@ -321,8 +257,8 @@
             },
     
             
+            //supprimer une ligne du tableau
             deleteLine(index){
-            //   console.log(index);
               this.form.buy_lines.splice(index, 1)
                 let sum = 0;
                 for (let j = 0; j < this.form.buy_lines.length; j++) {
@@ -330,19 +266,21 @@
                 }
                 this.form.amount= sum;
             },
-    
+
+            //permet de raffraichir la fonction refresh après un modal
             setMessage(payload) {
                 this.refresh()
                 this.message = payload.message
                 this.four_id = payload.four_id
             },
     
+            //permet de raffraichir la fonction recupProduct après un modal
             setProduit(payload) {
                 this.recupProduct()
             },
     
            
-    
+            //ajouter un bon comme un achat
             async submit(){
                     await  this.$axios.post('/buys',{
                         date_buy: this.form.date_buy,
@@ -356,7 +294,6 @@
                         payment: this.form.payment,
                         compagnie_id: localStorage.getItem('auth.company_id')
                         }).then(response =>{ 
-                            // console.log( response ) 
                             this.error = response.data.message
                             if(response.data.status == "success"){
                                 this.$router.push({path:'/achats/SavedModal',})
@@ -369,11 +306,11 @@
                                 this.errors = response.data.data
                                 this.errors_amount = response.data.data.amount
                             }
-                    }).catch( err => console.log( err ) )
-                        //  console.log(this.form.name)                                        
+                    })                               
             },
     
-    
+            
+            //récupère la liste des fournisseurs
             refresh(){
                 this.$axios.get('/suppliers',
                 {
@@ -382,7 +319,6 @@
                         is_paginated: 0
                     }
               }).then(response => {
-                // console.log(response.data.data);
                 this.fournisseurs = response.data.data
                 for(let k = 0; k <= this.fournisseurs.length; k++){
                     if(this.fournisseurs[k].default_supplier == true){
@@ -393,17 +329,19 @@
               })
             },
     
+            //récupère la liste des produits
             recupProduct(){
                 this.$axios.get('/products',{params: {
                 compagnie_id: localStorage.getItem('auth.company_id'),
                 is_paginated: 0
               }
               }).then(response => {
-                // console.log(response.data.data);
                 this.produits = response.data.data
               }) 
             },
-    
+
+            
+            //changer le prix en fonction de la quantité
             quantityChange(index){
                 this.form.discount = 0
                 let line = this.form.buy_lines[index]
@@ -417,6 +355,7 @@
             },
 
             
+            //fonction pour la réduction du montant
             reduceAmount(){
                 this.form.tax = 0
                 var red = this.form.discount;
@@ -432,16 +371,15 @@
                         let calcul2 = calcul1 / 100
                         this.form.discount = calcul2
                         this.form.amount = sum - calcul2;
-                        // this.form.amount_ht = sum -calcul2
                     } 
                     else{
                         this.form.discount = red
                         this.form.amount = sum - red
-                        // this.form.amount_ht = sum -red
                     }   
             },
     
             
+            //réduction du montant dans les lignes de vente
             reduceChange(index){
                 let line = this.form.buy_lines[index]
                 let calculQ = Number(line.price) * Number(line.quantity)
@@ -468,9 +406,10 @@
                         this.form.amount = sum;
                     }   
             },
+
     
+            //ajouter le produit dans une ligne de vente
             productChange(IdProduit, IndexBuyLines){
-                
                 for(let k = 0; k <= this.produits.length; k++){
                     if(this.produits[k].id == IdProduit){
                         let ProdId = this.produits[k].id
@@ -480,8 +419,6 @@
                         this.form.buy_lines[IndexBuyLines].discount = 0
                         this.form.buy_lines[IndexBuyLines].quantity = 1
                         this.form.buy_lines[IndexBuyLines].amount = ProdPrice
-                        // this.form.buy_lines.push({product_id: ProdId, price: ProdPrice, quantity: 1, discount: 0, amount: ProdPrice, amount_after_discount: ProdPrice, compagnie_id: localStorage.getItem('auth.company_id'), date: this.form.date_buy});  
-                        // this.form.buy_lines.splice(this.form.buy_lines.length - 2, 1); 
                         let sum = 0;
                         for (let j = 0; j < this.form.buy_lines.length; j++) {
                             sum += this.form.buy_lines[j].amount;
@@ -492,15 +429,15 @@
                 }  
             },
     
+
+            //récupère compagnie
             compagnie(){
                 this.$axios.get('/compagnies/'+ this.compagny,{params: {
                 compagnie_id: this.$auth.$storage.getUniversal('company_id')
               }
               })
                 .then(response => {
-                    // console.log(response.data.data )
                 let compagnie = response.data.data[0];
-                // this.clients = response.data.data
                 this.token = compagnie.mecef_token
               }      
             )
