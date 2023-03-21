@@ -10,6 +10,7 @@
       <h4>Liste des ventes effectuées</h4>
       <hr />
       <br />
+
       <div class="d-flex">
         <div class="col-md-10 row">
           <form class="d-flex col-md-7" role="search">
@@ -250,7 +251,7 @@
                     ></i
                   ></NuxtLink>
                   <div
-                    class="cursor-pointer"
+                    class="cursor-pointer web-imprim"
                     @click.prevent="print(vente.id)"
                     v-if="compagny == user.pivot.compagnie_id"
                   >
@@ -278,11 +279,38 @@
                     <i class="fa fa-trash-o text-danger" aria-hidden="true"></i>
                   </div>
                   <div
-                    class="cursor-pointer"
+                    class="cursor-pointer web-imprim"
                     @click.prevent="generateOtherpdf(vente.id)"
                     v-if="compagny == user.pivot.compagnie_id"
                   >
                     <i class="fa fa-print text-warning" aria-hidden="true"></i>
+                  </div>
+                  <div
+                    class="cursor-pointer mobile-imprim"
+                    v-if="compagny == user.pivot.compagnie_id"
+                  >
+                    <ul id="menu-demo2">
+                      <li>
+                        <a href="#"
+                          ><i
+                            class="fa fa-print text-primary"
+                            aria-hidden="true"
+                          ></i
+                        ></a>
+                        <ul>
+                          <li>
+                            <NuxtLink :to="'/ventes/mobile/ticket/' + vente.id"
+                              >Ticket</NuxtLink
+                            >
+                          </li>
+                          <li>
+                            <NuxtLink :to="'/ventes/mobile/' + vente.id"
+                              >A4</NuxtLink
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </td>
@@ -627,7 +655,6 @@ export default {
     //ajout des valeurs dans checks
     checkbox(id) {},
 
-
     //fermer les cases à cocher
     deselectionner() {
       this.selection = 0;
@@ -791,13 +818,13 @@ export default {
         })
         .then((response) => {
           this.showModal = true;
-          this.identifiant3 = response.data.data[0].sell_lines,
-          this.identifiant1 = moment(response.data.data[0].date_sell).format(
-            "D MMM YYYY, h:mm:ss a"
-          ),
-          this.identifiant2 = response.data.data[0].client,
-          this.identifiant4 = response.data.data[0].amount,
-          this.identifiant5 = response.data.data[0].rest;
+          (this.identifiant3 = response.data.data[0].sell_lines),
+            (this.identifiant1 = moment(response.data.data[0].date_sell).format(
+              "D MMM YYYY, h:mm:ss a"
+            )),
+            (this.identifiant2 = response.data.data[0].client),
+            (this.identifiant4 = response.data.data[0].amount),
+            (this.identifiant5 = response.data.data[0].rest);
           this.identifiant6 = response.data.data[0].tax;
           this.identifiant7 = response.data.data[0].facture;
           this.identifiant8 = response.data.data[0].client.compagny;
@@ -839,6 +866,10 @@ export default {
 
 .range input {
   margin-right: 2%;
+}
+
+.name_side {
+  display: none;
 }
 
 @media print {
@@ -981,6 +1012,82 @@ tbody tr:last-of-type {
   display: none;
 }
 
+.mobile-imprim {
+  display: none;
+}
+
+#menu-demo2,
+#menu-demo2 ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+}
+#menu-demo2 li {
+  display: inline-block;
+  position: relative;
+  border-radius: 8px 8px 0 0;
+}
+#menu-demo2 ul li {
+  display: inherit;
+  border-radius: 0;
+}
+#menu-demo2 ul li:hover {
+  border-radius: 0;
+}
+#menu-demo2 ul li:last-child {
+  border-radius: 0 0 8px 8px;
+}
+#menu-demo2 ul {
+  position: absolute;
+  z-index: 1000;
+  max-height: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  -moz-transition: 0.8s all 0.3s;
+  -webkit-transition: 0.8s all 0.3s;
+  transition: 0.8s all 0.3s;
+}
+#menu-demo2 li:hover ul {
+  max-height: 15em;
+}
+
+/* background des liens menus */
+/* #menu-demo2 li:last-child{
+background-color: #CFFF6A;
+background-image:-webkit-linear-gradient(top, #CFFF6A 0%, #677F35 100%);
+background-image:linear-gradient(to bottom, #CFFF6A 0%, #677F35 100%);
+} */
+/* background des liens sous menus */
+#menu-demo2 li:last-child li {
+  background: #677f35;
+}
+/* background des liens menus et sous menus au survol */
+#menu-demo2 li:last-child:hover,
+#menu-demo2 li:last-child li:hover {
+  background: #cfff6a;
+}
+/* les a href */
+#menu-demo2 a {
+  text-decoration: none;
+  display: block;
+  padding: 0 10px;
+  color: #fff;
+  font-family: arial;
+}
+#menu-demo2 ul a {
+  padding: 8px 0;
+}
+#menu-demo2 li:hover li a {
+  color: #fff;
+  text-transform: inherit;
+}
+#menu-demo2 li:hover a,
+#menu-demo2 li li:hover a {
+  color: #000;
+}
+
 @media screen and (max-width: 900px) {
   table thead tr th {
     padding: 15px 20px;
@@ -1005,6 +1112,14 @@ tbody tr:last-of-type {
 
   .mobile-btn {
     display: block;
+  }
+
+  .mobile-imprim {
+    display: block;
+  }
+
+  .web-imprim {
+    display: none;
   }
 }
 
