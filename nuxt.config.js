@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'TocManager',
+    title: 'tocmanager',
     htmlAttrs: {
       lang: 'en'
     },
@@ -30,6 +30,10 @@ export default {
       { 
         src: '/js/bootstrap.bundle.min.js', 
         type: 'text/javascript',
+      },
+      { 
+        src: 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js', 
+        type: 'text/javascript' 
       }
     ]
   },
@@ -45,6 +49,7 @@ export default {
     { src: '~/plugins/vue-carousel', ssr: false },
     { src: '~/plugins/vue-toastification', ssr: false },
     { src: '~/plugins/vue-excel-xlsx.js', mode: 'client' },
+    { src: '~/plugins/removeWebflowBadge.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

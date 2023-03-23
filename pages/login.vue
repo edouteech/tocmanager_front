@@ -10,7 +10,7 @@
 
     <br /><br />
 
-    <h2 class="text px-4">Connectez vous</h2>
+    <h2 class="text px-4 mt-5">Connectez vous</h2>
     <div class="container-fluid h-custom">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-9 col-lg-6 col-xl-5">
