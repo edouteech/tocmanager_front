@@ -197,8 +197,8 @@
                 compagnie_id: localStorage.getItem('auth.company_id')
                 }
             }).then(response => {
-                // console.log(response);
-                this.ligne_ecritures = response.data.data.ligne_ecritures
+                console.log(response);
+                this.ligne_ecritures = response.data.data.ecriture.ligne_ecritures
             })
 
         }
