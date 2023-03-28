@@ -7,6 +7,7 @@
                 <div class="row">
                     <div class="col-6 mb-4">
                         <p><strong>Numéro de la pièce:</strong> {{ invoice_number }}</p>
+                        <p><strong>Non de l'écriture:</strong> {{ name_ecriture }}</p>
                     </div>
                     <div >
                         <!-- <p class="text-center">Crédit</p> -->
@@ -39,7 +40,7 @@
 <script>
 export default {
     auth: true,
-    props: ['ligne_ecritures', 'invoice_number'],
+    props: ['ligne_ecritures', 'invoice_number', 'name_ecriture'],
     name: 'voirFournisseur',
     mounted() {
         // console.log(this.ligne_ecritures)
