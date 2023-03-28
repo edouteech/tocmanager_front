@@ -5,23 +5,8 @@
 
             <div class="">
                 <div class="row">
-                    <div class="col-6">
-                        <!-- <p class="text-center">Débit</p>
-                        <table class="table table-hover">
-                            <thead>
-                                <tr class="table-success">
-                                    <th>Compte</th>
-                                    <th>Montant</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(ligne_ecriture, i) in ligne_ecritures" :key="i">
-                                    <td>{{ ligne_ecriture.compte.name }}</td>
-                                    <td>{{ ligne_ecriture.side }}</td>
-                                </tr>
-                            </tbody>
-                        </table> -->
+                    <div class="col-6 mb-4">
+                        <p><strong>Numéro de la pièce:</strong> {{ invoice_number }}</p>
                     </div>
                     <div >
                         <!-- <p class="text-center">Crédit</p> -->
@@ -54,7 +39,7 @@
 <script>
 export default {
     auth: true,
-    props: ['ligne_ecritures'],
+    props: ['ligne_ecritures', 'invoice_number'],
     name: 'voirFournisseur',
     mounted() {
         // console.log(this.ligne_ecritures)

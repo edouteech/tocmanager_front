@@ -108,7 +108,7 @@
           </ul>
         </nav>
       </div><br>
-      <voirEcriture :ligne_ecritures="ligne_ecritures" v-show="showModal" @close-modal="showModal = false" />
+      <voirEcriture :ligne_ecritures="ligne_ecritures" :invoice_number="invoice_number" v-show="showModal" @close-modal="showModal = false" />
       <deleteModal :identifiant='key' v-show="showModalDelete" @close-modal="showModalDelete = false"
         @conf="setMessage" />
   
@@ -144,6 +144,7 @@
         showModal: false,
         showModalDelete: false,
         ligne_ecritures: [],
+        invoice_number: "",
         users: '',
         compagny: '',
         form: {
@@ -198,7 +199,8 @@
                 }
             }).then(response => {
                 console.log(response);
-                this.ligne_ecritures = response.data.data.ecriture.ligne_ecritures
+                this.ligne_ecritures = response.data.data.ecriture.ligne_ecritures,
+                this.invoice_number = response.data.data.ecriture.invoice_number
             })
 
         }
