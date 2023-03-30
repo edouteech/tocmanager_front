@@ -108,28 +108,17 @@
               </div>
               <div class="uui-heroheader06_image-wrapper">
                 <img
-                  src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f229a24ccc7637f011e29_Screen%20Shot%202023-03-13%20at%202.08.52%20PM.png"
+                  src="/images/computer.png"
                   loading="lazy"
                   sizes="(max-width: 479px) 0px, (max-width: 767px) 100vw, 768px"
-                  srcset="
-                    https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f229a24ccc7637f011e29_Screen%20Shot%202023-03-13%20at%202.08.52%20PM-p-500.png   500w,
-                    https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f229a24ccc7637f011e29_Screen%20Shot%202023-03-13%20at%202.08.52%20PM-p-800.png   800w,
-                    https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f229a24ccc7637f011e29_Screen%20Shot%202023-03-13%20at%202.08.52%20PM-p-1080.png 1080w,
-                    https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f229a24ccc7637f011e29_Screen%20Shot%202023-03-13%20at%202.08.52%20PM-p-1600.png 1600w,
-                    https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f229a24ccc7637f011e29_Screen%20Shot%202023-03-13%20at%202.08.52%20PM-p-2000.png 2000w,
-                    https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f229a24ccc7637f011e29_Screen%20Shot%202023-03-13%20at%202.08.52%20PM-p-2600.png 2600w,
-                    https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f229a24ccc7637f011e29_Screen%20Shot%202023-03-13%20at%202.08.52%20PM.png        2880w
-                  "
+               
                   alt="MacBook mockup"
                   class="uui-heroheader06_image-01 shadow-xxlarge hide-mobile-landscape"
+                  style="border: 0 !important;"
                 /><img
-                  src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f2439d0c88afcc9e626c1_Screen%20Shot%202023-03-13%20at%202.10.38%20PM.png"
+                  src="/images/phone.png"
                   loading="lazy"
                   sizes="(max-width: 479px) 100vw, 244px"
-                  srcset="
-                    https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f2439d0c88afcc9e626c1_Screen%20Shot%202023-03-13%20at%202.10.38%20PM-p-500.png 500w,
-                    https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f2439d0c88afcc9e626c1_Screen%20Shot%202023-03-13%20at%202.10.38%20PM.png       642w
-                  "
                   alt="iPhone mockup"
                   class="uui-heroheader06_image-02"
                 />
@@ -624,7 +613,7 @@
               </div>
             </div>
           </div>
-          <div class="brix---slider-mask-width-390px w-slider-mask mt-4">
+          <!-- <div class="brix---slider-mask-width-390px w-slider-mask mt-4">
             <div class="brix---slide-item-mg w-slide">
               <div class="brix---card-testimonial-v13">
                 <img
@@ -688,7 +677,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="brix---hidden-desktop w-slider-nav w-round"></div>
         </div>
       </div>
@@ -824,7 +813,7 @@
         </div>
       </div>
     </footer>
-    <div>
+    <!-- <div>
       <div class="container w-container">
         <h2 class="heading">
           Mentions légales et politique de confidentialité
@@ -1057,7 +1046,7 @@
           </p>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
