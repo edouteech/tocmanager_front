@@ -10,78 +10,62 @@
       <div>{{ error }}</div>
 
       <div v-for="(user, i) in users" :key="i">
-        <NuxtLink
-          to="/update_compagnie"
-          v-if="
-            compagn == user.pivot.compagnie_id && user.pivot.droits_admin == 1
-          "
-        >
+        <NuxtLink to="/update_compagnie" v-if="
+          compagn == user.pivot.compagnie_id && user.pivot.droits_admin == 1
+        ">
           <!-- <button type="submit" class="btn btn-warning mx-5">Compléter les informations de la compagnie</button> -->
         </NuxtLink>
 
-        <NuxtLink to="" class="text-danger" v-else
-          >Veuillez contacter l'administrateur pour résoudre le problème
-          !!!</NuxtLink
-        >
+        <NuxtLink to="" class="text-danger" v-else>Veuillez contacter l'administrateur pour résoudre le problème
+          !!!</NuxtLink>
       </div>
     </div>
 
     <div class="app-main__outer py-5 px-2">
       <div class="d-flex align-items-end flex-column">
-        <button
-          type="submit"
-          class="btn btn-success mx-5"
-          @click.prevent="validerFactureNormalise()"
-          v-if="qr_info != null"
-        >
+        <button type="submit" class="btn btn-success" @click.prevent="validerFactureNormalise()"
+          v-if="qr_info != null">
           Valider la facture normalisée
         </button>
-        <button
-          type="submit"
-          class="btn btn-primary mx-5"
-          @click.prevent="genererFactureNormalise()"
-          v-else
-        >
+        <button type="submit" class="btn btn-primary " @click.prevent="genererFactureNormalise()" v-else>
           Générer la facture normalisée
         </button>
-        <NuxtLink :to="'/ventes/' + this.$route.params.id"
-          ><button type="submit" class="btn btn-dark mx-5 my-3">
+        <NuxtLink :to="'/ventes/' + this.$route.params.id"><button type="submit" class="btn btn-dark my-4">
             Modifier la vente
-          </button></NuxtLink
-        >
+          </button></NuxtLink>
       </div>
       <br />
 
-      <div class="d-flex align-items-start flex-column">
-        <div class="entreprise-photo my-3" v-if="compagny.logo">
-          <img
-            :src="$config.webURL + compagny.logo"
-            alt="profil"
-            class="profil"
-            width="70"
-            height="50"
-          />
+      <div class="row">
+        <div class="col-md-6">
+          <div class="d-flex align-items-start flex-column">
+            <div class="entreprise-photo my-3" v-if="compagny.logo">
+              <img :src="$config.webURL + compagny.logo" alt="profil" class="profil" width="70" height="50" />
+            </div>
+            <p>
+              <strong> Société {{ compagny.name }}</strong>
+            </p>
+            <p>
+              <strong> Email: {{ compagny.email }}</strong>
+            </p>
+            <p>
+              <strong> Tél: {{ compagny.phone }}</strong>
+            </p>
+          </div>
         </div>
-        <p>
-          <strong> Société {{ compagny.name }}</strong>
-        </p>
-        <p>
-          <strong> Email: {{ compagny.email }}</strong>
-        </p>
-        <p>
-          <strong> Tél: {{ compagny.phone }}</strong>
-        </p>
-      </div>
-      <div class="d-flex align-items-end flex-column client-info">
-        <p>
-          <strong> M/Mme {{ client.name }}</strong>
-        </p>
-        <p>
-          <strong> Client {{ compagny.name }}</strong>
-        </p>
-        <p>
-          <strong> {{ client.phone }}</strong>
-        </p>
+        <div class="col-md-6">
+          <div class="d-flex align-items-end flex-column">
+            <p>
+              <strong> M/Mme {{ client.name }}</strong>
+            </p>
+            <p>
+              <strong> Client {{ compagny.name }}</strong>
+            </p>
+            <p>
+              <strong> {{ client.phone }}</strong>
+            </p>
+          </div>
+        </div>
       </div>
       <br />
       <div class="p-2 mb-2 bg-secondary text-white text-center">
@@ -123,17 +107,11 @@
       </div>
       <br /><br />
 
-      <div
-        class="d-flex align-items-end flex-column mb-4 recap"
-        v-if="qrcode != null"
-      >
-        <img
-          :src="
-            'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' +
-            qrcode
-          "
-          alt="QRcode"
-        />
+      <div class="d-flex align-items-end flex-column mb-4 recap" v-if="qrcode != null">
+        <img :src="
+          'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' +
+          qrcode
+        " alt="QRcode" />
         <div class="d-flex align-items-start flex-column mb-4">
           <p><strong>Mecef_counteurs :</strong>{{ qr_info.mecef_counteurs }}</p>
           <p><strong>Mecef_nim: </strong>{{ qr_info.mecef_nim }}</p>
@@ -184,46 +162,25 @@
         <h4>Ajouter des encaissements pour cette facture</h4>
         <br /><br />
         <div v-if="number == 0">
-          <div
-            class="alert alert-danger justify-content-center"
-            role="alert"
-            v-if="error_rest != null"
-          >
+          <div class="alert alert-danger justify-content-center" role="alert" v-if="error_rest != null">
             {{ error_rest }}
           </div>
         </div>
         <form action="" method="POST">
           <div class="form-group col-md-6">
-            <input
-              type="date"
-              class="form-control"
-              placeholder="Entrer la date de l'encaissement "
-              v-model="form.date"
-              autocomplete="off"
-              id="date"
-              required
-            />
+            <input type="date" class="form-control" placeholder="Entrer la date de l'encaissement " v-model="form.date"
+              autocomplete="off" id="date" required />
           </div>
           <br />
           <div class="form-group col-md-6">
-            <input
-              type="number"
-              class="form-control"
-              placeholder="Entrer le montant à encaisser "
-              v-model="form.montant"
-              id="montant"
-              required
-            />
+            <input type="number" class="form-control" placeholder="Entrer le montant à encaisser " v-model="form.montant"
+              id="montant" required />
           </div>
           <br />
           <div class="form-group col-md-6">
             <select class="form-control" v-model="form.payment">
               <option value="">Choississez une méthode de paiement</option>
-              <option
-                v-for="(methode, j) in methodes"
-                :key="j"
-                :value="methode"
-              >
+              <option v-for="(methode, j) in methodes" :key="j" :value="methode">
                 {{ methode }}
               </option>
             </select>
@@ -231,11 +188,7 @@
 
           <br />
 
-          <button
-            type="submit"
-            class="btn btn-success"
-            @click.prevent="submit()"
-          >
+          <button type="submit" class="btn btn-success" @click.prevent="submit()">
             Ajouter ...
           </button>
         </form>
@@ -261,44 +214,24 @@
         <br />
         <nav aria-label="Page navigation example px-8 " v-if="res_data != null">
           <ul class="pagination">
-            <li
-              :class="
-                res_data.prev_page_url == null
-                  ? 'page-item disabled'
-                  : 'page-item'
-              "
-            >
-              <a
-                class="page-link"
-                @click="recupFacture(res_data.current_page - 1)"
-                >Précédent</a
-              >
+            <li :class="
+              res_data.prev_page_url == null
+                ? 'page-item disabled'
+                : 'page-item'
+            ">
+              <a class="page-link" @click="recupFacture(res_data.current_page - 1)">Précédent</a>
             </li>
-            <li
-              class="page-item"
-              v-for="(link, index) in res_data.links"
-              :key="index"
-            >
-              <a
-                :class="link.active == true ? 'page-link active' : 'page-link'"
-                href="#"
-                @click="recupFacture(link.label)"
-                >{{ link.label }}</a
-              >
+            <li class="page-item" v-for="(link, index) in res_data.links" :key="index">
+              <a :class="link.active == true ? 'page-link active' : 'page-link'" href="#"
+                @click="recupFacture(link.label)">{{ link.label }}</a>
             </li>
 
-            <li
-              :class="
-                res_data.next_page_url == null
-                  ? 'page-item disabled'
-                  : 'page-item'
-              "
-            >
-              <a
-                class="page-link"
-                @click="recupFacture(res_data.current_page + 1)"
-                >Suivant</a
-              >
+            <li :class="
+              res_data.next_page_url == null
+                ? 'page-item disabled'
+                : 'page-item'
+            ">
+              <a class="page-link" @click="recupFacture(res_data.current_page + 1)">Suivant</a>
             </li>
           </ul>
         </nav>
@@ -353,13 +286,10 @@
       </div>
 
       <div class="text-center" v-if="qr_info != null">
-        <img
-          :src="
-            'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' +
-            qr_info.qrcode
-          "
-          alt="QRcode"
-        />
+        <img :src="
+          'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' +
+          qr_info.qrcode
+        " alt="QRcode" />
         <div class="">
           <p><strong>Mecef_counteurs :</strong>{{ qr_info.mecef_counteurs }}</p>
           <p><strong>Mecef_nim: </strong>{{ qr_info.mecef_nim }}</p>
@@ -369,27 +299,14 @@
       </div>
     </div>
 
-    <Impression
-      :date_sell="identifiant1"
-      :client="identifiant2"
-      :factures="identifiant3"
-      :montant="identifiant4"
-      :rest="identifiant5"
-      :tax="identifiant6"
-      :qr_info="identifiant7"
-      v-show="showModal"
-      @close-modal="showModal = false"
-    />
+    <Impression :date_sell="identifiant1" :client="identifiant2" :factures="identifiant3" :montant="identifiant4"
+      :rest="identifiant5" :tax="identifiant6" :qr_info="identifiant7" v-show="showModal"
+      @close-modal="showModal = false" />
     <!-- Footer -->
     <footer class="text-center text-lg-start bg-dark text-white">
-      <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        rel="stylesheet"
-      />
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
       <!-- Section: Social media -->
-      <section
-        class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
-      >
+      <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <!-- Left -->
         <div class="me-5 d-none d-lg-block">
           <img src="../../../static/images/logo.png" class="logo-img" alt="" />
@@ -413,10 +330,7 @@
       <!-- Section: Social media -->
 
       <!-- Copyright -->
-      <div
-        class="text-center p-2"
-        style="background-color: rgba(0, 0, 0, 0.05)"
-      >
+      <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05)">
         Copyright © 2022 - Tous droits réservés TocManager-dS
       </div>
       <!-- Copyright -->
@@ -651,6 +565,7 @@ export default {
 .logo-img {
   width: 170px;
 }
+
 .text-end {
   font-size: 13px;
 }
@@ -696,6 +611,7 @@ export default {
   .navbar {
     display: none !important;
   }
+
   /* .print, .caisse , .encaissement, .btn{
     display: none !important;
   }
@@ -706,10 +622,12 @@ export default {
   .app-main__outer {
     display: none !important;
   }
+
   .hidden_page {
     display: block;
     padding: 5%;
   }
+
   @page {
     margin-left: 0.5in;
     margin-right: 0.5in;
@@ -723,6 +641,7 @@ export default {
   font-size: 22px;
   cursor: pointer;
 }
+
 .table {
   margin-top: 3%;
   text-align: center;
@@ -772,25 +691,26 @@ thead tr {
     7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   outline: none;
 }
+
 .btn-3 {
   background: rgb(0, 172, 238);
-  background: linear-gradient(
-    0deg,
-    rgba(0, 172, 238, 1) 0%,
-    rgba(2, 126, 251, 1) 100%
-  );
+  background: linear-gradient(0deg,
+      rgba(0, 172, 238, 1) 0%,
+      rgba(2, 126, 251, 1) 100%);
   width: 180px;
   height: 40px;
   line-height: 42px;
   padding: 0;
   border: none;
 }
+
 .btn-3 span {
   position: relative;
   display: block;
   width: 100%;
   height: 100%;
 }
+
 .btn-3:before,
 .btn-3:after {
   position: absolute;
@@ -800,27 +720,34 @@ thead tr {
   background: rgba(2, 126, 251, 1);
   transition: all 0.3s ease;
 }
+
 .btn-3:before {
   height: 0%;
   width: 2px;
 }
+
 .btn-3:after {
   width: 0%;
   height: 2px;
 }
+
 .btn-3:hover {
   background: transparent;
   box-shadow: none;
 }
+
 .btn-3:hover:before {
   height: 100%;
 }
+
 .btn-3:hover:after {
   width: 100%;
 }
+
 .btn-3 span:hover {
   color: rgba(2, 126, 251, 1);
 }
+
 .btn-3 span:before,
 .btn-3 span:after {
   position: absolute;
@@ -830,17 +757,21 @@ thead tr {
   background: rgba(2, 126, 251, 1);
   transition: all 0.3s ease;
 }
+
 .btn-3 span:before {
   width: 2px;
   height: 0%;
 }
+
 .btn-3 span:after {
   width: 0%;
   height: 2px;
 }
+
 .btn-3 span:hover:before {
   height: 100%;
 }
+
 .btn-3 span:hover:after {
   width: 100%;
 }
