@@ -336,7 +336,7 @@
         <br /><br /><br /><br />
         <div class="col-md-6 mx-auto">
           <button
-            class="btn btn-primary py-3 col-md-12"
+            class="btn btn-primary py-4 col-md-12"
             v-on:click.prevent="submit()"
             :disabled="load"
           >
@@ -344,7 +344,7 @@
             <span v-if="this.form.amount != ''">
               pour
               <span class="text-dark mx-3"
-                >{{ this.form.amount }} F CFA</span
+                ><b>{{ this.form.amount }} F CFA</b></span
               ></span
             >
           </button>

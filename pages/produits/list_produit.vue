@@ -380,7 +380,7 @@
         </p>
         <hr class="text-primary" />
 
-        <div class="table-responsive" v-if="stats">
+        <div class="table-responsive my-4" v-if="stats">
           <table class="table table-hover other_table">
             <thead>
               <tr class="table-dark">
