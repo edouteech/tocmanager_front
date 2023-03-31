@@ -50,7 +50,7 @@
             v-model="form.name"
             autocomplete="off"
             required
-            placeholder="Paracetamol"
+            placeholder="Nom du produit"
           />
         </div>
         <div
