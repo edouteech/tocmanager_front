@@ -336,7 +336,7 @@
         <br /><br /><br /><br />
         <div class="col-md-6 mx-auto">
           <button
-            class="custom-btn btn-5 col-md-12"
+            class="btn btn-primary py-3 col-md-12"
             v-on:click.prevent="submit()"
             :disabled="load"
           >
