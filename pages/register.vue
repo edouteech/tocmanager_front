@@ -223,7 +223,7 @@ export default {
             this.$toast("Inscription réussie !!!", {
               icon: "fa fa-check-circle",
             });
-            this.$router.push({ path: "/login" });
+            this.$router.push({ path: "/registerSuccess" });
           } else {
             this.errors = response.data.data;
             this.error = response.data.message;
