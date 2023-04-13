@@ -1,9 +1,6 @@
 <template>
   <div class="contain">
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
     <!-- <div class="alert alert-success justify-content-center" role="alert">
       {{this.params.errors}}
   </div> -->
@@ -14,19 +11,12 @@
     <div class="container-fluid h-custom">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-9 col-lg-6 col-xl-5">
-          <img
-            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-            class="img-fluid"
-            alt="Sample image"
-          />
+          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
+            alt="Sample image" />
         </div>
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
           <form>
-            <div
-              class="alert alert-danger justify-content-center"
-              role="alert"
-              v-if="error"
-            >
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
               {{ error }}
             </div>
             <div class="divider d-flex align-items-center my-4">
@@ -35,33 +25,25 @@
 
             <!-- Email input -->
             <div class="form-outline mb-4">
-              <span class="fa fa-envelope px-2"></span>
-              <label class="form-label">Adresse Email</label>
+              <div class="d-flex">
+                <span class="fa fa-envelope px-2 mt-1"></span>
+                <label class="form-label">Adresse Email</label>
+              </div>
               <div class="input-field">
-                <input
-                  type="email"
-                  class="form-control form-control-lg"
-                  v-model="form.email"
-                  required
-                  placeholder="Entrer votre addresse email "
-                />
+                <input type="email" class="form-control form-control-lg" v-model="form.email" required
+                  placeholder="Entrer votre addresse email " />
               </div>
             </div>
 
             <!-- Password input -->
             <div class="form-outline mb-3">
-              <span class="fas fa-lock px-2"></span
-              ><label class="form-label">Mot de passe</label>
+              <div class="d-flex">
+                <span class="fas fa-lock px-2 mt-1"></span><label class="form-label">Mot de passe</label>
+              </div>
               <div class="input-field">
-                <input
-                  type="password"
-                  id="password"
-                  class="form-control form-control-lg"
-                  v-model="form.password"
-                  placeholder="Entrer votre mot de passe"
-                /><span
-                  ><i class="fa fa-eye px-2" id="eye" @click="changer()"></i
-                ></span>
+                <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
+                  placeholder="Entrer votre mot de passe" /><span><i class="fa fa-eye px-2" id="eye"
+                    @click="changer()"></i></span>
               </div>
             </div>
 
@@ -72,13 +54,8 @@
             </div>
 
             <div class="text-center text-lg-start mt-4 pt-2">
-              <button
-                type="button"
-                :disabled="load"
-                @click.prevent="login()"
-                class="btn btn-primary btn-lg"
-                style="padding-left: 1rem; padding-right: 1rem"
-              >
+              <button type="button" :disabled="load" @click.prevent="login()" class="btn btn-primary btn-lg"
+                style="padding-left: 1rem; padding-right: 1rem">
                 Se connecter
               </button>
               <p class="small fw-bold mt-2 pt-1 mb-0">
@@ -94,12 +71,7 @@
       </div>
     </div>
 
-    <modalEmail
-      :identifiant="key"
-      v-show="showModal"
-      @close-modal="showModal = false"
-      @conf="setMessage"
-    />
+    <modalEmail :identifiant="key" v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
   </div>
 </template>
 
@@ -214,7 +186,7 @@ export default {
                 this.$axios
                   .get(
                     "/index/abonnement/compagnie/" +
-                      localStorage.getItem("auth.company_id")
+                    localStorage.getItem("auth.company_id")
                   )
                   .then((result) => {
                     if (result.data.data.length == 0) {
@@ -223,14 +195,14 @@ export default {
                       this.$axios
                         .get(
                           "/index/abonnement/compagnie/active/" +
-                            localStorage.getItem("auth.company_id")
+                          localStorage.getItem("auth.company_id")
                         )
                         .then((result) => {
                           if (result.data.data.length == 0) {
                             this.$axios
                               .get(
                                 "/compagnies/grace/" +
-                                  localStorage.getItem("auth.company_id")
+                                localStorage.getItem("auth.company_id")
                               )
                               .then((response) => {
                                 if (response.data.data.hasEndGrace == false) {
@@ -252,14 +224,14 @@ export default {
             this.$axios
               .get(
                 "/index/abonnement/compagnie/active/" +
-                  localStorage.getItem("auth.company_id")
+                localStorage.getItem("auth.company_id")
               )
               .then((result) => {
                 if (result.data.data.length == 0) {
                   this.$axios
                     .get(
                       "/compagnies/grace/" +
-                        localStorage.getItem("auth.company_id")
+                      localStorage.getItem("auth.company_id")
                     )
                     .then((response) => {
                       console.log(response);
@@ -298,6 +270,7 @@ export default {
   font-weight: bold;
   margin-top: 5%;
 }
+
 .input-field {
   border-radius: 5px;
   padding: 5px;
@@ -314,9 +287,11 @@ export default {
   height: 1px;
   background: #eee;
 }
+
 .h-custom {
   height: calc(100% - 73px);
 }
+
 @media (max-width: 450px) {
   .h-custom {
     height: 100%;

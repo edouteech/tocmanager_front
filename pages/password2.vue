@@ -21,8 +21,10 @@
     <div class="container-fluid h-custom">
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form>
-          <span class="fas fa-lock px-2"></span
+          <div class="d-flex">
+          <span class="fas fa-lock px-2 mt-1"></span
           ><label class="form-label">Code reçu par mail</label>
+        </div>
           <div class="input-field">
             <input
               type="number"
@@ -34,8 +36,10 @@
           </div>
           <br />
           <div class="form-outline mb-3">
-            <span class="fas fa-lock px-2"></span
+            <div class="d-flex">
+            <span class="fas fa-lock px-2 mt-1"></span
             ><label class="form-label">Nouveau Mot de passe</label>
+          </div>
             <div class="input-field">
               <input
                 type="password"
@@ -54,8 +58,10 @@
           </div>
 
           <div class="form-outline mb-3">
-            <span class="fas fa-lock px-2"></span
+            <div class="d-flex">
+            <span class="fas fa-lock px-2 mt-1"></span
             ><label class="form-label">Confirmer le Mot de passe</label>
+          </div>
             <div class="input-field">
               <input
                 type="password"
