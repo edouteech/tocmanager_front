@@ -108,6 +108,7 @@ import modalEmail from "./modalEmail.vue";
 export default {
   middleware: "auth",
   name: "login",
+  layout: "public",
   components: {
     modalEmail,
   },

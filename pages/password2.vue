@@ -93,6 +93,7 @@
 export default {
   auth: false,
   name: "password",
+  layout: "public",
   data() {
     return {
       errors: null,
@@ -162,7 +163,7 @@ export default {
 
 <style scoped>
 .contain {
-  margin: 5% 10%;
+  padding: 8% 10%;
 }
 
 .input-field {

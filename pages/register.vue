@@ -187,6 +187,7 @@
 <script>
 export default {
   auth: false,
+  layout: "public",
   data() {
     return {
       user: "",

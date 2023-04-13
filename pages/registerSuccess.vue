@@ -10,13 +10,13 @@
         <img
           src="/images/eff.jpg"
           class="img-fluid"
-          style="width: 10%; margin-top: 5%"
+          style="width: 20%; margin-top: 5%"
           alt="Sample image"
         />
         <div class="text-center">
           <h1 style="font-size: xx-large">Inscription réussie</h1>
           <p>
-            Votre inscription s'est bien passée. Merci de vous être inscrit!
+            Vous pouvez vous connecter en cliquant sur ce bouton
           </p>
           <NuxtLink
             to="/login"
@@ -32,17 +32,12 @@
 <script>
 export default {
   auth: false,
+  layout: "public",
 };
 </script>
 
 <style scoped>
-* {
-  font-size: 12px;
-}
-/* .img-fluid { */
-  /* width: 400px; */
-  /* height: 80vh; */
-/* } */
+
 .input-field {
   border-radius: 5px;
   padding: 5px;
@@ -64,7 +59,7 @@ export default {
   background: #eee;
 }
 .h-custom {
-  height: calc(100% - 73px);
+  padding: 100px 0;
 }
 @media (max-width: 450px) {
   .h-custom {
@@ -72,9 +67,4 @@ export default {
   }
 }
 
-@media screen and (max-width: 700px) {
-  .img {
-    display: none;
-  }
-}
 </style>
