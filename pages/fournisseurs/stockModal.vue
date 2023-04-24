@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler">
+    <div class="modaler" @click.stop>
       <h6 class="text-center">
         Télécharger la fiche de commande du fournisseur !
       </h6>

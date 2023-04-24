@@ -153,7 +153,7 @@ export default {
       produits: [],
       total: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
     };
   },

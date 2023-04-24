@@ -194,7 +194,7 @@
 
         <button
           type="submit"
-          class="btn btn-primary"
+          class="btn btn-outline-primary p-3 col-md-6"
           v-on:click.prevent="submit()"
         >
           Enregistrer le produit
