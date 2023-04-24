@@ -157,7 +157,7 @@ export default {
       decaissements: [],
       total: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
     };
   },

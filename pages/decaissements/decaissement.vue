@@ -77,8 +77,8 @@
             </option>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary" @click.prevent="submit()">
-          Enregistrer
+        <button type="submit" class="btn btn-outline-primary col-md-6 p-3" @click.prevent="submit()">
+          ENREGISTRER
         </button>
       </form>
     </div>
