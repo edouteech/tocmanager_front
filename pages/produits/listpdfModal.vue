@@ -1,6 +1,6 @@
 <template>
-  <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler">
+  <div class="modal-overlay"  @click.prevent="$emit('close-modal')">
+    <div class="modaler" @click.stop>
       <h6 class="text-center">Télécharger la liste des produits !</h6>
       <form action="" class="my-5">
         <p>Choississez ou non un intervalle de dates</p>

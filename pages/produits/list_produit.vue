@@ -7,8 +7,7 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <h4>Liste des produits dans le magazin</h4>
-      <br />
+      <h4>Liste des produits dans le magazin</h4><hr>
       <div class="d-flex">
         <div class="col-md-10">
           <form class="d-flex col-md-7" role="search">
@@ -623,7 +622,7 @@ export default {
       users: "",
       compagny: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
       key: "",
       showModalDelete: false,
