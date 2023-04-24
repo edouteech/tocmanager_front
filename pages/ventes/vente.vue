@@ -21,7 +21,7 @@
           <div class="col-md-6">
             <div class="ajout-client">
               <v-select
-                placeholder="Choississez le client"
+                placeholder="Choisissez le client"
                 v-model="selectedClient"
                 label="name"
                 :options="clients"
