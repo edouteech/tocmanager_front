@@ -7,7 +7,7 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <h4>Modifier les informations de ce décaissement</h4>
+      <h4>Modifier les informations de ce décaissement</h4><hr>
       <div
         class="alert alert-danger justify-content-center"
         role="alert"
@@ -47,7 +47,7 @@
         </div>
         <div class="form-group col-md-6">
           <div class="form-group">
-            <label class="title">Nature du client</label>
+            <label class="title">Identité du fournisseur</label>
             <select class="form-control" v-model="form.supplier_id" required>
               <option disabled value="">Sélectionner le fournisseur</option>
               <option
@@ -79,7 +79,7 @@
         </div>
         <button
           type="submit"
-          class="btn btn-success"
+          class="btn btn-outline-success col-md-6 p-3"
           v-on:click.prevent="submit()"
         >
           Modifier
@@ -141,7 +141,7 @@ export default {
           (this.form.facture = decaissement.facture),
           (this.form.supplier_id = decaissement.supplier_id),
           (this.buy_id = decaissement.buy_id),
-          (this.form.payment = decaissement.payment);
+          (this.form.payment = decaissement.payment_method);
       });
   },
 

@@ -149,7 +149,7 @@ export default {
       encaissements: [],
       total: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
     };
   },

@@ -9,7 +9,6 @@
     <div class="app-main__outer py-5 px-2">
       <h4>Liste des fournisseurs</h4>
       <hr />
-      <br />
 
       <div
         class="alert alert-danger justify-content-center"
@@ -506,7 +505,7 @@ export default {
       users: "",
       compagny: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
       key: "",
       showModalDelete: false,
@@ -677,6 +676,10 @@ export default {
         })
         .then((response) => {
           this.results = response.data.data.data;
+          this.total = response.data.data.total;
+          this.res_data = response.data.data;
+          let firstE = response.data.data.links.shift();
+          let lastE = response.data.data.links.splice(-1, 1);
         });
     },
 

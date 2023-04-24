@@ -111,7 +111,8 @@
             <br><br><br><br><br>
 
             <div class="col-md-6 mx-auto">
-                <button class="custom-btn btn-5 col-md-12" v-on:click.prevent="submit()">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  >{{this.form.amount}} F CFA</span></span></button>
+                <button class="btn btn-primary py-4 col-md-12" v-on:click.prevent="submit()" :disabled="load">Enregistrer la facture <span  v-if="this.form.amount != ''"> pour  <span class="text-dark mx-3"  
+            ><b>{{this.form.amount}} F CFA</b></span></span></button>
             </div>
 
         </form>
@@ -147,6 +148,7 @@ export default {
 
     data () {
         return{
+            load: false,
             amount_error: null,
             message: '',
             four_id: '',
@@ -272,6 +274,7 @@ export default {
        
         //ajouter un achat
         async submit(){
+            this.load = true;
             await  this.$axios.post('/buys',{
                 date_buy: this.form.date_buy,
                 tax: this.form.tax,
@@ -292,6 +295,7 @@ export default {
                     }
                 
                     else{ 
+                        this.load = false;
                         this.error = response.data.message
                         this.errors = response.data.data
                         this.errors_amount = response.data.data.amount

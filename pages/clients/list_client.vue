@@ -8,8 +8,7 @@
 
     <div class="app-main__outer py-5 px-2">
       <h4>Liste des clients</h4>
-      <hr />
-      <br />
+      <hr/>
       <div
         class="alert alert-danger justify-content-center"
         role="alert"
@@ -17,7 +16,6 @@
       >
         {{ error }}
       </div>
-      <br />
       <div class="d-flex">
         <div class="col-md-10">
           <form class="d-flex col-md-7" role="search">
@@ -501,7 +499,7 @@ export default {
       users: "",
       compagny: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
       key: "",
       showModalDelete: false,

@@ -10,7 +10,7 @@
         <div class="resp mx-5" @click.prevent="$emit('close-modal')">Non</div>
       </div>
     </div>
-    <div class="modaler">
+    <div class="modaler" @click.stop>
       <div class="other_page" v-if="date_sell">
         <div>
           <div class="d-flex align-items-start flex-column">

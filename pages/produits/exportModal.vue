@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler">
+    <div class="modaler" @click.stop>
       <h6 class="text-center">
         Cocher les colonnes que vous voudrez exporter !
       </h6>

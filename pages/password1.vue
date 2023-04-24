@@ -27,8 +27,10 @@
         <form>
           <!-- Email input -->
           <div class="form-outline mb-4">
-            <span class="fa fa-envelope px-2"></span>
-            <label class="form-label">Entrez votre adresse email</label>
+            <div class="d-flex">
+              <span class="fa fa-envelope px-2 mt-1"></span>
+              <label class="form-label">Entrez votre adresse email</label>
+            </div>
             <div class="input-field">
               <input
                 type="email"
@@ -97,7 +99,7 @@ export default {
 
 <style scoped>
 .contain {
-  margin: 5% 10%;
+  padding: 8% 10%;
 }
 
 .input-field {

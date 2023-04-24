@@ -1,6 +1,6 @@
 <template>
-  <div class="modal-overlay">
-    <div class="modaler">
+  <div class="modal-overlay" @click="$emit('close-modal')">
+    <div class="modaler" @click.stop>
       <div
         class="alert alert-danger justify-content-center"
         role="alert"
@@ -228,7 +228,7 @@ export default {
           compagnie_id: localStorage.getItem("auth.company_id"),
         })
         .then((response) => {
-          if (this.status == "success") {
+          if (response.data.status == "success") {
             this.$emit("prod", {
               nom_prod: this.form.name,
               prod_id: response.data.data.id,

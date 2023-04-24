@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler">
+    <div class="modaler" @click.stop>
       <br /><br />
       <h4 class="titre">Informations de l'encaissement</h4>
       <br /><br /><br />

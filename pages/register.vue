@@ -1,9 +1,6 @@
 <template>
   <div class="contain">
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
 
     <div class="container-fluid h-custom">
       <div class="row d-flex h-100">
@@ -11,11 +8,7 @@
           <img src="/images/1.png" class="img-fluid" alt="Sample image" />
         </div>
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 mt-4">
-          <div
-            class="alert alert-danger justify-content-center"
-            role="alert"
-            v-if="error"
-          >
+          <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
             {{ error }}
           </div>
           <form>
@@ -25,150 +18,96 @@
               </p>
             </div>
             <div class="form-outline mb-4">
-              <span class="fa fa-address-book px-2"></span
-              ><label class="form-label">Nom Complet</label>
+              <div class="d-flex">
+                <span class="fa fa-address-book px-2 mt-1"></span><label class="form-label">Nom Complet</label>
+              </div>
               <div class="input-field">
-                <input
-                  type="text"
-                  class="form-control form-control-lg"
-                  v-model="form.name"
-                  required
-                  placeholder="Entrer votre nom"
-                />
+                <input type="text" class="form-control form-control-lg" v-model="form.name" required
+                  placeholder="Entrer votre nom" />
               </div>
 
-              <div
-                class="alert alert-danger justify-content-center"
-                role="alert"
-                v-if="errors && errors.name"
-              >
+              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.name">
                 {{ errors.name[0] }}
               </div>
             </div>
 
             <!-- Email input -->
             <div class="form-outline mb-4">
-              <span class="fa fa-envelope px-2"></span>
-              <label class="form-label">Adresse Email</label>
+              <div class="d-flex">
+                <span class="fa fa-envelope px-2 mt-1"></span>
+                <label class="form-label">Adresse Email</label>
+              </div>
               <div class="input-field">
-                <input
-                  type="email"
-                  class="form-control form-control-lg"
-                  v-model="form.email"
-                  required
-                  placeholder="Entrer une addresse email valide"
-                />
+                <input type="email" class="form-control form-control-lg" v-model="form.email" required
+                  placeholder="Entrer une addresse email valide" />
               </div>
 
-              <div
-                class="alert alert-danger justify-content-center"
-                role="alert"
-                v-if="errors && errors.email"
-              >
+              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.email">
                 {{ errors.email[0] }}
               </div>
             </div>
 
             <!-- Password input -->
             <div class="form-outline mb-3">
-              <span class="fas fa-lock px-2"></span
-              ><label class="form-label">Mot de passe</label>
+              <div class="d-flex">
+                <span class="fas fa-lock px-2  mt-1"></span><label class="form-label">Mot de passe</label>
+              </div>
               <div class="input-field">
-                <input
-                  type="password"
-                  id="password"
-                  class="form-control form-control-lg"
-                  v-model="form.password"
-                  placeholder="Entrer un mot de passe"
-                /><span
-                  ><i
-                    class="fa fa-eye px-2"
-                    id="eye"
-                    @click.prevent="changer()"
-                  ></i
-                ></span>
+                <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
+                  placeholder="Entrer un mot de passe" /><span><i class="fa fa-eye px-2" id="eye"
+                    @click.prevent="changer()"></i></span>
               </div>
 
-              <div
-                class="alert alert-danger justify-content-center"
-                role="alert"
-                v-if="errors && errors.password"
-              >
+              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.password">
                 {{ errors.password[0] }}
               </div>
             </div>
 
             <div class="form-outline mb-3">
-              <span class="fas fa-lock px-2"></span
-              ><label class="form-label">Confirmer le Mot de passe</label>
+              <div class="d-flex">
+                <span class="fas fa-lock px-2 mt-1"></span><label class="form-label">Confirmer le Mot de passe</label>
+              </div>
               <div class="input-field">
-                <input
-                  type="password"
-                  id="password1"
-                  class="form-control form-control-lg"
-                  v-model="form.password_confirmation"
-                  placeholder="Entrer un mot de passe"
-                /><span
-                  ><i
-                    class="fa fa-eye px-2"
-                    id="eyes"
-                    @click.prevent="change()"
-                  ></i
-                ></span>
+                <input type="password" id="password1" class="form-control form-control-lg"
+                  v-model="form.password_confirmation" placeholder="Entrer un mot de passe" /><span><i
+                    class="fa fa-eye px-2" id="eyes" @click.prevent="change()"></i></span>
               </div>
 
-              <div
-                class="alert alert-danger justify-content-center"
-                role="alert"
-                v-if="errors && errors.password_confirmation"
-              >
+              <div class="alert alert-danger justify-content-center" role="alert"
+                v-if="errors && errors.password_confirmation">
                 {{ errors.password_confirmation[0] }}
               </div>
             </div>
 
             <div class="form-outline mb-4">
-              <span class="fa fa-mobile px-2"></span>
-              <label class="form-label">Téléphone</label>
+              <div class="d-flex">
+                <span class="fa fa-mobile px-2 mt-1"></span>
+                <label class="form-label">Téléphone</label>
+              </div>
               <div class="input-field">
-                <vue-tel-input
-                  class="form-control form-control-sm"
-                  v-model="form.phone"
-                  autocomplete="off"
-                ></vue-tel-input>
+                <vue-tel-input class="form-control form-control-sm" v-model="form.phone"
+                  autocomplete="off"></vue-tel-input>
               </div>
 
-              <div
-                class="alert alert-danger justify-content-center"
-                role="alert"
-                v-if="errors && errors.phone"
-              >
+              <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.phone">
                 {{ errors.phone[0] }}
               </div>
             </div>
 
             <div class="form-outline mb-4">
-              <span class="fa fa-briefcase px-2"></span
-              ><label class="form-label">Nom de l'entreprise</label>
+              <div class="d-flex">
+                <span class="fa fa-briefcase px-2 mt-1"></span><label class="form-label">Nom de l'entreprise</label>
+              </div>
               <div class="input-field">
-                <input
-                  type="text"
-                  class="form-control form-control-lg"
-                  v-model="form.compagnie.name"
-                  required
-                  placeholder="Entrer le nom de votre entreprise"
-                />
+                <input type="text" class="form-control form-control-lg" v-model="form.compagnie.name" required
+                  placeholder="Entrer le nom de votre entreprise" />
               </div>
             </div>
 
             <div class="text-center text-lg-start mt-6 pt-2">
-              <button
-                type="button"
-                @click.prevent="register()"
-                class="btn btn-primary btn-lg"
-                style="padding-left: 1rem; padding-right: 1rem"
-              >
-                S'inscrire</button
-              ><br /><br />
+              <button type="button" @click.prevent="register()" class="btn btn-primary btn-lg"
+                style="padding-left: 1rem; padding-right: 1rem">
+                S'inscrire</button><br /><br />
               <p class="small fw-bold mt-2 pt-1 mb-0">
                 Vous avez déjà un compte ?
                 <NuxtLink to="/login" class="link-primary px-2">
@@ -187,6 +126,7 @@
 <script>
 export default {
   auth: false,
+  layout: "public",
   data() {
     return {
       user: "",
@@ -223,7 +163,7 @@ export default {
             this.$toast("Inscription réussie !!!", {
               icon: "fa fa-check-circle",
             });
-            this.$router.push({ path: "/login" });
+            this.$router.push({ path: "/registerSuccess" });
           } else {
             this.errors = response.data.data;
             this.error = response.data.message;
@@ -263,10 +203,12 @@ export default {
 * {
   font-size: 12px;
 }
+
 .img-fluid {
   /* width: 400px; */
   height: 100vh;
 }
+
 .input-field {
   border-radius: 5px;
   padding: 5px;
@@ -287,9 +229,11 @@ export default {
   height: 1px;
   background: #eee;
 }
+
 .h-custom {
   height: calc(100% - 73px);
 }
+
 @media (max-width: 450px) {
   .h-custom {
     height: 100%;

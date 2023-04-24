@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay" @click="$emit('close-modal')">
+  <div class="modal-overlay">
     <div class="modaler text-center py-5">
       <div
         class="alert alert-danger justify-content-center"
@@ -85,7 +85,7 @@ export default {
   box-shadow: 50px;
 }
 .close {
-  margin: 14% 0 0 16px;
+  margin: 12% 0 0 -20px;
   cursor: pointer;
 }
 

@@ -206,7 +206,7 @@ export default {
       users: "",
       compagny: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
       key: "",
       showModalDelete: false,
@@ -223,7 +223,6 @@ export default {
   },
 
   async mounted() {
-    await this.exp();
     this.refresh();
     this.users = this.$auth.$state.user.roles;
     this.compagny = localStorage.getItem("auth.company_id");

@@ -8,6 +8,7 @@
 
     <div class="app-main__outer py-5 px-2">
       <h4>Enregistrer un nouveau client</h4>
+      <hr/>
       <div
         class="alert alert-danger justify-content-center"
         role="alert"
@@ -109,10 +110,10 @@
 
         <button
           type="submit"
-          class="btn btn-primary"
+          class="btn btn-outline-primary col-md-12 p-3"
           v-on:click.prevent="submit()"
         >
-          Enregistrer le client
+          ENREGISTRER
         </button>
       </form>
     </div>

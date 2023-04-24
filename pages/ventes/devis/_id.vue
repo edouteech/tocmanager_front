@@ -337,7 +337,7 @@
         <br /><br /><br /><br />
         <div class="col-md-6 mx-auto">
           <button
-            class="custom-btn btn-5 col-md-12"
+            class="btn btn-outline-primary p-4 col-md-12"
             v-on:click.prevent="submit()"
             :disabled="load"
           >
@@ -345,7 +345,7 @@
             <span v-if="this.form.amount != ''">
               pour
               <span class="text-dark mx-3"
-                >{{ this.form.amount }} F CFA</span
+                ><b>{{ this.form.amount }} F CFA</b></span
               ></span
             >
           </button>
@@ -457,7 +457,7 @@ export default {
         date_sell: moment().format("YYYY-MM-DDThh:mm"),
         client_id: "",
         amount: "",
-        tax: "",
+        tax: 0,
         discount: "0",
         amount_received: "0",
         sell_lines: [],

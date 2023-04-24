@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler">
+    <div class="modaler" @click.stop>
       <p class="text-center">
         Voulez vous imprimer en format ticket de caisse ???
       </p>

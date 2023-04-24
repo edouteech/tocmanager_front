@@ -40,7 +40,7 @@
           <hr />
           <p class="text-center">{{ plan.description }}</p>
           <div class="img">
-            <img src="/images/poignee.jpg" alt="" class="img-offer w-50" />
+            <img src="/images/offre.jpg" alt="" class="img-offer w-50" />
           </div>
           <div>
             <button

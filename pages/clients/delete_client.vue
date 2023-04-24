@@ -151,7 +151,7 @@ export default {
       clients: [],
       total: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
     };
   },

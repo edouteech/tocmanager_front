@@ -145,7 +145,7 @@ export default {
       categories: [],
       total: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
     };
   },

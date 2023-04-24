@@ -84,10 +84,10 @@
 
         <button
           type="submit"
-          class="btn btn-primary"
+          class="btn btn-outline-primary col-md-6 p-3"
           v-on:click.prevent="submit()"
         >
-          Enregistrer le fournisseur
+          ENREGISTRER
         </button>
       </form>
     </div>

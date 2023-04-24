@@ -2,12 +2,12 @@
   <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
       <Sidebar />
-      <h3 class="name_side">Catégories de produits</h3>
+      <h3 class="name_side">Catégories</h3>
       <Userinfo />
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <h4>Modifier les informations de cette catégorie</h4>
+      <h4>Modifier les informations de cette catégorie</h4><hr>
       <div
         class="alert alert-danger justify-content-center"
         role="alert"
@@ -45,7 +45,7 @@
 
         <button
           type="submit"
-          class="btn btn-success"
+          class="btn btn-outline-success col-md-6 p-3"
           v-on:click.prevent="submit()"
         >
           Modifier

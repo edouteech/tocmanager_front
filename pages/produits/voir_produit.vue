@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler">
+    <div class="modaler" @click.stop>
       <h4 class="titre">Informations du produit</h4>
       <br /><br />
       <table class="table table-hover">
