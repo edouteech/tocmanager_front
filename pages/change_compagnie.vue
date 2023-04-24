@@ -1,6 +1,6 @@
 <template>
     <div class="modal-overlay" @click="$emit('close-modal')">
-      <div class="modaler">  
+      <div class="modaler" @click.stop>  
                          
               <form action="" method="POST"> 
                 <h4>Changer de compagnie </h4>

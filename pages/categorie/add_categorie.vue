@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
       <Sidebar />
-      <h3 class="name_side">Catégories de produits</h3>
+      <h3 class="name_side">Catégories</h3>
       <Userinfo />
     </nav>
 
@@ -57,7 +57,7 @@
           {{ errors.parent_id }}
         </div>
 
-        <button type="submit" class="btn btn-primary" @click.prevent="submit()">
+        <button type="submit" class="btn btn-outline-primary col-md-6 p-3" @click.prevent="submit()">
           Enregistrer la catégorie
         </button>
       </form>

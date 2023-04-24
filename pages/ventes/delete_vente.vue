@@ -150,7 +150,7 @@ export default {
       ventes: [],
       total: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
       error: null,
     };

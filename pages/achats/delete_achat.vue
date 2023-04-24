@@ -149,7 +149,7 @@ export default {
       achats: [],
       total: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
     };
   },

@@ -76,7 +76,7 @@
                                         />
                                     </td>
                                     <td class="table-cole"><input class="form-control" type="number" v-model="line.quantity" autocomplete="off" @change="quantityChange(index)" required></td> 
-                                    <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>                  -->
+                                    <td class="table-col"><input class="form-control" type="num" v-model="line.price" autocomplete="off" required disabled></td>
                                     <td class="table-col"><input class="form-control" type="number" v-model="line.amount" autocomplete="off" required disabled></td>
                                     <td @click="deleteLine(index)"><i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i></td>
                                 </tr>
@@ -301,7 +301,6 @@
                                     icon: 'fa fa-check-circle',
                                 })
                             }
-                        
                             else{ 
                                 this.errors = response.data.data
                                 this.errors_amount = response.data.data.amount

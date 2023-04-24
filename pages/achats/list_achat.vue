@@ -382,7 +382,7 @@ export default {
       users: "",
       compagny: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
       key: "",
       showModalDelete: false,

@@ -7,7 +7,7 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <h4>Modifier les informations de cet encaissement</h4>
+      <h4>Modifier les informations de cet encaissement</h4><hr>
       <div
         class="alert alert-danger justify-content-center"
         role="alert"
@@ -78,10 +78,10 @@
         </div>
         <button
           type="submit"
-          class="btn btn-success"
+          class="btn btn-outline-success col-md-6 p-3"
           v-on:click.prevent="submit()"
         >
-          Modifier
+          MODIFIER
         </button>
       </form>
     </div>
@@ -139,7 +139,7 @@ export default {
           (this.form.date = moment(encaissement.date).format("yyyy-MM-DD")),
           (this.form.facture = encaissement.facture),
           (this.form.client_id = encaissement.client_id),
-          (this.form.payment = encaissement.payment),
+          (this.form.payment = encaissement.payment_method),
           (this.sell_id = encaissement.sell_id);
       });
   },

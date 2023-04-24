@@ -3,7 +3,7 @@
     <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
       {{error}}
     </div>  
-    <div class="modaler">
+    <div class="modaler" @click.stop>
       <p>Etes vous sur de vouloir supprimer définitivement cette facture ???</p>
       <div class="d-flex">
         <button class="btn btn-outline-danger mx-auto" @click="supAchat(infos)">Oui</button>

@@ -7,11 +7,7 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <div
-        class="alert alert-danger justify-content-center"
-        role="alert"
-        v-if="error"
-      >
+      <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
         {{ error }}
       </div>
       <h4>Enregistrer une vente</h4>
@@ -20,19 +16,10 @@
         <div class="row">
           <div class="col-md-6">
             <div class="ajout-client">
-              <v-select
-                placeholder="Choisissez le client"
-                v-model="selectedClient"
-                label="name"
-                :options="clients"
-                :reduce="(client) => client.id"
-                append-to-body
-              />
+              <v-select placeholder="Choisissez le client" v-model="selectedClient" label="name" :options="clients"
+                :reduce="(client) => client.id" append-to-body />
 
-              <button
-                class="btn btn-info btn_ajout"
-                @click.prevent="showModal = true"
-              >
+              <button class="btn btn-info btn_ajout" @click.prevent="showModal = true">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un
                 client
               </button>
@@ -40,11 +27,7 @@
           </div>
           <div class="col-md-6 facture-date my-auto">
             <span class="creation"> Date de création :</span>
-            <input
-              class="form-control"
-              type="datetime-local"
-              v-model="form.date_sell"
-            />
+            <input class="form-control" type="datetime-local" v-model="form.date_sell" />
           </div>
         </div>
         <hr />
@@ -52,19 +35,13 @@
         <div class="add_buttons row col-md-12 boom">
           <div class="d-flex col-md-8">
             <div class="col-md-4">
-              <button
-                class="btn btn-outline-primary col-md-11 mx-auto"
-                @click.prevent="showProduit = true"
-              >
+              <button class="btn btn-outline-primary col-md-11 mx-auto" @click.prevent="showProduit = true">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i><br />
                 Nouveau produit
               </button>
             </div>
             <div class="col-md-8">
-              <button
-                class="btn btn-outline-warning col-md-12 mx-auto"
-                @click.prevent="addLine()"
-              >
+              <button class="btn btn-outline-warning col-md-12 mx-auto" @click.prevent="addLine()">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i><br />
                 Ajouter un article
               </button>
@@ -72,28 +49,13 @@
           </div>
           <div class="col-md-4 mt-2">
             <div class="d-flex code_recherche">
-              <input
-                class="form-control"
-                type="search"
-                placeholder="code..."
-                v-model="codeProd"
-                aria-label="Search"
-                @input="searchCode()"
-                @click.prevent="searchCode()"
-              />
-              <button
-                class="btn btn-outline-success"
-                type="submit"
-                @click.prevent="codeAdd()"
-              >
+              <input class="form-control" type="search" placeholder="code..." v-model="codeProd" aria-label="Search"
+                @input="searchCode()" @click.prevent="searchCode()" />
+              <button class="btn btn-outline-success" type="submit" @click.prevent="codeAdd()">
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>
-            <div
-              class="alert alert-danger justify-content-center"
-              role="alert"
-              v-if="codeError"
-            >
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="codeError">
               {{ codeError }}
             </div>
           </div>
@@ -103,7 +65,7 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th scope="col">Désignation</th>
+                <th scope="col">Désignation [Q] (Code)</th>
                 <th scope="col">Quantité voulue</th>
                 <th scope="col">Prix unitaire</th>
                 <th scope="col">Total</th>
@@ -116,20 +78,10 @@
             <tbody>
               <tr v-for="(line, index) in form.sell_lines" :key="index">
                 <td class="table-coll">
-                  <v-select
-                    placeholder="Choississez..."
-                    v-model="line.product_id"
-                    label="name"
-                    :options="produits"
-                    :selectable="(produit) => produit.quantity > 0"
-                    :reduce="(produit) => produit.id"
-                    append-to-body
-                    @input="productChange(line.product_id, index)"
-                  >
-                    <template
-                      #option="{ name, code, quantity }"
-                      style="background-color: blue"
-                    >
+                  <v-select placeholder="Choississez..." v-model="line.product_id" label="name" :options="produits"
+                    :selectable="(produit) => produit.quantity > 0" :reduce="(produit) => produit.id" append-to-body
+                    @input="productChange(line.product_id, index)">
+                    <template #option="{ name, code, quantity }" style="background-color: blue">
                       <div :style="quantity <= 0 ? 'color: red;' : ''">
                         {{ name }} [{{ quantity }}] ({{ code }})
                       </div>
@@ -137,6 +89,22 @@
                   </v-select>
                 </td>
                 <td class="table-cole">
+                  <div class="d-flex">
+                    <div class="col-md-10">
+                      <input class="form-control" type="number" v-model="line.quantity" autocomplete="off"
+                        @change="quantityChange(index, line.product_id)" required />
+                    </div>
+                    <div class="col-md-1 p-1">
+                      <!-- afficher le message d'erreur sous chaque ligne correspondante -->
+                      <div v-if="errorMessages[index]" class="quantity_erreur aligns-items-center justify-content-center">
+                        <i class="fa fa-ban text-danger my-2" :id="'erreur' + index" :title="errorMessages[index]"
+                          aria-hidden="true"></i>
+                        <!-- <div class="error-message">{{ errorMessages[index] }}</div> -->
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <!-- <td class="table-cole">
                   <div class="d-flex">
                     <div class="col-md-10">
                       <input
@@ -153,76 +121,42 @@
                         class="quantity_erreur aligns-items-center justify-content-center"
                         v-if="quantityError"
                         ><i
-                          class="fa fa-ban text-danger"
-                          :id="'real_quantity_' + index"
+                          class="fa fa-ban text-danger my-2"
+                          :id="'erreur' + index"
                           aria-hidden="true"
                           title="Cette quantité est supérieure à la quantité en stock !"
                         ></i
                       ></span>
                     </div>
                   </div>
+                </td> -->
+                <td class="table-col">
+                  <input class="form-control" type="num" v-model="line.price" autocomplete="off" disabled />
                 </td>
                 <td class="table-col">
-                  <input
-                    class="form-control"
-                    type="num"
-                    v-model="line.price"
-                    autocomplete="off"
-                    disabled
-                  />
-                </td>
-                <td class="table-col">
-                  <input
-                    class="form-control"
-                    type="num"
-                    v-model="line.amount"
-                    autocomplete="off"
-                    disabled
-                  />
+                  <input class="form-control" type="num" v-model="line.amount" autocomplete="off" disabled />
                 </td>
                 <td class="table-col">
                   <div>
-                    <input
-                      class="form-control"
-                      type="text"
-                      v-model="line.discount"
-                      autocomplete="off"
-                      required
-                      @change="reduceChange(index)"
-                    />
+                    <input class="form-control" type="text" v-model="line.discount" autocomplete="off" required
+                      @change="reduceChange(index)" />
                   </div>
                 </td>
                 <!-- <td><input class="form-control" type="number" v-model="form.tax" min="0" max="0" autocomplete="off"  required></td>                   -->
                 <td class="table-col">
-                  <input
-                    class="form-control"
-                    type="num"
-                    v-model="line.amount_after_discount"
-                    autocomplete="off"
-                    disabled
-                  />
+                  <input class="form-control" type="num" v-model="line.amount_after_discount" autocomplete="off"
+                    disabled />
                 </td>
                 <td @click="deleteLine(index)">
-                  <i
-                    class="fa fa-trash-o text-danger cursor-pointer"
-                    aria-hidden="true"
-                  ></i>
+                  <i class="fa fa-trash-o text-danger cursor-pointer" aria-hidden="true"></i>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div
-            class="alert alert-danger justify-content-center"
-            role="alert"
-            v-if="quantityError"
-          >
+          <div class="alert alert-danger justify-content-center" role="alert" v-if="quantityError">
             {{ quantityError }}
           </div>
-          <div
-            class="alert alert-danger justify-content-center"
-            role="alert"
-            v-if="errors_amount"
-          >
+          <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_amount">
             Veuillez ajouter une ligne de vente
           </div>
         </div>
@@ -232,25 +166,13 @@
           <div class="form-group col-md-4">
             <strong>Réduction (Prix ou %)</strong>
             <div @change="taxChange()">
-              <input
-                class="form-control received"
-                type="text"
-                v-model="form.discount"
-                autocomplete="off"
-                required
-                @change="reduceAmount()"
-              />
+              <input class="form-control received" type="text" v-model="form.discount" autocomplete="off" required
+                @change="reduceAmount()" />
             </div>
           </div>
           <div class="form-group col-md-4">
             <strong>Montant Total Hors-Taxe</strong>
-            <input
-              class="form-control received"
-              type="number"
-              v-model="form.amount_ht"
-              autocomplete="off"
-              disabled
-            />
+            <input class="form-control received" type="number" v-model="form.amount_ht" autocomplete="off" disabled />
           </div>
 
           <div class="form-group col-md-4">
@@ -258,11 +180,7 @@
               Méthode de paiement
               <select class="form-control" v-model="form.payment">
                 <option value="">Choississez</option>
-                <option
-                  v-for="(methode, j) in methodes"
-                  :key="j"
-                  :value="methode"
-                >
+                <option v-for="(methode, j) in methodes" :key="j" :value="methode">
                   {{ methode }}
                 </option>
               </select>
@@ -278,43 +196,22 @@
             <div>
               <strong>Taxe [0 -100]%</strong>
               <div>
-                <input
-                  class="form-control received"
-                  type="number"
-                  v-model="form.tax"
-                  autocomplete="off"
-                  placeholder="Exemple : 18"
-                  @change="taxChange()"
-                />
+                <input class="form-control received" type="number" v-model="form.tax" autocomplete="off"
+                  placeholder="Exemple : 18" @change="taxChange()" />
               </div>
             </div>
-            <div
-              class="alert alert-danger justify-content-center"
-              role="alert"
-              v-if="errors_tax"
-            >
+            <div class="alert alert-danger justify-content-center" role="alert" v-if="errors_tax">
               Veuillez ajouter la taxe
             </div>
           </div>
           <div class="form-group col-md-3">
-            <strong>Montant Total TTC </strong
-            ><input
-              class="form-control received"
-              type="number"
-              v-model="form.amount_ttc"
-              autocomplete="off"
-              disabled
-            />
+            <strong>Montant Total TTC </strong><input class="form-control received" type="number"
+              v-model="form.amount_ttc" autocomplete="off" disabled />
           </div>
           <div class="form-group col-md-3">
             Somme reçue:
-            <input
-              class="form-control received"
-              type="number"
-              v-model="form.amount_received"
-              autocomplete="off"
-              required
-            />
+            <input class="form-control received" type="number" v-model="form.amount_received" autocomplete="off"
+              required />
           </div>
           <div class="form-group col-md-3">
             Echéance de paiement:
@@ -326,60 +223,31 @@
             </select>
           </div>
         </div>
-        <div
-          class="alert alert-danger justify-content-center"
-          role="alert"
-          v-if="amount_error != null"
-        >
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="amount_error != null">
           {{ amount_error }}
         </div>
         <br /><br /><br /><br />
         <div class="col-md-6 mx-auto">
-          <button
-            class="btn btn-primary py-4 col-md-12"
-            v-on:click.prevent="submit()"
-            :disabled="load"
-          >
+          <button class="btn btn-primary py-4 col-md-12" v-on:click.prevent="submit()" :disabled="load">
             Enregistrer la facture
             <span v-if="this.form.amount != ''">
               pour
-              <span class="text-dark mx-3"
-                ><b>{{ this.form.amount }} F CFA</b></span
-              ></span
-            >
+              <span class="text-dark mx-3"><b>{{ this.form.amount }} F CFA</b></span></span>
           </button>
         </div>
       </form>
     </div>
 
-    <ajoutModal
-      v-show="showModal"
-      @close-modal="showModal = false"
-      @conf="setMessage"
-    />
-    <SavedModal
-      v-show="showSaved"
-      @close-modal="showSaved = false"
-      :identifiant="cli_id"
-      :recupFacture="facts"
-      :email_client="cli_email"
-    />
-    <produitModal
-      v-show="showProduit"
-      @close-modal="showProduit = false"
-      @prod="setProduit"
-    />
+    <ajoutModal v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
+    <SavedModal v-show="showSaved" @close-modal="showSaved = false" :identifiant="cli_id" :recupFacture="facts"
+      :email_client="cli_email" />
+    <produitModal v-show="showProduit" @close-modal="showProduit = false" @prod="setProduit" />
 
     <!-- Footer -->
     <footer class="text-center text-lg-start bg-dark text-white">
-      <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        rel="stylesheet"
-      />
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
       <!-- Section: Social media -->
-      <section
-        class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
-      >
+      <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <!-- Left -->
         <div class="me-5 d-none d-lg-block">
           <img src="../../static/images/logo.png" class="logo-img" alt="" />
@@ -403,10 +271,7 @@
       <!-- Section: Social media -->
 
       <!-- Copyright -->
-      <div
-        class="text-center p-2"
-        style="background-color: rgba(0, 0, 0, 0.05)"
-      >
+      <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05)">
         Copyright © 2022 - Tous droits réservés TocManager
       </div>
       <!-- Copyright -->
@@ -486,6 +351,7 @@ export default {
       selectedClient: "",
       prodQ: "",
       quantityError: null,
+      errorMessages: []
     };
   },
 
@@ -708,6 +574,15 @@ export default {
 
     //changer la quantite du produit dans les lignes de vente
     quantityChange(index, prod) {
+      const product = this.produits.find((p) => p.id === prod);
+      if (product && this.form.sell_lines[index].quantity > product.quantity) {
+        // stocker le message d'erreur dans le tableau
+        this.errorMessages[index] =
+          "Cette quantité est supérieure à la quantité en stock !";
+      } else {
+        // supprimer le message d'erreur du tableau si la quantité est inférieure ou égale à la quantité en stock
+        this.errorMessages.splice(index, 1);
+      }
       this.quantityError = null;
       for (let k = 0; k <= this.produits.length; k++) {
         if (this.produits[k].id == prod) {
@@ -729,7 +604,7 @@ export default {
         this.taxChange();
       } else {
         this.quantityError =
-          "Cette quantité est supérieure à la quantité en stock !";
+          "Cette quantité est supérieure à la quantité en stock ! Corrigez pour éviter les erreurs de calcul";
       }
     },
 
@@ -837,13 +712,16 @@ export default {
 }
 
 @media print {
+
   .boom,
   .cadre-haut {
     display: none !important;
   }
+
   nav {
     display: none !important;
   }
+
   footer {
     display: none !important;
   }
@@ -852,6 +730,7 @@ export default {
 .table-col {
   width: 15%;
 }
+
 .table-cole {
   width: 10%;
 }
@@ -884,6 +763,7 @@ export default {
 .codeSearch-results li:hover {
   background-color: rgb(103, 180, 247);
 }
+
 .select2-cli {
   border: 1px solid;
   width: 14%;
@@ -980,6 +860,7 @@ export default {
   font-weight: bold;
   padding-right: 1%;
 }
+
 .facture-date input {
   border: none;
   outline: none;
@@ -1108,17 +989,17 @@ button {
   padding: 20px;
   border: none;
   background: rgb(121, 161, 255);
-  background: linear-gradient(
-    0deg,
-    rgb(121, 161, 255) 0%,
-    rgb(121, 161, 255) 100%
-  );
+  background: linear-gradient(0deg,
+      rgb(121, 161, 255) 0%,
+      rgb(121, 161, 255) 100%);
 }
+
 .btn-5:hover {
   color: #0909f0;
   background: transparent;
   box-shadow: none;
 }
+
 .btn-5:before,
 .btn-5:after {
   content: "";
@@ -1132,12 +1013,14 @@ button {
     4px 4px 5px 0px #0002;
   transition: 400ms ease all;
 }
+
 .btn-5:after {
   right: inherit;
   top: inherit;
   left: 0;
   bottom: 0;
 }
+
 .btn-5:hover:before,
 .btn-5:hover:after {
   width: 100%;
@@ -1152,6 +1035,7 @@ button {
   .commande {
     margin: 15% 0;
   }
+
   .ajout-article {
     margin: 0;
   }
