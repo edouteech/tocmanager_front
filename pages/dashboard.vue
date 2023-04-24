@@ -623,6 +623,14 @@ export default {
 </script>
 
 <style>
+.page-title-wrapper{
+  border: 1px solid rgb(255, 255, 255);
+  position: relative;
+  z-index: 1;
+  padding: 30px;
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+}
+
 .app-main__outer {
   padding: 5%;
   font-size: 14px;
