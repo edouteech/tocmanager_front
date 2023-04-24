@@ -7,7 +7,7 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <h4>Modifier les informations de ce fournisseur</h4>
+      <h4>Modifier les informations de ce fournisseur</h4><hr>
       <div
         class="alert alert-danger justify-content-center"
         role="alert"
@@ -93,10 +93,10 @@
 
         <button
           type="submit"
-          class="btn btn-success"
+          class="btn btn-outline-success col-md-6 p-3"
           v-on:click.prevent="submit()"
         >
-          Modifier
+          MODIFIER
         </button>
       </form>
     </div>
@@ -126,6 +126,7 @@ export default {
         nature: "",
         compagnie_id: "",
       },
+      errors: null,
       error_message: "",
       error_champ: [],
     };

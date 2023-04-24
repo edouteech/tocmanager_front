@@ -154,7 +154,7 @@ export default {
       fournisseurs: [],
       total: "",
       form: {
-        nombre: "",
+        nombre: 10,
       },
     };
   },
