@@ -1,72 +1,39 @@
 <template>
   <div>
-    <link
-      href="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/css/tocmanager.webflow.fa0feb0a2.css"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <link href="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/css/tocmanager.webflow.fa0feb0a2.css"
+      rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link
-      href="https://fonts.gstatic.com"
-      rel="preconnect"
-      crossorigin="anonymous"
-    />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous" />
 
-    <div
-      data-animation="default"
-      data-collapse="medium"
-      data-duration="400"
-      data-easing="ease"
-      data-easing2="ease"
-      role="banner"
-      class="combine-nav1_component w-nav"
-    >
+    <div data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease"
+      role="banner" class="combine-nav1_component w-nav">
       <div class="combine-padding-global-2">
         <div class="combine-nav1_container">
-          <a href="#" class="combine-nav1_logo-link w-inline-block"
-            ><img
+          <a href="#" class="combine-nav1_logo-link w-inline-block"><img
               src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo.png"
-              loading="lazy"
-              sizes="(max-width: 479px) 100vw, 300px"
-              srcset="
-                https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-500.png   500w,
-                https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-800.png   800w,
-                https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-1080.png 1080w,
-                https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-1600.png 1600w,
-                https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-2000.png 2000w,
-                https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-2600.png 2600w,
-                https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-3200.png 3200w
-              "
-              alt=""
-              class="combine-nav1_logo"
-          /></a>
+              loading="lazy" sizes="(max-width: 479px) 100vw, 300px" srcset="
+                  https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-500.png   500w,
+                  https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-800.png   800w,
+                  https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-1080.png 1080w,
+                  https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-1600.png 1600w,
+                  https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-2000.png 2000w,
+                  https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-2600.png 2600w,
+                  https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-3200.png 3200w
+                " alt="" class="combine-nav1_logo" /></a>
           <nav role="navigation" class="combine-nav1_menu w-nav-menu">
-            <a href="#" class="combine-nav1_link w-nav-link">Accueil</a
-            ><a href="#features" class="combine-nav1_link w-nav-link"
-              >A propos</a
-            ><a href="#pricing" class="combine-nav1_link w-nav-link">Prix</a>
+            <a href="#" class="combine-nav1_link w-nav-link">Accueil</a><a href="#features"
+              class="combine-nav1_link w-nav-link">A propos</a><a href="#pricing"
+              class="combine-nav1_link w-nav-link">Prix</a>
             <div class="combine-nav1_button-wrapper">
-              <NuxtLink to="/login" class="combine-button-white-small w-button"
-                >Connexion</NuxtLink
-              ><NuxtLink to="/register" class="logo-color w-button"
-                >Inscription</NuxtLink
-              >
+              <NuxtLink to="/login" class="combine-button-white-small w-button">Connexion</NuxtLink>
+              <NuxtLink to="/register" class="logo-color w-button">Inscription</NuxtLink>
             </div>
           </nav>
           <div>
-            <img
-              src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f3a6d864089d5aabf7bc3_fr.png"
-              loading="lazy"
-              width="24"
-              alt=""
-              class="image"
-            /><img
+            <img src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f3a6d864089d5aabf7bc3_fr.png"
+              loading="lazy" width="24" alt="" class="image" /><img
               src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f3a6e23d1bb424995a659_usa.png"
-              loading="lazy"
-              width="24"
-              alt=""
-              class="image-2"
-            />
+              loading="lazy" width="24" alt="" class="image-2" />
           </div>
           <div class="combine-nav1_menu-button w-nav-button">
             <div class="combine-menu-icon">
@@ -97,31 +64,16 @@
                 <div class="uui-max-width-small"></div>
                 <div class="uui-space-large"></div>
                 <div class="uui-button-row is-reverse-mobile-landscape">
-                  <NuxtLink to="/login" class="brix---btn-primary-2 w-button"
-                    >Se connecter</NuxtLink
-                  ><NuxtLink
-                    to="/register"
-                    class="brix---btn-secondary-2 w-button"
-                    >Créer un compte</NuxtLink
-                  >
+                  <NuxtLink to="/login" class="brix---btn-primary-2 w-button">Se connecter</NuxtLink>
+                  <NuxtLink to="/register" class="brix---btn-secondary-2 w-button">Créer un compte</NuxtLink>
                 </div>
               </div>
               <div class="uui-heroheader06_image-wrapper">
-                <img
-                  src="/images/computer.png"
-                  loading="lazy"
-                  sizes="(max-width: 479px) 0px, (max-width: 767px) 100vw, 768px"
-               
-                  alt="MacBook mockup"
+                <img src="/images/computer.png" loading="lazy"
+                  sizes="(max-width: 479px) 0px, (max-width: 767px) 100vw, 768px" alt="MacBook mockup"
                   class="uui-heroheader06_image-01 shadow-xxlarge hide-mobile-landscape"
-                  style="border: 0 !important;"
-                /><img
-                  src="/images/phone.png"
-                  loading="lazy"
-                  sizes="(max-width: 479px) 100vw, 244px"
-                  alt="iPhone mockup"
-                  class="uui-heroheader06_image-02"
-                />
+                  style="border: 0 !important;" /><img src="/images/phone.png" loading="lazy"
+                  sizes="(max-width: 479px) 100vw, 244px" alt="iPhone mockup" class="uui-heroheader06_image-02" />
               </div>
             </div>
           </div>
@@ -148,13 +100,10 @@
                     loading="lazy"
                     sizes="(max-width: 479px) 100vw, (max-width: 767px) 384px, (max-width: 991px) 29vw, (max-width: 1439px) 31vw, 384px"
                     srcset="
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b4e84c29e90_feature1-p-500.png  500w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b4e84c29e90_feature1-p-800.png  800w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b4e84c29e90_feature1.png       1492w
-                    "
-                    alt="feature illustration"
-                    class="combine-feature6_image"
-                  />
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b4e84c29e90_feature1-p-500.png  500w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b4e84c29e90_feature1-p-800.png  800w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b4e84c29e90_feature1.png       1492w
+                      " alt="feature illustration" class="combine-feature6_image" />
                 </div>
                 <h3 class="combine-heading-style-h5">
                   GESTION COMMERCIALE - STOCK
@@ -164,21 +113,18 @@
                   gérer efficacement les achats et ventes de vos marchandise
                   juste avec des clics et d'avoir une idée précise de votre
                   stock en temps réel.
-                </div> </a
-              ><a href="#" class="combine-feature6_item w-inline-block">
+                </div>
+              </a><a href="#" class="combine-feature6_item w-inline-block">
                 <div class="combine-feature6_image-wrapper">
                   <img
                     src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b40f6c29e8b_feature2.png"
                     loading="lazy"
                     sizes="(max-width: 479px) 100vw, (max-width: 767px) 384px, (max-width: 991px) 29vw, (max-width: 1439px) 31vw, 384px"
                     srcset="
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b40f6c29e8b_feature2-p-500.png  500w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b40f6c29e8b_feature2-p-800.png  800w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b40f6c29e8b_feature2.png       1493w
-                    "
-                    alt="feature illustration"
-                    class="combine-feature6_image"
-                  />
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b40f6c29e8b_feature2-p-500.png  500w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b40f6c29e8b_feature2-p-800.png  800w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b40f6c29e8b_feature2.png       1493w
+                      " alt="feature illustration" class="combine-feature6_image" />
                 </div>
                 <h3 class="combine-heading-style-h5">
                   COMPTABILITÉ - ÉTATS FINANCIERS
@@ -189,21 +135,18 @@
                   relancer depuis <b>tocmanager</b>, vos clients ou vos
                   fournisseurs afin de recouvrir respectivement aux dettes ou
                   aux créances.
-                </div> </a
-              ><a href="#" class="combine-feature6_item w-inline-block">
+                </div>
+              </a><a href="#" class="combine-feature6_item w-inline-block">
                 <div class="combine-feature6_image-wrapper">
                   <img
                     src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b1888c29e86_feature3.png"
                     loading="lazy"
                     sizes="(max-width: 479px) 100vw, (max-width: 767px) 384px, (max-width: 991px) 29vw, (max-width: 1439px) 31vw, 384px"
                     srcset="
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b1888c29e86_feature3-p-500.png  500w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b1888c29e86_feature3-p-800.png  800w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b1888c29e86_feature3.png       1493w
-                    "
-                    alt="feature illustration"
-                    class="combine-feature6_image"
-                  />
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b1888c29e86_feature3-p-500.png  500w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b1888c29e86_feature3-p-800.png  800w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640f27393bca6b1888c29e86_feature3.png       1493w
+                      " alt="feature illustration" class="combine-feature6_image" />
                 </div>
                 <h3 class="combine-heading-style-h5">
                   RESSOURCES HUMAINES - PAIE
@@ -244,17 +187,11 @@
                   <div class="combine-pricing2_feature">
                     <div class="combine-icon_color2">
                       <div class="combine-icon_small w-embed">
-                        <svg
-                          width="currentWidth"
-                          height="currentHeight"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="currentWidth" height="currentHeight" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M1.45732 8.8392C0.847561 8.62312 0.84756 7.37688 1.45732 7.1608C2.77386 6.69426 4.21485 6.02239 5.11862 5.11862C6.02239 4.21485 6.69426 2.77386 7.1608 1.45732C7.37688 0.847561 8.62312 0.84756 8.8392 1.45732C9.30574 2.77386 9.9776 4.21485 10.8814 5.11862C11.7851 6.02239 13.2261 6.69426 14.5427 7.1608C15.1524 7.37688 15.1524 8.62312 14.5427 8.8392C13.2261 9.30574 11.7851 9.9776 10.8814 10.8814C9.9776 11.7851 9.30574 13.2261 8.8392 14.5427C8.62312 15.1524 7.37688 15.1524 7.1608 14.5427C6.69426 13.2261 6.02239 11.7851 5.11862 10.8814C4.21485 9.9776 2.77386 9.30574 1.45732 8.8392Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                       </div>
                     </div>
@@ -265,17 +202,11 @@
                   <div class="combine-pricing2_feature">
                     <div class="combine-icon_color2">
                       <div class="combine-icon_small w-embed">
-                        <svg
-                          width="currentWidth"
-                          height="currentHeight"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="currentWidth" height="currentHeight" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M1.45732 8.8392C0.847561 8.62312 0.84756 7.37688 1.45732 7.1608C2.77386 6.69426 4.21485 6.02239 5.11862 5.11862C6.02239 4.21485 6.69426 2.77386 7.1608 1.45732C7.37688 0.847561 8.62312 0.84756 8.8392 1.45732C9.30574 2.77386 9.9776 4.21485 10.8814 5.11862C11.7851 6.02239 13.2261 6.69426 14.5427 7.1608C15.1524 7.37688 15.1524 8.62312 14.5427 8.8392C13.2261 9.30574 11.7851 9.9776 10.8814 10.8814C9.9776 11.7851 9.30574 13.2261 8.8392 14.5427C8.62312 15.1524 7.37688 15.1524 7.1608 14.5427C6.69426 13.2261 6.02239 11.7851 5.11862 10.8814C4.21485 9.9776 2.77386 9.30574 1.45732 8.8392Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                       </div>
                     </div>
@@ -286,17 +217,11 @@
                   <div class="combine-pricing2_feature">
                     <div class="combine-icon_color2">
                       <div class="combine-icon_small w-embed">
-                        <svg
-                          width="currentWidth"
-                          height="currentHeight"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="currentWidth" height="currentHeight" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M1.45732 8.8392C0.847561 8.62312 0.84756 7.37688 1.45732 7.1608C2.77386 6.69426 4.21485 6.02239 5.11862 5.11862C6.02239 4.21485 6.69426 2.77386 7.1608 1.45732C7.37688 0.847561 8.62312 0.84756 8.8392 1.45732C9.30574 2.77386 9.9776 4.21485 10.8814 5.11862C11.7851 6.02239 13.2261 6.69426 14.5427 7.1608C15.1524 7.37688 15.1524 8.62312 14.5427 8.8392C13.2261 9.30574 11.7851 9.9776 10.8814 10.8814C9.9776 11.7851 9.30574 13.2261 8.8392 14.5427C8.62312 15.1524 7.37688 15.1524 7.1608 14.5427C6.69426 13.2261 6.02239 11.7851 5.11862 10.8814C4.21485 9.9776 2.77386 9.30574 1.45732 8.8392Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                       </div>
                     </div>
@@ -307,17 +232,11 @@
                   <div class="combine-pricing2_feature">
                     <div class="combine-icon_color2">
                       <div class="combine-icon_small w-embed">
-                        <svg
-                          width="currentWidth"
-                          height="currentHeight"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="currentWidth" height="currentHeight" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M1.45732 8.8392C0.847561 8.62312 0.84756 7.37688 1.45732 7.1608C2.77386 6.69426 4.21485 6.02239 5.11862 5.11862C6.02239 4.21485 6.69426 2.77386 7.1608 1.45732C7.37688 0.847561 8.62312 0.84756 8.8392 1.45732C9.30574 2.77386 9.9776 4.21485 10.8814 5.11862C11.7851 6.02239 13.2261 6.69426 14.5427 7.1608C15.1524 7.37688 15.1524 8.62312 14.5427 8.8392C13.2261 9.30574 11.7851 9.9776 10.8814 10.8814C9.9776 11.7851 9.30574 13.2261 8.8392 14.5427C8.62312 15.1524 7.37688 15.1524 7.1608 14.5427C6.69426 13.2261 6.02239 11.7851 5.11862 10.8814C4.21485 9.9776 2.77386 9.30574 1.45732 8.8392Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                       </div>
                     </div>
@@ -328,17 +247,11 @@
                   <div class="combine-pricing2_feature">
                     <div class="combine-icon_color2">
                       <div class="combine-icon_small w-embed">
-                        <svg
-                          width="currentWidth"
-                          height="currentHeight"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="currentWidth" height="currentHeight" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M1.45732 8.8392C0.847561 8.62312 0.84756 7.37688 1.45732 7.1608C2.77386 6.69426 4.21485 6.02239 5.11862 5.11862C6.02239 4.21485 6.69426 2.77386 7.1608 1.45732C7.37688 0.847561 8.62312 0.84756 8.8392 1.45732C9.30574 2.77386 9.9776 4.21485 10.8814 5.11862C11.7851 6.02239 13.2261 6.69426 14.5427 7.1608C15.1524 7.37688 15.1524 8.62312 14.5427 8.8392C13.2261 9.30574 11.7851 9.9776 10.8814 10.8814C9.9776 11.7851 9.30574 13.2261 8.8392 14.5427C8.62312 15.1524 7.37688 15.1524 7.1608 14.5427C6.69426 13.2261 6.02239 11.7851 5.11862 10.8814C4.21485 9.9776 2.77386 9.30574 1.45732 8.8392Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                       </div>
                     </div>
@@ -361,17 +274,11 @@
                   <div class="combine-pricing2_feature">
                     <div class="combine-icon_color1">
                       <div class="combine-icon_small w-embed">
-                        <svg
-                          width="currentWidth"
-                          height="currentHeight"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="currentWidth" height="currentHeight" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M1.45732 8.8392C0.847561 8.62312 0.84756 7.37688 1.45732 7.1608C2.77386 6.69426 4.21485 6.02239 5.11862 5.11862C6.02239 4.21485 6.69426 2.77386 7.1608 1.45732C7.37688 0.847561 8.62312 0.84756 8.8392 1.45732C9.30574 2.77386 9.9776 4.21485 10.8814 5.11862C11.7851 6.02239 13.2261 6.69426 14.5427 7.1608C15.1524 7.37688 15.1524 8.62312 14.5427 8.8392C13.2261 9.30574 11.7851 9.9776 10.8814 10.8814C9.9776 11.7851 9.30574 13.2261 8.8392 14.5427C8.62312 15.1524 7.37688 15.1524 7.1608 14.5427C6.69426 13.2261 6.02239 11.7851 5.11862 10.8814C4.21485 9.9776 2.77386 9.30574 1.45732 8.8392Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                       </div>
                     </div>
@@ -382,17 +289,11 @@
                   <div class="combine-pricing2_feature">
                     <div class="combine-icon_color1">
                       <div class="combine-icon_small w-embed">
-                        <svg
-                          width="currentWidth"
-                          height="currentHeight"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="currentWidth" height="currentHeight" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M1.45732 8.8392C0.847561 8.62312 0.84756 7.37688 1.45732 7.1608C2.77386 6.69426 4.21485 6.02239 5.11862 5.11862C6.02239 4.21485 6.69426 2.77386 7.1608 1.45732C7.37688 0.847561 8.62312 0.84756 8.8392 1.45732C9.30574 2.77386 9.9776 4.21485 10.8814 5.11862C11.7851 6.02239 13.2261 6.69426 14.5427 7.1608C15.1524 7.37688 15.1524 8.62312 14.5427 8.8392C13.2261 9.30574 11.7851 9.9776 10.8814 10.8814C9.9776 11.7851 9.30574 13.2261 8.8392 14.5427C8.62312 15.1524 7.37688 15.1524 7.1608 14.5427C6.69426 13.2261 6.02239 11.7851 5.11862 10.8814C4.21485 9.9776 2.77386 9.30574 1.45732 8.8392Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                       </div>
                     </div>
@@ -403,17 +304,11 @@
                   <div class="combine-pricing2_feature">
                     <div class="combine-icon_color1">
                       <div class="combine-icon_small w-embed">
-                        <svg
-                          width="currentWidth"
-                          height="currentHeight"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="currentWidth" height="currentHeight" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M1.45732 8.8392C0.847561 8.62312 0.84756 7.37688 1.45732 7.1608C2.77386 6.69426 4.21485 6.02239 5.11862 5.11862C6.02239 4.21485 6.69426 2.77386 7.1608 1.45732C7.37688 0.847561 8.62312 0.84756 8.8392 1.45732C9.30574 2.77386 9.9776 4.21485 10.8814 5.11862C11.7851 6.02239 13.2261 6.69426 14.5427 7.1608C15.1524 7.37688 15.1524 8.62312 14.5427 8.8392C13.2261 9.30574 11.7851 9.9776 10.8814 10.8814C9.9776 11.7851 9.30574 13.2261 8.8392 14.5427C8.62312 15.1524 7.37688 15.1524 7.1608 14.5427C6.69426 13.2261 6.02239 11.7851 5.11862 10.8814C4.21485 9.9776 2.77386 9.30574 1.45732 8.8392Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                       </div>
                     </div>
@@ -424,17 +319,11 @@
                   <div class="combine-pricing2_feature">
                     <div class="combine-icon_color1">
                       <div class="combine-icon_small w-embed">
-                        <svg
-                          width="currentWidth"
-                          height="currentHeight"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="currentWidth" height="currentHeight" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M1.45732 8.8392C0.847561 8.62312 0.84756 7.37688 1.45732 7.1608C2.77386 6.69426 4.21485 6.02239 5.11862 5.11862C6.02239 4.21485 6.69426 2.77386 7.1608 1.45732C7.37688 0.847561 8.62312 0.84756 8.8392 1.45732C9.30574 2.77386 9.9776 4.21485 10.8814 5.11862C11.7851 6.02239 13.2261 6.69426 14.5427 7.1608C15.1524 7.37688 15.1524 8.62312 14.5427 8.8392C13.2261 9.30574 11.7851 9.9776 10.8814 10.8814C9.9776 11.7851 9.30574 13.2261 8.8392 14.5427C8.62312 15.1524 7.37688 15.1524 7.1608 14.5427C6.69426 13.2261 6.02239 11.7851 5.11862 10.8814C4.21485 9.9776 2.77386 9.30574 1.45732 8.8392Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                       </div>
                     </div>
@@ -445,17 +334,11 @@
                   <div class="combine-pricing2_feature">
                     <div class="combine-icon_color1">
                       <div class="combine-icon_small w-embed">
-                        <svg
-                          width="currentWidth"
-                          height="currentHeight"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="currentWidth" height="currentHeight" viewBox="0 0 16 16" fill="none"
+                          xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M1.45732 8.8392C0.847561 8.62312 0.84756 7.37688 1.45732 7.1608C2.77386 6.69426 4.21485 6.02239 5.11862 5.11862C6.02239 4.21485 6.69426 2.77386 7.1608 1.45732C7.37688 0.847561 8.62312 0.84756 8.8392 1.45732C9.30574 2.77386 9.9776 4.21485 10.8814 5.11862C11.7851 6.02239 13.2261 6.69426 14.5427 7.1608C15.1524 7.37688 15.1524 8.62312 14.5427 8.8392C13.2261 9.30574 11.7851 9.9776 10.8814 10.8814C9.9776 11.7851 9.30574 13.2261 8.8392 14.5427C8.62312 15.1524 7.37688 15.1524 7.1608 14.5427C6.69426 13.2261 6.02239 11.7851 5.11862 10.8814C4.21485 9.9776 2.77386 9.30574 1.45732 8.8392Z"
-                            fill="currentColor"
-                          />
+                            fill="currentColor" />
                         </svg>
                       </div>
                     </div>
@@ -473,21 +356,17 @@
     </section>
     <div class="brix---section-overflow-hidden wf-section">
       <div class="brix---container-default-3 w-container">
-        <div
-          data-w-id="8be64b56-5b94-4203-c52c-f673b6116053"
-          style="
-            -webkit-transform: translate3d(0, 10%, 0) scale3d(1, 1, 1)
-              rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-            -moz-transform: translate3d(0, 10%, 0) scale3d(1, 1, 1) rotateX(0)
-              rotateY(0) rotateZ(0) skew(0, 0);
-            -ms-transform: translate3d(0, 10%, 0) scale3d(1, 1, 1) rotateX(0)
-              rotateY(0) rotateZ(0) skew(0, 0);
-            transform: translate3d(0, 10%, 0) scale3d(1, 1, 1) rotateX(0)
-              rotateY(0) rotateZ(0) skew(0, 0);
-            opacity: 1;
-          "
-          class="w-layout-grid brix---grid-top---text-2-buttons"
-        >
+        <div data-w-id="8be64b56-5b94-4203-c52c-f673b6116053" style="
+              -webkit-transform: translate3d(0, 10%, 0) scale3d(1, 1, 1)
+                rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+              -moz-transform: translate3d(0, 10%, 0) scale3d(1, 1, 1) rotateX(0)
+                rotateY(0) rotateZ(0) skew(0, 0);
+              -ms-transform: translate3d(0, 10%, 0) scale3d(1, 1, 1) rotateX(0)
+                rotateY(0) rotateZ(0) skew(0, 0);
+              transform: translate3d(0, 10%, 0) scale3d(1, 1, 1) rotateX(0)
+                rotateY(0) rotateZ(0) skew(0, 0);
+              opacity: 1;
+            " class="w-layout-grid brix---grid-top---text-2-buttons">
           <div class="brix---inner-container-490px">
             <div>
               <div class="brix---mg-bottom-16px">
@@ -500,29 +379,16 @@
             </div>
           </div>
         </div>
-        <div
-          data-delay="4000"
-          data-animation="slide"
-          class="brix---slider-wrapper w-slider"
-          data-autoplay="false"
-          data-easing="ease"
-          style="opacity: 1"
-          data-hide-arrows="true"
-          data-disable-swipe="false"
-          data-w-id="8be64b56-5b94-4203-c52c-f673b6116063"
-          data-autoplay-limit="0"
-          data-nav-spacing="3"
-          data-duration="500"
-          data-infinite="true"
-        >
+        <div data-delay="4000" data-animation="slide" class="brix---slider-wrapper w-slider" data-autoplay="false"
+          data-easing="ease" style="opacity: 1" data-hide-arrows="true" data-disable-swipe="false"
+          data-w-id="8be64b56-5b94-4203-c52c-f673b6116063" data-autoplay-limit="0" data-nav-spacing="3"
+          data-duration="500" data-infinite="true">
           <div class="brix---slider-mask-width-390px w-slider-mask">
             <div class="brix---slide-item-mg w-slide">
               <div class="brix---card-testimonial-v13">
                 <img
                   src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/641a36b70f33b571a8afdb5c_stars-testimonials-brix-templates.svg"
-                  alt="Stars - Elements Webflow Library - BRIX Templates"
-                  class="brix---mg-bottom-24px"
-                />
+                  alt="Stars - Elements Webflow Library - BRIX Templates" class="brix---mg-bottom-24px" />
                 <div class="brix---mg-bottom-24px">
                   <div class="brix---color-neutral-803">
                     <p class="brix---paragraph-default-3">
@@ -551,9 +417,7 @@
               <div class="brix---card-testimonial-v13">
                 <img
                   src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/641a36b70f33b571a8afdb5c_stars-testimonials-brix-templates.svg"
-                  alt="Stars - Elements Webflow Library - BRIX Templates"
-                  class="brix---mg-bottom-24px"
-                />
+                  alt="Stars - Elements Webflow Library - BRIX Templates" class="brix---mg-bottom-24px" />
                 <div class="brix---mg-bottom-24px">
                   <div class="brix---color-neutral-803">
                     <p class="brix---paragraph-default-3">
@@ -583,9 +447,7 @@
               <div class="brix---card-testimonial-v13">
                 <img
                   src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/641a36b70f33b571a8afdb5c_stars-testimonials-brix-templates.svg"
-                  alt="Stars - Elements Webflow Library - BRIX Templates"
-                  class="brix---mg-bottom-24px"
-                />
+                  alt="Stars - Elements Webflow Library - BRIX Templates" class="brix---mg-bottom-24px" />
                 <div class="brix---mg-bottom-24px">
                   <div class="brix---color-neutral-803">
                     <p class="brix---paragraph-default-3">
@@ -688,22 +550,18 @@
           <div class="w-layout-grid grid-footer-4-cols-v14">
             <div id="w-node-b91c1057-920e-63d2-549d-8696cae9b29c-a3a05b86">
               <div class="brix---mg-bottom-24px">
-                <a href="#" class="brix---footer-logo-wrapper w-inline-block"
-                  ><img
+                <a href="#" class="brix---footer-logo-wrapper w-inline-block"><img
                     src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo.png"
                     srcset="
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-500.png   500w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-800.png   800w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-1080.png 1080w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-1600.png 1600w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-2000.png 2000w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-2600.png 2600w,
-                      https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-3200.png 3200w
-                    "
-                    sizes="(max-width: 767px) 239px, (max-width: 1439px) 27vw, 300px"
-                    alt=""
-                    class="brix---footer-logo"
-                /></a>
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-500.png   500w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-800.png   800w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-1080.png 1080w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-1600.png 1600w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-2000.png 2000w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-2600.png 2600w,
+                        https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/640e944791ce970857a300d4_logo-p-3200.png 3200w
+                      " sizes="(max-width: 767px) 239px, (max-width: 1439px) 27vw, 300px" alt=""
+                    class="brix---footer-logo" /></a>
               </div>
               <div class="brix---mg-bottom-40px-3">
                 <div class="brix---color-neutral-803">
@@ -714,34 +572,22 @@
                 </div>
               </div>
               <div class="w-layout-grid brix---social-media-grid-left">
-                <a
-                  href="https://facebook.com/"
-                  class="brix---icon-square-36px w-inline-block"
-                  ><img
+                <a href="https://facebook.com/" class="brix---icon-square-36px w-inline-block"><img
                     src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/641a32cde0e6a21277900d23_facebook-social-media-icon-brix-templates.svg"
-                    alt="Facebook - Elements Webflow Library - BRIX Templates" /></a
-                ><a
-                  href="https://linkedin.com/"
-                  class="brix---icon-square-36px w-inline-block"
-                  ><img
+                    alt="Facebook - Elements Webflow Library - BRIX Templates" /></a><a href="https://linkedin.com/"
+                  class="brix---icon-square-36px w-inline-block"><img
                     src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/641a32cde0e6a28297900d26_linkedin-social-media-icon-brix-templates.svg"
-                    alt="Linkedin - Elements Webflow Library - BRIX Templates" /></a
-                ><a
-                  href="https://youtube.com/"
-                  class="brix---icon-square-36px w-inline-block"
-                  ><img
+                    alt="Linkedin - Elements Webflow Library - BRIX Templates" /></a><a href="https://youtube.com/"
+                  class="brix---icon-square-36px w-inline-block"><img
                     src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/641a32cde0e6a236e7900d28_youtube-social-media-icon-brix-templates.svg"
-                    alt="YouTube - Elements Webflow Library - BRIX Templates"
-                /></a>
+                    alt="YouTube - Elements Webflow Library - BRIX Templates" /></a>
               </div>
             </div>
             <div>
               <div class="brix---footer-col-title">Liens</div>
               <ul role="list" class="brix---footer-list-wrapper">
                 <li class="brix---footer-list-item">
-                  <a href="#features" class="brix---footer-link"
-                    >Fonctionalités</a
-                  >
+                  <a href="#features" class="brix---footer-link">Fonctionalités</a>
                 </li>
                 <li class="brix---footer-list-item">
                   <a href="#pricing" class="brix---footer-link">Prix</a>
@@ -750,9 +596,7 @@
                   <a href="#" class="brix---footer-link">FAQs</a>
                 </li>
                 <li class="brix---footer-list-item">
-                  <a href="#" class="brix---footer-link"
-                    >Politique de <br />confidentialité</a
-                  >
+                  <a href="#" class="brix---footer-link">Politique de <br />confidentialité</a>
                 </li>
                 <li class="brix---footer-list-item"></li>
                 <li class="brix---footer-list-item"></li>
@@ -763,14 +607,9 @@
             <div id="w-node-b91c1057-920e-63d2-549d-8696cae9b2e1-a3a05b86">
               <div class="brix---footer-col-title">Contacts</div>
               <div class="w-layout-grid brix---grid-1-column">
-                <a
-                  href="mailto:contact@company.com"
-                  class="brix---card-link-icon-wrapper w-inline-block"
-                  ><img
+                <a href="mailto:contact@company.com" class="brix---card-link-icon-wrapper w-inline-block"><img
                     src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/641a32cde0e6a23ae4900d29_icon-brix-template-Email.svg"
-                    alt="Email Icon - Elements Webflow Library - BRIX Templates"
-                    class="brix---big-icon-left"
-                  />
+                    alt="Email Icon - Elements Webflow Library - BRIX Templates" class="brix---big-icon-left" />
                   <div>
                     <div class="brix---mg-bottom-8px">
                       <div class="brix---text-200">Email:</div>
@@ -780,15 +619,10 @@
                         contact@tocmanager.com
                       </div>
                     </div>
-                  </div> </a
-                ><a
-                  href="tel:(414)687-5892"
-                  class="brix---card-link-icon-wrapper w-inline-block"
-                  ><img
+                  </div>
+                </a><a href="tel:(414)687-5892" class="brix---card-link-icon-wrapper w-inline-block"><img
                     src="https://uploads-ssl.webflow.com/640e8ce2b257f2059aa05b85/641a32cde0e6a2d366900d25_icon-brix-template-Phone.svg"
-                    alt="Phone - Elements Webflow Library - BRIX Templates"
-                    class="brix---big-icon-left"
-                  />
+                    alt="Phone - Elements Webflow Library - BRIX Templates" class="brix---big-icon-left" />
                   <div>
                     <div class="brix---mg-bottom-8px">
                       <div class="brix---text-200">Phone:</div>
@@ -805,9 +639,7 @@
         <div class="brix---footer-bottom-v14">
           <p class="brix---mg-bottom-0">
             Copyright © 2022
-            <a href="https://brixtemplates.com/" class="brix---paragraph-link"
-              >EDOUTECH</a
-            >
+            <a href="https://brixtemplates.com/" class="brix---paragraph-link">EDOUTECH</a>
             | Tous droits réservés
           </p>
         </div>
@@ -1075,9 +907,12 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted() {
+    if (this.$auth.loggedIn) {
+      this.$nuxt.$options.router.push("/dashboard")
+    }
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

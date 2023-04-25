@@ -99,6 +99,13 @@ export default {
       load: false,
     };
   },
+
+  mounted() {
+    if (this.$auth.loggedIn) {
+      this.$nuxt.$options.router.push("/dashboard")
+    }
+  },
+  
   methods: {
     //afficher et cacher le mot de passe
     changer() {
