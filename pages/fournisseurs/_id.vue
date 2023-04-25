@@ -7,16 +7,27 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <h4>Modifier les informations de ce fournisseur</h4><hr>
-      <div
+      <div class="row">
+        <div class="col-md-4">
+          <h4>Modifier les informations</h4>
+        </div>
+        <div class="col-md-8 d-flex justify-content-end">
+          <NuxtLink to="/fournisseurs/list_fournisseur">
+            <button class="btn btn-dark py-2 px-3">
+             <b>LISTE</b>
+            </button>
+          </NuxtLink>
+        </div>
+      </div><hr>
+      <!-- <div
         class="alert alert-danger justify-content-center"
         role="alert"
         v-if="error"
       >
         {{ error }}
-      </div>
-      <form action="">
-        <div class="form-group col-md-6">
+      </div> -->
+      <form action="" class="col-md-6 mx-auto">
+        <div class="form-group ">
           <label class="title">Entrer le nom du fournisseur</label>
           <input
             type="text"
@@ -28,13 +39,13 @@
           />
         </div>
         <div
-          class="alert alert-danger justify-content-center col-md-6"
+          class="alert alert-danger justify-content-center "
           role="alert"
           v-if="errors && errors.name"
         >
           {{ errors.name }}
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group ">
           <label class="title"
             >Entrer le numero de téléphone du fournisseur</label
           >
@@ -47,14 +58,14 @@
           />
         </div>
         <div
-          class="alert alert-danger justify-content-center col-md-6"
+          class="alert alert-danger justify-content-center "
           role="alert"
           v-if="errors && errors.phone"
         >
           {{ errors.phone }}
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group ">
           <label class="title">Entrer l'email du fournisseur</label>
           <input
             type="email"
@@ -66,14 +77,14 @@
           />
         </div>
         <div
-          class="alert alert-danger justify-content-center col-md-6"
+          class="alert alert-danger justify-content-center "
           role="alert"
           v-if="errors && errors.email"
         >
           {{ errors.email }}
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group ">
           <div class="form-group">
             <label class="title">Nature du fournisseur</label>
             <select class="form-control" v-model="form.nature">
@@ -84,7 +95,7 @@
           </div>
         </div>
         <div
-          class="alert alert-danger justify-content-center col-md-6"
+          class="alert alert-danger justify-content-center "
           role="alert"
           v-if="errors && errors.nature"
         >
@@ -93,7 +104,7 @@
 
         <button
           type="submit"
-          class="btn btn-outline-success col-md-6 p-3"
+          class="btn btn-outline-success col-md-12 p-3"
           v-on:click.prevent="submit()"
         >
           MODIFIER
@@ -174,6 +185,9 @@ export default {
           } else {
             this.error = response.data.message;
             this.errors = response.data.data;
+              this.$toast.error(this.error, {
+                icon: "fa fa-times-circle",
+              });
           }
         });
     },
@@ -194,15 +208,17 @@ form {
 
 .title {
   margin: 1% 0;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .btn {
   margin-top: 5%;
 }
 
-input {
+/* input {
   border: none;
   outline: none;
   border-bottom: 2px solid #605050;
-}
+} */
 </style>

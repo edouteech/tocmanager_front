@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>
+    <div class="modaler my-auto" @click.stop>
       <h6 class="text-center">
         Télécharger la fiche de commande du fournisseur !
       </h6>
@@ -10,9 +10,11 @@
           <input class="form-control" type="date" v-model="form.date_debut" />
           <input class="form-control" type="date" v-model="form.date_fin" />
         </div>
+        <div class="d-flex justify-content-end">
         <button class="btn btn-outline-success" @click.prevent="pdf()">
           Télécharger
         </button>
+        </div>
       </form>
     </div>
   </div>
@@ -79,13 +81,12 @@ export default {
 }
 
 .modaler {
-  background-color: rgb(45, 44, 44);
-  height: 400px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   width: 600px;
   margin: auto;
   padding: 60px 0;
-  border-radius: 20px;
-  color: #fff;
+  border-radius: 10px;
   padding: 5px 15px;
 }
 .close {

@@ -1,15 +1,18 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler text-center py-5">
-      <div
+    <div class="modaler my-auto text-center" @click.stop>
+    <div class="close d-flex justify-content-end" @click="$emit('close-modal')">
+      <i class="fa fa-times-circle" aria-hidden="true"></i>
+    </div>
+      <!-- <div
         class="alert alert-danger justify-content-center"
         role="alert"
         v-if="error"
       >
         {{ error }}
-      </div>
-      <strong>Voulez vous supprimer ces fournisseurs ???</strong><br /><br />
-      <div class="d-flex">
+      </div> -->
+      <strong>Voulez vous supprimer ces fournisseurs ???</strong><hr>
+      <div class="d-flex my-4">
         <button class="btn btn-danger mx-auto" @click.prevent="sup()">
           Oui
         </button>
@@ -17,9 +20,6 @@
           Non
         </button>
       </div>
-    </div>
-    <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>
@@ -52,6 +52,9 @@ export default {
             });
           } else {
             this.error = response.data.message;
+              this.$toast.error(this.error, {
+                icon: "fa fa-times-circle",
+              });
           }
         });
     },
@@ -78,19 +81,23 @@ export default {
   overflow: auto;
   width: 600px;
   margin-top: 15%;
-  /* border-radius: 20px; */
+  border-radius: 10px;
   height: max-content;
   padding: 1%;
   box-shadow: 50px;
 }
 .close {
-  margin: 14% 0 0 16px;
   cursor: pointer;
 }
-
-.close-img {
-  width: 25px;
+.close i{
+  font-size : 22px;
+  color: rgb(166, 166, 166);
 }
+
+.close i:hover{
+  color: rgb(0, 0, 0);
+}
+
 
 .input-form .mode {
   font-size: 16px;

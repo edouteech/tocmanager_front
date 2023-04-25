@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay">
-    <div class="modaler text-center py-5 my-auto">
+    <div class="modaler text-center my-auto">
     <div class="close d-flex justify-content-end m-2" @click="$emit('close-modal')">
       <i class="fa fa-times-circle" aria-hidden="true"></i>
     </div>
@@ -80,9 +80,7 @@ export default {
 .modaler {
   background-color: rgb(197, 239, 251);
   box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
-  overflow: auto;
   width: 600px;
-  margin-top: 15%;
   /* border-radius: 20px; */
   height: max-content;
   padding: 1%;

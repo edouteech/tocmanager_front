@@ -396,7 +396,6 @@ export default {
               });
             } else {
               this.error = response.data.message;
-
               this.$toast.error(this.error, {
                 icon: "fa fa-times-circle",
               });
