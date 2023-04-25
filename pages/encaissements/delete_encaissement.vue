@@ -7,13 +7,13 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <div
+      <!-- <div
         class="alert alert-danger justify-content-center"
         role="alert"
         v-if="error"
       >
         {{ error }}
-      </div>
+      </div> -->
       <h4>Encaissements supprimés</h4>
       <hr />
       <div class="table-responsive">
@@ -36,15 +36,15 @@
                 <div
                   class="action d-flex aligns-items-center justify-content-center"
                 >
-                  <div class="sup" @click="supEncaissement(encaissement.id)">
+                  <button class="btn btn-outline-danger mx-2" @click="supEncaissement(encaissement.id)">
                     Supprimer
-                  </div>
-                  <div
-                    class="restore"
+                  </button>
+                  <button
+                    class="btn btn-outline-success"
                     @click="restaurerEncaissement(encaissement.id)"
                   >
                     Restaurer
-                  </div>
+                  </button>
                 </div>
               </td>
             </tr>
@@ -57,7 +57,7 @@
       </div>
       <br /><br />
       <form action="">
-        <div class="nombre d-flex my-4 col-md-2">
+        <div class="nombre d-flex my-4 col-md-2 mx-auto">
           <label class="title mx-3 my-2"><strong> Affichage:</strong></label>
           <select
             class="form-control"
@@ -74,7 +74,7 @@
       </form>
       <nav
         aria-label="Page navigation example "
-        class="d-flex nav"
+        class="d-flex justify-content-center nav"
         v-if="res_data != null"
       >
         <ul class="pagination">
@@ -86,7 +86,8 @@
             "
           >
             <a class="page-link" @click="refresh(res_data.current_page - 1)"
-              >Précédent</a
+              ><i class="fa fa-chevron-left"
+                aria-hidden="true"></i></a
             >
           </li>
           <li
@@ -110,7 +111,8 @@
             "
           >
             <a class="page-link" @click="refresh(res_data.current_page + 1)"
-              >Suivant</a
+              ><i class="fa fa-chevron-right"
+                aria-hidden="true"></i></a
             >
           </li>
         </ul>
@@ -190,6 +192,9 @@ export default {
             });
           } else {
             this.error = response.data.message;
+            this.$toast.error(this.error, {
+              icon: "fa fa-times-circle",
+            });
           }
         });
     },

@@ -1,67 +1,44 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>
+    <div class="modaler my-auto" @click.stop>
       <h6 class="text-center">
         Cocher les colonnes que vous voudrez exporter !
       </h6>
       <form action="" class="my-5">
         <div class="form-check">
-          <input
-            class="form-check-input mx-3"
-            type="checkbox"
-            v-model="form.date"
-            true-value="1"
-            false-value="0"
-            @click="exp()"
-          />
+          <input class="form-check-input mx-3" type="checkbox" v-model="form.date" true-value="1" false-value="0"
+            @click="exp()" />
           <label class="form-check-label" for="flexCheckChecked">
             Date d'encaissement
           </label>
         </div>
         <div class="form-check">
-          <input
-            class="form-check-input mx-3"
-            type="checkbox"
-            v-model="form.montant"
-            true-value="1"
-            false-value="0"
-            @click="exp()"
-          />
+          <input class="form-check-input mx-3" type="checkbox" v-model="form.montant" true-value="1" false-value="0"
+            @click="exp()" />
           <label class="form-check-label" for="flexCheckChecked">
             Montant
           </label>
         </div>
         <div class="form-check">
-          <input
-            class="form-check-input mx-3"
-            type="checkbox"
-            v-model="form.client"
-            true-value="1"
-            false-value="0"
-            @click="exp()"
-          />
+          <input class="form-check-input mx-3" type="checkbox" v-model="form.client" true-value="1" false-value="0"
+            @click="exp()" />
           <label class="form-check-label" for="flexCheckChecked">
             Client concerné
           </label>
         </div>
-
-        <vue-excel-xlsx
-          class="btn btn-outline-info mx-3 my-4"
-          :data="data"
-          :columns="columns"
-          :file-name="'encaissements'"
-          :file-type="'xlsx'"
-          :sheet-name="'sheetname'"
-        >
-          Exporter
-        </vue-excel-xlsx>
+        <div class="d-flex justify-content-end">
+          <vue-excel-xlsx class="btn btn-outline-info mx-3 my-4" :data="data" :columns="columns"
+            :file-name="'encaissements'" :file-type="'xlsx'" :sheet-name="'sheetname'">
+            Exporter
+          </vue-excel-xlsx>
+        </div>
       </form>
     </div>
   </div>
 </template>
   
   
-  <script>
+<script>
 export default {
   name: "exportModal",
   // props: ['identifiant'],
@@ -124,7 +101,7 @@ export default {
 };
 </script>
   
-  <style scoped>
+<style scoped>
 .modal-overlay {
   z-index: 999;
   position: fixed;
@@ -139,15 +116,15 @@ export default {
 }
 
 .modaler {
-  background-color: rgb(1, 0, 0);
-  height: 600px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   width: 600px;
   margin: auto;
   padding: 60px 0;
   border-radius: 20px;
-  color: #fff;
   padding: 5px 15px;
 }
+
 .close {
   margin: 10% 0 0 16px;
   cursor: pointer;
