@@ -7,74 +7,54 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <div
+      <!-- <div
         class="alert alert-danger justify-content-center"
         role="alert"
         v-if="error"
       >
         {{ error }}
-      </div>
-
-      <h4>Modifier les informations de ce client</h4>
-      <hr />
-      <form action="">
-        <div class="form-group col-md-6">
-          <label class="title">Entrer le nom du client</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="form.name"
-            autocomplete="off"
-            required
-            placeholder="Jean Doe"
-          />
+      </div> -->
+      <div class="row">
+        <div class="col-md-4">
+          <h4>Modifier les informations de ce client</h4>
         </div>
-        <div
-          class="alert alert-danger justify-content-center"
-          role="alert"
-          v-if="errors && errors.name"
-        >
+        <div class="col-md-8 d-flex justify-content-end">
+          <NuxtLink to="/clients/list_client">
+            <button class="btn btn-dark py-2 px-3">
+             <b>LISTE</b>
+            </button>
+          </NuxtLink>
+        </div>
+      </div>
+      <hr />
+      <form action="" class="col-md-6 mx-auto">
+        <div class="form-group ">
+          <label class="title">Entrer le nom du client</label>
+          <input type="text" class="form-control" v-model="form.name" autocomplete="off" required
+            placeholder="Jean Doe" />
+        </div>
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.name">
           {{ errors.name }}
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group ">
           <label class="title">Entrer le numero de téléphone du client</label>
-          <input
-            type="tel"
-            class="form-control"
-            v-model="form.phone"
-            required
-            placeholder="+525485335622"
-          />
+          <input type="tel" class="form-control" v-model="form.phone" required placeholder="+525485335622" />
         </div>
-        <div
-          class="alert alert-danger justify-content-center"
-          role="alert"
-          v-if="errors && errors.phone"
-        >
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.phone">
           {{ errors.phone }}
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group ">
           <label class="title">Entrer l'email du client</label>
-          <input
-            type="email"
-            class="form-control"
-            v-model="form.email"
-            autocomplete="off"
-            required
-            placeholder="azerty@azert.com"
-          />
+          <input type="email" class="form-control" v-model="form.email" autocomplete="off" required
+            placeholder="azerty@azert.com" />
         </div>
-        <div
-          class="alert alert-danger justify-content-center"
-          role="alert"
-          v-if="errors && errors.email"
-        >
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.email">
           {{ errors.email }}
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group ">
           <div class="form-group">
             <label class="title">Nature du client</label>
             <select class="form-control" v-model="form.nature">
@@ -84,15 +64,11 @@
             </select>
           </div>
         </div>
-        <div
-          class="alert alert-danger justify-content-center"
-          role="alert"
-          v-if="errors && errors.nature"
-        >
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors && errors.nature">
           {{ errors.nature }}
         </div>
 
-        <div class="form-group col-md-6" v-if="role == 'admin'">
+        <div class="form-group " v-if="role == 'admin'">
           <label class="title">Type de client</label>
           <select class="form-control" v-model="form.type_client">
             <option disabled value="">Choisissez...</option>
@@ -101,23 +77,13 @@
             </option>
           </select>
         </div>
-        <div class="form-group col-md-6" v-if="form.type_client == 'douteux'">
+        <div class="form-group " v-if="form.type_client == 'douteux'">
           <label class="title">Entrer le seuil de crédit possible</label>
-          <input
-            type="email"
-            class="form-control"
-            v-model="form.seuil_max"
-            autocomplete="off"
-            required
-            placeholder="azerty@azert.com"
-          />
+          <input type="email" class="form-control" v-model="form.seuil_max" autocomplete="off" required
+            placeholder="azerty@azert.com" />
         </div>
 
-        <button
-          type="submit"
-          class="btn btn-outline-success p-3 col-md-6"
-          v-on:click.prevent="submit()"
-        >
+        <button type="submit" class="btn btn-outline-success p-3 col-md-12" v-on:click.prevent="submit()">
           MODIFIER
         </button>
       </form>
@@ -219,6 +185,9 @@ export default {
           } else {
             this.error = response.data.message;
             this.errors = response.data.data;
+            this.$toast.error(this.error, {
+              icon: "fa fa-times-circle",
+            });
           }
         });
     },
@@ -238,6 +207,8 @@ form {
 
 .title {
   margin: 1% 0;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .btn {
@@ -248,9 +219,9 @@ form {
   overflow: none;
 }
 
-input {
+/* input {
   border: none;
   outline: none;
   border-bottom: 2px solid #605050;
-}
+} */
 </style>

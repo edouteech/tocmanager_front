@@ -24,7 +24,11 @@ export default {
       { 
         rel: 'stylesheet', 
         href: '/css/custom.css', 
-      }
+      },
+      { 
+        rel: 'stylesheet', 
+        href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css', 
+      },
     ],
     script: [
       { 
@@ -33,6 +37,14 @@ export default {
       },
       { 
         src: 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js', 
+        type: 'text/javascript' 
+      },
+      { 
+        src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js', 
+        type: 'text/javascript' 
+      },
+      { 
+        src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', 
         type: 'text/javascript' 
       }
     ]
