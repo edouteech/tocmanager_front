@@ -1,21 +1,21 @@
 <template>
   <div class="modal-overlay">
-    <div class="modaler" @click.stop>
-      <div
+    <div class="modaler my-auto" @click.stop>
+    <div class="close d-flex justify-content-end" @click="$emit('close-modal')">
+      <i class="fa fa-times-circle" aria-hidden="true"></i>
+    </div>
+      <!-- <div
         class="alert alert-danger justify-content-center"
         role="alert"
         v-if="error"
       >
         {{ error }}
-      </div>
-      <p>Etes vous sur de vouloir supprimer définitivement ce client ???</p>
-      <div class="d-flex">
+      </div> -->
+      <p>Etes vous sur de vouloir supprimer définitivement ce client ???</p><hr>
+      <div class="d-flex my-4">
         <button class="btn btn-outline-danger mx-auto" @click="supClient(infos)">Oui</button>
         <button class="btn btn-outline-success mx-auto" @click="$emit('close-modal')">Non</button>
       </div>
-    </div>
-    <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>
@@ -48,6 +48,9 @@ export default {
             this.$router.push({ path: "/corbeille" });
           } else {
             this.error = response.data.message;
+            this.$toast.error(this.error, {
+              icon: "fa fa-times-circle",
+            });
           }
         });
     },
@@ -66,28 +69,31 @@ export default {
   right: 0;
   display: flex;
   justify-content: center;
-  background-color: rgba(239, 239, 239, 0.803);
+  background-color: rgba(255, 228, 228, 0.803);
 }
 
 .modaler {
   text-align: center;
-  color: #fff;
-  background-color: rgb(46, 46, 46);
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+  border: 2px solid rgb(0, 0, 0);
   height: max-content;
   width: 600px;
-  margin-top: 12%;
-  border-radius: 15px;
-  padding: 50px 20px;
+  border-radius: 5px;
+  padding: 20px 20px 50px 20px;
 }
 
 
 .close {
-  margin: 12% 0 0 16px;
   cursor: pointer;
 }
+.close i{
+  font-size : 22px;
+  color: rgb(166, 166, 166);
+}
 
-.close-img {
-  width: 25px;
+.close i:hover{
+  color: rgb(0, 0, 0);
 }
 
 .check {

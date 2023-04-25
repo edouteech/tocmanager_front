@@ -21,10 +21,10 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-success">
-              <th>Noms</th>
-              <th>Numéros de téléphone</th>
-              <th>Emails</th>
-              <th>Actions</th>
+              <th>NOMS</th>
+              <th>TELEPHONE</th>
+              <th>EMAILS</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
@@ -40,12 +40,12 @@
                 <div
                   class="action d-flex aligns-items-center justify-content-center"
                 >
-                  <div class="sup" @click="supClient(client.id)">
+                  <button class="btn btn-outline-danger mx-2" @click="supClient(client.id)">
                     Supprimer
-                  </div>
-                  <div class="restore" @click="restaurerClient(client.id)">
+                  </button>
+                  <button class="btn btn-outline-success" @click="restaurerClient(client.id)">
                     Restaurer
-                  </div>
+                  </button>
                 </div>
               </td>
             </tr>
@@ -58,7 +58,7 @@
       </div>
       <br /><br />
       <form action="">
-        <div class="nombre d-flex my-4 col-md-2">
+        <div class="nombre d-flex my-4 col-md-2 mx-auto">
           <label class="title mx-3 my-2"><strong> Affichage:</strong></label>
           <select
             class="form-control"
@@ -75,7 +75,7 @@
       </form>
       <nav
         aria-label="Page navigation example "
-        class="d-flex nav"
+        class="d-flex nav d-flex justify-content-center"
         v-if="res_data != null"
       >
         <ul class="pagination">
@@ -87,7 +87,8 @@
             "
           >
             <a class="page-link" @click="refresh(res_data.current_page - 1)"
-              >Précédent</a
+              ><i class="fa fa-chevron-left"
+                aria-hidden="true"></i></a
             >
           </li>
           <li
@@ -111,7 +112,8 @@
             "
           >
             <a class="page-link" @click="refresh(res_data.current_page + 1)"
-              >Suivant</a
+              ><i class="fa fa-chevron-right"
+                aria-hidden="true"></i></a
             >
           </li>
         </ul>
