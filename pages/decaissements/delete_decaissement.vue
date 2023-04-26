@@ -10,21 +10,21 @@
       <h4>Décaissements supprimés</h4>
       <hr />
 
-      <div
+      <!-- <div
         class="alert alert-danger justify-content-center"
         role="alert"
         v-if="error"
       >
         {{ error }}
-      </div>
+      </div> -->
       <div class="table-responsive">
         <table class="table table-hover">
           <thead>
             <tr class="table-success">
-              <th>Dates d'enregistrement</th>
-              <th>Montants</th>
-              <th>Fournisseurs concernés</th>
-              <th>Actions</th>
+              <th>DATES</th>
+              <th>MONTANTS</th>
+              <th>FOURNISSEURS</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
@@ -43,11 +43,11 @@
                 <div
                   class="action d-flex aligns-items-center justify-content-center"
                 >
-                  <div class="sup" @click="supDecaissement(decaissement.id)">
+                  <div class="btn btn-outline-danger mx-2" @click="supDecaissement(decaissement.id)">
                     Supprimer
                   </div>
                   <div
-                    class="restore"
+                    class="btn btn-outline-success"
                     @click="restaurerDecaissement(decaissement.id)"
                   >
                     Restaurer
@@ -58,13 +58,13 @@
           </tbody>
         </table>
         <p class="text-center">
-          <strong>{{ total }} décaissements au total </strong>
+          <strong>{{ total }} décaissement(s) au total </strong>
         </p>
         <hr class="text-primary" />
       </div>
       <br /><br />
       <form action="">
-        <div class="nombre d-flex my-4 col-md-2">
+        <div class="nombre d-flex my-4 col-md-2 mx-auto">
           <label class="title mx-3 my-2"><strong> Affichage:</strong></label>
           <select
             class="form-control"
@@ -81,7 +81,7 @@
       </form>
       <nav
         aria-label="Page navigation example "
-        class="d-flex nav"
+        class="d-flex justify-content-center nav"
         v-if="res_data != null"
       >
         <ul class="pagination">
@@ -93,7 +93,8 @@
             "
           >
             <a class="page-link" @click="refresh(res_data.current_page - 1)"
-              >Précédent</a
+              ><i class="fa fa-chevron-left"
+                aria-hidden="true"></i></a
             >
           </li>
           <li
@@ -117,7 +118,8 @@
             "
           >
             <a class="page-link" @click="refresh(res_data.current_page + 1)"
-              >Suivant</a
+              ><i class="fa fa-chevron-right"
+                aria-hidden="true"></i></a
             >
           </li>
         </ul>
@@ -149,6 +151,7 @@ export default {
 
   data() {
     return {
+      error: null,
       links: [],
       res_data: null,
       showModal: false,
@@ -193,11 +196,14 @@ export default {
           if (response.data.status == "success") {
             this.decaissement = response.data.data;
             this.$router.push({ path: "/decaissements/list_decaissement" });
-            this.$toast("Restauration de décaissement !!!", {
+            this.$toast("Restauration...", {
               icon: "fa fa-check-circle",
             });
           } else {
             this.error = response.data.message;
+            this.$toast.error(this.error, {
+              icon: "fa fa-times-circle",
+            });
           }
         });
     },
@@ -225,7 +231,7 @@ export default {
   margin: 0 15%;
 }
 .table {
-  margin-top: 5%;
+  margin-top: 2%;
   text-align: center;
 }
 

@@ -1,9 +1,12 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>
-      <br /><br />
+    <div class="modaler my-auto" @click.stop>
+      <div class="close d-flex justify-content-end" @click="$emit('close-modal')">
+        <i class="fa fa-times-circle" aria-hidden="true"></i>
+      </div>
+      <br>
       <h4 class="titre">Informations du décaissement</h4>
-      <br /><br /><br />
+      <br />
       <table class="table table-hover">
         <thead>
           <tr class="table-success">
@@ -26,9 +29,6 @@
           </tr>
         </tbody>
       </table>
-    </div>
-    <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>
@@ -57,19 +57,24 @@ export default {
 
 .modaler {
   background-color: white;
-  height: 600px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   width: 600px;
   margin-top: 5%;
   border-radius: 20px;
   padding: 1%;
 }
+
 .close {
-  margin: 5% 0 0 16px;
   cursor: pointer;
 }
 
-.close-img {
-  width: 25px;
+.close i {
+  font-size: 22px;
+  color: rgb(166, 166, 166);
+}
+
+.close i:hover {
+  color: rgb(0, 0, 0);
 }
 
 .titre {

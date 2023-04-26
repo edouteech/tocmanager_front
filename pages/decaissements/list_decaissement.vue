@@ -7,9 +7,57 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <h4>Liste des décaissements</h4>
+      <div class="row">
+        <div class="col-md-10">
+          <h4>Liste des décaissements</h4>
+        </div>
+        <div class="col-md-2 d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+          <button class="btn btn-info py-2" @click.prevent="add()"
+            v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <b>AJOUTER</b>
+          </button>
+        </div>
+      </div>
       <hr />
-      <div class="d-flex">
+
+      <div class="row">
+        <div class="col-md-6">
+          <form role="search">
+            <label class="search-input">
+              <i class="fa fa-search"></i>
+              <input class="form-control me-2" type="search" placeholder="Recherche..." v-model="element_search"
+                @input="search()" aria-label="Search">
+            </label>
+          </form>
+        </div>
+        <!-- <NuxtLink to="/encaissements/encaissement" v-for="(user, i) in users" :key="i" class="web-btn"><button
+            class="custom-btn btn-3" v-if="
+              compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1
+            ">
+            <span>Remplir encaissement</span>
+          </button></NuxtLink> -->
+        <div class="col-md-6 d-flex justify-content-end mt-3 btn-mobile" v-for="(user, i) in users" :key="i">
+          <div v-if="selection == 0">
+            <button class="btn btn-outline-info" @click.prevent="selectionner()">
+              Sélectionner
+            </button>
+          </div>
+          <div v-else>
+            <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+              Annuler
+            </button>
+          </div>
+          <button class="btn btn-outline-danger" v-if="
+            compagny == user.pivot.compagnie_id &&
+            user.pivot.droits_delete == 1 &&
+            selection != 0
+          " @click.prevent="multipleSup()">
+            <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <!-- <div class="d-flex">
         <div class="col-md-10">
           <form class="d-flex col-md-7" role="search">
             <input
@@ -43,9 +91,9 @@
             <span>Remplir décaissement</span>
           </button></NuxtLink
         >
-      </div>
+      </div> -->
 
-      <div class="mobile-btn my-4">
+      <!-- <div class="mobile-btn my-4">
         <NuxtLink
           to="/decaissements/decaissement"
           v-for="(user, i) in users"
@@ -89,16 +137,16 @@
         >
           <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
         </button>
-      </div>
+      </div> -->
       <div v-if="this.element_search != ''" class="table-responsive">
         <table class="table table-hover">
           <thead>
-            <tr class="table-primary">
+            <tr class="table">
               <th v-if="selection != 0"></th>
-              <th>Dates de décaissement</th>
-              <th>Montants</th>
-              <th>Fournisseurs concernés</th>
-              <th>Actions</th>
+              <th>DATES</th>
+              <th>MONTANTS</th>
+              <th>FOURNISSEURS</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
 
@@ -106,44 +154,25 @@
             <tr v-for="(result, i) in results" :key="i">
               <td v-if="selection != 0">
                 <div class="form-check">
-                  <input
-                    type="checkbox"
-                    v-model="checks"
-                    @change="checkbox(result.id)"
-                    :value="result.id"
-                  />
+                  <input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id" />
                 </div>
               </td>
               <td>{{ result.date }}</td>
               <td>{{ result.montant }}</td>
               <td>{{ result.supplier.name }}</td>
               <td>
-                <div
-                  class="action d-flex aligns-items-center justify-content-center"
-                  v-for="(user, i) in users"
-                  :key="i"
-                >
-                  <div
-                    @click="voirDecaissement(result.id)"
-                    v-if="compagny == user.pivot.compagnie_id"
-                  >
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
+                  <div @click="voirDecaissement(result.id)" v-if="compagny == user.pivot.compagnie_id">
                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                   </div>
-                  <NuxtLink
-                    :to="'/decaissements/' + result.id"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_edition == 1
-                    "
-                    ><i class="fa fa-pencil-square-o" aria-hidden="true"></i
-                  ></NuxtLink>
-                  <div
-                    @click="deleteDecaissement(result.id)"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_delete == 1
-                    "
-                  >
+                  <NuxtLink :to="'/decaissements/' + result.id" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_edition == 1
+                  "><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteDecaissement(result.id)" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_delete == 1
+                  ">
                     <i class="fa fa-trash-o text-danger" aria-hidden="true"></i>
                   </div>
                 </div>
@@ -160,12 +189,12 @@
       <div v-if="this.element_search == ''" class="table-responsive">
         <table class="table table-hover">
           <thead>
-            <tr class="table-primary">
+            <tr class="table">
               <th v-if="selection != 0"></th>
-              <th>Dates de décaissement</th>
-              <th>Montants</th>
-              <th>Fournisseurs concernés</th>
-              <th>Actions</th>
+              <th>DATES</th>
+              <th>MONTANTS</th>
+              <th>FOURNISSEURS</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
 
@@ -173,55 +202,31 @@
             <tr v-for="(decaissement, i) in decaissements" :key="i">
               <td v-if="selection != 0">
                 <div class="form-check">
-                  <input
-                    type="checkbox"
-                    v-model="checks"
-                    @change="checkbox(decaissement.id)"
-                    :value="decaissement.id"
-                  />
+                  <input type="checkbox" v-model="checks" @change="checkbox(decaissement.id)" :value="decaissement.id" />
                 </div>
               </td>
               <td>{{ decaissement.date }}</td>
               <td>{{ decaissement.montant }}</td>
               <td>{{ decaissement.supplier.name }}</td>
               <td>
-                <div
-                  class="action d-flex aligns-items-center justify-content-center"
-                  v-for="(user, i) in users"
-                  :key="i"
-                >
-                  <div
-                    @click="voirDecaissement(decaissement.id)"
-                    v-if="compagny == user.pivot.compagnie_id"
-                  >
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
+                  <div @click="voirDecaissement(decaissement.id)" v-if="compagny == user.pivot.compagnie_id">
                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                   </div>
-                  <NuxtLink
-                    :to="'/decaissements/' + decaissement.id"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_edition == 1
-                    "
-                    ><i class="fa fa-pencil-square-o" aria-hidden="true"></i
-                  ></NuxtLink>
-                  <div
-                    @click="deleteDecaissement(decaissement.id)"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_delete == 1
-                    "
-                  >
+                  <NuxtLink :to="'/decaissements/' + decaissement.id" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_edition == 1
+                  "><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteDecaissement(decaissement.id)" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_delete == 1
+                  ">
                     <i class="fa fa-trash-o text-danger" aria-hidden="true"></i>
                   </div>
-                  <NuxtLink
-                    :to="'/achats/voir/' + decaissement.buy_id"
-                    v-b-tooltip.hover
-                    title="Accéder à la facture"
+                  <NuxtLink :to="'/achats/voir/' + decaissement.buy_id" v-b-tooltip.hover title="Accéder à la facture"
                     v-if="
                       compagny == user.pivot.compagnie_id && decaissement.buy_id
-                    "
-                    ><i class="fa fa-eye text-success" aria-hidden="true"></i
-                  ></NuxtLink>
+                    "><i class="fa fa-eye text-success" aria-hidden="true"></i></NuxtLink>
                 </div>
               </td>
             </tr>
@@ -232,74 +237,11 @@
         </p>
         <hr class="text-primary" />
       </div>
-      <br /><br />
-
-      <form class="btn-group justify-content-end" role="search">
-        <input type="file" id="file" ref="file" @change="handleFileUpload()" />
-        <button
-          class="btn btn-outline-success web-btn"
-          type="submit"
-          @click.prevent="submitFile()"
-        >
-          Importer
-        </button>
-        <button
-          class="btn btn-outline-dark mx-2 web-btn"
-          type="submit"
-          @click.prevent="pdf()"
-        >
-          Exporter en pdf
-        </button>
-        <button
-          class="btn btn-outline-dark mx-2 web-btn"
-          type="submit"
-          @click.prevent="exporte()"
-          v-if="role == 'admin'"
-        >
-          Exporter en excel
-        </button>
-
-        <div class="d-flex mt-4">
-          <button
-            class="btn btn-outline-success mobile-btn"
-            type="submit"
-            @click.prevent="submitFile()"
-            title="Importer fichier"
-          >
-            <i class="fa fa-upload" aria-hidden="true"></i>
-          </button>
-
-          <button
-            class="btn btn-outline-dark mx-2 mobile-btn"
-            type="submit"
-            @click.prevent="pdf()"
-            title="Exporter en pdf"
-          >
-            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-          </button>
-
-          <button
-            class="btn btn-outline-dark mx-2 mobile-btn"
-            type="submit"
-            @click.prevent="exporte()"
-            v-if="role == 'admin'"
-            title="Exporter en excel"
-          >
-            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-          </button>
-        </div>
-      </form>
-      <br />
 
       <form action="">
-        <div class="nombre d-flex col-md-2 my-4">
+        <div class="nombre d-flex col-md-2 my-4 mx-auto">
           <label class="title mx-2 my-2"><strong> Affichage:</strong></label>
-          <select
-            class="form-control"
-            v-model="form.nombre"
-            required
-            @click.prevent="refresh()"
-          >
+          <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
@@ -307,71 +249,75 @@
           </select>
         </div>
       </form>
-      <nav
-        aria-label="Page navigation example "
-        class="d-flex nav"
-        v-if="res_data != null"
-      >
+      <nav aria-label="Page navigation example " class="d-flex justify-content-center nav" v-if="res_data != null">
         <ul class="pagination">
-          <li
-            :class="
-              res_data.prev_page_url == null
-                ? 'page-item disabled'
-                : 'page-item'
-            "
-          >
-            <a class="page-link" @click="refresh(res_data.current_page - 1)"
-              >Précédent</a
-            >
+          <li :class="
+            res_data.prev_page_url == null
+              ? 'page-item disabled'
+              : 'page-item'
+          ">
+            <a class="page-link" @click="refresh(res_data.current_page - 1)"><i class="fa fa-chevron-left"
+                aria-hidden="true"></i></a>
           </li>
-          <li
-            class="page-item"
-            v-for="(link, index) in res_data.links"
-            :key="index"
-          >
-            <a
-              :class="link.active == true ? 'page-link active' : 'page-link'"
-              href="#"
-              @click="refresh(link.label)"
-              >{{ link.label }}</a
-            >
+          <li class="page-item" v-for="(link, index) in res_data.links" :key="index">
+            <a :class="link.active == true ? 'page-link active' : 'page-link'" href="#" @click="refresh(link.label)">{{
+              link.label }}</a>
           </li>
 
-          <li
-            :class="
-              res_data.next_page_url == null
-                ? 'page-item disabled'
-                : 'page-item'
-            "
-          >
-            <a class="page-link" @click="refresh(res_data.current_page + 1)"
-              >Suivant</a
-            >
+          <li :class="
+            res_data.next_page_url == null
+              ? 'page-item disabled'
+              : 'page-item'
+          ">
+            <a class="page-link" @click="refresh(res_data.current_page + 1)"><i class="fa fa-chevron-right"
+                aria-hidden="true"></i></a>
           </li>
         </ul>
       </nav>
+      <div class=" col-md-10 mx-auto section">
+        <form class="btn-group" role="search">
+          <input type="file" id="file" ref="file" @change="handleFileUpload()" />
+          <button class="btn btn-outline-success web-btn" type="submit" @click.prevent="submitFile()">
+            Importer
+          </button>
+          <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="pdf()">
+            Exporter en pdf
+          </button>
+          <button class="btn btn-outline-dark mx-2 web-btn" type="submit" @click.prevent="exporte()"
+            v-if="role == 'admin'">
+            Exporter en excel
+          </button>
+
+          <div class="d-flex mt-4">
+            <button class="btn btn-outline-success mobile-btn" type="submit" @click.prevent="submitFile()"
+              title="Importer fichier">
+              <i class="fa fa-upload" aria-hidden="true"></i>
+            </button>
+
+            <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="pdf()"
+              title="Exporter en pdf">
+              <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+            </button>
+
+            <button class="btn btn-outline-dark mx-2 mobile-btn" type="submit" @click.prevent="exporte()"
+              v-if="role == 'admin'" title="Exporter en excel">
+              <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+      <br />
+
     </div>
     <br />
-    <voirDecaissement
-      :montant="identifiant1"
-      :date="identifiant2"
-      :supplier_id="identifiant3"
-      v-show="showModal"
-      @close-modal="showModal = false"
-    />
+    <voirDecaissement :montant="identifiant1" :date="identifiant2" :supplier_id="identifiant3" v-show="showModal"
+      @close-modal="showModal = false" />
     <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" />
-    <deleteModal
-      :identifiant="key"
-      v-show="showModalDelete"
-      @close-modal="showModalDelete = false"
-      @conf="setMessage"
-    />
-    <deleteMultipleModal
-      :ids="checks"
-      v-show="showModalMultipleDelete"
-      @close-modal="showModalMultipleDelete = false"
-      @conf="setMessage"
-    />
+    <deleteModal :identifiant="key" v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage" />
+    <deleteMultipleModal :ids="checks" v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false"
+      @conf="setMessage" />
+      <exportModal v-show="exportModal" @close-modal="exportModal = false" />
+    <addDecaissementModal v-show="addModal" @close-modal="addModal = false" @conf="setMessage" />
   </div>
 </template>
 
@@ -384,6 +330,7 @@ import voirDecaissement from "./voir_decaissement.vue";
 import Sidebar from "../sidebar.vue";
 import Userinfo from "../user_info.vue";
 import deleteMultipleModal from "./deleteMultipleModal.vue";
+import addDecaissementModal from './addDecaissementModal.vue'
 export default {
   layout: "empty",
   auth: true,
@@ -395,6 +342,7 @@ export default {
     exportModal,
     pdfModal,
     deleteMultipleModal,
+    addDecaissementModal
   },
   data() {
     return {
@@ -418,12 +366,13 @@ export default {
       showModalDelete: false,
       element_search: "",
       results: "",
-      expotModal: false,
+      exportModal: false,
       pdfModal: false,
       role: "",
       checks: [],
       selection: 0,
       showModalMultipleDelete: false,
+      addModal: false
     };
   },
 
@@ -435,6 +384,12 @@ export default {
   },
 
   methods: {
+    
+    //modal d'ajout
+    add() {
+      this.addModal = true
+    },
+
     //modal de confirmation de suppression multiple
     multipleSup() {
       this.showModalMultipleDelete = true;
@@ -453,7 +408,7 @@ export default {
 
     //modal d'exportation en excel
     exporte() {
-      this.expotModal = true;
+      this.exportModal = true;
     },
 
     //modal d'exportation en pdf
@@ -480,6 +435,9 @@ export default {
             this.refresh();
           } else {
             this.error = "Echec de l'importation. Veuillez réessayer !!!";
+              this.$toast.error(this.error, {
+                icon: "fa fa-times-circle",
+              });
           }
         });
     },
@@ -495,7 +453,10 @@ export default {
         })
         .then((response) => {
           this.results = response.data.data.data;
+          this.res_data = response.data.data;
           this.total = response.data.data.total;
+          let firstE = response.data.data.links.shift();
+          let lastE = response.data.data.links.splice(-1, 1);
         });
     },
 
@@ -511,7 +472,7 @@ export default {
     },
 
     //ajout des valeurs dans checks
-    checkbox(id) {},
+    checkbox(id) { },
 
 
     //récupère la liste des décaissements
@@ -555,6 +516,44 @@ export default {
 </script>
 
 <style scoped>
+.section {
+  border: 1px solid rgb(255, 255, 255);
+  position: relative;
+  z-index: 1;
+  padding: 50px 20px;
+  margin: 50px 0;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+
+}
+
+.search-input {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.search-input input {
+  flex: 1 1 auto;
+  width: 1%;
+  border: none;
+  outline: none;
+  padding-left: 0.5rem;
+}
+
+.search-input i {
+  margin-right: 0.5rem;
+  color: #ced4da;
+}
+
 .nav {
   overflow: auto;
 }
@@ -578,14 +577,22 @@ export default {
   text-align: center;
 }
 
+.table th {
+  padding: 20px 0;
+}
+
 thead tr {
   background-color: transparent;
 }
 
+tbody td {
+  padding: 15px 0;
+}
+
+
 tbody tr:last-of-type {
   border-bottom: 2px solid rgb(140, 140, 250);
 }
-
 .action {
   display: flex;
 }
@@ -610,11 +617,9 @@ tbody tr:last-of-type {
 
 .btn-3 {
   background: rgb(0, 172, 238);
-  background: linear-gradient(
-    0deg,
-    rgba(0, 172, 238, 1) 0%,
-    rgba(2, 126, 251, 1) 100%
-  );
+  background: linear-gradient(0deg,
+      rgba(0, 172, 238, 1) 0%,
+      rgba(2, 126, 251, 1) 100%);
   width: 180px;
   height: 40px;
   line-height: 42px;
@@ -693,6 +698,7 @@ tbody tr:last-of-type {
 .btn-3 span:hover:after {
   width: 100%;
 }
+
 .mobile-btn {
   display: none;
 }
@@ -701,6 +707,19 @@ tbody tr:last-of-type {
   /* .btn_recherche{
     display:none;
   } */
+  
+  .btn-mobile {
+    margin: 30px 0;
+  }
+
+
+  .table th {
+    padding: 20px;
+  }
+
+  tbody td {
+    padding: 15px;
+  }
 
   .mobile-btn {
     display: block;
