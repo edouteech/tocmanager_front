@@ -172,7 +172,7 @@ export default {
         .then((response) => {
           if (response.data.status == "success") {
             this.$router.push({ path: "/encaissements/list_encaissement" });
-            this.$toast("Modiffication éffectuée avec succès !!!", {
+            this.$toast("Modiffication éffectuée !!!", {
               icon: "fa fa-check-circle",
             });
           } else {

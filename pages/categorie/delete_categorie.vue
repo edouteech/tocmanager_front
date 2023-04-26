@@ -215,7 +215,7 @@ export default {
   margin: 0 15%;
 }
 .table {
-  margin-top: 5%;
+  margin-top: 2%;
   text-align: center;
 }
 

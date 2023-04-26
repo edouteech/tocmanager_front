@@ -831,7 +831,7 @@ input[type="submit"]:hover {
 }
 
 .table {
-  margin-top: 5%;
+  margin-top: 2%;
   text-align: center;
 }
 

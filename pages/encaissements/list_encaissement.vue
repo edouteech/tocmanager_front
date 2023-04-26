@@ -363,6 +363,9 @@ export default {
             this.refresh();
           } else {
             this.error = "Echec de l'importation. Veuillez réessayer !!!";
+            this.$toast.error(this.error, {
+              icon: "fa fa-times-circle",
+            });
           }
         });
     },
@@ -643,6 +646,7 @@ tbody tr:last-of-type {
   tbody td {
     padding: 15px;
   }
+
   .mobile-btn {
     display: block;
   }

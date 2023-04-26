@@ -73,16 +73,16 @@ export default {
   right: 0;
   display: flex;
   justify-content: center;
-  background-color: rgba(239, 239, 239, 0.803);
+  background-color: rgba(255, 228, 228, 0.803);
 }
 
 .modaler {
   text-align: center;
-  box-shadow: 0px 0px 15px rgba(247, 245, 245, 0.1);
   background-color: rgb(255, 255, 255);
+  border: 2px solid red;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   width: 600px;
-  margin-top: 12%;
-  border-radius: 15px;
+  border-radius: 5px;
   padding: 50px 20px;
 }
 

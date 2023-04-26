@@ -75,14 +75,12 @@ export default {
 .modaler {
   text-align: center;
   background-color: rgb(255, 255, 255);
-  box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
-  border: 2px solid rgb(0, 0, 0);
-  height: max-content;
+  border: 2px solid red;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   width: 600px;
   border-radius: 5px;
-  padding: 20px 20px 50px 20px;
+  padding: 50px 20px;
 }
-
 
 .close {
   cursor: pointer;

@@ -145,7 +145,6 @@
             (this.form.montant = ""),
             (this.form.date = ""),
             (this.form.client_id = ""),
-            (this.user = ""),
             (this.form.payment = ""),
             this.$emit("close-modal");
             this.$toast("Encaissement ajouté !!!", {
