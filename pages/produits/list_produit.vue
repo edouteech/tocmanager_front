@@ -650,7 +650,7 @@ export default {
       choix_quantite: 1,
       choix_vente:  1,
       choix_achat: 1,
-      choix_valorisation: 1
+      choix_valorisation: 1,
       stats: "",
     };
   },
@@ -792,7 +792,7 @@ export default {
             this.defaultValorisation()
           }
       },
-      
+
     //statistiques du stock
     prodStats() {
       this.$axios
