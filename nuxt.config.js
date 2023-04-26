@@ -52,7 +52,6 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -62,6 +61,7 @@ export default {
     { src: '~/plugins/vue-toastification', ssr: false },
     { src: '~/plugins/vue-excel-xlsx.js', mode: 'client' },
     { src: '~/plugins/removeWebflowBadge.js', mode: 'client' }
+    { src: '~/plugins/v-calendar.js', mode: 'client'},
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -128,4 +128,16 @@ export default {
   publicRuntimeConfig: {
     webURL: "http://localhost:8000/"
   },
+    
+    postcss: {
+      plugins: {
+        'postcss-preset-env': {
+          stage: 0,
+          autoprefixer: {
+            grid: true
+          }
+        }
+      }
+    }
+  
 }

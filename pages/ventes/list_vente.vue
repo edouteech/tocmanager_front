@@ -12,50 +12,27 @@
       <div class="d-flex">
         <div class="col-md-10 row">
           <form class="d-flex col-md-7" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="recherche..."
-              v-model="element_search"
-              @input="search()"
-              aria-label="Search"
-            />
-            <button
-              class="btn btn-outline-success btn_recherche"
-              type="submit"
-              @click.prevent="search()"
-            >
+            <input class="form-control me-2" type="search" placeholder="recherche..." v-model="element_search"
+              @input="search()" aria-label="Search" />
+            <button class="btn btn-outline-success btn_recherche" type="submit" @click.prevent="search()">
               <i class="fa fa-search" aria-hidden="true"></i>
             </button>
           </form>
         </div>
-        <NuxtLink
-          to="/ventes/vente"
-          v-for="(user, i) in users"
-          :key="i"
-          class="web-btn"
-          ><button
-            class="custom-btn btn-3"
+        <NuxtLink to="/ventes/vente" v-for="(user, i) in users" :key="i" class="web-btn"><button class="custom-btn btn-3"
             v-if="
               compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1
-            "
-          >
+            ">
             <span>Nouvelle vente</span>
-          </button></NuxtLink
-        >
+          </button></NuxtLink>
       </div>
 
       <div class="mobile-btn mt-4">
-        <NuxtLink to="/ventes/vente" v-for="(user, i) in users" :key="i"
-          ><button
-            class="custom-btn btn-3"
-            v-if="
-              compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1
-            "
-          >
+        <NuxtLink to="/ventes/vente" v-for="(user, i) in users" :key="i"><button class="custom-btn btn-3" v-if="
+          compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1
+        ">
             <span>Nouvelle vente</span>
-          </button></NuxtLink
-        >
+          </button></NuxtLink>
       </div>
       <div class="range">
         <input class="form-control" type="date" v-model="date_debut" required />
@@ -64,47 +41,55 @@
           <i class="fa fa-check-circle" aria-hidden="true"></i>
         </button>
       </div>
-      <div
-        class="d-flex justify-content-end"
-        v-for="(user, i) in users"
-        :key="i"
-      >
+
+      <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+        <div v-if="choixNumber == 0">
+          <button class="btn btn-outline-success mx-2" @click.prevent="choisir()">
+            A afficher
+          </button>
+        </div>
+        <div v-else>
+          <button class="btn btn-outline-success mx-2" @click.prevent="fin()">
+            Enregistrer
+          </button>
+        </div>
+
         <div v-if="selection == 0">
           <button class="btn btn-outline-info" @click.prevent="selectionner()">
             Sélectionner
           </button>
         </div>
         <div v-else>
-          <button
-            class="btn btn-outline-dark mx-3"
-            @click.prevent="deselectionner()"
-          >
+          <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
             Annuler
           </button>
         </div>
-        <button
-          class="btn btn-outline-danger"
-          v-if="
-            compagny == user.pivot.compagnie_id &&
-            user.pivot.droits_delete == 1 &&
-            selection != 0
-          "
-          @click.prevent="multipleSup()"
-        >
+        <button class="btn btn-outline-danger"
+          v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 && selection != 0"
+          @click.prevent="multipleSup()">
           <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
         </button>
-        <div class="col-md-3 mx-2">
-          <select
-            class="form-control"
-            v-model="trie"
-            @change="TriFactures(trie)"
-          >
-            <option disabled value="">Trier par...</option>
-            <option value="toutes">Toutes les factures</option>
-            <option value="true">Factures normalisées</option>
-            <option value="false">Factures non normalisées</option>
-          </select>
+      </div>
+      <div class="col-md-3 mx-2">
+        <select class="form-control" v-model="trie" @change="TriFactures(trie)">
+          <option disabled value="">Trier par...</option>
+          <option value="toutes">Toutes les factures</option>
+          <option value="true">Factures normalisées</option>
+          <option value="false">Factures non normalisées</option>
+        </select>
+      </div>
+
+      <div class="row col-md-12 mt-2" v-if="choixNumber != 0">
+        <div class="col-md-2"><input type="checkbox" checked />Dates</div>
+        <div class="col-md-2"><input type="checkbox" v-model="choix_acteur" @change="choiceActeur()" />Clients</div>
+        <div class="col-md-2"><input type="checkbox" v-model="choix_montant" @change="choiceMontant()" />Montants Factures
         </div>
+        <div class="col-md-2"><input type="checkbox" v-model="choix_rest" @change="choiceRest()" />Restes à payer</div>
+        <div class="col-md-2"><input type="checkbox" v-model="choix_paiement" @change="choicePaiement()" />Moyens de
+          Paiement</div>
+        <!-- <div class="col-md-2"><input type="checkbox" v-model="choix_nature" @change="choiceNature()"/>Nature</div> -->
+        <!-- <div><input type="checkbox" v-model="choix_name"/></div>
+            <div><input type="checkbox" v-model="choix_name"/></div> -->
       </div>
       <div v-if="this.element_search != ''" class="table-responsive">
         <table class="table table-hover">
@@ -112,12 +97,12 @@
             <tr class="table-primary">
               <th v-if="selection != 0"></th>
               <th>Date facture</th>
-              <th>Client concerné</th>
+              <th v-if="choix_acteur == 1">Client concerné</th>
               <!-- <th>Montant HT </th>
                   <th>Montant TTC </th> -->
-              <th>Net à payer</th>
-              <th>Montant du</th>
-              <th>Moyen de paiement</th>
+              <th v-if="choix_montant == 1">Net à payer</th>
+              <th v-if="choix_rest == 1">Montant du</th>
+              <th v-if="choix_paiement == 1">Moyen de paiement</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -125,68 +110,36 @@
             <tr v-for="(result, i) in results" :key="i">
               <td v-if="selection != 0">
                 <div class="form-check">
-                  <input
-                    type="checkbox"
-                    v-model="checks"
-                    @change="checkbox(result.id)"
-                    :value="result.id"
-                  />
+                  <input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id" />
                 </div>
               </td>
               <td>{{ result.date_sell }}</td>
-              <td>{{ result.client.name }}</td>
+              <td v-if="choix_acteur == 1">{{ result.client.name }}</td>
               <!-- <td>{{result.amount_ht}}</td>
                   <td>{{result.amount_ttc}}</td> -->
-              <td>{{ result.amount }}</td>
-              <td class="text-danger">{{ result.rest }}</td>
-              <td>{{ result.payment }}</td>
+              <td v-if="choix_montant == 1">{{ result.amount }}</td>
+              <td class="text-danger" v-if="choix_rest == 1">{{ result.rest }}</td>
+              <td v-if="choix_paiement == 1">{{ result.payment }}</td>
               <td>
-                <div
-                  class="action d-flex aligns-items-center justify-content-center"
-                  v-for="(user, i) in users"
-                  :key="i"
-                >
-                  <NuxtLink
-                    :to="'/ventes/voir/' + result.id"
-                    v-if="compagny == user.pivot.compagnie_id"
-                    ><i
-                      class="fa fa-info-circle text-info"
-                      aria-hidden="true"
-                    ></i
-                  ></NuxtLink>
-                  <div
-                    class="cursor-pointer"
-                    @click.prevent="print(result.id)"
-                    v-if="compagny == user.pivot.compagnie_id"
-                  >
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
+                  <NuxtLink :to="'/ventes/voir/' + result.id" v-if="compagny == user.pivot.compagnie_id"><i
+                      class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
+                  <div class="cursor-pointer" @click.prevent="print(result.id)"
+                    v-if="compagny == user.pivot.compagnie_id">
                     <i class="fa fa-print text-primary" aria-hidden="true"></i>
                   </div>
-                  <NuxtLink
-                    :to="'/ventes/' + result.id"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_edition == 1
-                    "
-                    ><i
-                      class="fa fa-pencil-square-o text-dark"
-                      aria-hidden="true"
-                    ></i
-                  ></NuxtLink>
-                  <div
-                    class="cursor-pointer"
-                    @click.prevent="deleteVente(result.id)"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_delete == 1
-                    "
-                  >
+                  <NuxtLink :to="'/ventes/' + result.id" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_edition == 1
+                  "><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
+                  <div class="cursor-pointer" @click.prevent="deleteVente(result.id)" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_delete == 1
+                  ">
                     <i class="fa fa-trash-o text-danger" aria-hidden="true"></i>
                   </div>
-                  <div
-                    class="cursor-pointer"
-                    @click.prevent="generateOtherpdf(result.id)"
-                    v-if="compagny == user.pivot.compagnie_id"
-                  >
+                  <div class="cursor-pointer" @click.prevent="generateOtherpdf(result.id)"
+                    v-if="compagny == user.pivot.compagnie_id">
                     <i class="fa fa-print text-warning" aria-hidden="true"></i>
                   </div>
                 </div>
@@ -219,12 +172,7 @@
             <tr v-for="(vente, i) in ventes" :key="i">
               <td v-if="selection != 0">
                 <div class="form-check">
-                  <input
-                    type="checkbox"
-                    v-model="checks"
-                    @change="checkbox(vente.id)"
-                    :value="vente.id"
-                  />
+                  <input type="checkbox" v-model="checks" @change="checkbox(vente.id)" :value="vente.id" />
                 </div>
               </td>
               <td>{{ vente.date_sell }}</td>
@@ -235,76 +183,37 @@
               <td class="text-danger">{{ vente.rest }}</td>
               <td>{{ vente.payment }}</td>
               <td>
-                <div
-                  class="action d-flex aligns-items-center justify-content-center"
-                  v-for="(user, i) in users"
-                  :key="i"
-                >
-                  <NuxtLink
-                    :to="'/ventes/voir/' + vente.id"
-                    v-if="compagny == user.pivot.compagnie_id"
-                    ><i
-                      class="fa fa-info-circle text-info"
-                      aria-hidden="true"
-                    ></i
-                  ></NuxtLink>
-                  <div
-                    class="cursor-pointer web-imprim"
-                    @click.prevent="print(vente.id)"
-                    v-if="compagny == user.pivot.compagnie_id"
-                  >
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
+                  <NuxtLink :to="'/ventes/voir/' + vente.id" v-if="compagny == user.pivot.compagnie_id"><i
+                      class="fa fa-info-circle text-info" aria-hidden="true"></i></NuxtLink>
+                  <div class="cursor-pointer web-imprim" @click.prevent="print(vente.id)"
+                    v-if="compagny == user.pivot.compagnie_id">
                     <i class="fa fa-print text-primary" aria-hidden="true"></i>
                   </div>
-                  <NuxtLink
-                    :to="'/ventes/' + vente.id"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_edition == 1
-                    "
-                    ><i
-                      class="fa fa-pencil-square-o text-dark"
-                      aria-hidden="true"
-                    ></i
-                  ></NuxtLink>
-                  <div
-                    class="cursor-pointer"
-                    @click.prevent="deleteVente(vente.id)"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_delete == 1
-                    "
-                  >
+                  <NuxtLink :to="'/ventes/' + vente.id" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_edition == 1
+                  "><i class="fa fa-pencil-square-o text-dark" aria-hidden="true"></i></NuxtLink>
+                  <div class="cursor-pointer" @click.prevent="deleteVente(vente.id)" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_delete == 1
+                  ">
                     <i class="fa fa-trash-o text-danger" aria-hidden="true"></i>
                   </div>
-                  <div
-                    class="cursor-pointer web-imprim"
-                    @click.prevent="generateOtherpdf(vente.id)"
-                    v-if="compagny == user.pivot.compagnie_id"
-                  >
+                  <div class="cursor-pointer web-imprim" @click.prevent="generateOtherpdf(vente.id)"
+                    v-if="compagny == user.pivot.compagnie_id">
                     <i class="fa fa-print text-warning" aria-hidden="true"></i>
                   </div>
-                  <div
-                    class="cursor-pointer mobile-imprim"
-                    v-if="compagny == user.pivot.compagnie_id"
-                  >
+                  <div class="cursor-pointer mobile-imprim" v-if="compagny == user.pivot.compagnie_id">
                     <ul id="menu-demo2">
                       <li>
-                        <a href="#"
-                          ><i
-                            class="fa fa-print text-primary"
-                            aria-hidden="true"
-                          ></i
-                        ></a>
+                        <a href="#"><i class="fa fa-print text-primary" aria-hidden="true"></i></a>
                         <ul>
                           <li>
-                            <NuxtLink :to="'/ventes/mobile/ticket/' + vente.id"
-                              >Ticket</NuxtLink
-                            >
+                            <NuxtLink :to="'/ventes/mobile/ticket/' + vente.id">Ticket</NuxtLink>
                           </li>
                           <li>
-                            <NuxtLink :to="'/ventes/mobile/' + vente.id"
-                              >A4</NuxtLink
-                            >
+                            <NuxtLink :to="'/ventes/mobile/' + vente.id">A4</NuxtLink>
                           </li>
                         </ul>
                       </li>
@@ -322,34 +231,18 @@
       </div>
       <br /><br />
       <form class="d-flex justify-content-end" role="search">
-        <button
-          class="btn btn-outline-dark mx-2"
-          type="submit"
-          @click.prevent="exp()"
-          v-if="role == 'admin'"
-        >
-          <i class="fa fa-file-excel-o" aria-hidden="true"></i
-          ><span class="text-ajout">Exporter en excel</span>
+        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="exp()" v-if="role == 'admin'">
+          <i class="fa fa-file-excel-o" aria-hidden="true"></i><span class="text-ajout">Exporter en excel</span>
         </button>
-        <button
-          class="btn btn-outline-dark mx-2"
-          type="submit"
-          @click.prevent="pdf()"
-        >
-          <i class="fa fa-file-pdf-o" aria-hidden="true"></i
-          ><span class="text-ajout">Exporter en pdf</span>
+        <button class="btn btn-outline-dark mx-2" type="submit" @click.prevent="pdf()">
+          <i class="fa fa-file-pdf-o" aria-hidden="true"></i><span class="text-ajout">Exporter en pdf</span>
         </button>
       </form>
       <br /><br />
       <form action="">
         <div class="nombre d-flex my-4 col-md-2">
           <label class="title mx-3 my-2"><strong> Affichage:</strong></label>
-          <select
-            class="form-control"
-            v-model="form.nombre"
-            required
-            @click.prevent="refresh()"
-          >
+          <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
@@ -357,46 +250,26 @@
           </select>
         </div>
       </form>
-      <nav
-        aria-label="Page navigation example "
-        class="d-flex nav"
-        v-if="res_data != null"
-      >
+      <nav aria-label="Page navigation example " class="d-flex nav" v-if="res_data != null">
         <ul class="pagination">
-          <li
-            :class="
-              res_data.prev_page_url == null
-                ? 'page-item disabled'
-                : 'page-item'
-            "
-          >
-            <a class="page-link" @click="refresh(res_data.current_page - 1)"
-              >Précédent</a
-            >
+          <li :class="
+            res_data.prev_page_url == null
+              ? 'page-item disabled'
+              : 'page-item'
+          ">
+            <a class="page-link" @click="refresh(res_data.current_page - 1)">Précédent</a>
           </li>
-          <li
-            class="page-item"
-            v-for="(link, index) in res_data.links"
-            :key="index"
-          >
-            <a
-              :class="link.active == true ? 'page-link active' : 'page-link'"
-              href="#"
-              @click="refresh(link.label)"
-              >{{ link.label }}</a
-            >
+          <li class="page-item" v-for="(link, index) in res_data.links" :key="index">
+            <a :class="link.active == true ? 'page-link active' : 'page-link'" href="#" @click="refresh(link.label)">{{
+              link.label }}</a>
           </li>
 
-          <li
-            :class="
-              res_data.next_page_url == null
-                ? 'page-item disabled'
-                : 'page-item'
-            "
-          >
-            <a class="page-link" @click="refresh(res_data.current_page + 1)"
-              >Suivant</a
-            >
+          <li :class="
+            res_data.next_page_url == null
+              ? 'page-item disabled'
+              : 'page-item'
+          ">
+            <a class="page-link" @click="refresh(res_data.current_page + 1)">Suivant</a>
           </li>
         </ul>
       </nav>
@@ -406,13 +279,7 @@
     <div class="imprim" id="impression">
       <div class="d-flex align-items-start flex-column">
         <div class="entreprise-photo mb-2" v-if="compagn.logo">
-          <img
-            :src="$config.webURL + compagn.logo"
-            alt="profil"
-            class="profil"
-            width="70"
-            height="50"
-          />
+          <img :src="$config.webURL + compagn.logo" alt="profil" class="profil" width="70" height="50" />
         </div>
         <strong> Société {{ compagn.name }}</strong>
         <strong> Email: {{ compagn.email }}</strong>
@@ -453,17 +320,11 @@
       </table>
       <br /><br />
 
-      <div
-        class="d-flex align-items-end flex-column mb-4"
-        v-if="qr_info != null"
-      >
-        <img
-          :src="
-            'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' +
-            qr_info.qrcode
-          "
-          alt="QRcode"
-        />
+      <div class="d-flex align-items-end flex-column mb-4" v-if="qr_info != null">
+        <img :src="
+          'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' +
+          qr_info.qrcode
+        " alt="QRcode" />
         <div class="d-flex align-items-start flex-column mb-4">
           <div>
             <strong>Mecef_counteurs :</strong>{{ qr_info.mecef_counteurs }}
@@ -495,43 +356,20 @@
       </table>
       <br /><br />
     </div>
-    <deleteModal
-      :identifiant="key"
-      v-show="showModalDelete"
-      @close-modal="showModalDelete = false"
-      @conf="setMessage"
-    />
-    <deleteMultipleModal
-      :ids="checks"
-      v-show="showModalMultipleDelete"
-      @close-modal="showModalMultipleDelete = false"
-      @conf="setMessage"
-    />
+    <deleteModal :identifiant="key" v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage" />
+    <deleteMultipleModal :ids="checks" v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false"
+      @conf="setMessage" />
     <exportModal v-show="exportModal" @close-modal="exportModal = false" />
     <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" />
-    <Impression
-      :date_sell="identifiant1"
-      :client="identifiant2"
-      :factures="identifiant3"
-      :montant="identifiant4"
-      :rest="identifiant5"
-      :tax="identifiant6"
-      :qr_info="identifiant7"
-      :compagn="identifiant8"
-      v-show="showModal"
-      @close-modal="showModal = false"
-    />
+    <Impression :date_sell="identifiant1" :client="identifiant2" :factures="identifiant3" :montant="identifiant4"
+      :rest="identifiant5" :tax="identifiant6" :qr_info="identifiant7" :compagn="identifiant8" v-show="showModal"
+      @close-modal="showModal = false" />
 
     <!-- Footer -->
     <footer class="text-center text-lg-start bg-dark text-white">
-      <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        rel="stylesheet"
-      />
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
       <!-- Section: Social media -->
-      <section
-        class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
-      >
+      <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <!-- Left -->
         <div class="me-5 d-none d-lg-block">
           <img src="../../static/images/logo.png" class="logo-img" alt="" />
@@ -555,10 +393,7 @@
       <!-- Section: Social media -->
 
       <!-- Copyright -->
-      <div
-        class="text-center p-2"
-        style="background-color: rgba(0, 0, 0, 0.05)"
-      >
+      <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.05)">
         Copyright © 2022 - Tous droits réservés TocManager
       </div>
       <!-- Copyright -->
@@ -568,15 +403,15 @@
 </template>
   
   
-  <script>
-import pdfModal from "./pdfModal.vue";
-import exportModal from "./exportModal.vue";
-import deleteMultipleModal from "./deleteMultipleModal.vue";
-import deleteModal from "./deleteModal.vue";
-import Impression from "./impression.vue";
+<script>
+import pdfModal from './pdfModal.vue';
+import exportModal from './exportModal.vue';
+import deleteMultipleModal from './deleteMultipleModal.vue';
+import deleteModal from './deleteModal.vue';
+import Impression from './impression.vue';
 import moment from "moment";
-import Sidebar from "../sidebar.vue";
-import Userinfo from "../user_info.vue";
+import Sidebar from '../sidebar.vue'
+import Userinfo from '../user_info.vue'
 export default {
   auth: true,
   layout: "voir",
@@ -587,42 +422,41 @@ export default {
     deleteModal,
     exportModal,
     pdfModal,
-    deleteMultipleModal,
+    deleteMultipleModal
   },
   data() {
     return {
-      trie: "",
       links: [],
       res_data: null,
       showModal: false,
       exportModal: false,
-      identifiant1: "",
-      identifiant2: "",
-      identifiant3: "",
-      identifiant4: "",
-      identifiant5: "",
-      identifiant6: "",
-      identifiant7: "",
-      identifiant8: "",
+      identifiant1: '',
+      identifiant2: '',
+      identifiant3: '',
+      identifiant4: '',
+      identifiant5: '',
+      identifiant6: '',
+      identifiant7: '',
+      identifiant8: '',
       ventes: [],
       vente: "",
-      total: "",
-      users: "",
-      compagny: "",
+      total: '',
+      users: '',
+      compagny: '',
       form: {
-        nombre: 10,
+        nombre: '',
       },
-      date_sell: "",
-      montant: "",
+      date_sell: '',
+      montant: '',
       client: [],
-      rest: "",
-      tax: "",
-      id: "",
+      rest: '',
+      tax: '',
+      id: '',
       compagn: [],
       factures: [],
       qrcode: null,
       qr_info: null,
-      key: "",
+      key: '',
       showModalDelete: false,
       element_search: "",
       results: "",
@@ -636,7 +470,12 @@ export default {
       checks: [],
       selection: 0,
       showModalMultipleDelete: false,
-    };
+      choixNumber: 0,
+      choix_acteur: 1,
+      choix_montant: 1,
+      choix_rest: 1,
+      choix_paiement: 1
+    }
   },
 
   methods: {
@@ -645,13 +484,114 @@ export default {
       this.showModalMultipleDelete = true;
     },
 
+    choisir() {
+      this.choixNumber = 1
+    },
+
+    fin() {
+      this.choixNumber = 0
+      // this.choice()
+    },
+
+    defaultActeur() {
+      this.choix_acteur = localStorage.getItem('auth.choix_acteur')
+      if (localStorage.getItem('auth.choix_acteur') == 1) {
+        this.choix_acteur = true
+      }
+      else {
+        this.choix_acteur = false
+      }
+    },
+
+
+    choiceActeur() {
+      if (this.choix_acteur == true) {
+        this.choix_acteur = 1
+        this.$auth.$storage.setUniversal('choix_acteur', this.choix_acteur)
+        this.defaultActeur()
+      }
+      else {
+        this.choix_acteur = 0
+        this.$auth.$storage.setUniversal('choix_acteur', this.choix_acteur)
+        this.defaultActeur()
+      }
+    },
+
+    defaultMontant() {
+      this.choix_montant = localStorage.getItem('auth.choix_montant')
+      if (localStorage.getItem('auth.choix_montant') == 1) {
+        this.choix_montant = true
+      }
+      else {
+        this.choix_montant = false
+      }
+    },
+
+    choiceMontant() {
+      if (this.choix_montant == true) {
+        this.choix_montant = 1
+        this.$auth.$storage.setUniversal('choix_montant', this.choix_montant)
+        this.defaultMontant()
+      }
+      else {
+        this.choix_montant = 0
+        this.$auth.$storage.setUniversal('choix_montant', this.choix_montant)
+        this.defaultMontant()
+      }
+    },
+
+
+    defaultRest() {
+      this.choix_rest = localStorage.getItem('auth.choix_rest')
+      if (localStorage.getItem('auth.choix_rest') == 1) {
+        this.choix_rest = true
+      }
+      else {
+        this.choix_rest = false
+      }
+    },
+    choiceRest() {
+      if (this.choix_rest == true) {
+        this.choix_rest = 1
+        this.$auth.$storage.setUniversal('choix_rest', this.choix_rest)
+        this.defaultRest()
+      }
+      else {
+        this.choix_rest = 0
+        this.$auth.$storage.setUniversal('choix_rest', this.choix_rest)
+        this.defaultRest()
+      }
+    },
+
+    defaultPaiement() {
+      this.choix_paiement = localStorage.getItem('auth.choix_paiement')
+      if (localStorage.getItem('auth.choix_paiement') == 1) {
+        this.choix_paiement = true
+      }
+      else {
+        this.choix_paiement = false
+      }
+    },
+    choicePaiement() {
+      if (this.choix_paiement == true) {
+        this.choix_paiement = 1
+        this.$auth.$storage.setUniversal('choix_paiement', this.choix_paiement)
+        this.defaultPaiement()
+      }
+      else {
+        this.choix_paiement = 0
+        this.$auth.$storage.setUniversal('choix_paiement', this.choix_paiement)
+        this.defaultPaiement()
+      }
+    },
+
     //afficher les cases à cocher
     selectionner() {
       this.selection = 1;
     },
 
     //ajout des valeurs dans checks
-    checkbox(id) {},
+    checkbox(id) { },
 
     //fermer les cases à cocher
     deselectionner() {
@@ -660,7 +600,7 @@ export default {
     },
 
     //ajout des cases
-    checkbox(id) {},
+    checkbox(id) { },
 
     //modal d'exportation en excel
     exp() {
@@ -831,19 +771,26 @@ export default {
   },
 
   mounted() {
-    this.refresh();
-    this.recupClient();
-    this.users = this.$auth.$state.user.roles;
-    this.compagny = localStorage.getItem("auth.company_id");
-    this.role = localStorage.getItem("auth.roles");
+      // await this.exp()
+        this.refresh()
+        this.recupClient()
+        this.defaultActeur()
+        this.defaultMontant()
+        this.defaultRest()
+        this.defaultPaiement()
+        this.users = this.$auth.$state.user.roles;
+        this.compagny = localStorage.getItem('auth.company_id');
+        this.role = localStorage.getItem('auth.roles')
+        // console.log(this.$auth)
   },
 };
 </script>
   
-  <style scoped>
+<style scoped>
 .nav {
   overflow: auto;
 }
+
 .client-info {
   margin-top: -10%;
 }
@@ -874,19 +821,23 @@ export default {
   .navbar {
     display: none !important;
   }
+
   .app-main__outer {
     display: none !important;
   }
+
   .imprim {
     display: block;
     padding: 1%;
   }
+
   /* nav, .trait, .other_page{
       display: none !important;
     } */
   footer {
     display: none !important;
   }
+
   @page {
     margin-left: 0.5in;
     margin-right: 0.5in;
@@ -894,11 +845,13 @@ export default {
     margin-bottom: 0;
   }
 }
+
 .fa {
   margin: 0 5px;
   font-size: 18px;
   cursor: pointer;
 }
+
 .table {
   margin-top: 2%;
   text-align: center;
@@ -912,6 +865,7 @@ thead tr {
 tbody tr:last-of-type {
   border-bottom: 2px solid rgb(140, 140, 250);
 }
+
 .action {
   display: flex;
 }
@@ -933,25 +887,26 @@ tbody tr:last-of-type {
     7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   outline: none;
 }
+
 .btn-3 {
   background: rgb(0, 172, 238);
-  background: linear-gradient(
-    0deg,
-    rgba(0, 172, 238, 1) 0%,
-    rgba(2, 126, 251, 1) 100%
-  );
+  background: linear-gradient(0deg,
+      rgba(0, 172, 238, 1) 0%,
+      rgba(2, 126, 251, 1) 100%);
   width: 180px;
   height: 40px;
   line-height: 42px;
   padding: 0;
   border: none;
 }
+
 .btn-3 span {
   position: relative;
   display: block;
   width: 100%;
   height: 100%;
 }
+
 .btn-3:before,
 .btn-3:after {
   position: absolute;
@@ -961,27 +916,34 @@ tbody tr:last-of-type {
   background: rgba(2, 126, 251, 1);
   transition: all 0.3s ease;
 }
+
 .btn-3:before {
   height: 0%;
   width: 2px;
 }
+
 .btn-3:after {
   width: 0%;
   height: 2px;
 }
+
 .btn-3:hover {
   background: transparent;
   box-shadow: none;
 }
+
 .btn-3:hover:before {
   height: 100%;
 }
+
 .btn-3:hover:after {
   width: 100%;
 }
+
 .btn-3 span:hover {
   color: rgba(2, 126, 251, 1);
 }
+
 .btn-3 span:before,
 .btn-3 span:after {
   position: absolute;
@@ -991,17 +953,21 @@ tbody tr:last-of-type {
   background: rgba(2, 126, 251, 1);
   transition: all 0.3s ease;
 }
+
 .btn-3 span:before {
   width: 2px;
   height: 0%;
 }
+
 .btn-3 span:after {
   width: 0%;
   height: 2px;
 }
+
 .btn-3 span:hover:before {
   height: 100%;
 }
+
 .btn-3 span:hover:after {
   width: 100%;
 }
@@ -1021,21 +987,26 @@ tbody tr:last-of-type {
   list-style: none;
   text-align: center;
 }
+
 #menu-demo2 li {
   display: inline-block;
   position: relative;
   border-radius: 8px 8px 0 0;
 }
+
 #menu-demo2 ul li {
   display: inherit;
   border-radius: 0;
 }
+
 #menu-demo2 ul li:hover {
   border-radius: 0;
 }
+
 #menu-demo2 ul li:last-child {
   border-radius: 0 0 8px 8px;
 }
+
 #menu-demo2 ul {
   position: absolute;
   z-index: 1000;
@@ -1047,6 +1018,7 @@ tbody tr:last-of-type {
   -webkit-transition: 0.8s all 0.3s;
   transition: 0.8s all 0.3s;
 }
+
 #menu-demo2 li:hover ul {
   max-height: 15em;
 }
@@ -1061,11 +1033,13 @@ background-image:linear-gradient(to bottom, #CFFF6A 0%, #677F35 100%);
 #menu-demo2 li:last-child li {
   background: #677f35;
 }
+
 /* background des liens menus et sous menus au survol */
 #menu-demo2 li:last-child:hover,
 #menu-demo2 li:last-child li:hover {
   background: #cfff6a;
 }
+
 /* les a href */
 #menu-demo2 a {
   text-decoration: none;
@@ -1074,13 +1048,16 @@ background-image:linear-gradient(to bottom, #CFFF6A 0%, #677F35 100%);
   color: #fff;
   font-family: arial;
 }
+
 #menu-demo2 ul a {
   padding: 8px 0;
 }
+
 #menu-demo2 li:hover li a {
   color: #fff;
   text-transform: inherit;
 }
+
 #menu-demo2 li:hover a,
 #menu-demo2 li li:hover a {
   color: #000;
@@ -1092,6 +1069,7 @@ background-image:linear-gradient(to bottom, #CFFF6A 0%, #677F35 100%);
     font-size: 13px;
     white-space: nowrap;
   }
+
   table tbody tr td {
     padding-left: 10px;
     padding-right: 10px;

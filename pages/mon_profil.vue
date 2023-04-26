@@ -341,6 +341,10 @@ tbody tr:last-of-type {
 @media screen and (max-width: 800px) {
   .img {
     display: none;
-  }
+}
+
+.name_side{
+    display: none;
+}
 }
 </style>

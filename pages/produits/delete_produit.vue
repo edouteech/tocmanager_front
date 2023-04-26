@@ -54,7 +54,7 @@
           </tbody>
         </table>
         <p class="text-center">
-          <strong>{{ total }} produits au total </strong>
+          <strong>{{ total }} produit(s) au total </strong>
         </p>
         <hr class="text-primary" />
       </div>

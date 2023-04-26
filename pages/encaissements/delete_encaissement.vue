@@ -20,10 +20,10 @@
         <table class="table table-hover">
           <thead>
             <tr class="table-success">
-              <th>Dates d'enregistrement</th>
-              <th>Montants</th>
-              <th>Clients concernés</th>
-              <th>Actions</th>
+              <th>DATES</th>
+              <th>MONTANTS</th>
+              <th>CLIENTS</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
