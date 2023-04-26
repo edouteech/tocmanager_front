@@ -7,48 +7,49 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <h4>Modifier les informations de cette catégorie</h4><hr>
-      <div
+      <div class="row">
+        <div class="col-md-4">
+          <h4>Modifier les informations</h4>
+        </div>
+        <div class="col-md-8 d-flex justify-content-end">
+          <NuxtLink to="/categorie/list_categorie">
+            <button class="btn btn-dark py-2 px-3">
+              <b>LISTE</b>
+            </button>
+          </NuxtLink>
+        </div>
+      </div>
+      <hr />
+      <!-- <div
         class="alert alert-danger justify-content-center"
         role="alert"
         v-if="error"
       >
         {{ error }}
-      </div>
-      <form action="">
-        <div class="form-group col-md-6">
+      </div> -->
+      <form action="" class="col-md-6 mx-auto">
+        <div class="form-group ">
           <label class="title">Entrer le nom de la catégorie </label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="form.name"
-            autocomplete="off"
-            required
-            placeholder="Pillules"
-          />
+          <input type="text" class="form-control" v-model="form.name" autocomplete="off" required
+            placeholder="Pillules" />
         </div>
-        <div class="form-group col-md-6">
+        <div class="alert alert-danger justify-content-center" role="alert" v-if="errors">
+          {{ errors.name }}
+        </div>
+        <div class="form-group ">
           <div class="form-group">
             <label class="title">Catégorie parente</label>
             <select class="form-control" v-model="form.parent_id" required>
               <option disabled value="">Choisissez...</option>
-              <option
-                v-for="(categorie, i) in categories"
-                :key="i"
-                :value="categorie.id"
-              >
+              <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">
                 {{ categorie.name }}
               </option>
             </select>
           </div>
         </div>
 
-        <button
-          type="submit"
-          class="btn btn-outline-success col-md-6 p-3"
-          v-on:click.prevent="submit()"
-        >
-          Modifier
+        <button type="submit" class="btn btn-outline-success col-md-12 p-3" v-on:click.prevent="submit()">
+          <b>MODIFIER</b>
         </button>
       </form>
     </div>
@@ -79,6 +80,7 @@ export default {
       error: null,
       error_message: "",
       error_champ: [],
+      errors: null,
     };
   },
 
@@ -118,7 +120,9 @@ export default {
           } else {
             this.error = response.data.message;
             this.errors = response.data.data;
-            // this.$router.push({path:'/categorie/add_client'});
+            this.$toast.error(this.error, {
+              icon: "fa fa-times-circle",
+            });
           }
         });
     },
@@ -151,18 +155,21 @@ form {
 
 .title {
   margin: 1% 0;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .btn {
   margin-top: 5%;
 }
+
 .app-main__outer {
   overflow: none;
 }
 
-input {
+/* input {
   border: none;
   outline: none;
   border-bottom: 2px solid #605050;
-}
+} */
 </style>

@@ -1,23 +1,17 @@
 <template>
   <div class="modal-overlay">
-    <div class="modaler" @click.stop>
-      <div
-        class="alert alert-danger justify-content-center"
-        role="alert"
-        v-if="error"
-      >
-        {{ error }}
+    <div class="modaler my-auto" @click.stop @click="$emit('close-modal')">
+      <div class="close d-flex justify-content-end" @click="$emit('close-modal')">
+        <i class="fa fa-times-circle" aria-hidden="true"></i>
       </div>
       <p>
         Etes vous sur de vouloir supprimer définitivement cette catégorie ???
       </p>
-      <div class="d-flex">
+      <hr>
+      <div class="d-flex my-4">
         <button class="btn btn-outline-danger mx-auto" @click="supCategorie(infos)">Oui</button>
         <button class="btn btn-outline-success mx-auto" @click="$emit('close-modal')">Non</button>
       </div>
-    </div>
-    <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>
@@ -51,6 +45,9 @@ export default {
             this.$emit("close-modal");
           } else {
             this.error = response.data.message;
+                        this.$toast.error(this.error, {
+                            icon: "fa fa-times-circle",
+                        });
           }
         });
     },
@@ -59,7 +56,6 @@ export default {
 </script>
 
 <style scoped>
-
 .modal-overlay {
   z-index: 999;
   position: fixed;
@@ -71,28 +67,29 @@ export default {
   justify-content: center;
   background-color: rgba(239, 239, 239, 0.803);
 }
-
 .modaler {
   text-align: center;
-  color: #fff;
-  background-color: rgb(46, 46, 46);
-  height: max-content;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid red;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   width: 600px;
-  margin-top: 12%;
-  border-radius: 15px;
+  border-radius: 5px;
   padding: 50px 20px;
 }
 
 
 .close {
-  margin: 12% 0 0 16px;
   cursor: pointer;
 }
 
-.close-img {
-  width: 25px;
+.close i {
+  font-size: 22px;
+  color: rgb(166, 166, 166);
 }
 
+.close i:hover {
+  color: rgb(0, 0, 0);
+}
 .check {
   width: 150px;
 }
@@ -108,6 +105,4 @@ p {
   font-weight: bold;
   margin: 20px 5px;
 }
-
-
 </style>

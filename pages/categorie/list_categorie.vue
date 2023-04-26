@@ -7,137 +7,83 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <h4>Liste des catégories</h4>
-      <hr />
-      <div class="d-flex">
+      <div class="row">
         <div class="col-md-10">
-          <form class="d-flex col-md-7" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="recherche..."
-              v-model="element_search"
-              @input="search()"
-              aria-label="Search"
-            />
-            <button
-              class="btn btn-outline-success btn_recherche"
-              type="submit"
-              @click.prevent="search()"
-            >
-              <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
+          <h4>Liste des catégories</h4>
+        </div>
+        <div class="col-md-2 d-flex justify-content-end" v-for="(user, i) in users" :key="i">
+          <button class="btn btn-info py-2" @click.prevent="add()"
+            v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <b>AJOUTER</b>
+          </button>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-md-6">
+          <form role="search">
+            <label class="search-input">
+              <i class="fa fa-search"></i>
+              <input class="form-control me-2" type="search" placeholder="Recherche..." v-model="element_search"
+                @input="search()" aria-label="Search">
+            </label>
           </form>
         </div>
 
-        <NuxtLink
-          to="/categorie/add_categorie"
-          v-for="(user, i) in users"
-          :key="i"
-          class="web-btn"
-          ><button
-            class="custom-btn btn-3"
-            v-if="
-              compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1
-            "
-          >
-            <span>Ajouter nouvelle catégorie</span>
-          </button></NuxtLink
-        >
+        <div class="col-md-6 d-flex justify-content-end mt-3 btn-mobile" v-for="(user, i) in users" :key="i">
+          <div v-if="selection == 0">
+            <button class="btn btn-outline-info" @click.prevent="selectionner()">
+              Sélectionner
+            </button>
+          </div>
+          <div v-else>
+            <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+              Annuler
+            </button>
+          </div>
+          <button class="btn btn-outline-danger" v-if="
+            compagny == user.pivot.compagnie_id &&
+            user.pivot.droits_delete == 1 &&
+            selection != 0" @click.prevent="multipleSup()">
+            <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
 
-      <div class="mobile-btn my-4">
-        <NuxtLink
-          to="/categorie/add_categorie"
-          v-for="(user, i) in users"
-          :key="i"
-          ><button
-            class="custom-btn btn-3"
-            v-if="
-              compagny == user.pivot.compagnie_id && user.pivot.droits_add == 1
-            "
-          >
-            <span>Ajouter nouvelle catégorie</span>
-          </button></NuxtLink
-        >
-      </div>
-      <div
-        class="alert alert-danger justify-content-center"
-        role="alert"
-        v-if="error"
-      >
-        {{ error }}
-      </div>
-      <!-- <div class="d-flex justify-content-end" v-for="(user, i) in users" :key="i">
-            <div v-if="selection == 0">
-              <button class="btn btn-outline-info" @click.prevent="selectionner()">
-                Sélectionner
-              </button>
-            </div>
-            <div v-else>
-              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
-                Annuler
-              </button>
-            </div>
-            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
-              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
-            </button>
-          </div> -->
-      <div
-        class="table-responsive search_result"
-        v-if="this.element_search != ''"
-      >
+      <div class="table-responsive search_result" v-if="this.element_search != ''">
         <table class="table table-hover">
           <thead>
-            <tr class="table-primary">
+            <tr class="table">
               <th v-if="selection != 0"></th>
-              <th>Noms de Catégorie</th>
-              <th>Catégories parentes</th>
-              <th>Actions</th>
+              <th>CATEGORIES</th>
+              <th>CATEGORIES PARENTES</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(result, j) in results" :key="j">
               <td v-if="selection != 0">
                 <div class="form-check">
-                  <input
-                    type="checkbox"
-                    v-model="checks"
-                    @change="checkbox(result.id)"
-                    :value="result.id"
-                  />
+                  <input type="checkbox" v-model="checks" @change="checkbox(result.id)" :value="result.id" />
                 </div>
               </td>
               <td>{{ result.name }}</td>
               <td v-if="result.parent != null">{{ result.parent.name }}</td>
               <td v-else>---</td>
               <td>
-                <div
-                  class="action d-flex aligns-items-center justify-content-center"
-                  v-for="(user, i) in users"
-                  :key="i"
-                >
-                  <NuxtLink
-                    :to="'/categorie/voir' + result.id"
-                    class="text-black"
-                    v-if="compagny == user.pivot.compagnie_id"
-                    ><i class="fa fa-info-circle" aria-hidden="true"></i
-                  ></NuxtLink>
-                  <NuxtLink
-                    :to="'/categorie/' + result.id"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_edition == 1
-                    "
-                    ><i class="fa fa-pencil-square-o" aria-hidden="true"></i
-                  ></NuxtLink>
-                  <div
-                    @click="deleteCategorie(result.id)"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_delete == 1
-                    "
-                  >
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
+                  <NuxtLink :to="'/categorie/voir' + result.id" class="text-black"
+                    v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                  </NuxtLink>
+                  <NuxtLink :to="'/categorie/' + result.id" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_edition == 1
+                  "><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteCategorie(result.id)" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_delete == 1
+                  ">
                     <i class="fa fa-trash-o text-danger" aria-hidden="true"></i>
                   </div>
                 </div>
@@ -151,23 +97,18 @@
       <div class="table-responsive">
         <table class="table table-hover" v-if="this.element_search == ''">
           <thead>
-            <tr class="table-primary">
+            <tr class="table">
               <th v-if="selection != 0"></th>
-              <th>Noms de Catégorie</th>
-              <th>Catégories parentes</th>
-              <th>Actions</th>
+              <th>CATEGORIES</th>
+              <th>CATEGORIES PARENTES</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(categorie, i) in categories" :key="i">
               <td v-if="selection != 0">
                 <div class="form-check">
-                  <input
-                    type="checkbox"
-                    v-model="checks"
-                    @change="checkbox(categorie.id)"
-                    :value="categorie.id"
-                  />
+                  <input type="checkbox" v-model="checks" @change="checkbox(categorie.id)" :value="categorie.id" />
                 </div>
               </td>
               <td>{{ categorie.name }}</td>
@@ -176,32 +117,18 @@
               </td>
               <td v-else>---</td>
               <td>
-                <div
-                  class="action d-flex aligns-items-center justify-content-center"
-                  v-for="(user, i) in users"
-                  :key="i"
-                >
-                  <NuxtLink
-                    :to="'/categorie/voir/' + categorie.id"
-                    class="text-black"
-                    v-if="compagny == user.pivot.compagnie_id"
-                    ><i class="fa fa-info-circle" aria-hidden="true"></i
-                  ></NuxtLink>
-                  <NuxtLink
-                    :to="'/categorie/' + categorie.id"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_edition == 1
-                    "
-                    ><i class="fa fa-pencil-square-o" aria-hidden="true"></i
-                  ></NuxtLink>
-                  <div
-                    @click="deleteCategorie(categorie.id)"
-                    v-if="
-                      compagny == user.pivot.compagnie_id &&
-                      user.pivot.droits_delete == 1
-                    "
-                  >
+                <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
+                  <NuxtLink :to="'/categorie/voir/' + categorie.id" class="text-black"
+                    v-if="compagny == user.pivot.compagnie_id"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                  </NuxtLink>
+                  <NuxtLink :to="'/categorie/' + categorie.id" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_edition == 1
+                  "><i class="fa fa-pencil-square-o" aria-hidden="true"></i></NuxtLink>
+                  <div @click="deleteCategorie(categorie.id)" v-if="
+                    compagny == user.pivot.compagnie_id &&
+                    user.pivot.droits_delete == 1
+                  ">
                     <i class="fa fa-trash-o text-danger" aria-hidden="true"></i>
                   </div>
                 </div>
@@ -214,8 +141,49 @@
         </p>
         <hr class="text-primary" />
       </div>
-      <br /><br />
-      <form class="btn-group justify-content-end" role="search">
+
+      <div class="d-flex col-md-2 my-4 mx-auto">
+        <label class="title my-2">Affichage :</label>
+        <form action="">
+          <div class="nombre">
+            <!-- -->
+            <select class="form-control" v-model="form.nombre" required @click.prevent="refresh()">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <nav class="d-flex justify-content-center nav" aria-label="Page navigation example " v-if="res_data != null">
+        <ul class="pagination">
+          <li :class="
+            res_data.prev_page_url == null
+              ? 'page-item disabled'
+              : 'page-item'
+          ">
+            <a class="page-link" @click="refresh(res_data.current_page - 1)"><i class="fa fa-chevron-left"
+                aria-hidden="true"></i></a>
+          </li>
+          <li class="page-item" v-for="(link, index) in res_data.links" :key="index">
+            <a :class="link.active == true ? 'page-link active' : 'page-link'" href="#" @click="refresh(link.label)">{{
+              link.label }}</a>
+          </li>
+
+          <li :class="
+            res_data.next_page_url == null
+              ? 'page-item disabled'
+              : 'page-item'
+          ">
+            <a class="page-link" @click="refresh(res_data.current_page + 1)"><i class="fa fa-chevron-right"
+                aria-hidden="true"></i></a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="col-md-10 mx-auto section">
+      <form class="btn-group ">
         <input type="file" id="file" ref="file" @change="handleFileUpload()" />
         <button
           class="btn btn-outline-success web-btn"
@@ -270,86 +238,16 @@
           </button>
         </div>
       </form>
-      <br />
-      <div class="d-flex col-md-2 my-4">
-        <label class="title my-2">Affichage :</label>
-        <form action="">
-          <div class="nombre">
-            <!-- -->
-            <select
-              class="form-control"
-              v-model="form.nombre"
-              required
-              @click.prevent="refresh()"
-            >
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-          </div>
-        </form>
       </div>
-      <nav
-        class="d-flex nav"
-        aria-label="Page navigation example "
-        v-if="res_data != null"
-      >
-        <ul class="pagination">
-          <li
-            :class="
-              res_data.prev_page_url == null
-                ? 'page-item disabled'
-                : 'page-item'
-            "
-          >
-            <a class="page-link" @click="refresh(res_data.current_page - 1)"
-              >Précédent</a
-            >
-          </li>
-          <li
-            class="page-item"
-            v-for="(link, index) in res_data.links"
-            :key="index"
-          >
-            <a
-              :class="link.active == true ? 'page-link active' : 'page-link'"
-              href="#"
-              @click="refresh(link.label)"
-              >{{ link.label }}</a
-            >
-          </li>
-
-          <li
-            :class="
-              res_data.next_page_url == null
-                ? 'page-item disabled'
-                : 'page-item'
-            "
-          >
-            <a class="page-link" @click="refresh(res_data.current_page + 1)"
-              >Suivant</a
-            >
-          </li>
-        </ul>
-      </nav>
     </div>
-    <br />
+
     <!-- <voirCategorie :nom= 'identifiant1' :parent= 'identifiant2' :stock= 'identifiant3' :valorisation= 'identifiant4' v-show="showModal" @close-modal="showModal = false"/>   -->
-    <deleteModal
-      :identifiant="key"
-      v-show="showModalDelete"
-      @close-modal="showModalDelete = false"
-      @conf="setMessage"
-    />
+    <deleteModal :identifiant="key" v-show="showModalDelete" @close-modal="showModalDelete = false" @conf="setMessage" />
     <exportModal v-show="exportModal" @close-modal="exportModal = false" />
     <pdfModal v-show="pdfModal" @close-modal="pdfModal = false" />
-    <deleteMultipleModal
-      :ids="checks"
-      v-show="showModalMultipleDelete"
-      @close-modal="showModalMultipleDelete = false"
-      @conf="setMessage"
-    />
+    <deleteMultipleModal :ids="checks" v-show="showModalMultipleDelete" @close-modal="showModalMultipleDelete = false"
+      @conf="setMessage" />
+    <addCategorieModal v-show="addModal" @close-modal="addModal = false" @conf="setMessage" />
   </div>
 </template>
 
@@ -361,6 +259,7 @@ import voirCategorie from "./voir_categorie.vue";
 import Sidebar from "../sidebar.vue";
 import Userinfo from "../user_info.vue";
 import deleteMultipleModal from "./deleteMultipleModal.vue";
+import addCategorieModal from './addCategorieModal.vue'
 export default {
   layout: "empty",
   auth: true,
@@ -372,6 +271,7 @@ export default {
     exportModal,
     pdfModal,
     deleteMultipleModal,
+    addCategorieModal
   },
 
   data() {
@@ -404,10 +304,16 @@ export default {
       checks: [],
       selection: 0,
       showModalMultipleDelete: false,
+      addModal: false
     };
   },
 
   methods: {
+    //modal d'ajout
+    add() {
+      this.addModal = true
+    },
+
     //modal d'exportation en excel
     exp() {
       this.exportModal = true;
@@ -453,6 +359,9 @@ export default {
             this.refresh();
           } else {
             this.error = "Echec de l'importation. Veuillez réessayer !!!";
+            this.$toast.error(this.error, {
+              icon: "fa fa-times-circle",
+            });
           }
         });
     },
@@ -477,9 +386,9 @@ export default {
     },
 
     //ajout des valeurs dans checks
-    checkbox(id) {},
+    checkbox(id) { },
 
-    
+
     //modal de confirmation pour suppression
     deleteCategorie(id) {
       this.showModalDelete = true;
@@ -521,6 +430,44 @@ export default {
 </script>
 
 <style scoped>
+.section {
+  border: 1px solid rgb(255, 255, 255);
+  position: relative;
+  z-index: 1;
+  padding: 50px 20px;
+  margin: 50px 0;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+
+}
+
+.search-input {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.search-input input {
+  flex: 1 1 auto;
+  width: 1%;
+  border: none;
+  outline: none;
+  padding-left: 0.5rem;
+}
+
+.search-input i {
+  margin-right: 0.5rem;
+  color: #ced4da;
+}
+
 .nav {
   overflow: auto;
 }
@@ -528,6 +475,7 @@ export default {
 .btn-group {
   display: flex;
 }
+
 .nombre {
   margin: 0;
 }
@@ -542,15 +490,23 @@ export default {
   font-size: 22px;
   cursor: pointer;
 }
+
 .table {
   margin-top: 2%;
   text-align: center;
+}
+
+.table th {
+  padding: 20px 0;
 }
 
 thead tr {
   background-color: transparent;
 }
 
+tbody td {
+  padding: 15px 0;
+}
 tbody tr:last-of-type {
   border-bottom: 2px solid rgb(140, 140, 250);
 }
@@ -576,25 +532,26 @@ tbody tr:last-of-type {
     7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   outline: none;
 }
+
 .btn-3 {
   background: rgb(0, 172, 238);
-  background: linear-gradient(
-    0deg,
-    rgba(0, 172, 238, 1) 0%,
-    rgba(2, 126, 251, 1) 100%
-  );
+  background: linear-gradient(0deg,
+      rgba(0, 172, 238, 1) 0%,
+      rgba(2, 126, 251, 1) 100%);
   width: 200px;
   height: 40px;
   line-height: 42px;
   padding: 0;
   border: none;
 }
+
 .btn-3 span {
   position: relative;
   display: block;
   width: 100%;
   height: 100%;
 }
+
 .btn-3:before,
 .btn-3:after {
   position: absolute;
@@ -604,27 +561,34 @@ tbody tr:last-of-type {
   background: rgba(2, 126, 251, 1);
   transition: all 0.3s ease;
 }
+
 .btn-3:before {
   height: 0%;
   width: 2px;
 }
+
 .btn-3:after {
   width: 0%;
   height: 2px;
 }
+
 .btn-3:hover {
   background: transparent;
   box-shadow: none;
 }
+
 .btn-3:hover:before {
   height: 100%;
 }
+
 .btn-3:hover:after {
   width: 100%;
 }
+
 .btn-3 span:hover {
   color: rgba(2, 126, 251, 1);
 }
+
 .btn-3 span:before,
 .btn-3 span:after {
   position: absolute;
@@ -634,17 +598,21 @@ tbody tr:last-of-type {
   background: rgba(2, 126, 251, 1);
   transition: all 0.3s ease;
 }
+
 .btn-3 span:before {
   width: 2px;
   height: 0%;
 }
+
 .btn-3 span:after {
   width: 0%;
   height: 2px;
 }
+
 .btn-3 span:hover:before {
   height: 100%;
 }
+
 .btn-3 span:hover:after {
   width: 100%;
 }
@@ -658,6 +626,18 @@ tbody tr:last-of-type {
     display:none;
   } */
 
+  .btn-mobile {
+    margin: 30px 0;
+  }
+
+
+  .table th {
+    padding: 20px;
+  }
+
+  tbody td {
+    padding: 15px;
+  }
   .mobile-btn {
     display: block;
   }

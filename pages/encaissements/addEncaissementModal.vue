@@ -78,7 +78,7 @@
             class="btn btn-outline-primary col-md-12 p-3"
             v-on:click.prevent="submit()"
           >
-            ENREGISTRER
+            <b>ENREGISTRER</b>
           </button>
         </form>
         

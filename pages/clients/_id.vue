@@ -7,16 +7,9 @@
     </nav>
 
     <div class="app-main__outer py-5 px-2">
-      <!-- <div
-        class="alert alert-danger justify-content-center"
-        role="alert"
-        v-if="error"
-      >
-        {{ error }}
-      </div> -->
       <div class="row">
         <div class="col-md-4">
-          <h4>Modifier les informations de ce client</h4>
+          <h4>Modifier les informations</h4>
         </div>
         <div class="col-md-8 d-flex justify-content-end">
           <NuxtLink to="/clients/list_client">
@@ -84,7 +77,7 @@
         </div>
 
         <button type="submit" class="btn btn-outline-success p-3 col-md-12" v-on:click.prevent="submit()">
-          MODIFIER
+          <b>MODIFIER</b>
         </button>
       </form>
     </div>

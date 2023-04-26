@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>
+    <div class="modaler my-auto" @click.stop>
       <h6 class="text-center">Télécharger la liste des catégories !</h6>
       <form action="" class="my-5">
         <p>Choississez ou non un intervalle de dates</p>
@@ -8,16 +8,18 @@
           <input class="form-control" type="date" v-model="form.date_debut" />
           <input class="form-control" type="date" v-model="form.date_fin" />
         </div>
-        <button class="btn btn-outline-success" @click.prevent="pdf()">
-          Télécharger
-        </button>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-outline-success" @click.prevent="pdf()">
+            Télécharger
+          </button>
+        </div>
       </form>
     </div>
   </div>
 </template>
   
   
-  <script>
+<script>
 export default {
   name: "pdfModal",
   data() {
@@ -61,7 +63,7 @@ export default {
 };
 </script>
   
-  <style scoped>
+<style scoped>
 .modal-overlay {
   z-index: 999;
   position: fixed;
@@ -76,15 +78,12 @@ export default {
 }
 
 .modaler {
-  background-color: rgb(1, 0, 0);
-  height: 400px;
-  width: 600px;
-  margin: auto;
-  padding: 60px 0;
-  border-radius: 20px;
-  color: #fff;
-  padding: 5px 15px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 50px;
 }
+
 .close {
   margin: 10% 0 0 16px;
   cursor: pointer;
@@ -128,6 +127,7 @@ p {
     width: 45%;
   }
 }
+
 .range {
   margin: 30px 0;
 }

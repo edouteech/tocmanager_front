@@ -1,15 +1,13 @@
 <template>
-  <div class="modal-overlay">
-    <div class="modaler text-center py-5">
-      <div
-        class="alert alert-danger justify-content-center"
-        role="alert"
-        v-if="error"
-      >
-        {{ error }}
+  <div class="modal-overlay" @click="$emit('close-modal')">
+    <div class="modaler text-center my-auto" @click.stop>
+
+      <div class="close d-flex justify-content-end" @click="$emit('close-modal')">
+        <i class="fa fa-times-circle" aria-hidden="true"></i>
       </div>
-      <strong>Voulez vous supprimer ces factures ???</strong><br /><br />
-      <div class="d-flex">
+      <strong>Voulez vous supprimer ces factures ???</strong>
+      <hr>
+      <div class="d-flex my-4">
         <button class="btn btn-danger mx-auto" @click.prevent="sup()">
           Oui
         </button>
@@ -18,13 +16,10 @@
         </button>
       </div>
     </div>
-    <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="/images/fermer.png" alt="" />
-    </div>
   </div>
 </template>
   
-  <script>
+<script>
 export default {
   auth: true,
   props: ["ids"],
@@ -46,9 +41,14 @@ export default {
         .then((response) => {
           this.$emit("conf", { message: this.ids });
           if (response.data.status == "success") {
-            this.$emit("close-modal");
+            this.$toast("Suppression...", {
+              icon: "fa fa-check-circle",
+            });
           } else {
             this.error = response.data.message;
+            this.$toast.error(this.error, {
+              icon: "fa fa-times-circle",
+            });
           }
         });
     },
@@ -57,7 +57,7 @@ export default {
 </script>
   
   
-  <style scoped>
+<style scoped>
 .modal-overlay {
   z-index: 999;
   position: fixed;
@@ -72,21 +72,24 @@ export default {
 
 .modaler {
   background-color: rgb(197, 239, 251);
-  overflow: auto;
   width: 600px;
-  margin-top: 15%;
-  /* border-radius: 20px; */
-  height: 200px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   padding: 1%;
   box-shadow: 50px;
 }
+
 .close {
-  margin: 14% 0 0 16px;
   cursor: pointer;
 }
 
-.close-img {
-  width: 25px;
+.close i {
+  font-size: 22px;
+  color: rgb(166, 166, 166);
+}
+
+.close i:hover {
+  color: rgb(0, 0, 0);
 }
 
 .input-form .mode {
