@@ -24,9 +24,17 @@
             <NuxtLink to="/clients/delete_client"><div class="text-center"><i class="fa fa-folder fichier" aria-hidden="true"></i></div></NuxtLink>
             <div class="text-center text-fichier">Clients</div>
           </div>
-          <div class="col-md-1 bloc_fichier" v-if="compagny == compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
+          <div class="col-md-1 bloc_fichier" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
+            <NuxtLink to="/conges/delete_conge"><div class="text-center"><i class="fa fa-folder fichier" aria-hidden="true"></i></div></NuxtLink>
+            <div class="text-center text-fichier">Congés</div>
+          </div>
+          <div class="col-md-1 bloc_fichier" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
             <NuxtLink to="/decaissements/delete_decaissement"><div class="text-center"><i class="fa fa-folder fichier" aria-hidden="true"></i></div></NuxtLink>
             <div class="text-center text-fichier">Décaissements</div>
+          </div>
+          <div class="col-md-1 bloc_fichier" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
+            <NuxtLink to="/employes/delete_employe"><div class="text-center"><i class="fa fa-folder fichier" aria-hidden="true"></i></div></NuxtLink>
+            <div class="text-center text-fichier">Employés</div>
           </div>
           <div class="col-md-1 bloc_fichier" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_tresorerie == 1">
             <NuxtLink to="/encaissements/delete_encaissement"><div class="text-center"><i class="fa fa-folder fichier" aria-hidden="true"></i></div></NuxtLink>
@@ -35,6 +43,14 @@
           <div class="col-md-1 bloc_fichier" v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
             <NuxtLink to="/fournisseurs/delete_fournisseur"><div class="text-center"><i class="fa fa-folder fichier" aria-hidden="true"></i></div></NuxtLink>
             <div class="text-center text-fichier">Fournisseurs</div>
+          </div>
+          <div class="col-md-1 bloc_fichier" v-if="(compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1) || (compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1)">
+            <NuxtLink to="/paies/delete_paie"><div class="text-center"><i class="fa fa-folder fichier" aria-hidden="true"></i></div></NuxtLink>
+            <div class="text-center text-fichier">Paies</div>
+          </div>
+          <div class="col-md-1 bloc_fichier" v-if="(compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1) || (compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1)">
+            <NuxtLink to="/prets/delete_pret"><div class="text-center"><i class="fa fa-folder fichier" aria-hidden="true"></i></div></NuxtLink>
+            <div class="text-center text-fichier">Prêts</div>
           </div>
           <div class="col-md-1 bloc_fichier" v-if="(compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1) || (compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1)">
             <NuxtLink to="/produits/delete_produit"><div class="text-center"><i class="fa fa-folder fichier" aria-hidden="true"></i></div></NuxtLink>

@@ -43,29 +43,45 @@
           </button></NuxtLink> -->
 
         <div class="col-md-6 d-flex justify-content-end mt-2 btn-mobile" v-for="(user, i) in users" :key="i">
-          <div v-if="selection == 0">
-            <button class="btn btn-outline-info" @click.prevent="selectionner()">
-              Sélectionner
+          <div v-if="choixNumber == 0">
+              <button class="btn btn-outline-success mx-2" @click.prevent="choisir()">
+                A afficher
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-success mx-2" @click.prevent="fin()">
+                Enregistrer
+              </button>
+            </div>
+
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <div v-if="defaultNum != 0">
+              <button class="btn btn-outline-dark mx-3" @click.prevent="chooseDefaultClient()">
+                Choisir commme fournisseur par défaut
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
             </button>
-          </div>
-          <div v-else>
-            <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
-              Annuler
-            </button>
-          </div>
-          <div v-if="defaultNum != 0">
-            <button class="btn btn-outline-dark mx-3" @click.prevent="chooseDefaultClient()">
-              Choisir commme fournisseur par défaut
-            </button>
-          </div>
-          <button class="btn btn-outline-danger" v-if="
-            compagny == user.pivot.compagnie_id &&
-            user.pivot.droits_delete == 1 &&
-            selection != 0
-          " @click.prevent="multipleSup()">
-            <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
-          </button>
         </div>
+          <div class="row col-md-12 mt-2" v-if="choixNumber != 0">
+            <div class="col-md-2"><input type="checkbox" checked/>Noms</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_phone" @change="choicePhone()"/>Téléphone</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_email" @change="choiceEmail()"/>Emails</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_balance" @change="choiceBalance()"/>Balance</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_nature" @change="choiceNature()"/>Nature</div>
+            <!-- <div><input type="checkbox" v-model="choix_name"/></div>
+            <div><input type="checkbox" v-model="choix_name"/></div> -->
+          </div>
       </div>
 
       <!-- <div class="mobile-btn mt-4">
@@ -84,10 +100,10 @@
             <tr class="table">
               <th v-if="selection != 0"></th>
               <th>NOMS</th>
-              <th>TELEPHONE</th>
-              <th>EMAILS</th>
-              <th>BALANCE</th>
-              <th>NATURE</th>
+              <th v-if="choix_phone == 1">TELEPHONE</th>
+              <th v-if="choix_email == 1">EMAILS</th>
+              <th v-if="choix_balance == 1">BALANCE</th>
+              <th v-if="choix_nature == 1">NATURE</th>
               <th>ACTIONS</th>
             </tr>
           </thead>
@@ -104,10 +120,10 @@
                     aria-hidden="true" title="Démettre du fournisseur par défaut"
                     @click.prevent="supDefaultClient(result.id)"></i></span>
               </td>
-              <td>{{ result.phone }}</td>
-              <td>{{ result.email }}</td>
-              <td>{{ result.balance }}</td>
-              <td>{{ result.nature }}</td>
+              <td v-if="choix_phone == 1">{{ result.phone }}</td>
+              <td v-if="choix_email == 1">{{ result.email }}</td>
+              <td v-if="choix_balance == 1">{{ result.balance }}</td>
+              <td v-if="choix_nature == 1">{{ result.nature }}</td>
               <td>
                 <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                   <div @click="voirFournisseur(result.id)" v-if="compagny == user.pivot.compagnie_id">
@@ -147,10 +163,10 @@
             <tr class="table">
               <th v-if="selection != 0"></th>
               <th>NOMS</th>
-              <th>TELEPHONE</th>
-              <th>EMAILS</th>
-              <th>BALANCE</th>
-              <th>NATURE</th>
+              <th v-if="choix_phone == 1">TELEPHONE</th>
+              <th v-if="choix_email == 1">EMAILS</th>
+              <th v-if="choix_balance == 1">BALANCE</th>
+              <th v-if="choix_nature == 1">NATURE</th>
               <th>ACTIONS</th>
             </tr>
           </thead>
@@ -168,10 +184,10 @@
                     aria-hidden="true" title="Démettre du fournisseur par défaut"
                     @click.prevent="supDefaultClient(fournisseur.id)"></i></span>
               </td>
-              <td>{{ fournisseur.phone }}</td>
-              <td>{{ fournisseur.email }}</td>
-              <td>{{ fournisseur.balance }}</td>
-              <td>{{ fournisseur.nature }}</td>
+              <td v-if="choix_phone == 1">{{ fournisseur.phone }}</td>
+              <td v-if="choix_email == 1">{{ fournisseur.email }}</td>
+              <td v-if="choix_balance == 1">{{ fournisseur.balance }}</td>
+              <td v-if="choix_nature == 1">{{ fournisseur.nature }}</td>
               <td>
                 <div class="action d-flex aligns-items-center justify-content-center" v-for="(user, i) in users" :key="i">
                   <div @click="voirFournisseur(fournisseur.id)" v-if="compagny == user.pivot.compagnie_id">
@@ -351,14 +367,24 @@ export default {
       selection: 0,
       showModalMultipleDelete: false,
       defaultNum: 0,
+      choixNumber: 0,
+      choix_name: '',
+      choix_phone: 1,
+      choix_email:  1,
+      choix_balance: 1,
+      choix_nature: 1,
       addModal : false
-    };
+    }
   },
-  async mounted() {
-    this.refresh();
-    this.users = this.$auth.$state.user.roles;
-    this.compagny = localStorage.getItem("auth.company_id");
-    this.role = localStorage.getItem("auth.roles");
+  async mounted () {
+      this.refresh()
+      this.defaultPhone()
+      this.defaultEmail()
+      this.defaultBalance()
+      this.defaultNature()
+      this.users = this.$auth.$state.user.roles;
+      this.compagny = localStorage.getItem('auth.company_id');
+      this.role = localStorage.getItem('auth.roles');
   },
 
   methods: {
@@ -367,6 +393,110 @@ export default {
     addSupplier() {
       this.addModal = true
     },
+
+
+    choisir(){
+      this.choixNumber = 1
+    },
+
+    fin(){
+      this.choixNumber = 0
+      // this.choice()
+    },
+    
+    defaultPhone(){
+        this.choix_phone = localStorage.getItem('auth.choix_phone')
+        if(localStorage.getItem('auth.choix_phone') == 1){
+          this.choix_phone = true
+        }
+        else{
+          this.choix_phone = false
+        }
+      },
+
+
+      choicePhone(){
+          if(this.choix_phone == true){
+            this.choix_phone = 1
+            this.$auth.$storage.setUniversal('choix_phone', this.choix_phone)
+            this.defaultPhone()
+          }
+          else{
+            this.choix_phone = 0
+            this.$auth.$storage.setUniversal('choix_phone', this.choix_phone)
+            this.defaultPhone()
+          }
+      },
+      
+      defaultEmail(){
+        this.choix_email = localStorage.getItem('auth.choix_email')
+        if(localStorage.getItem('auth.choix_email') == 1){
+          this.choix_email = true
+        }
+        else{
+          this.choix_email = false
+        }
+      },
+
+      choiceEmail(){
+          if(this.choix_email == true){
+            this.choix_email = 1
+            this.$auth.$storage.setUniversal('choix_email', this.choix_email)
+            this.defaultEmail()
+          }
+          else{
+            this.choix_email = 0
+            this.$auth.$storage.setUniversal('choix_email', this.choix_email)
+            this.defaultEmail()
+          }
+      },
+
+      
+      defaultBalance(){
+        this.choix_balance = localStorage.getItem('auth.choix_balance')
+        if(localStorage.getItem('auth.choix_balance') == 1){
+          this.choix_balance = true
+        }
+        else{
+          this.choix_balance = false
+        }
+      },
+      choiceBalance(){
+        if(this.choix_balance == true){
+            this.choix_balance = 1
+            this.$auth.$storage.setUniversal('choix_balance', this.choix_balance)
+            this.defaultBalance()
+          }
+          else{
+            this.choix_balance = 0
+            this.$auth.$storage.setUniversal('choix_balance', this.choix_balance)
+            this.defaultBalance()
+          }
+      },
+
+      
+      defaultNature(){
+        this.choix_nature = localStorage.getItem('auth.choix_nature')
+        if(localStorage.getItem('auth.choix_nature') == 1){
+          this.choix_nature = true
+        }
+        else{
+          this.choix_nature = false
+        }
+      },
+      choiceNature(){
+          if(this.choix_nature == true){
+            this.choix_nature = 1
+            this.$auth.$storage.setUniversal('choix_nature', this.choix_nature)
+            this.defaultNature()
+          }
+          else{
+            this.choix_nature = 0
+            this.$auth.$storage.setUniversal('choix_nature', this.choix_nature)
+            this.defaultNature()
+          }
+        
+      },
 
     //choix du fournisseur par défaut
     chooseDefaultClient() {

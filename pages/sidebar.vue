@@ -1,384 +1,214 @@
 <template>
-  <div>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
-      rel="stylesheet"
-    />
-    <button
-      class="btn btn-primary px-6"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasExample"
-      aria-controls="offcanvasExample"
-    >
-      <i class="fa fa-bars" aria-hidden="true"></i>
-    </button>
-
-    <div
-      class="offcanvas offcanvas-start"
-      tabindex="-1"
-      id="offcanvasExample"
-      aria-labelledby="offcanvasExampleLabel"
-    >
-      <div class="offcanvas-header">
-        <div class="logo_content">
-          <img
-            src="/images/logo.png"
-            class="logo_content"
-            alt="logo"
-            srcset=""
-          />
-        </div>
-        <hr />
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="offcanvas-body">
-        <ul class="nav_list" v-for="(user, i) in users" :key="i">
-          <div class="recherche">
-            <li v-if="compagny == user.pivot.compagnie_id">
-              <NuxtLink to="">
-                <i class="fa fa-search" aria-hidden="true"></i>
-                <input type="text" placeholder="Rechercher..." />
-              </NuxtLink>
-            </li>
-          </div>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_admin == 1
-            "
-          >
-            <NuxtLink to="/dashboard" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-th-large"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Tableau de bord</span
-                >
+<div>
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
+  <button class="btn btn-primary px-6" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+  </button>
+  
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <div class="logo_content">
+          <img src="/images/logo.png" class="logo_content" alt="logo" srcset="">
+      </div> 
+      <hr>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+          <ul class="nav_list" v-for="(user, i) in users" :key="i">
+              <div class="recherche">
+                <li v-if="compagny == user.pivot.compagnie_id">             
+                    <NuxtLink to="">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                        <input type="text" placeholder="Rechercher...">
+                    </NuxtLink>
+                </li>
               </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_stock == 1
-            "
-          >
-            <NuxtLink to="/achats/achat" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-shopping-cart"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Lancer un achat</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_ventes == 1
-            "
-          >
-            <NuxtLink to="/ventes/vente" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i class="fa fa-share-square-o" aria-hidden="true"></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Lancer une vente</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_ventes == 1
-            "
-          >
-            <NuxtLink to="/devis/list_devis" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i class="fa fa-files-o" aria-hidden="true"></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Liste des devis</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_ventes == 1
-            "
-          >
-            <NuxtLink to="/bons/list_bon" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i class="fa fa-files-o" aria-hidden="true"></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Liste des bons de commande</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_ventes == 1
-            "
-          >
-            <NuxtLink to="/ventes/list_vente" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-floppy-o"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Factures des ventes</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_stock == 1
-            "
-          >
-            <NuxtLink to="/achats/list_achat" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-floppy-o"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Factures des achats</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_ventes == 1
-            "
-          >
-            <NuxtLink to="/clients/list_client" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-list-ul"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Liste des Clients</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_stock == 1
-            "
-          >
-            <NuxtLink
-              to="/fournisseurs/list_fournisseur"
-              data-bs-dismiss="offcanvas"
-            >
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-list-ul"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Liste des Fournisseurs</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_tresorerie == 1
-            "
-          >
-            <NuxtLink
-              to="/encaissements/list_encaissement"
-              data-bs-dismiss="offcanvas"
-            >
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-credit-card-alt"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Encaissements</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_stock == 1
-            "
-          >
-            <NuxtLink
-              to="/decaissements/list_decaissement"
-              data-bs-dismiss="offcanvas"
-            >
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-credit-card-alt"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Décaissements</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              (compagny == user.pivot.compagnie_id &&
-                user.pivot.droits_ventes == 1) ||
-              (compagny == user.pivot.compagnie_id &&
-                user.pivot.droits_stock == 1)
-            "
-          >
-            <NuxtLink to="/produits/list_produit" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-cubes"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Liste des Produits</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              (compagny == user.pivot.compagnie_id &&
-                user.pivot.droits_ventes == 1) ||
-              (compagny == user.pivot.compagnie_id &&
-                user.pivot.droits_stock == 1)
-            "
-          >
-            <NuxtLink
-              to="/categorie/list_categorie"
-              data-bs-dismiss="offcanvas"
-            >
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-database"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Toutes les Catégories</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_admin == 1
-            "
-          >
-            <NuxtLink to="/update_compagnie" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-briefcase"
-                  aria-hidden="true "
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Ma compagnie</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_utilisateurs == 1
-            "
-          >
-            <NuxtLink to="/profils/profil" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-address-card-o"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Utilisateurs</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_delete == 1
-            "
-          >
-            <NuxtLink to="/corbeille" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-trash"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Corbeille</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-          <li
-            v-if="
-              compagny == user.pivot.compagnie_id &&
-              user.pivot.droits_admin == 1
-            "
-          >
-            <NuxtLink to="/renouvelerAbonnement" data-bs-dismiss="offcanvas">
-              <div class="rubrique" data-bs-dismiss="offcanvas">
-                <i
-                  class="fa fa-handshake-o"
-                  aria-hidden="true"
-                  data-bs-dismiss="offcanvas"
-                ></i>
-                <span class="links_name" data-bs-dismiss="offcanvas"
-                  >Mon abonnement</span
-                >
-              </div>
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
+              <li v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+                  <NuxtLink to="/dashboard" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-th-large" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Tableau de bord</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
+                  <NuxtLink to="/achats/achat" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-shopping-cart" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Lancer un achat</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
+                  <NuxtLink to="/ventes/vente" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Lancer une vente</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
+                  <NuxtLink to="/ventes/list_vente" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-floppy-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Factures des ventes</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
+                  <NuxtLink to="/achats/list_achat" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-floppy-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Factures des achats</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1">
+                  <NuxtLink to="/clients/list_client" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-list-ul" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Liste des Clients</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
+                  <NuxtLink to="/fournisseurs/list_fournisseur" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-list-ul" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Liste des Fournisseurs</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              
+              <!-- <li class="nav-item dropdown">
+                  <div class="rubrique">
+                      <i class="fa fa-list-ul" aria-hidden="true"></i>
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <span class="links_name">Listes</span>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><NuxtLink to="/clients/list_client"><span class="dropdown-item">Clients</span></NuxtLink></li>
+                      <li><NuxtLink to="/fournisseurs/list_fournisseur"><span class="dropdown-item">Fournisseurs</span></NuxtLink></li>
+                  </ul>
+                  </div>
+              </li> -->
+  
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_tresorerie == 1">
+                  <NuxtLink to="/encaissements/list_encaissement" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-credit-card-alt" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Encaissements</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1">
+                  <NuxtLink to="/decaissements/list_decaissement" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-credit-card-alt" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Décaissements</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="(compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1) || (compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1)">
+                  <NuxtLink to="/produits/list_produit" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                         <i class="fa fa-cubes" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Liste des Produits</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li  v-if="(compagny == user.pivot.compagnie_id && user.pivot.droits_ventes == 1) || (compagny == user.pivot.compagnie_id && user.pivot.droits_stock == 1)">
+                  <NuxtLink to="/categorie/list_categorie" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-database" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Toutes les Catégories</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+                  <NuxtLink to="/update_compagnie" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-briefcase" aria-hidden="true " data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Ma compagnie</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+                  <NuxtLink to="/employes/list_employe" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                        <i class="fa fa-users" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Employés de la compagnie</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+                  <NuxtLink to="/conges/list_conge" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                        <i class="fa fa-calendar" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Congés des Employés</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+                  <NuxtLink to="/prets/list_pret" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                        <i class="fa fa-balance-scale" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Prêts des Employés</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+                  <NuxtLink to="/paies/list_paie" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                        <i class="fa fa-money" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Bulletins de paie</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              <!-- <li>
+                  <NuxtLink to="/compagnies/list_compagnie">
+                      <div class="rubrique">
+                          <i class="fa fa-briefcase" aria-hidden="true"></i>
+                          <span class="links_name">Compagnies</span>
+                      </div>
+                  </NuxtLink>
+              </li> -->
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_utilisateurs == 1">
+                  <NuxtLink to="/profils/profil" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-address-card-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Utilisateurs</span>
+                      </div>
+                  </NuxtLink>
+              </li> 
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1">
+                  <NuxtLink to="/corbeille" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                          <i class="fa fa-trash" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Corbeille</span>
+                      </div>
+                  </NuxtLink>   
+              </li> 
+              <li v-if="compagny == user.pivot.compagnie_id && user.pivot.droits_admin == 1">
+                  <NuxtLink to="/renouvelerAbonnement" data-bs-dismiss="offcanvas">
+                      <div class="rubrique" data-bs-dismiss="offcanvas">
+                        <i class="fa fa-handshake-o" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
+                          <span class="links_name" data-bs-dismiss="offcanvas">Renouveler l'abonnement</span>
+                      </div>
+                  </NuxtLink>
+              </li>
+              
+  
+              <!-- <div class="bas-page" data-bs-dismiss="offcanvas">
+                      <img src="/images/user.png" alt="logo" srcset="" data-bs-dismiss="offcanvas">
+                      <span class="user_name" data-bs-dismiss="offcanvas">{{$auth.user.name}}</span> 
+                      <div class="custom-btn btn-5" @click="logout" data-bs-dismiss="offcanvas">
+                      
+                      Déconnexion</div>    
+              </div> -->
+  
+          </ul>
     </div>
   </div>
 </template>

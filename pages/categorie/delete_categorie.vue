@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
       <Sidebar />
-      <h3 class="name_side">Catégories deproduits</h3>
+      <h3 class="name_side">Catégories</h3>
       <Userinfo />
     </nav>
 

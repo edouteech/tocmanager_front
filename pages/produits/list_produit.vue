@@ -69,31 +69,42 @@
         v-for="(user, i) in users"
         :key="i"
       >
-        <div v-if="selection == 0">
-          <button class="btn btn-outline-info" @click.prevent="selectionner()">
-            Sélectionner
-          </button>
-        </div>
-        <div v-else>
-          <button
-            class="btn btn-outline-dark mx-3"
-            @click.prevent="deselectionner()"
-          >
-            Annuler
-          </button>
-        </div>
-        <button
-          class="btn btn-outline-danger"
-          v-if="
-            compagny == user.pivot.compagnie_id &&
-            user.pivot.droits_delete == 1 &&
-            selection != 0
-          "
-          @click.prevent="multipleSup()"
-        >
-          <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
-        </button>
+      <div v-if="choixNumber == 0">
+              <button class="btn btn-outline-success mx-2" @click.prevent="choisir()">
+                A afficher
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-success mx-2" @click.prevent="fin()">
+                Enregistrer
+              </button>
+            </div>
+
+            <div v-if="selection == 0">
+              <button class="btn btn-outline-info" @click.prevent="selectionner()">
+                Sélectionner
+              </button>
+            </div>
+            <div v-else>
+              <button class="btn btn-outline-dark mx-3" @click.prevent="deselectionner()">
+                Annuler
+              </button>
+            </div>
+            <button class="btn btn-outline-danger"  v-if=" compagny == user.pivot.compagnie_id && user.pivot.droits_delete == 1 &&  selection !=0" @click.prevent="multipleSup()">
+              <i class="fa fa-trash-o cursor-pointer" aria-hidden="true"></i>
+            </button>
       </div>
+          <div class="row col-md-12 mt-2" v-if="choixNumber != 0">
+            <div class="col-md-2"><input type="checkbox" checked/>Noms</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_categorie" @change="choiceCategorie()"/>Noms de la catégorie</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_quantite" @change="choiceQuantite()"/>Quantités en stock</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_achat" @change="choiceAchat()"/>Prix d'achat</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_vente" @change="choiceVente()"/>Prix de vente</div>
+            <div class="col-md-2"><input type="checkbox" v-model="choix_valorisation" @change="choiceValorisation()"/>Valorisation</div>
+            <!-- <div class="col-md-2"><input type="checkbox" v-model="choix_nature" @change="choiceNature()"/>Nature</div> -->
+            <!-- <div><input type="checkbox" v-model="choix_name"/></div>
+            <div><input type="checkbox" v-model="choix_name"/></div> -->
+          </div>
 
       <div
         class="table-responsive search_result"
@@ -105,14 +116,14 @@
             <tr class="table-primary">
               <th v-if="selection != 0"></th>
               <th>Nom</th>
-              <th>Nom de la catégorie</th>
-              <th>Quantité en stock</th>
+              <th v-if="choix_categorie == 1">Nom de la catégorie</th>
+              <th v-if="choix_quantite == 1">Quantité en stock</th>
               <th>Quantité réelle</th>
-              <th>Prix de vente</th>
-              <th>Prix d'achat</th>
+              <th v-if="choix_vente == 1">Prix de vente</th>
+              <th v-if="choix_achat == 1">Prix d'achat</th>
               <!-- <th>Stock minimal</th>
                     <th>Stock maximal</th> -->
-              <th>Valorisation du produit</th>
+              <th v-if="choix_valorisation">Valorisation du produit</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -129,9 +140,9 @@
                 </div>
               </td>
               <td>{{ result.name }}</td>
-              <td v-if="result.category != null">{{ result.category.name }}</td>
-              <td v-else>---</td>
-              <td>{{ result.quantity }}</td>
+              <td v-if="result.category != null || choix_categorie == 1">{{ result.category.name }}</td>
+              <td v-if="result.category == null || choix_categorie == 1">---</td>
+              <td v-if="choix_quantite == 1">{{ result.quantity }}</td>
               <td class="controler">
                 <div class="replace">
                   <input
@@ -148,11 +159,11 @@
                   ></i>
                 </div>
               </td>
-              <td>{{ result.price_sell }}</td>
-              <td>{{ result.price_buy }}</td>
+              <td v-if="choix_vente == 1">{{ result.price_sell }}</td>
+              <td v-if="choix_achat == 1">{{ result.price_buy }}</td>
               <!-- <td>{{result.stock_min}}</td>
                 <td>{{result.stock_max}}</td> -->
-              <td>{{ result.quantity * result.price_sell }}</td>
+              <td v-if="choix_valorisation">{{ result.quantity * result.price_sell }}</td>
               <td>
                 <div
                   class="action d-flex aligns-items-center justify-content-center"
@@ -273,14 +284,14 @@
             <tr class="table-primary">
               <th v-if="selection != 0"></th>
               <th>Nom</th>
-              <th>Nom de la catégorie</th>
-              <th>Quantité en stock</th>
+              <th v-if="choix_categorie == 1">Nom de la catégorie</th>
+              <th v-if="choix_quantite == 1">Quantité en stock</th>
               <th>Quantité réelle</th>
-              <th>Prix de vente</th>
-              <th>Prix d'achat</th>
+              <th v-if="choix_vente == 1">Prix de vente</th>
+              <th v-if="choix_achat == 1">Prix d'achat</th>
               <!-- <th>Stock minimal</th>
                     <th>Stock maximal</th> -->
-              <th>Valorisation du produit</th>
+              <th v-if="choix_valorisation">Valorisation du produit</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -302,11 +313,11 @@
                 </div>
               </td>
               <td>{{ produit.name }}</td>
-              <td v-if="produit.category != null">
+              <td v-if="result.category != null || choix_categorie == 1">
                 {{ produit.category.name }}
               </td>
-              <td v-else>---</td>
-              <td>{{ produit.quantity }}</td>
+              <td v-if="result.category == null || choix_categorie == 1">---</td>
+              <td v-if="choix_quantite == 1">{{ produit.quantity }}</td>
               <td class="controler">
                 <div class="replace">
                   <input
@@ -323,11 +334,11 @@
                   ></i>
                 </div>
               </td>
-              <td>{{ produit.price_sell }}</td>
-              <td>{{ produit.price_buy }}</td>
+              <td v-if="choix_vente == 1">{{ produit.price_sell }}</td>
+              <td v-if="choix_achat == 1">{{ produit.price_buy }}</td>
               <!-- <td>{{produit.stock_min}}</td>
                 <td>{{produit.stock_max}}</td> -->
-              <td>{{ produit.quantity * produit.price_sell }}</td>
+              <td v-if="choix_valorisation">{{ produit.quantity * produit.price_sell }}</td>
               <td>
                 <div
                   class="action d-flex aligns-items-center justify-content-center"
@@ -634,20 +645,154 @@ export default {
       listModal: "",
       checks: [],
       selection: 0,
-      showModalMultipleDelete: false,
+      showModalMultipleDelete: false,choixNumber: 0,
+      choix_categorie: 1,
+      choix_quantite: 1,
+      choix_vente:  1,
+      choix_achat: 1,
+      choix_valorisation: 1
       stats: "",
     };
   },
 
   mounted() {
     this.prodStats();
-    this.refresh();
-    this.users = this.$auth.$state.user.roles;
-    this.compagny = localStorage.getItem("auth.company_id");
-    this.role = localStorage.getItem("auth.roles");
+      this.refresh()
+      this.defaultAchat()
+      this.defaultVente()
+      this.defaultCategorie()
+      this.defaultQuantite()
+      this.defaultValorisation()
+      this.users = this.$auth.$state.user.roles;
+      this.compagny = localStorage.getItem('auth.company_id');
+      this.role = localStorage.getItem('auth.roles');
   },
 
   methods: {
+    choisir(){
+      this.choixNumber = 1
+    },
+
+    fin(){
+      this.choixNumber = 0
+      // this.choice()
+    },
+    
+    defaultCategorie(){
+        this.choix_categorie = localStorage.getItem('auth.choix_categorie')
+        if(localStorage.getItem('auth.choix_categorie') == 1){
+          this.choix_categorie = true
+        }
+        else{
+          this.choix_categorie = false
+        }
+      },
+
+
+      choiceCategorie(){
+          if(this.choix_categorie == true){
+            this.choix_categorie = 1
+            this.$auth.$storage.setUniversal('choix_categorie', this.choix_categorie)
+            this.defaultCategorie()
+          }
+          else{
+            this.choix_categorie = 0
+            this.$auth.$storage.setUniversal('choix_categorie', this.choix_categorie)
+            this.defaultCategorie()
+          }
+      },
+      
+      defaultQuantite(){
+        this.choix_quantite = localStorage.getItem('auth.choix_quantite')
+        if(localStorage.getItem('auth.choix_quantite') == 1){
+          this.choix_quantite = true
+        }
+        else{
+          this.choix_quantite = false
+        }
+      },
+
+      choiceQuantite(){
+          if(this.choix_quantite == true){
+            this.choix_quantite = 1
+            this.$auth.$storage.setUniversal('choix_quantite', this.choix_quantite)
+            this.defaultQuantite()
+          }
+          else{
+            this.choix_quantite = 0
+            this.$auth.$storage.setUniversal('choix_quantite', this.choix_quantite)
+            this.defaultQuantite()
+          }
+      },
+
+      
+      defaultVente(){
+        this.choix_vente = localStorage.getItem('auth.choix_vente')
+        if(localStorage.getItem('auth.choix_vente') == 1){
+          this.choix_vente = true
+        }
+        else{
+          this.choix_vente = false
+        }
+      },
+      choiceVente(){
+        if(this.choix_vente == true){
+            this.choix_vente = 1
+            this.$auth.$storage.setUniversal('choix_vente', this.choix_vente)
+            this.defaultVente()
+          }
+          else{
+            this.choix_vente = 0
+            this.$auth.$storage.setUniversal('choix_vente', this.choix_vente)
+            this.defaultVente()
+          }
+      },
+      
+      
+      defaultAchat(){
+        this.choix_achat = localStorage.getItem('auth.choix_achat')
+        if(localStorage.getItem('auth.choix_achat') == 1){
+          this.choix_achat = true
+        }
+        else{
+          this.choix_achat = false
+        }
+      },
+      choiceAchat(){
+        if(this.choix_achat == true){
+            this.choix_achat = 1
+            this.$auth.$storage.setUniversal('choix_achat', this.choix_achat)
+            this.defaultAchat()
+          }
+          else{
+            this.choix_achat = 0
+            this.$auth.$storage.setUniversal('choix_achat', this.choix_achat)
+            this.defaultAchat()
+          }
+      },
+
+      defaultValorisation(){
+        this.choix_valorisation = localStorage.getItem('auth.choix_valorisation')
+        if(localStorage.getItem('auth.choix_valorisation') == 1){
+          this.choix_valorisation = true
+        }
+        else{
+          this.choix_valorisation = false
+        }
+      },
+      choiceValorisation(){
+        if(this.choix_valorisation == true){
+            this.choix_valorisation = 1
+            this.$auth.$storage.setUniversal('choix_valorisation', this.choix_valorisation)
+            this.defaultValorisation()
+          }
+          else{
+            this.choix_valorisation = 0
+            this.$auth.$storage.setUniversal('choix_valorisation', this.choix_valorisation)
+            this.defaultValorisation()
+          }
+      },
+      
     //statistiques du stock
     prodStats() {
       this.$axios
