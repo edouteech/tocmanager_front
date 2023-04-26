@@ -1,6 +1,6 @@
 <template>
-  <div class="modal-overlay">
-    <div class="modaler my-auto" @click.stop @click="$emit('close-modal')">
+  <div class="modal-overlay" @click="$emit('close-modal')">
+    <div class="modaler my-auto" @click.stop>
       <div class="close d-flex justify-content-end" @click="$emit('close-modal')">
         <i class="fa fa-times-circle" aria-hidden="true"></i>
       </div>

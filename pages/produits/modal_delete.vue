@@ -1,21 +1,14 @@
 <template>
-  <div class="modal-overlay">
-    <div class="modaler" @click.stop>
-      <div
-        class="alert alert-danger justify-content-center"
-        role="alert"
-        v-if="error"
-      >
-        {{ error }}
-      </div>
-      <p>Etes vous sur de vouloir supprimer définitivement ce produit ???</p>
-      <div class="d-flex">
+  <div class="modal-overlay" @click="$emit('close-modal')">
+    <div class="modaler my-auto" @click.stop>
+    <div class="close d-flex justify-content-end" @click="$emit('close-modal')">
+      <i class="fa fa-times-circle" aria-hidden="true"></i>
+    </div>
+      <p>Etes vous sur de vouloir supprimer définitivement ce produit ???</p><hr>
+      <div class="d-flex my-4">
         <button class="btn btn-outline-danger mx-auto" @click="supProduit(infos)">Oui</button>
         <button class="btn btn-outline-success mx-auto" @click="$emit('close-modal')">Non</button>
       </div>
-    </div>
-    <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>
@@ -72,24 +65,27 @@ export default {
 
 .modaler {
   text-align: center;
-  color: #fff;
-  background-color: rgb(46, 46, 46);
-  height: max-content;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid red;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   width: 600px;
   margin-top: 12%;
-  border-radius: 15px;
+  border-radius: 5px;
   padding: 50px 20px;
 }
 
-
 .close {
-  margin: 12% 0 0 16px;
   cursor: pointer;
 }
-
-.close-img {
-  width: 25px;
+.close i{
+  font-size : 22px;
+  color: rgb(166, 166, 166);
 }
+
+.close i:hover{
+  color: rgb(0, 0, 0);
+}
+
 
 .check {
   width: 150px;

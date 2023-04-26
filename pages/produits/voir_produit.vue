@@ -1,8 +1,11 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modaler" @click.stop>
+    <div class="modaler my-auto" @click.stop>
+    <div class="close d-flex justify-content-end" @click="$emit('close-modal')">
+      <i class="fa fa-times-circle" aria-hidden="true"></i>
+    </div><br /><br />
       <h4 class="titre">Informations du produit</h4>
-      <br /><br />
+      <br />
       <table class="table table-hover">
         <thead>
           <tr class="table-success">
@@ -50,9 +53,6 @@
         </tbody>
       </table>
       <br />
-    </div>
-    <div class="close" @click="$emit('close-modal')">
-      <img class="close-img" src="/images/fermer.png" alt="" />
     </div>
   </div>
 </template>
@@ -106,24 +106,27 @@ tbody tr:nth-child(even) {
 tbody tr:last-of-type {
   border-bottom: 2px solid rgb(92, 237, 8);
 }
-
 .modaler {
   background-color: white;
-  height: 700px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   width: 600px;
-  margin-top: 2%;
-  padding: 1%;
+  margin-top: 5%;
+  padding: 20px;
   border-radius: 20px;
-  font-size: 18px;
-}
-.close {
-  margin: 2% 0 0 16px;
-  cursor: pointer;
 }
 
-.close-img {
-  width: 25px;
+.close {
+  cursor: pointer;
 }
+.close i{
+  font-size : 22px;
+  color: rgb(166, 166, 166);
+}
+
+.close i:hover{
+  color: rgb(0, 0, 0);
+}
+
 
 .modal .information {
   text-align: center;

@@ -6,198 +6,107 @@
       <Userinfo />
     </nav>
 
-    <div class="app-main__outer py-5 px-2">
-      <div
-        class="alert alert-danger justify-content-center"
-        role="alert"
-        v-if="error"
-      >
-        {{ error }}
-      </div>
+    <div class="app-main__outer py-5 px-2 ">
       <h4>Enregistrer un nouveau produit</h4>
       <hr />
-      <form action="">
-        <div class="form-group col-md-6">
-          <div class="form-group">
-            <label class="title"
-              >Choisissez la categorie du produit à ajouter</label
-            >
-            <select class="form-control" v-model="form.category_id">
-              <option disabled value="">Choisissez...</option>
-              <option
-                v-for="(categorie, i) in categories"
-                :key="i"
-                :value="categorie.id"
-              >
-                {{ categorie.name }}
-              </option>
-            </select>
+      <form action="" class="col-md-11 mx-auto row sections">
+        <div class="col-md-6 p-2">
+          <div class="form-group ">
+            <div class="form-group">
+              <label class="title">Choisissez la categorie du produit à ajouter</label>
+              <select class="form-control" v-model="form.category_id">
+                <option disabled value="">Choisissez...</option>
+                <option v-for="(categorie, i) in categories" :key="i" :value="categorie.id">
+                  {{ categorie.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="alert alert-danger justify-content-center " role="alert" v-if="errors && errors.category_id">
+            {{ errors.category_id }}
+          </div>
+
+          <div class="form-group ">
+            <label class="title">Entrer le nom du produit</label>
+            <input type="text" class="form-control" v-model="form.name" autocomplete="off" required
+              placeholder="Nom du produit" />
+          </div>
+          <div class="alert alert-danger justify-content-center " role="alert" v-if="errors && errors.name">
+            {{ errors.name }}
+          </div>
+
+          <div class="form-group ">
+            <div class="form-group">
+              <label class="title">Choisissez le groupe de taxation du produit</label>
+              <select class="form-control" v-model="form.tax_group">
+                <option value="">Choisissez...</option>
+                <option v-for="(groupe, j) in groupes" :key="j" :value="groupe">
+                  {{ groupe }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="alert alert-danger justify-content-center " role="alert" v-if="errors && errors.tax_group">
+            {{ errors.tax_group }}
+          </div>
+
+          <div class="form-group ">
+            <label class="title">Entrer le code du produit</label>
+            <input type="text" class="form-control" placeholder="CODE" v-model="form.code" />
+          </div>
+          <div class="alert alert-danger justify-content-center " role="alert" v-if="errors && errors.code">
+            {{ errors.code }}
+          </div>
+
+          <div class="form-group ">
+            <label class="title">Entrer la quantité</label>
+            <input type="number" class="form-control" placeholder="1200" v-model="form.quantity" />
+          </div>
+          <div class="alert alert-danger justify-content-center " role="alert" v-if="errors && errors.quantity">
+            {{ errors.quantity }}
           </div>
         </div>
-        <div
-          class="alert alert-danger justify-content-center col-md-6"
-          role="alert"
-          v-if="errors && errors.category_id"
-        >
-          {{ errors.category_id }}
-        </div>
 
-        <div class="form-group col-md-6">
-          <label class="title">Entrer le nom du produit</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="form.name"
-            autocomplete="off"
-            required
-            placeholder="Nom du produit"
-          />
-        </div>
-        <div
-          class="alert alert-danger justify-content-center col-md-6"
-          role="alert"
-          v-if="errors && errors.name"
-        >
-          {{ errors.name }}
-        </div>
+        <div class="col-md-6 p-2">
+          <div class="form-group ">
+            <label class="title">Entrer le prix de vente </label>
+            <input type="number" class="form-control" placeholder="1500" v-model="form.price_sell" autocomplete="off"
+              required />
+          </div>
+          <div class="alert alert-danger justify-content-center " role="alert" v-if="errors && errors.price_sell">
+            {{ errors.price_sell }}
+          </div>
 
-        <div class="form-group col-md-6">
-          <div class="form-group">
-            <label class="title"
-              >Choisissez le groupe de taxation du produit</label
-            >
-            <select class="form-control" v-model="form.tax_group">
-              <option value="">Choisissez...</option>
-              <option v-for="(groupe, j) in groupes" :key="j" :value="groupe">
-                {{ groupe }}
-              </option>
-            </select>
+          <div class="form-group ">
+            <label class="title">Entrer le prix d'achat </label>
+            <input type="number" class="form-control" placeholder="1000" v-model="form.price_buy" autocomplete="off"
+              required />
+          </div>
+          <div class="alert alert-danger justify-content-center " role="alert" v-if="errors && errors.price_buy">
+            {{ errors.price_buy }}
+          </div>
+
+          <div class="form-group ">
+            <label class="title">Entrer le stock minimal </label>
+            <input type="number" class="form-control" placeholder="1000" v-model="form.stock_min" autocomplete="off"
+              required />
+          </div>
+          <div class="alert alert-danger justify-content-center " role="alert" v-if="errors && errors.stock_min">
+            {{ errors.stock_min }}
+          </div>
+
+          <div class="form-group ">
+            <label class="title">Entrer le stock maximal </label>
+            <input type="number" class="form-control" placeholder="1100" v-model="form.stock_max" autocomplete="off"
+              required />
+          </div>
+          <div class="alert alert-danger justify-content-center " role="alert" v-if="errors && errors.stock_max">
+            {{ errors.stock_max }}
           </div>
         </div>
-        <div
-          class="alert alert-danger justify-content-center col-md-6"
-          role="alert"
-          v-if="errors && errors.tax_group"
-        >
-          {{ errors.tax_group }}
-        </div>
 
-        <div class="form-group col-md-6">
-          <label class="title">Entrer le code du produit</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="CODE"
-            v-model="form.code"
-          />
-        </div>
-        <div
-          class="alert alert-danger justify-content-center col-md-6"
-          role="alert"
-          v-if="errors && errors.code"
-        >
-          {{ errors.code }}
-        </div>
-
-        <div class="form-group col-md-6">
-          <label class="title">Entrer la quantité</label>
-          <input
-            type="number"
-            class="form-control"
-            placeholder="1200"
-            v-model="form.quantity"
-          />
-        </div>
-        <div
-          class="alert alert-danger justify-content-center col-md-6"
-          role="alert"
-          v-if="errors && errors.quantity"
-        >
-          {{ errors.quantity }}
-        </div>
-
-        <div class="form-group col-md-6">
-          <label class="title">Entrer le prix de vente </label>
-          <input
-            type="number"
-            class="form-control"
-            placeholder="1500"
-            v-model="form.price_sell"
-            autocomplete="off"
-            required
-          />
-        </div>
-        <div
-          class="alert alert-danger justify-content-center col-md-6"
-          role="alert"
-          v-if="errors && errors.price_sell"
-        >
-          {{ errors.price_sell }}
-        </div>
-
-        <div class="form-group col-md-6">
-          <label class="title">Entrer le prix d'achat </label>
-          <input
-            type="number"
-            class="form-control"
-            placeholder="1000"
-            v-model="form.price_buy"
-            autocomplete="off"
-            required
-          />
-        </div>
-        <div
-          class="alert alert-danger justify-content-center col-md-6"
-          role="alert"
-          v-if="errors && errors.price_buy"
-        >
-          {{ errors.price_buy }}
-        </div>
-
-        <div class="form-group col-md-6">
-          <label class="title">Entrer le stock minimal </label>
-          <input
-            type="number"
-            class="form-control"
-            placeholder="1000"
-            v-model="form.stock_min"
-            autocomplete="off"
-            required
-          />
-        </div>
-        <div
-          class="alert alert-danger justify-content-center col-md-6"
-          role="alert"
-          v-if="errors && errors.stock_min"
-        >
-          {{ errors.stock_min }}
-        </div>
-
-        <div class="form-group col-md-6">
-          <label class="title">Entrer le stock maximal </label>
-          <input
-            type="number"
-            class="form-control"
-            placeholder="1100"
-            v-model="form.stock_max"
-            autocomplete="off"
-            required
-          />
-        </div>
-        <div
-          class="alert alert-danger justify-content-center col-md-6"
-          role="alert"
-          v-if="errors && errors.stock_max"
-        >
-          {{ errors.stock_max }}
-        </div>
-
-        <button
-          type="submit"
-          class="btn btn-outline-primary p-3 col-md-6"
-          v-on:click.prevent="submit()"
-        >
-          Enregistrer le produit
+        <button type="submit" class="btn btn-outline-primary p-3 " v-on:click.prevent="submit()">
+          <b>ENREGISTRER</b>
         </button>
       </form>
     </div>
@@ -261,12 +170,15 @@ export default {
         .then((response) => {
           if (response.data.status == "success") {
             this.$router.push({ path: "/produits/list_produit" });
-            this.$toast("Nouveau produit enregistré avec succès !!!", {
+            this.$toast("Nouveau produit enregistré !!!", {
               icon: "fa fa-check-circle",
             });
           } else {
             this.error = response.data.message;
             this.errors = response.data.data;
+            this.$toast.error(this.error, {
+              icon: "fa fa-times-circle",
+            });
           }
         })
         .catch((error) => console.log(error));
@@ -302,6 +214,15 @@ export default {
 </script>
 
 <style scoped>
+.sections {
+  border: 1px solid rgb(255, 255, 255);
+  position: relative;
+  z-index: 1;
+  padding: 20px 30px;
+  margin: 50px 0;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
 form {
   margin-left: 10%;
   margin-top: 5%;
@@ -313,6 +234,8 @@ form {
 
 .title {
   margin: 1% 0;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .btn {
@@ -328,6 +251,7 @@ form {
   font-size: 22px;
   cursor: pointer;
 }
+
 .table {
   margin-top: 5%;
 }
