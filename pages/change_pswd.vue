@@ -1,69 +1,60 @@
 <template >
   <div>
-    <nav class="navbar navbar-fixed-top navbar-dark bg-dark text-white p-3">
-      <h3 class="name">Mot de Passe</h3>
-    </nav>
+    <div class="authentication-wrapper authentication-cover authentication-bg">
+      <div class="authentication-inner row">
+        <!-- /Left Text -->
+        <div class="d-none d-lg-flex col-lg-7 p-0">
+          <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
+            <img src="/assets/img/illustrations/auth-reset-password-illustration-light.png"
+              alt="auth-reset-password-cover" class="img-fluid my-5 auth-illustration"
+              data-app-light-img="illustrations/auth-reset-password-illustration-light.png"
+              data-app-dark-img="illustrations/auth-reset-password-illustration-dark.png" />
 
-    <div class="app-main__outer py-5 px-2">
-      <div
-        class="alert alert-danger justify-content-center"
-        role="alert"
-        v-if="error"
-      >
-        {{ error }}
+            <img src="/assets/img/illustrations/bg-shape-image-light.png" alt="auth-reset-password-cover"
+              class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png"
+              data-app-dark-img="illustrations/bg-shape-image-dark.png" />
+          </div>
+        </div>
+        <!-- /Left Text -->
+
+        <!-- Forgot Password -->
+        <div class="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
+          <div class="w-px-400 mx-auto">
+            <!-- Logo -->
+            <div class="app-brand mb-4">
+              <div class="logo_content">
+                <img src="/images/icon3.png" class="logo_content" alt="logo" srcset="" width="50">
+              </div>
+            </div>
+            <!-- /Logo -->
+            <h3 class="mb-1 fw-bold">Modifier le mot de passe... 🔒</h3>
+            <p class="mb-4">Pour une première connexion, vous devez changer votre mot de passe.</p>
+            <form id="formAuthentication" class="mb-3" action="auth-reset-password-cover.html" method="POST">
+              <label for="password" class="form-label">Nouveau mot de passe</label>
+              <div class="mb-3 input-group ">
+                <input type="password" id="password" class="form-control" name="password" v-model="form.password"
+                  placeholder="Entrer votre nouveau mot de passe" aria-describedby="password" />
+                <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off" @click="changer()"></i></span>
+              </div>
+              <label for="password1" class="form-label">Confirmer nouveau mot de passe</label>
+              <div class="mb-3 input-group">
+                <input type="password" id="password1" class="form-control" name="password1"
+                  v-model="form.password_confirmation" placeholder="Confirmer le nouveau mot de passe"
+                  aria-describedby="password" />
+                <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off" @click="change()"></i></span>
+              </div>
+              <button class="btn btn-primary d-grid w-100" @click.prevent="submit()">MODIFIER</button>
+            </form>
+            <div class="text-center">
+              <NuxtLink to="/login" class="d-flex align-items-center justify-content-center">
+                <i class="ti ti-chevron-left scaleX-n1-rtl"></i>
+                Connexion
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
+        <!-- /Forgot Password -->
       </div>
-      <h4>Modification de mot de passe</h4>
-      <br /><br />
-      <p>
-        Pour avoir accès à votre espace de travail, veuillez entrer un nouveau
-        mot de passe
-      </p>
-
-      <form>
-        <!-- Password input -->
-        <div class="form-outline mb-3">
-          <span class="fas fa-lock px-2"></span
-          ><label class="form-label">Mot de passe</label>
-          <div class="input-field">
-            <input
-              type="password"
-              id="password"
-              class="form-control form-control-lg"
-              v-model="form.password"
-              placeholder="Entrer un mot de passe"
-            /><span
-              ><i class="fa fa-eye px-2" id="eye" @click.prevent="changer()"></i
-            ></span>
-          </div>
-        </div>
-
-        <div class="form-outline mb-3">
-          <span class="fas fa-lock px-2"></span
-          ><label class="form-label">Confirmer le Mot de passe</label>
-          <div class="input-field">
-            <input
-              type="password"
-              id="password1"
-              class="form-control form-control-lg"
-              v-model="form.password_confirmation"
-              placeholder="Entrer un mot de passe"
-            /><span
-              ><i class="fa fa-eye px-2" id="eyes" @click.prevent="change()"></i
-            ></span>
-          </div>
-        </div>
-
-        <div class="text-center text-lg-start mt-6 pt-2">
-          <button
-            type="button"
-            @click.prevent="submit()"
-            class="btn btn-primary btn-lg"
-            style="padding-left: 1rem; padding-right: 1rem"
-          >
-            Enregistrer</button
-          ><br /><br />
-        </div>
-      </form>
     </div>
   </div>
 </template>
@@ -92,10 +83,8 @@ export default {
     //afficher ou cacher le mot de passe
     changer() {
       var pwd = document.getElementById("password");
-      var fa = document.getElementById("eye");
       if (pwd.getAttribute("type") == "password") {
         pwd.setAttribute("type", "text");
-        fa.class = "fa fa-eye px-2";
       } else {
         pwd.setAttribute("type", "password");
       }
@@ -104,10 +93,8 @@ export default {
     //afficher ou cacher la confirmation du mot de passe
     change() {
       var pwd = document.getElementById("password1");
-      var fa = document.getElementById("eye");
       if (pwd.getAttribute("type") == "password") {
         pwd.setAttribute("type", "text");
-        fa.class = "fa fa-eye px-2";
       } else {
         pwd.setAttribute("type", "password");
       }
@@ -133,7 +120,10 @@ export default {
             this.$auth.logout();
             this.$router.push("/login");
           } else {
-            this.error = response.data.data;
+            this.error = response.data.message;
+            this.$toast.error(this.error, {
+              icon: "fa fa-times-circle",
+            });
           }
         })
         .catch((err) => console.log(err));
@@ -164,9 +154,11 @@ export default {
   height: 1px;
   background: #eee;
 }
+
 .h-custom {
   height: calc(100% - 73px);
 }
+
 @media (max-width: 450px) {
   .h-custom {
     height: 100%;
