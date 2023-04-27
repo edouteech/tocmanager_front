@@ -62,9 +62,9 @@
 
             <p class="text-center">
               <span>Etes vous nouveau ?</span>
-              <a href="auth-register-cover.html">
+              <NuxtLink to="/register">
                 <span>Créer un compte</span>
-              </a>
+              </NuxtLink>
             </p>
 
             <div class="divider my-4">
