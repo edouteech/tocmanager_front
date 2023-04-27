@@ -6,14 +6,21 @@
         <!-- /Left Text -->
         <div class="d-none d-lg-flex col-lg-7 p-0">
           <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
-            <img src="/assets/img/illustrations/auth-forgot-password-illustration-light.png"
-              alt="auth-forgot-password-cover" class="img-fluid my-5 auth-illustration"
-              data-app-light-img="illustrations/auth-forgot-password-illustration-light.png"
-              data-app-dark-img="illustrations/auth-forgot-password-illustration-dark.png" />
+            <img
+              src="/assets/img/illustrations/auth-reset-password-illustration-light.png"
+              alt="auth-reset-password-cover"
+              class="img-fluid my-5 auth-illustration"
+              data-app-light-img="illustrations/auth-reset-password-illustration-light.png"
+              data-app-dark-img="illustrations/auth-reset-password-illustration-dark.png"
+            />
 
-            <img src="/assets/img/illustrations/bg-shape-image-light.png" alt="auth-forgot-password-cover"
-              class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png"
-              data-app-dark-img="illustrations/bg-shape-image-dark.png" />
+            <img
+              src="/assets/img/illustrations/bg-shape-image-light.png"
+              alt="auth-reset-password-cover"
+              class="platform-bg"
+              data-app-light-img="illustrations/bg-shape-image-light.png"
+              data-app-dark-img="illustrations/bg-shape-image-dark.png"
+            />
           </div>
         </div>
         <!-- /Left Text -->
@@ -29,7 +36,7 @@
             </div>
             <!-- /Logo -->
             <h3 class="mb-1 fw-bold">Modifier le mot de passe... 🔒</h3>
-            <p class="mb-4">Veuillez consulter votre boite mail</p>
+            <p class="mb-4">pour <b>{{ concerne }}</b></p>
             <form id="formAuthentication" class="mb-3" action="auth-reset-password-cover.html" method="POST">
               <div class="mb-3">
                 <label for="token" class="form-label">Code</label>
@@ -114,8 +121,14 @@ export default {
         password: "",
         password_confirmation: "",
       },
+      concerne: "",
     };
   },
+
+  mounted(){
+    this.concerne = this.$route.params.email
+  },
+
   methods: {
     //modifier le mot de passe
     async submit() {

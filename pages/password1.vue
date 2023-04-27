@@ -30,7 +30,7 @@
             <!-- /Logo -->
             <h3 class="mb-1 fw-bold">Mot de passe oublié? 🔒</h3>
             <p class="mb-4">Entrer votre adresse email et consulter votre boite mail pour suivre les instructions</p>
-            <form id="formAuthentication" class="mb-3" action="auth-reset-password-cover.html" method="POST">
+            <form id="formAuthentication" class="mb-3">
               <div class="mb-3">
                 <label for="email" class="form-label">Adresse Email</label>
                 <input type="text" class="form-control" id="email" name="email" placeholder="Entrez votre adresse email"
