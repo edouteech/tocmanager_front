@@ -1,83 +1,140 @@
 <template>
-  <div class="contain">
+  <div class="">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
-    <!-- <div class="alert alert-success justify-content-center" role="alert">
-      {{this.params.errors}}
-  </div> -->
 
-    <br /><br />
+    <div class="authentication-wrapper authentication-cover authentication-bg">
+      <div class="authentication-inner row">
+        <!-- /Left Text -->
+        <div class="d-none d-lg-flex col-lg-7 p-0">
+          <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
+            <img src="../static/assets/img/illustrations/auth-login-illustration-light.png" alt="auth-login-cover"
+              class="img-fluid my-5 auth-illustration"
+              data-app-light-img="illustrations/auth-login-illustration-light.png"
+              data-app-dark-img="illustrations/auth-login-illustration-dark.png" />
 
-    <h2 class="text px-4 mt-5">Connectez vous</h2>
-    <div class="container-fluid h-custom">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-md-9 col-lg-6 col-xl-5">
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
-            alt="Sample image" />
+            <img src="../static/assets/img/illustrations/bg-shape-image-light.png" alt="auth-login-cover"
+              class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png"
+              data-app-dark-img="illustrations/bg-shape-image-dark.png" />
+          </div>
         </div>
-        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-          <form>
-            <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
-              {{ error }}
-            </div>
-            <div class="divider d-flex align-items-center my-4">
-              <p class="text-center fw-bold mx-3 mb-0">Connexion</p>
-            </div>
+        <!-- /Left Text -->
 
-            <!-- Email input -->
-            <div class="form-outline mb-4">
-              <div class="d-flex">
-                <span class="fa fa-envelope px-2 mt-1"></span>
-                <label class="form-label">Adresse Email</label>
-              </div>
-              <div class="input-field">
-                <input type="email" class="form-control form-control-lg" v-model="form.email" required
-                  placeholder="Entrer votre addresse email " />
+        <!-- Login -->
+        <div class="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
+          <div class="w-px-400 mx-auto">
+            <!-- Logo -->
+            <div class="app-brand mb-4">
+              <div class="logo_content">
+                  <img src="/images/icon3.png" class="logo_content" alt="logo" srcset="" width="50">
               </div>
             </div>
+            <!-- /Logo -->
+            <h3 class="mb-1 fw-bold">Bienvenue! 👋</h3>
+            <p class="mb-4">Veuillez vous connecter à votre compte pour accéder aux diverses fonctionnalités</p>
 
-            <!-- Password input -->
-            <div class="form-outline mb-3">
-              <div class="d-flex">
-                <span class="fas fa-lock px-2 mt-1"></span><label class="form-label">Mot de passe</label>
+            <form id="formAuthentication" class="mb-3">
+              <div class="mb-3">
+                <label for="email" class="form-label">Adresse Email</label>
+                <input type="text" class="form-control" id="email" name="email-username" v-model="form.email"
+                  placeholder="Entrer votre addresse email" autofocus />
               </div>
-              <div class="input-field">
-                <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
-                  placeholder="Entrer votre mot de passe" /><span><i class="fa fa-eye px-2" id="eye"
-                    @click="changer()"></i></span>
+              <div class="mb-3 form-password-toggle">
+                <div class="d-flex justify-content-between">
+                  <label class="form-label" for="password">Mot de passe</label>
+                  <NuxtLink to="/password1">
+                    <small>Mot de passe oublié ?</small>
+                  </NuxtLink>
+                </div>
+                <div class="input-group input-group-merge">
+                  <input type="password" id="password" class="form-control" name="password" v-model="form.password"
+                    placeholder="Entrer votre mot de passe" aria-describedby="password" />
+                  <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off" @click="changer()"></i></span>
+                </div>
               </div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="remember-me" />
+                  <label class="form-check-label" for="remember-me"> Se souvenir de moi </label>
+                </div>
+              </div>
+              <button class="btn btn-primary d-grid w-100" @click.prevent="login()">Se connecter</button>
+            </form>
+
+            <p class="text-center">
+              <span>Etes vous nouveau ?</span>
+              <a href="auth-register-cover.html">
+                <span>Créer un compte</span>
+              </a>
+            </p>
+
+            <div class="divider my-4">
+              <div class="divider-text">ou</div>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center">
-              <NuxtLink to="/password1" class="link-primary px-2">
-                Mot de passe oublié ?
-              </NuxtLink>
-            </div>
+            <div class="d-flex justify-content-center">
+              <a href="javascript:;" class="btn btn-icon btn-label-facebook me-3">
+                <i class="tf-icons fa-brands fa-facebook-f fs-5"></i>
+              </a>
 
-            <div class="text-center text-lg-start mt-4 pt-2">
-              <button type="button" :disabled="load" @click.prevent="login()" class="btn btn-primary btn-lg"
-                style="padding-left: 1rem; padding-right: 1rem">
-                Se connecter
-              </button>
-              <p class="small fw-bold mt-2 pt-1 mb-0">
-                Vous n'avez pas de compte ?
-                <NuxtLink to="/register" class="link-primary px-2">
-                  Inscription
-                </NuxtLink>
-              </p>
+              <a href="javascript:;" class="btn btn-icon btn-label-google-plus me-3">
+                <i class="tf-icons fa-brands fa-google fs-5"></i>
+              </a>
+
+              <a href="javascript:;" class="btn btn-icon btn-label-twitter">
+                <i class="tf-icons fa-brands fa-twitter fs-5"></i>
+              </a>
             </div>
-            <br /><br /><br />
-          </form>
+          </div>
         </div>
+        <!-- /Login -->
       </div>
     </div>
+
 
     <modalEmail :identifiant="key" v-show="showModal" @close-modal="showModal = false" @conf="setMessage" />
   </div>
 </template>
 
+
 <script>
 import modalEmail from "./modalEmail.vue";
 export default {
+  head: {
+    link: [
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap' },
+      { rel: 'stylesheet', href: '/assets/vendor/fonts/fontawesome.css' },
+      { rel: 'stylesheet', href: '/assets/vendor/fonts/tabler-icons.css' },
+      { rel: 'stylesheet', href: '/assets/vendor/css/rtl/core.css' },
+      { rel: 'stylesheet', href: '/assets/vendor/css/rtl/theme-default.css' },
+      { rel: 'stylesheet', href: '/assets/css/demo.css' },
+      { rel: 'stylesheet', href: '/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css' },
+      { rel: 'stylesheet', href: '/assets/vendor/libs/node-waves/node-waves.css' },
+      { rel: 'stylesheet', href: '/assets/vendor/libs/typeahead-js/typeahead.css' },
+      { rel: 'stylesheet', href: '/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css' },
+      { rel: 'stylesheet', href: '/assets/vendor/css/pages/page-auth.css' },
+    ],
+    // Ajoutez les éléments suivants à l'intérieur de la propriété head
+    script: [
+      { src: '/assets/vendor/js/helpers.js' },
+      { src: '/assets/js/config.js' },
+      { src: '/assets/vendor/libs/jquery/jquery.js' },
+      { src: '/assets/vendor/libs/popper/popper.js' },
+      { src: '/assets/vendor/js/bootstrap.js' },
+      { src: '/assets/libs/perfect-scrollbar/perfect-scrollbar.js' },
+      { src: '/assets/vendor/libs/node-waves/node-waves.js' },
+      { src: '/assets/vendor/libs/hammer/hammer.js' },
+      { src: '/assets/vendor/libs/i18n/i18n.js' },
+      { src: '/assets/vendor/libs/typeahead-js/typeahead.js' },
+      { src: '/assets/vendor/js/menu.js' },
+      { src: '/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js' },
+      { src: '/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js' },
+      { src: '/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js' },
+      { src: '/assets/js/main.js' },
+      { src: '/assets/js/pages-auth.js' },
+    ]
+  },
   middleware: "auth",
   name: "login",
   layout: "public",
@@ -105,18 +162,15 @@ export default {
       this.$nuxt.$options.router.push("/dashboard")
     }
   },
-  
+
   methods: {
     //afficher et cacher le mot de passe
     changer() {
       var pwd = document.getElementById("password");
-      var fa = document.getElementById("eye");
       if (pwd.getAttribute("type") == "password") {
         pwd.setAttribute("type", "text");
-        fa.class = "fa fa-eye px-2";
       } else {
         pwd.setAttribute("type", "password");
-        fa.class = "fa fa-eye-slash px-2";
       }
     },
 
@@ -214,12 +268,18 @@ export default {
                               .then((response) => {
                                 if (response.data.data.hasEndGrace == false) {
                                   this.$router.push("/dashboard");
+                                  this.$toast("Vous etes connectés !!!", {
+                                    icon: "fa fa-check-circle",
+                                  });
                                 } else {
                                   this.$router.push("/renouvelerAbonnement");
                                 }
                               });
                           } else {
                             this.$router.push("/dashboard");
+                            this.$toast("Vous etes connectés !!!", {
+                              icon: "fa fa-check-circle",
+                            });
                           }
                         });
                     }
@@ -244,13 +304,22 @@ export default {
                       console.log(response);
                       if (response.data.data.hasEndGrace == false) {
                         this.$router.push("/ventes/vente");
+                        this.$toast("Vous etes connectés !!!", {
+                          icon: "fa fa-check-circle",
+                        });
                       } else {
                         this.error =
                           "Veuillez contacter votre administrateur pour souscrire à un abonnement avant d'accéeder aux services de TocManager.";
+                        this.$toast.error(this.error, {
+                          icon: "fa fa-times-circle",
+                        });
                       }
                     });
                 } else {
                   this.$router.push("/ventes/vente");
+                  this.$toast("Vous etes connectés !!!", {
+                    icon: "fa fa-check-circle",
+                  });
                 }
               });
           }
@@ -263,45 +332,4 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* .contain{
-  background: #D3D4D6;
-} */
-
-.error-message {
-  border: 1px solid transparent;
-  color: red;
-  font-size: 15px;
-  text-align: center;
-  font-weight: bold;
-  margin-top: 5%;
-}
-
-.input-field {
-  border-radius: 5px;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  color: #4343ff;
-}
-
-.divider:after,
-.divider:before {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: #eee;
-}
-
-.h-custom {
-  height: calc(100% - 73px);
-}
-
-@media (max-width: 450px) {
-  .h-custom {
-    height: 100%;
-  }
-}
 </style>
