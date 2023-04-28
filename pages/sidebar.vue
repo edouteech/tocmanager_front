@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="gom">
   <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
   <button class="btn btn-primary px-6" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
     <i class="fa fa-bars" aria-hidden="true"></i>
@@ -290,6 +290,7 @@ body {
   margin-bottom: 3%;
 }
 
+
 ul li {
   position: relative;
   height: 50px;
@@ -362,6 +363,10 @@ input {
   font-size: 12px;
   padding: 10px;
   color: black;
+}
+
+.gom{
+  z-index: 999;
 }
 
 .bas-page .btn {

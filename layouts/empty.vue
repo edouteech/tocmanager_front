@@ -1,5 +1,6 @@
 <template>
 <div>
+    <!-- <NewSidebar/> -->
     <div class="contenu">
         <div class="alert alert-danger justify-content-center avertissement-abonnement" role="alert" v-if="verifyGrace">
           Votre abonnement est expiré !!! Vous bénéficiez d'une période de grace. Veuillez vous réabonnez avant le {{verifyGrace}}.
@@ -13,11 +14,13 @@
 
 <script>
 import Footer from '~/components/inc/footer.vue';
+import NewSidebar from '~/components/inc/NewSidebar.vue';
 export default{
     middleware:'auth',
     name: 'empty',
     components:{
         Footer,
+        NewSidebar
     },
     data(){
         return {

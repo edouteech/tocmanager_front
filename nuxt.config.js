@@ -46,7 +46,8 @@ export default {
       { 
         src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', 
         type: 'text/javascript' 
-      }
+      },
+      
     ]
   },
 
@@ -56,12 +57,13 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/vue-tel-input',
+    { src: '~/plugins/vue-tel-input', ssr: false },
     { src: '~/plugins/vue-carousel', ssr: false },
     { src: '~/plugins/vue-toastification', ssr: false },
     { src: '~/plugins/vue-excel-xlsx.js', mode: 'client' },
     { src: '~/plugins/removeWebflowBadge.js', mode: 'client' },
     { src: '~/plugins/v-calendar.js', mode: 'client'},
+    { src: '~/plugins/vendor.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

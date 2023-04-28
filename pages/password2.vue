@@ -6,21 +6,14 @@
         <!-- /Left Text -->
         <div class="d-none d-lg-flex col-lg-7 p-0">
           <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
-            <img
-              src="/assets/img/illustrations/auth-reset-password-illustration-light.png"
-              alt="auth-reset-password-cover"
-              class="img-fluid my-5 auth-illustration"
+            <img src="/assets/img/illustrations/auth-reset-password-illustration-light.png"
+              alt="auth-reset-password-cover" class="img-fluid my-5 auth-illustration"
               data-app-light-img="illustrations/auth-reset-password-illustration-light.png"
-              data-app-dark-img="illustrations/auth-reset-password-illustration-dark.png"
-            />
+              data-app-dark-img="illustrations/auth-reset-password-illustration-dark.png" />
 
-            <img
-              src="/assets/img/illustrations/bg-shape-image-light.png"
-              alt="auth-reset-password-cover"
-              class="platform-bg"
-              data-app-light-img="illustrations/bg-shape-image-light.png"
-              data-app-dark-img="illustrations/bg-shape-image-dark.png"
-            />
+            <img src="/assets/img/illustrations/bg-shape-image-light.png" alt="auth-reset-password-cover"
+              class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png"
+              data-app-dark-img="illustrations/bg-shape-image-dark.png" />
           </div>
         </div>
         <!-- /Left Text -->
@@ -81,6 +74,7 @@ export default {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap' },
       { rel: 'stylesheet', href: '/assets/vendor/fonts/fontawesome.css' },
       { rel: 'stylesheet', href: '/assets/vendor/fonts/tabler-icons.css' },
+      { rel: 'stylesheet', href: '/assets/vendor/fonts/flag-icons.css' },
       { rel: 'stylesheet', href: '/assets/vendor/css/rtl/core.css' },
       { rel: 'stylesheet', href: '/assets/vendor/css/rtl/theme-default.css' },
       { rel: 'stylesheet', href: '/assets/css/demo.css' },
@@ -125,7 +119,7 @@ export default {
     };
   },
 
-  mounted(){
+  mounted() {
     this.concerne = this.$route.params.email
   },
 
@@ -183,5 +177,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
