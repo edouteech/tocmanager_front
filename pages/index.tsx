@@ -21,6 +21,8 @@ export default function Home() {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState('');
+
 
   const fetchCategories = async () => {
     try {
@@ -77,13 +79,22 @@ export default function Home() {
   }, [currentPage]);
 
   const filteredProducts = products.filter((product) => {
-    const lowerCaseSearchValue = searchValue.toLowerCase();
+    const lowerCaseSearchValue = searchValue.toLowerCase();    
     return product.name.toLowerCase().includes(lowerCaseSearchValue);
   });
+
+
+  const handleCategoryClick = (category_id: number) => {
+    setSelectedFilter(category_id.toString());
+
+  };
 
   const handleSearchInputChange = (e: any) => {
     setSearchValue(e.target.value);
   };
+
+  // console.log(selectedFilter);
+ 
 
   return (
     <>
@@ -126,13 +137,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex justify-between items-center space-y-2 w-full">
+          <div className="flex justify-between items-center space-y-2 w-full cursor-pointer">
             {categories.slice(0, 8).map((category) => (
               <Categories
                 key={category.id}
                 title={category.name}
                 name={category.name}
                 imageUrl="/Images/marteau.jpg"
+                onClick={() => handleCategoryClick(category.id)}
               />
             ))}
           </div>
@@ -154,7 +166,7 @@ export default function Home() {
                     imageUrl={
                       product.image
                         ? `http://127.0.0.1:8000/${product.image}`
-                        : "/images/logo.png"
+                        : "/images/icone.ico"
                     }
                   />
                 ))}
@@ -170,7 +182,7 @@ export default function Home() {
                     imageUrl={
                       product.image
                         ? `http://127.0.0.1:8000/${product.image}`
-                        : "/images/logo.png"
+                        : "/images/icone.ico"
                     }
                   />
                 ))}
