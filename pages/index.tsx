@@ -9,64 +9,81 @@ import Categories from "@/components/Categories";
 import Card from "@/components/Card";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Test from "@/components/Test";
+import { Category } from "@/Models/Category";
+import { Product } from "@/Models/Product";
+import Link from "next/link";
+import { AiOutlineSearch } from "react-icons/ai";
 
-export default function Home () {
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
+export default function Home() {
+  const [categories, setCategories] = useState<Category[]>([]); // State for storing categories
+  const [products, setProducts] = useState<Product[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/categories",
-          {
-            headers: headers,
-            params: {
-              compagnie_id: 1,
-            },
-          }
-        );
-        setCategories(response.data.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-
-        const response = await axios.get("http://127.0.0.1:8000/api/products", {
-          headers: headers,
+  const fetchCategories = async () => {
+    try {
+      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      // Make GET request to fetch categories
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/categories?is_paginated=0`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           params: {
             compagnie_id: 1,
           },
-        });
-        console.log(response.data.data.data);
-        setProducts(response.data.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+        }
+      );
+      // Update categories state with the fetched data
+      setCategories(response.data.data);
+    } catch (error) {
+      // Log an error message if fetching categories fails
+      console.error("Failed to fetch categories:", error);
+    }
+  };
 
-    fetchData();
-  }, []);
+  const fetchProducts = async (currentPage: number) => {
+    try {
+      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/products?page=${currentPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            compagnie_id: 1,
+          },
+        }
+      );
+      setProducts(response.data.data.data);
+      setTotalPages(response.data.data.total);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleItemTrashClick = () => {};
   const handleClick = (id: number) => {};
+
+  useEffect(() => {
+    fetchCategories();
+    fetchProducts(currentPage);
+  }, [currentPage]);
+
+  const filteredProducts = products.filter((product) => {
+    const lowerCaseSearchValue = searchValue.toLowerCase();
+    return product.name.toLowerCase().includes(lowerCaseSearchValue);
+  });
+
+  const handleSearchInputChange = (e: any) => {
+    setSearchValue(e.target.value);
+  };
 
   return (
     <>
@@ -74,13 +91,30 @@ export default function Home () {
         <Navbar />
       </div>
 
-      <div className="h-screen overflow-y-auto py-[6rem] px-4 flex space-x-6 ">
+      <div className="overflow-y-auto py-[6rem] px-4 flex space-x-6 ">
         <div className="w-5/6 ">
-          <div className="relative mb-4">
-            <h3 className="font-bold ">Catégories</h3>
-            <p className="font-small text-gray-600 text-sm">
-              Manage your purchases
-            </p>
+          <div className="relative justify-between flex items-center">
+            <div className="relative mb-4">
+              <h3 className="font-bold ">Catégories</h3>
+              <p className="font-small text-gray-600 text-sm">
+                Manage your purchases
+              </p>
+            </div>
+          </div>
+
+          <div className="flex justify-center items-center space-x-2">
+            <div className="relative">
+              <span className="absolute inset-y-0 left-0 pl-2 flex items-center">
+                <AiOutlineSearch className="text-gray-500 w-5 h-5" />
+              </span>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-3 focus:outline-none focus:border-blue-500"
+                placeholder="Rechercher"
+                value={searchValue}
+                onChange={handleSearchInputChange}
+              />
+            </div>
           </div>
 
           <div className="flex justify-end">
@@ -103,17 +137,70 @@ export default function Home () {
             ))}
           </div>
 
-          <div className="flex  items-center w-full mt-6">
-            {products.slice(0, 8).map((product) => (
-              <Card
-                quantity={product.quantity}
-                category={product.category.name}
-                name={product.name}
-                price={product.price_sell}
-                imageUrl="/Images/mais.jpg"
-              />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center mt-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
+            </div>
+          ) : (
+            <div>
+              <div className="grid grid-cols-5 gap-4 mt-6">
+                {filteredProducts.slice(0, 5).map((product) => (
+                  <Card
+                    key={product.id}
+                    quantity={product.quantity}
+                    category={product.category?.name}
+                    name={product.name}
+                    price={product.price_sell}
+                    imageUrl={
+                      product.image
+                        ? `http://127.0.0.1:8000/${product.image}`
+                        : "/images/logo.png"
+                    }
+                  />
+                ))}
+              </div>
+              <div className="grid grid-cols-5 gap-4 mt-6">
+                {filteredProducts.slice(5, 10).map((product) => (
+                  <Card
+                    key={product.id}
+                    quantity={product.quantity}
+                    category={product.category?.name}
+                    name={product.name}
+                    price={product.price_sell}
+                    imageUrl={
+                      product.image
+                        ? `http://127.0.0.1:8000/${product.image}`
+                        : "/images/logo.png"
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {totalPages > 10 && (
+            <div className="flex justify-between items-center mt-4">
+              <div>{`Total produits : ${totalPages}`}</div>
+              <div className="flex">
+                {Array.from(
+                  { length: Math.ceil(totalPages / 10) },
+                  (_, index) => index * 1 + 1
+                ).map((page) => (
+                  <button
+                    key={page}
+                    className={`px-2 py-1 mx-1 rounded ${
+                      page === currentPage
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-100 hover:bg-gray-300"
+                    }`}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="w-2/5">

@@ -13,6 +13,7 @@ export interface Product {
     quantity: number;
     stock_min: number;
     stock_max: number;
+    image:string;
     reference: string;
     stock_initial: number;
     tax_group: string | null;

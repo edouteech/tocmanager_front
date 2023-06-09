@@ -3,7 +3,7 @@ import { useState } from "react";
 import { BsCheck } from "react-icons/bs";
 interface CardProps {
   quantity: number;
-  category: string;
+  category?: string;
   name: string;
   price: number;
   imageUrl: string;
@@ -23,7 +23,7 @@ const Card: React.FC<CardProps> = ({
   return (
     <>
       <div
-        className={`flex bg-white h-[16em] rounded-lg w-[10rem] overflow-hidden border-2 mr-2${
+        className={`flex bg-white h-[16em]  rounded-lg w-[10rem] overflow-hidden border-2 mr-2${
           isSelected ? "border-blue-500" : ""
         }`}
         onClick={handleClick}
