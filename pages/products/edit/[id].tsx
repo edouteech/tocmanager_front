@@ -1,19 +1,27 @@
-import InputWithLabel from "@/components/InputWithLabel";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
-import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import Select from "react-select";
-import { BsCloudUpload, BsX } from "react-icons/bs";
-import { Category } from "@/Models/Category";
-import axios from "axios";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Category } from "@/Models/Category";
+import InputWithLabel from "@/components/InputWithLabel";
+import Select from "react-select";
+import { Product } from "@/Models/Product";
+import { BsCloudUpload, BsX } from "react-icons/bs";
 
-const CreateProducts: React.FC = () => {
-  const [nameError, setNameError] = useState(""); // State for name error
+interface EditProductProps {
+  id: number;
+}
+
+const EditProduct: React.FC<EditProductProps> = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]); // State for storing categories
-  const router = useRouter(); // Next.js router instance
+  const [nameError, setNameError] = useState(""); // State for name error
+  const [isLoading, setIsLoading] = useState(true);
 
   const [formData, setFormData] = useState<{
     name: string;
@@ -69,14 +77,77 @@ const CreateProducts: React.FC = () => {
     }
   };
 
+  /**
+   * Function to fetch product from the API
+   */
+  const fetchProduct = async () => {
+    try {
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/products/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            compagnie_id: 1,
+          },
+        }
+      );
+      if (response.status === 200 && response.data.status == "success") {
+        const {
+          name,
+          category_id,
+          quantity,
+          code,
+          price_buy,
+          price_sell,
+          stock_max,
+          stock_min,
+          image,
+        } = response.data.data[0];
+        setFormData({
+          name,
+          category_id,
+          quantity,
+          code,
+          price_buy,
+          price_sell,
+          stock_max,
+          stock_min,
+          image,
+        });
+        setSelectedImage(`http://127.0.0.1:8000/${image}`);
+      }
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchCategories();
+    fetchProduct();
   }, []);
 
   const options = categories.map((category) => ({
     value: category.id,
     label: category.name,
   }));
+
+  const handleSelectChange = (selectedOption: any) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      category_id: selectedOption.value,
+    }));
+  };
+
+  const selectedOption = options.find(
+    (option) => option.value === parseInt(formData.category_id)
+  );
+
+  const selectedLabel = selectedOption ? selectedOption.label : "";
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -108,8 +179,8 @@ const CreateProducts: React.FC = () => {
       const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
 
       // Send a POST request to add a new category
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/products",
+      const response = await axios.put(
+        `http://127.0.0.1:8000/api/products/${id}`,
         {
           name: formData.name,
           category_id: formData.category_id,
@@ -130,10 +201,11 @@ const CreateProducts: React.FC = () => {
         }
       );
 
+      console.log(response.status );
       if (response.status === 200 && response.data.status === "success") {
         console.log(response.data.data);
         // Display success toast notification
-        toast.success("Produit ajoutée avec succès !", {
+        toast.success("Produit modifié avec succès !", {
           style: {
             borderRadius: "10px",
             background: "#333",
@@ -168,7 +240,7 @@ const CreateProducts: React.FC = () => {
         });
       }
     } catch (error) {
-      console.error("Failed to add products:", error);
+      console.error("Failed to update products:", error);
     }
   };
 
@@ -194,15 +266,6 @@ const CreateProducts: React.FC = () => {
     }),
   };
 
-  const handleSelectChange = (selectedOption: any) => {
-    const categoryId = selectedOption.value === 0 ? "" : selectedOption.value;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      category_id: categoryId,
-    }));
-  };
-  
-
   return (
     <>
       <div className="fixed top-0 left-0 w-full z-50">
@@ -217,9 +280,9 @@ const CreateProducts: React.FC = () => {
         <div className="w-4/5 h-screen pt-[5rem] ">
           <div className="relative justify-between flex items-center">
             <div className="relative">
-              <h3 className="font-bold text-xl">Ajouter des produits</h3>
+              <h3 className="font-bold text-xl">Modifier des produits</h3>
               <p className="font-small text-gray-600 text-sm pt-1">
-                Ajouter de nouveaux produits
+                Modifier le produit
               </p>
             </div>
           </div>
@@ -253,6 +316,10 @@ const CreateProducts: React.FC = () => {
                       onChange={handleSelectChange}
                       className={`w-full`}
                       id="category_id"
+                      value={{
+                        value: formData.category_id,
+                        label: selectedLabel,
+                      }}
                       defaultValue={{
                         label: "Choisir une catégorie",
                         value: 0,
@@ -411,7 +478,7 @@ const CreateProducts: React.FC = () => {
               </div>
 
               <button className="flex items-center bg-gray-200 hover:bg-blue-500 text-blue-500 font-semibold py-2 px-4 rounded focus:outline-none hover:text-white mt-4">
-                Ajouter produit
+                Modifier produit
               </button>
             </form>
           </div>
@@ -424,4 +491,4 @@ const CreateProducts: React.FC = () => {
   );
 };
 
-export default CreateProducts;
+export default EditProduct;

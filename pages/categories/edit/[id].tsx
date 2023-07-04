@@ -3,7 +3,6 @@ import Sidebar from "@/components/Sidebar";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ParsedUrlQuery } from "querystring";
 import axios from "axios";
 import { Category } from "@/Models/Category";
 import InputWithLabel from "@/components/InputWithLabel";
@@ -26,7 +25,7 @@ const EditCategories: React.FC<EditCategoriesProps> = () => {
 
   const fetchCategory = async () => {
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       const response = await axios.get(
         `http://127.0.0.1:8000/api/categories/${id}`,
         {
@@ -51,7 +50,7 @@ const EditCategories: React.FC<EditCategoriesProps> = () => {
 
   const fetchCategories = async () => {
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       const response = await axios.get(
         `http://127.0.0.1:8000/api/categories?is_paginated=0`,
         {
@@ -103,12 +102,9 @@ const EditCategories: React.FC<EditCategoriesProps> = () => {
       setNameError("Ce champ  est obligatoire.");
       return;
     }
-    e.preventDefault();
-
-    console.log(formData);
 
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       const response = await axios.put(
         `http://127.0.0.1:8000/api/categories/${id}`,
         {

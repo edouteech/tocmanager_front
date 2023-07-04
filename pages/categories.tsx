@@ -30,7 +30,7 @@ const Categories: React.FC = () => {
 
   const fetchCategories = async (currentPage: number) => {
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       const response = await axios.get(
         `http://127.0.0.1:8000/api/categories?page=${currentPage}`,
         {
@@ -71,7 +71,7 @@ const Categories: React.FC = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       const response = await axios.delete(
         `http://127.0.0.1:8000/api/categories/${categoryIdToDelete}`,
         {
@@ -223,7 +223,10 @@ const Categories: React.FC = () => {
                               <AiFillEdit className="text-blue-500 text-xl cursor-pointer" />
                             </button>
                           </Link>
-                          <Link href="/categories/details">
+                          <Link
+                            href="/categories/details/[id]"
+                            as={`/categories/details/${category.id}`}
+                          >
                             <button className="cursor-pointer">
                               <AiOutlineInfoCircle className="text-green-500 text-xl cursor-pointer" />
                             </button>

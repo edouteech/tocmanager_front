@@ -10,4 +10,6 @@ export interface Category {
     deleted_at: string | null;
   };
   created_at: string;
+  stock_produit : number;
+  valorisation : number;
 }

@@ -26,7 +26,7 @@ export default function Home() {
 
   const fetchCategories = async () => {
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       // Make GET request to fetch categories
       const response = await axios.get(
         `http://127.0.0.1:8000/api/categories?is_paginated=0`,
@@ -49,7 +49,7 @@ export default function Home() {
 
   const fetchProducts = async (currentPage: number) => {
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       const response = await axios.get(
         `http://127.0.0.1:8000/api/products?page=${currentPage}`,
         {

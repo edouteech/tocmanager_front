@@ -38,7 +38,7 @@ const Products: React.FC = () => {
 
   const fetchProducts = async (currentPage: number) => {
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       const response = await axios.get(
         `http://127.0.0.1:8000/api/products?page=${currentPage}`,
         {
@@ -89,7 +89,7 @@ const Products: React.FC = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       const response = await axios.delete(
         `http://127.0.0.1:8000/api/products/${productIdToDelete}`,
         {
@@ -274,12 +274,15 @@ const Products: React.FC = () => {
                             >
                               <IoTrashBin className="text-red-500 text-xl" />
                             </button>
-                            <Link href={`/categories/edit/${product.id}`}>
+                            <Link href={`/products/edit/${product.id}`}>
                               <button className="cursor-pointer">
                                 <AiFillEdit className="text-blue-500 text-xl cursor-pointer" />
                               </button>
                             </Link>
-                            <Link href="/categories/details">
+                            <Link
+                              href="/products/details/[id]"
+                              as={`/products/details/${product.id}`}
+                            >
                               <button className="cursor-pointer">
                                 <AiOutlineInfoCircle className="text-green-500 text-xl cursor-pointer" />
                               </button>

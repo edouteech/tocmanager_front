@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
         <div className="pl-4 font-medium text-sm">Products</div>
         <SidebarItem title="Products" icon={CiGrid41} href="/products" />
         <SidebarItem title="Create Product" icon={CiMobile2} href="/products/create" />
-        <SidebarItem title="Category" icon={CiMobile2} href="categories" />
+        <SidebarItem title="Category" icon={CiMobile2} href="/categories" />
         <SidebarItem title="Brands" icon={CiMobile2} href="/" />
         <SidebarItem title="Sub Category" icon={CiMobile2} href="/" />
         <SidebarItem title="Print Barcode" icon={CiMobile2} href="/" />

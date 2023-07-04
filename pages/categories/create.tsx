@@ -19,7 +19,7 @@ const CreateCategories: React.FC = () => {
    */
   const fetchCategories = async () => {
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       // Make GET request to fetch categories
       const response = await axios.get(
         `http://127.0.0.1:8000/api/categories?is_paginated=0`,
@@ -62,7 +62,7 @@ const CreateCategories: React.FC = () => {
       return;
     }
     try {
-      const token = "183|iHHcwWaBKUayYDJ428KvhtuvhtvhBwep7hQH4J0N";
+      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
 
       // Send a POST request to add a new category
       const response = await axios.post(
