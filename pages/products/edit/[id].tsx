@@ -9,10 +9,14 @@ import InputWithLabel from "@/components/InputWithLabel";
 import Select from "react-select";
 import { Product } from "@/Models/Product";
 import { BsCloudUpload, BsX } from "react-icons/bs";
+import { User } from "@/Models/User";
+import { getSession } from "next-auth/react";
+
 
 interface EditProductProps {
   id: number;
 }
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const EditProduct: React.FC<EditProductProps> = () => {
   const router = useRouter();
@@ -22,6 +26,13 @@ const EditProduct: React.FC<EditProductProps> = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [nameError, setNameError] = useState(""); // State for name error
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User>();
+  const checkSession = async () => {
+    const session = await getSession();
+    if (session) {
+      setUser(session.user as User);
+    }
+  };
 
   const [formData, setFormData] = useState<{
     name: string;
@@ -61,7 +72,7 @@ const EditProduct: React.FC<EditProductProps> = () => {
       const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       // Make GET request to fetch categories
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/categories?is_paginated=0`,
+        `${apiBaseUrl}/categories?is_paginated=0`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -84,7 +95,7 @@ const EditProduct: React.FC<EditProductProps> = () => {
     try {
       const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/products/${id}`,
+        `${apiBaseUrl}/products/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -117,7 +128,7 @@ const EditProduct: React.FC<EditProductProps> = () => {
           stock_min,
           image,
         });
-        setSelectedImage(`http://127.0.0.1:8000/${image}`);
+        setSelectedImage(`${apiBaseUrl}/${image}`);
       }
     } catch (error) {
       console.error("Failed to fetch categories:", error);
@@ -127,8 +138,10 @@ const EditProduct: React.FC<EditProductProps> = () => {
   };
 
   useEffect(() => {
+    checkSession();
     fetchCategories();
     fetchProduct();
+    
   }, []);
 
   const options = categories.map((category) => ({
@@ -176,11 +189,11 @@ const EditProduct: React.FC<EditProductProps> = () => {
       return;
     }
     try {
-      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
+      const token = user?.access_token;
 
       // Send a POST request to add a new category
       const response = await axios.put(
-        `http://127.0.0.1:8000/api/products/${id}`,
+        `${apiBaseUrl}/products/${id}`,
         {
           name: formData.name,
           category_id: formData.category_id,
@@ -191,7 +204,7 @@ const EditProduct: React.FC<EditProductProps> = () => {
           stock_max: formData.stock_max,
           stock_min: formData.stock_min,
           image: formData.image,
-          compagnie_id: 1,
+          compagnie_id: user?.compagnies[0].id,
         },
         {
           headers: {

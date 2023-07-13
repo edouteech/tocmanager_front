@@ -7,19 +7,29 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Select from "react-select";
 import { useRouter } from "next/router";
+import { getSession } from "next-auth/react";
+import { User } from "@/Models/User";
 
 const CreateCategories: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]); // State for storing categories
   const [formData, setFormData] = useState({ name: "", parent_id: "" }); // State for form data
   const [nameError, setNameError] = useState(""); // State for name error
   const router = useRouter(); // Next.js router instance
+  const [user, setUser] = useState<User>();
+
+  const checkSession = async () => {
+    const session = await getSession();
+    if (session) {
+      setUser(session.user as User);
+    }
+  };
 
   /**
    * Function to fetch categories from the API
    */
   const fetchCategories = async () => {
     try {
-      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
+      const token = user?.access_token;
       // Make GET request to fetch categories
       const response = await axios.get(
         `http://127.0.0.1:8000/api/categories?is_paginated=0`,
@@ -28,7 +38,7 @@ const CreateCategories: React.FC = () => {
             Authorization: `Bearer ${token}`,
           },
           params: {
-            compagnie_id: 1,
+            compagnie_id: user?.compagnies[0].id,
           },
         }
       );
@@ -41,7 +51,9 @@ const CreateCategories: React.FC = () => {
   };
 
   useEffect(() => {
+    checkSession();
     fetchCategories();
+
   }, []);
 
   /**
@@ -62,7 +74,7 @@ const CreateCategories: React.FC = () => {
       return;
     }
     try {
-      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
+      const token = user?.access_token;
 
       // Send a POST request to add a new category
       const response = await axios.post(
@@ -70,7 +82,7 @@ const CreateCategories: React.FC = () => {
         {
           name: formData.name,
           parent_id: formData.parent_id,
-          compagnie_id: 1,
+          compagnie_id: user?.compagnies[0].id,
         },
         {
           headers: {

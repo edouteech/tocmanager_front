@@ -8,12 +8,25 @@ import { BsCloudUpload, BsX } from "react-icons/bs";
 import { Category } from "@/Models/Category";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { User } from "@/Models/User";
+import { getSession } from "next-auth/react";
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const CreateProducts: React.FC = () => {
   const [nameError, setNameError] = useState(""); // State for name error
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]); // State for storing categories
-  const router = useRouter(); // Next.js router instance
+  const router = useRouter(); 
+  // Next.js router instance
+
+  const [user, setUser] = useState<User>();
+  const checkSession = async () => {
+    const session = await getSession();
+    if (session) {
+      setUser(session.user as User);
+    }
+  };
+
 
   const [formData, setFormData] = useState<{
     name: string;
@@ -50,16 +63,16 @@ const CreateProducts: React.FC = () => {
    */
   const fetchCategories = async () => {
     try {
-      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
+      const token = user?.access_token;
       // Make GET request to fetch categories
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/categories?is_paginated=0`,
+        `${apiBaseUrl}/categories?is_paginated=0`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
           params: {
-            compagnie_id: 1,
+            compagnie_id: user?.compagnies[0].id,
           },
         }
       );
@@ -105,11 +118,11 @@ const CreateProducts: React.FC = () => {
       return;
     }
     try {
-      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
+      const token = user?.access_token;
 
       // Send a POST request to add a new category
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/products",
+        `${apiBaseUrl}/products`,
         {
           name: formData.name,
           category_id: formData.category_id,
@@ -120,7 +133,7 @@ const CreateProducts: React.FC = () => {
           stock_max: formData.stock_max,
           stock_min: formData.stock_min,
           image: formData.image,
-          compagnie_id: 1,
+          compagnie_id: user?.compagnies[0].id,
         },
         {
           headers: {

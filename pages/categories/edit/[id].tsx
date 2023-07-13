@@ -7,10 +7,15 @@ import axios from "axios";
 import { Category } from "@/Models/Category";
 import InputWithLabel from "@/components/InputWithLabel";
 import Select from "react-select";
+import { getSession } from "next-auth/react";
+import { User } from "@/Models/User";
 
 interface EditCategoriesProps {
   id: number;
 }
+
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 
 const EditCategories: React.FC<EditCategoriesProps> = () => {
   const router = useRouter();
@@ -22,6 +27,14 @@ const EditCategories: React.FC<EditCategoriesProps> = () => {
   });
   const [nameError, setNameError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+
+  const [user, setUser] = useState<User>();
+  const checkSession = async () => {
+    const session = await getSession();
+    if (session) {
+      setUser(session.user as User);
+    }
+  };
 
   const fetchCategory = async () => {
     try {
@@ -50,15 +63,15 @@ const EditCategories: React.FC<EditCategoriesProps> = () => {
 
   const fetchCategories = async () => {
     try {
-      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
+      const token = user?.access_token;
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/categories?is_paginated=0`,
+        `${apiBaseUrl}/categories?is_paginated=0`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
           params: {
-            compagnie_id: 1,
+            compagnie_id: user?.compagnies[0].id,
           },
         }
       );
@@ -69,6 +82,7 @@ const EditCategories: React.FC<EditCategoriesProps> = () => {
   };
 
   useEffect(() => {
+    checkSession();
     fetchCategory();
     fetchCategories();
   }, []);
@@ -104,13 +118,13 @@ const EditCategories: React.FC<EditCategoriesProps> = () => {
     }
 
     try {
-      const token = "1|f3btxksdJymp8jGLqsdp7BnLuLoLReHJkYElZXzj";
+      const token = user?.access_token;
       const response = await axios.put(
-        `http://127.0.0.1:8000/api/categories/${id}`,
+        `${apiBaseUrl}/categories/${id}`,
         {
           name: formData.name,
           parent_id: formData.parent_id,
-          compagnie_id: 1,
+          compagnie_id: user?.compagnies[0].id,
         },
         {
           headers: {

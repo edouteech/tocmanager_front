@@ -2,8 +2,28 @@ import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import { RxDotsHorizontal } from "react-icons/rx";
 import { TbTrash } from "react-icons/tb";
+import { getSession, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { User } from "@/Models/User";
 
 const Dashboard: React.FC = () => {
+  const [user, setUser] = useState<User>();
+  const router = useRouter();
+  const checkSession = async () => {
+    const session = await getSession();
+    if (session) {
+      setUser(session.user as User);
+    } else {
+      router.replace("/auth/login");
+    }
+  };
+
+  useEffect(() => {
+    checkSession();
+  }, [router]);
+
+  
   return (
     <>
       <div className="fixed top-0 left-0 w-full z-50">

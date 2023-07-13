@@ -1,11 +1,43 @@
 import Image from "next/image";
-import { BiSearch, BiDownArrow } from "react-icons/bi";
+import { BiSearch, BiDownArrow, BiLogOut } from "react-icons/bi";
 import { TfiWorld } from "react-icons/tfi";
 import { BsFullscreen, BsEnvelope } from "react-icons/bs";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { getSession, SessionProvider } from "next-auth/react";
 import Link from "next/link";
+import { User } from "@/Models/User";
+
+interface Session {
+  user: User;
+  expires: string;
+}
 const Navbar = () => {
+  const [user, setUser] = useState<User>();
+  const router = useRouter();
+  const checkSession = async () => {
+    const session = await getSession();
+    if (session) {
+      setUser(session.user as User);
+    } else {
+      router.push("/auth/login");
+    }
+  };
+
+  useEffect(() => {
+    checkSession();
+  }, [router]);
+
+
+  
+
+  const handleLogout = () => {
+    signOut(); // Déconnexion de l'utilisateur
+  };
+
   return (
     <>
       <div className="border-b-[1px] black bg-white flex justify-between w-full">
@@ -101,23 +133,26 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
-          <div className="w-2/3 flex items-center justify-center">
-            <Image
-              src="/Images/profile.png"
-              alt="Profil"
-              className=" w-12 h-12"
-              width={4}
-              height={4}
-            />
-            <div className="m-2">
-              <div className="flex items-center">
-                <h2 className="text-sm font-bold mr-1">Nom du profil</h2>
-                <span className="px-1">
-                  <BiDownArrow className="h-4 w-4" />
-                </span>
-              </div>
-
-              <p>Super admin</p>
+          <div className="flex items-center">
+            {/* <div className="w-12 h-12 relative">
+              <Image
+                src="/Images/profile.png"
+                alt="Profil"
+                width={20}
+                height={20}
+              />
+            </div> */}
+            <div className="ml-2">
+              <h2 className="text-sm font-bold">{user?.name}</h2>
+              <p>{user?.email}</p>
+            </div>
+            <div className="mr-2">
+              <button
+                onClick={handleLogout}
+                className="flex items-center p-1 text-gray-600 hover:text-gray-800"
+              >
+                <BiLogOut className="w-6 h-6" />
+              </button>
             </div>
           </div>
         </div>
