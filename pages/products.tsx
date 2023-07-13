@@ -17,9 +17,9 @@ import {
 import { FaRegFilePdf } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
 import { SiMicrosoftexcel } from "react-icons/si";
-import { SessionProvider, getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { User } from "@/Models/User";
-import { useRouter } from "next/navigation";
+import Router from "next/router";
 
 interface Session {
   user: User;
@@ -28,135 +28,130 @@ interface Session {
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const Products: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [searchValue, setSearchValue] = useState("");
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [productIdToDelete, setProductIdToDelete] = useState<number>();
-  const [selectedFilter, setSelectedFilter] = useState(null);
-  const [user, setUser] = useState<User>();
-
-  const router = useRouter();
-  const checkSession = async () => {
-    const session = await getSession();
-    if (session) {
-      setUser(session.user as User);
-    }
-  };
-
-  const handleCheckboxChange = (value: any) => {
-    if (selectedFilter === value) {
-      setSelectedFilter(null);
-    } else {
-      setSelectedFilter(value);
-    }
-  };
-
-  const fetchProducts = async (currentPage: number) => {
-    try {
-      const token = user?.access_token;
-      const companyId = user?.compagnies[0].id;
-      const response = await axios.get(
-        `${apiBaseUrl}/products?page=${currentPage}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            compagnie_id: companyId,
-          },
-        }
-      );
-      setProducts(response.data.data.data);
-      setTotalPages(response.data.data.total);
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  const { status, data } = useSession();
   useEffect(() => {
-    checkSession();
-  
-    fetchProducts(currentPage);
-  }, [currentPage, router]);
+    if (status === "unauthenticated") Router.replace("/auth/login");
+  }, [status]);
 
-  const handleSearchInputChange = (e: any) => {
-    setSearchValue(e.target.value);
-  };
+  if (status === "authenticated") {
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [searchValue, setSearchValue] = useState("");
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [productIdToDelete, setProductIdToDelete] = useState<number>();
+    const [selectedFilter, setSelectedFilter] = useState(null);
 
-  const filteredProducts = products.filter((product) => {
-    const lowerCaseSearchValue = searchValue.toLowerCase();
-
-    if (selectedFilter === "code") {
-      return product.code.toLowerCase().includes(lowerCaseSearchValue);
-    }
-
-    if (selectedFilter === "category") {
-      return product.category?.name
-        .toLowerCase()
-        .includes(lowerCaseSearchValue);
-    }
-    return product.name.toLowerCase().includes(lowerCaseSearchValue);
-  });
-
-  const handleDelete = async (category_id: number) => {
-    setProductIdToDelete(category_id);
-    setShowDeleteModal(true);
-  };
-
-  const handleConfirmDelete = async () => {
-    try {
-      const token = user?.access_token;
-      const response = await axios.delete(
-        `http://127.0.0.1:8000/api/products/${productIdToDelete}`,
-        {
-          params: {
-            compagnie_id: user?.compagnies[0].id,
-          },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.status === 200 && response.data.status === "success") {
-        toast.success("Produit supprimée avec succès !", {
-          style: {
-            borderRadius: "10px",
-            background: "#333",
-            color: "#fff",
-          },
-          duration: 2000,
-        });
-
-        fetchProducts(currentPage);
+    const handleCheckboxChange = (value: any) => {
+      if (selectedFilter === value) {
+        setSelectedFilter(null);
       } else {
-        toast.error(response.data.message, {
-          style: {
-            borderRadius: "10px",
-            background: "#333",
-            color: "#fff",
-          },
-          duration: 2000,
-        });
+        setSelectedFilter(value);
       }
-    } catch (error) {
-      console.error("Failed to delete product:", error);
-    }
-    setShowDeleteModal(false);
-  };
+    };
 
-  const handleCancelDelete = () => {
-    setShowDeleteModal(false);
-  };
+    const fetchProducts = async (currentPage: number) => {
+      try {
+        const token = data.user?.original.access_token;
+        const companyId = data.user?.original.user.compagnies[0].id;
+        const response = await axios.get(
+          `${apiBaseUrl}/products?page=${currentPage}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            params: {
+              compagnie_id: companyId,
+            },
+          }
+        );
+        setProducts(response.data.data.data);
+        setTotalPages(response.data.data.total);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  return (
-    <>
-      <SessionProvider>
+    useEffect(() => {
+      fetchProducts(currentPage);
+    }, [currentPage]);
+
+    const handleSearchInputChange = (e: any) => {
+      setSearchValue(e.target.value);
+    };
+
+    const filteredProducts = products.filter((product) => {
+      const lowerCaseSearchValue = searchValue.toLowerCase();
+
+      if (selectedFilter === "code") {
+        return product.code.toLowerCase().includes(lowerCaseSearchValue);
+      }
+
+      if (selectedFilter === "category") {
+        return product.category?.name
+          .toLowerCase()
+          .includes(lowerCaseSearchValue);
+      }
+      return product.name.toLowerCase().includes(lowerCaseSearchValue);
+    });
+
+    const handleDelete = async (category_id: number) => {
+      setProductIdToDelete(category_id);
+      setShowDeleteModal(true);
+    };
+
+    const handleConfirmDelete = async () => {
+      try {
+        const token = data.user?.original.access_token;
+        const companyId = data.user?.original.user.compagnies[0].id;
+        const response = await axios.delete(
+          `${apiBaseUrl}/products/${productIdToDelete}`,
+          {
+            params: {
+              compagnie_id: companyId,
+            },
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200 && response.data.status === "success") {
+          toast.success("Produit supprimée avec succès !", {
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+            duration: 2000,
+          });
+
+          fetchProducts(currentPage);
+        } else {
+          toast.error(response.data.message, {
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+            duration: 2000,
+          });
+        }
+      } catch (error) {
+        console.error("Failed to delete product:", error);
+      }
+      setShowDeleteModal(false);
+    };
+
+    const handleCancelDelete = () => {
+      setShowDeleteModal(false);
+    };
+
+    return (
+      <>
         <div className="fixed top-0 left-0 w-full z-50">
           <Navbar />
         </div>
@@ -363,9 +358,9 @@ const Products: React.FC = () => {
           title="Supprimer le produit"
           text="Êtes-vous sûr de vouloir supprimer ce produit ?"
         />
-      </SessionProvider>
-    </>
-  );
+      </>
+    );
+  }
 };
 
 export default Products;

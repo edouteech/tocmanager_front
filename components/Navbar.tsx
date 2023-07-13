@@ -7,7 +7,6 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect } from "react";
 import Link from "next/link";
-
 import Router from "next/router";
 
 const Navbar = () => {

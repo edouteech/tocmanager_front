@@ -18,8 +18,7 @@ import { SiMicrosoftexcel } from "react-icons/si";
 import { Category } from "@/Models/Category";
 import toast, { Toaster } from "react-hot-toast";
 import DeleteModal from "@/components/DeleteModal";
-import { User } from "@/Models/User";
-import { getSession, useSession } from "next-auth/react";
+import {useSession } from "next-auth/react";
 import Router from "next/router";
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 

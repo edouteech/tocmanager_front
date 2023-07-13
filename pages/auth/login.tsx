@@ -37,7 +37,7 @@ const Login = () => {
             },
             duration: 2000,
           });
-          router.push("/categories"); // Redirection vers la page de dashboard
+          router.push("/"); // Redirection vers la page de dashboard
         }
       } else {
         router.push("/auth/login"); // Redirection vers la page de connexion
