@@ -464,6 +464,7 @@ export default {
       date_debut: "",
       date_fin: "",
       role: "",
+      trie: "",
       pdfModal: false,
       sup_checkbox: 0,
       list_delete: [],

@@ -140,8 +140,9 @@
                 </div>
               </td>
               <td>{{ result.name }}</td>
-              <td v-if="result.category != null || choix_categorie == 1">{{ result.category.name }}</td>
-              <td v-if="result.category == null || choix_categorie == 1">---</td>
+              <td v-if="choix_categorie == 1">
+                {{ result.category ? produit.category.name : '---' }}
+              </td>
               <td v-if="choix_quantite == 1">{{ result.quantity }}</td>
               <td class="controler">
                 <div class="replace">
@@ -313,10 +314,10 @@
                 </div>
               </td>
               <td>{{ produit.name }}</td>
-              <td v-if="result.category != null || choix_categorie == 1">
-                {{ produit.category.name }}
+              <td v-if=" choix_categorie == 1">
+                {{ produit.category ? produit.category.name : '---' }}
               </td>
-              <td v-if="result.category == null || choix_categorie == 1">---</td>
+              <!-- <td v-if="produit.category == null || choix_categorie == 1">---</td> -->
               <td v-if="choix_quantite == 1">{{ produit.quantity }}</td>
               <td class="controler">
                 <div class="replace">
@@ -396,8 +397,8 @@
               <tr class="table-dark">
                 <th>Quantité totale de produit</th>
                 <th>Valorisation totale</th>
-                <th>Cout total</th>
-                <th>Bénéfice total</th>
+                <th>Cout total estimé</th>
+                <th>Marge total estimé</th>
               </tr>
             </thead>
 
@@ -650,7 +651,7 @@ export default {
       choix_quantite: 1,
       choix_vente:  1,
       choix_achat: 1,
-      choix_valorisation: 1
+      choix_valorisation: 1,
       stats: "",
     };
   },

@@ -60,7 +60,7 @@ export default {
     { src: '~/plugins/vue-carousel', ssr: false },
     { src: '~/plugins/vue-toastification', ssr: false },
     { src: '~/plugins/vue-excel-xlsx.js', mode: 'client' },
-    { src: '~/plugins/removeWebflowBadge.js', mode: 'client' }
+    { src: '~/plugins/removeWebflowBadge.js', mode: 'client' },
     { src: '~/plugins/v-calendar.js', mode: 'client'},
   ],
 

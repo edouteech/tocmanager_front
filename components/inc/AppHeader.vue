@@ -45,11 +45,8 @@
               >A propos</a
             ><a href="#pricing" class="combine-nav1_link w-nav-link">Prix</a>
             <div class="combine-nav1_button-wrapper">
-              <NuxtLink to="/login" class="combine-button-white-small w-button"
-                >Connexion</NuxtLink
-              ><NuxtLink to="/register" class="logo-color w-button"
-                >Inscription</NuxtLink
-              >
+              <NuxtLink to="/login" class="combine-button-white-small w-button">Connexion</NuxtLink>
+              <!-- <NuxtLink to="/register" class="logo-color w-button" >Inscription</NuxtLink> -->
             </div>
           </nav>
           <div>
