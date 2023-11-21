@@ -74,7 +74,7 @@
             </button>
         </div>
           <div class="row col-md-12 mt-2" v-if="choixNumber != 0">
-            <div class="col-md-2"><input type="checkbox" checked/>Noms</div>
+            <div class="col-md-2"><input type="checkbox" @change="preventUncheck()" checked id="nomCheck"   />Noms</div>
             <div class="col-md-2"><input type="checkbox" v-model="choix_phone" @change="choicePhone()"/>Téléphone</div>
             <div class="col-md-2"><input type="checkbox" v-model="choix_email" @change="choiceEmail()"/>Emails</div>
             <div class="col-md-2"><input type="checkbox" v-model="choix_balance" @change="choiceBalance()"/>Balance</div>
@@ -710,6 +710,13 @@ export default {
           this.identifiant5 = response.data.data[0].balance;
         });
     },
+
+    preventUncheck() {
+      var checkbox = document.getElementById('nomCheck');
+      if (checkbox.checked === false) {
+        checkbox.checked = true; // Empêche le décochage
+  }
+    }
   },
 };
 </script>

@@ -32,7 +32,7 @@
           role="alert"
           v-if="errors.name"
         >
-          {{ errors.name }}
+          {{ errors.name[0] }}
         </div>
 
         <div class="form-group">
@@ -49,7 +49,7 @@
           role="alert"
           v-if="errors.phone"
         >
-          {{ errors.phone }}
+          {{ errors.phone[0] }}
         </div>
 
         <div class="form-group">
@@ -68,7 +68,7 @@
           role="alert"
           v-if="errors.email"
         >
-          {{ errors.email }}
+          {{ errors.email[0] }}
         </div>
 
         <div class="form-group">
@@ -85,7 +85,7 @@
           role="alert"
           v-if="errors.role"
         >
-          {{ errors.role }}
+          {{ errors.role[0] }}
         </div>
         <div class="form-group d-flex">
           <div class="form-check mx-3">

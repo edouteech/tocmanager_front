@@ -33,7 +33,7 @@
           role="alert"
           v-if="errors"
         >
-          {{ errors.name }}
+          {{ errors.name[0] }}
         </div>
 
         <div class="form-group col-md-6">
@@ -118,6 +118,7 @@ export default {
           } else {
             this.error = response.data.message;
             this.errors = response.data.data;
+            console.log(this.errors)
           }
         });
     },

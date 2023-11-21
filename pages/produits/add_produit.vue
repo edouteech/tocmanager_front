@@ -58,7 +58,7 @@
           role="alert"
           v-if="errors && errors.name"
         >
-          {{ errors.name }}
+          {{ errors.name[0] }}
         </div>
 
         <div class="form-group col-md-6">
@@ -79,7 +79,7 @@
           role="alert"
           v-if="errors && errors.tax_group"
         >
-          {{ errors.tax_group }}
+          {{ errors.tax_group[0] }}
         </div>
 
         <div class="form-group col-md-6">
@@ -96,7 +96,7 @@
           role="alert"
           v-if="errors && errors.code"
         >
-          {{ errors.code }}
+          {{ errors.code[0] }}
         </div>
 
         <div class="form-group col-md-6">
@@ -113,7 +113,7 @@
           role="alert"
           v-if="errors && errors.quantity"
         >
-          {{ errors.quantity }}
+          {{ errors.quantity[0] }}
         </div>
 
         <div class="form-group col-md-6">
@@ -132,7 +132,7 @@
           role="alert"
           v-if="errors && errors.price_sell"
         >
-          {{ errors.price_sell }}
+          {{ errors.price_sell[0] }}
         </div>
 
         <div class="form-group col-md-6">
@@ -151,7 +151,7 @@
           role="alert"
           v-if="errors && errors.price_buy"
         >
-          {{ errors.price_buy }}
+          {{ errors.price_buy[0] }}
         </div>
 
         <div class="form-group col-md-6">
@@ -170,7 +170,7 @@
           role="alert"
           v-if="errors && errors.stock_min"
         >
-          {{ errors.stock_min }}
+          {{ errors.stock_min[0] }}
         </div>
 
         <div class="form-group col-md-6">
@@ -189,7 +189,7 @@
           role="alert"
           v-if="errors && errors.stock_max"
         >
-          {{ errors.stock_max }}
+          {{ errors.stock_max[0] }}
         </div>
 
         <button
@@ -267,7 +267,8 @@ export default {
           } else {
             this.error = response.data.message;
             this.errors = response.data.data;
-          }
+            console.log(this.errors)
+            }
         })
         .catch((error) => console.log(error));
     },

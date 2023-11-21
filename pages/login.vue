@@ -40,11 +40,15 @@
               <div class="d-flex">
                 <span class="fas fa-lock px-2 mt-1"></span><label class="form-label">Mot de passe</label>
               </div>
-              <div class="input-field">
-                <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
-                  placeholder="Entrer votre mot de passe" /><span><i class="fa fa-eye px-2" id="eye"
-                    @click="changer()"></i></span>
-              </div>
+             <div class="input-field">
+                <div class="password-container w-100">
+                  <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
+                    placeholder="Entrer votre mot de passe" />
+                  <span class="password-toggle"><i class="fa fa-eye" id="eye" @click="changer()"></i></span>
+                </div>
+            </div>
+
+
             </div>
 
             <div class="d-flex justify-content-between align-items-center">
@@ -111,12 +115,14 @@ export default {
     changer() {
       var pwd = document.getElementById("password");
       var fa = document.getElementById("eye");
-      if (pwd.getAttribute("type") == "password") {
+      if (pwd.getAttribute("type") === "password") {
         pwd.setAttribute("type", "text");
-        fa.class = "fa fa-eye px-2";
+        fa.className = "fa fa-eye-slash";
+
       } else {
         pwd.setAttribute("type", "password");
-        fa.class = "fa fa-eye-slash px-2";
+        fa.className = "fa fa-eye";
+
       }
     },
 
@@ -153,6 +159,7 @@ export default {
             });
         } catch (err) {
           console.log(err);
+          this.load = false;
         }
       } else {
         try {
@@ -257,6 +264,7 @@ export default {
         } catch (err) {
           console.log(err);
           // this.refresh();
+          this.load = false
         }
       }
     },
@@ -298,6 +306,28 @@ export default {
 .h-custom {
   height: calc(100% - 73px);
 }
+
+.input-field {
+  position: relative;
+}
+
+.password-container {
+  position: relative;
+}
+
+input[type="password"] {
+  padding-right: 30px; /* Ajustez la largeur pour laisser de la place à l'icône */
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Ajustez la position horizontale de l'icône */
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+
 
 @media (max-width: 450px) {
   .h-custom {
