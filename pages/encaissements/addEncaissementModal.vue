@@ -22,7 +22,7 @@
           role="alert"
           v-if="errors_montant"
         >
-          {{ errors_montant }}
+          {{ errors_montant[0] }}
         </div>
         <!-- <div class="input-form">       
                 <input type="number" placeholder="Entrer le montant " v-model="form.facture" autocomplete="off" required> -->
@@ -51,7 +51,7 @@
                 :key="i"
                 :value="client.id"
               >
-                {{ client.name }}
+                {{ client.name[0] }}
               </option>
             </select>
           </div>

@@ -7,7 +7,7 @@
     </nav>
 
     <div
-      class="alert alert-danger justify-content-center"
+      class="m-3 alert alert-danger justify-content-center"
       role="alert"
       v-if="error"
     >
@@ -34,7 +34,7 @@
           role="alert"
           v-if="errors_montant"
         >
-          {{ errors_montant }}
+          {{ errors_montant[0] }}
         </div>
         <div class="form-group col-md-6">
           <label class="title">Entrer la date du décaissement </label>
@@ -66,7 +66,7 @@
           role="alert"
           v-if="errors_supplier_id"
         >
-          {{ errors_supplier_id }}
+          {{ errors_supplier_id[0] }}
         </div>
         <div class="form-group col-md-6">
           <label class="title">Méthode de paiement</label>
