@@ -7,8 +7,8 @@
         <div class="img col-md-9 col-lg-6 col-xl-5">
           <img src="/images/1.png" class="img-fluid" alt="Sample image" />
         </div>
-        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 mt-4">
-          <div class="alert alert-danger justify-content-center" role="alert" v-if="error">
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 mt-5">
+          <div class="mt-5 alert alert-danger justify-content-center" role="alert" v-if="error">
             {{ error }}
           </div>
           <form>
@@ -54,7 +54,7 @@
               </div>
               <div class="input-field">
                 <input type="password" id="password" class="form-control form-control-lg" v-model="form.password"
-                  placeholder="Entrer un mot de passe" /><span><i class="fa fa-eye px-2" id="eye"
+                  placeholder="Entrer un mot de passe" /><span class="password-toggle"><i class="fa fa-eye px-2"  id="eye"
                     @click.prevent="changer()"></i></span>
               </div>
 
@@ -69,7 +69,7 @@
               </div>
               <div class="input-field">
                 <input type="password" id="password1" class="form-control form-control-lg"
-                  v-model="form.password_confirmation" placeholder="Entrer un mot de passe" /><span><i
+                  v-model="form.password_confirmation" placeholder="Entrer un mot de passe" /><span class="password-toggle"><i
                     class="fa fa-eye px-2" id="eyes" @click.prevent="change()"></i></span>
               </div>
 
@@ -178,21 +178,25 @@ export default {
       var fa = document.getElementById("eye");
       if (pwd.getAttribute("type") == "password") {
         pwd.setAttribute("type", "text");
-        fa.class = "fa fa-eye px-2";
+        fa.className = "fa fa-eye-slash px-2";
       } else {
         pwd.setAttribute("type", "password");
+        fa.className = "fa fa-eye px-2";
+
       }
     },
 
     //afficher et cacher la confirmation du mot de passe
     change() {
       var pwd = document.getElementById("password1");
-      var fa = document.getElementById("eye");
+      var fa = document.getElementById("eyes");
       if (pwd.getAttribute("type") == "password") {
         pwd.setAttribute("type", "text");
-        fa.class = "fa fa-eye px-2";
+        fa.className = "fa fa-eye-slash px-2";
       } else {
         pwd.setAttribute("type", "password");
+        fa.className = "fa fa-eye px-2";
+
       }
     },
   },
@@ -214,7 +218,6 @@ export default {
   padding: 5px;
   display: flex;
   align-items: center;
-  cursor: pointer;
   color: #4343ff;
 }
 
@@ -229,6 +232,29 @@ export default {
   height: 1px;
   background: #eee;
 }
+
+
+
+.input-field {
+  position: relative;
+}
+
+.password-container {
+  position: relative;
+}
+
+input[type="password"] {
+  padding-right: 30px; /* Ajustez la largeur pour laisser de la place à l'icône */
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Ajustez la position horizontale de l'icône */
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
 
 .h-custom {
   height: calc(100% - 73px);
