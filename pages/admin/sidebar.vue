@@ -1,11 +1,11 @@
 <template>
     <div>
   <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' rel='stylesheet'>
-  <button class="btn btn-primary px-6" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+  <button class="btn btn-primary px-6" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAdmin" aria-controls="offcanvasSidebar">
     <i class="fa fa-bars" aria-hidden="true"></i>
   </button>
   
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasAdmin" aria-labelledby="offcanvasAdminLabel">
     <div class="offcanvas-header">
       <div class="logo_content">
           <img src="/images/logo.png" class="logo_content" alt="logo" srcset="">
@@ -71,35 +71,7 @@
                       </div>
                   </NuxtLink>
               </li>
-              <!-- <li class="nav-item dropdown">
-                  <div class="rubrique">
-                      <i class="fa fa-list-ul" aria-hidden="true"></i>
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     <span class="links_name">Listes</span>
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><NuxtLink to="/clients/list_client"><span class="dropdown-item">Clients</span></NuxtLink></li>
-                      <li><NuxtLink to="/fournisseurs/list_fournisseur"><span class="dropdown-item">Fournisseurs</span></NuxtLink></li>
-                  </ul>
-                  </div>
-              </li> -->
-  
-              <!-- <li>
-                  <NuxtLink to="/encaissements/list_encaissement" data-bs-dismiss="offcanvas">
-                      <div class="rubrique" data-bs-dismiss="offcanvas">
-                          <i class="fa fa-credit-card-alt" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
-                          <span class="links_name" data-bs-dismiss="offcanvas">Encaissements</span>
-                      </div>
-                  </NuxtLink>
-              </li> -->
-              <!-- <li>
-                  <NuxtLink to="/decaissements/list_decaissement" data-bs-dismiss="offcanvas">
-                      <div class="rubrique" data-bs-dismiss="offcanvas">
-                          <i class="fa fa-credit-card-alt" aria-hidden="true" data-bs-dismiss="offcanvas"></i>
-                          <span class="links_name" data-bs-dismiss="offcanvas">Décaissements</span>
-                      </div>
-                  </NuxtLink>
-              </li> -->
+              
               <li>
                   <NuxtLink to="/admin/produits/list_produit" data-bs-dismiss="offcanvas">
                       <div class="rubrique" data-bs-dismiss="offcanvas">
